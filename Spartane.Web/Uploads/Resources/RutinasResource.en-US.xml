@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Rutinas" value="Rutinas"></resource>
+  <resource culture="en-US" name="Folio" value="Folio"></resource>
+  <resource culture="en-US" name="Fecha_de_Registro" value="Fecha de Registro"></resource>
+  <resource culture="en-US" name="Hora_de_Registro" value="Hora de Registro"></resource>
+  <resource culture="en-US" name="Usuario_que_Registra" value="Usuario que Registra"></resource>
+  <resource culture="en-US" name="Nombre_de_la_Rutina" value="Nombre de la Rutina"></resource>
+  <resource culture="en-US" name="Descripcion" value="Descripción"></resource>
+  <resource culture="en-US" name="Equipamento" value="Equipamento"></resource>
+  <resource culture="en-US" name="Equipamento_alterno" value="Equipamento alterno"></resource>
+  <resource culture="en-US" name="Nivel_de_dificultad" value="Nivel de dificultad"></resource>
+  <resource culture="en-US" name="Intensidad" value="Intensidad"></resource>
+  <resource culture="en-US" name="Duracion_aproximada_minutos" value="Duración aproximada (minutos)"></resource>
+  <resource culture="en-US" name="Genero" value="Género"></resource>
+  <resource culture="en-US" name="Estatus" value="Estatus"></resource>
+  <resource culture="en-US" name="Ejercicios" value="Ejercicios"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

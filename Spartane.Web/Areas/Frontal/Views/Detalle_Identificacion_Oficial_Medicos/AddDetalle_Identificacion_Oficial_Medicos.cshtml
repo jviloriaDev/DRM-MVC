@@ -1,0 +1,490 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Globalization
+@using Spartane.Core.Domain.Permission
+@using Spartane.Core.Domain.Spartane_File
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Detalle_Identificacion_Oficial_MedicosModel
+@{
+    Spartane_File attachedFileDocumento = (Spartane_File)ViewBag.DocumentoSpartane_File;
+
+
+ List<SelectListItem> varIdentificaciones_Oficiales_Tipo_de_Identificacion_Oficial = null;
+    if (ViewBag.Identificaciones_Oficialess_Tipo_de_Identificacion_Oficial != null)
+    { varIdentificaciones_Oficiales_Tipo_de_Identificacion_Oficial = (List<SelectListItem>)ViewBag.Identificaciones_Oficialess_Tipo_de_Identificacion_Oficial; }
+
+
+    Permission permission = ViewBag.Permission;
+}
+<div class="modal-dialog" style="width:95%;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">
+                Add Detalle Identificación Oficial Médicos
+                <button data-dismiss="modal" class="close" type="button" onclick="@(ViewBag.functionMode == 0 ? "Detalle_Identificacion_Oficial_MedicosRemoveAddRow("+ ViewBag.currentRowIndex +")" : "")"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            </h4>
+        </div>
+        <div class="modal-body scroll_content">
+            <div class="form-horizontal Detalle_Identificacion_Oficial_MedicosPop_@ViewBag.currentRowIndex">
+				<div class="modal fade in" id="dvAttributeValue" style="background-color:rgba(0, 0, 0, 0.7);">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-body">
+								<div class="form-group">
+									<label class="col-sm-3 control-label" id="lblAttributeType">Value</label>
+									<div class="col-sm-7">
+										<input type="text" title="Value" class="form-control" id="txtAttributeValue" />
+									</div>
+									<div class="col-sm-2">
+										<a class="btn btn-primary" onclick="SaveValue()">Submit</a>
+									</div>
+									<input type="hidden" id="hdnAttributType" />
+									<input type="hidden" id="hdnAttributElement" />
+									<input type="hidden" id="hdnAttributNumber" />
+									<input type="hidden" id="hdnElementType" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row wrapper border-bottom white-bg page-heading">
+
+					<div class="row">
+						<div class="col-lg-10">
+							<h2>
+								Detalle Identificación Oficial Médicos
+								<button onclick="Detalle_Identificacion_Oficial_MedicosGetBusinessRule('', 'Abrir Pantalla', '0')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Detalle_Identificacion_Oficial_MedicosBusinessRule-form">
+									<a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+										<i class="fa fa-cogs fa-spin"></i>
+									</a>
+								</button>
+							</h2>
+							<ol class="breadcrumb">
+								<li>
+									<a href="@Url.Action("Index", "Home")">@Resources.Resources.Home</a>
+								</li>
+								<li class="">
+									<label>@Resources.Detalle_Identificacion_Oficial_MedicosResources.Detalle_Identificacion_Oficial_Medicos</label>
+								</li>
+								<li class="active">
+									<strong>@Resources.Resources.Create</strong>
+								</li>
+							</ol>
+						</div>
+						<div class="col-lg-2">
+
+							@{
+								if (Convert.ToInt32(Spartane.Web.SessionHelper.Role) == (int)Spartane.Core.Enums.SpartanRoleEnum.Admin)
+								{
+									<h2>&nbsp;</h2>
+									<button onclick="Detalle_Identificacion_Oficial_MedicosDisplayBusinessRule()" type="button" class="btn btn-info btn-lg displayBusinessProperyButton">
+										<i class="fa fa-cogs fa-spin"></i>
+									</button>
+
+									<div aria-hidden="true" class="modal fade in Detalle_Identificacion_Oficial_MedicosPropertyBusinessModal" id="Detalle_Identificacion_Oficial_MedicosPropertyBusinessModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h4 class="modal-title">
+														Property & Business Rules
+														<button class="close" type="button" onclick="$(this).parent().parent().parent().parent().parent().modal('hide');"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+													</h4>
+												</div>
+												<div class="modal-body">
+													<div class="row">
+														<div class="col-sm-12">
+															<a class="btn btn-primary full-width" data-toggle="modal" data-target="#PropertyModal-form" onclick="GetPropertyBag()">Properties</a>
+														</div>
+														<div class="clearfix col-sm-12">&nbsp;</div>
+														<div class="col-sm-12">
+															<a class="btn btn-primary full-width" data-toggle="modal" data-target="#Detalle_Identificacion_Oficial_MedicosBusinessRule-form" onclick="Detalle_Identificacion_Oficial_MedicosGetBusinessRule()">Business Rule</a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									 <div aria-hidden="true" data-backdrop="static" class="modal fade in Detalle_Identificacion_Oficial_MedicosPropertyModal" id="Detalle_Identificacion_Oficial_MedicosPropertyModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+									</div>
+									<div aria-hidden="true" data-backdrop="static" class="modal fade in Detalle_Identificacion_Oficial_MedicosBusinessRuleModal" id="Detalle_Identificacion_Oficial_MedicosBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+									</div>
+                                    <div aria-hidden="true" data-backdrop="static" class="modal fade in Detalle_Identificacion_Oficial_MedicosAddBusinessRuleModal" id="Detalle_Identificacion_Oficial_MedicosAddBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                                    </div>
+
+				
+								}
+							}
+						</div>
+					</div>
+
+				<div class="wrapper wrapper-content animated fadeInRight">
+					<div class="ibox float-e-margins">
+						<div class="ibox-content">
+							@using (Html.BeginForm("Post", "Detalle_Identificacion_Oficial_Medicos", FormMethod.Post, new { id = "CreateDetalle_Identificacion_Oficial_Medicos", @readonly = "true", @class = "form-horizontal", enctype = "multipart/form-data" }))
+							{
+								<span id="popupNotification"></span>
+								<div class="container-fluid Detalle_Identificacion_Oficial_MedicosCreateForm" id="viewmodeledit">
+							<div class="tabs-container">
+											<ul class="nav nav-tabs">
+				@@groupers@@
+											</ul>
+										<div class="tab-content">
+				<div class="form-group" id="divFolio">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Identificacion_Oficial_MedicosResources.Folio</label>
+                                <div class="col-sm-8" data-field-id="Folio" data-attribute="258292" data-field-name="@Resources.Detalle_Identificacion_Oficial_MedicosResources.Folio">
+                                    <label class="form-control" for="Detalle_Identificacion_Oficial_MedicosFolio" id="Detalle_Identificacion_Oficial_MedicosFolio">@Model.Folio</label>
+                                </div>
+                            </div>
+<div class="form-group" id="divTipo_de_Identificacion_Oficial">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Identificacion_Oficial_MedicosResources.Tipo_de_Identificacion_Oficial</label>
+                                <div class="col-sm-8" data-field-id="Tipo_de_Identificacion_Oficial" data-attribute="258294" data-field-name="@Resources.Detalle_Identificacion_Oficial_MedicosResources.Tipo_de_Identificacion_Oficial">
+                                    <select class='fullWidth AutoCompleteIdentificaciones_Oficiales form-control select2-dropdown' data-val="true" id="Detalle_Identificacion_Oficial_MedicosTipo_de_Identificacion_Oficial" name="Detalle_Identificacion_Oficial_MedicosTipo_de_Identificacion_Oficial">
+                                        <option value="@Model.Tipo_de_Identificacion_Oficial">@(Model.Tipo_de_Identificacion_OficialDescripcion??Model.Tipo_de_Identificacion_OficialDescripcion)</option>
+                                    </select>
+                                </div>
+                            </div>
+@if (attachedFileDocumento != null && attachedFileDocumento.File_Id > 0)
+                            {
+                                <div class="form-group" id="divAttachmentDocumento">
+                                    <label class="col-sm-2 control-label">Previously Attached File</label>
+                                    <div class="col-sm-8" data-field-id="Documento" data-attribute="258295" data-field-name="@Resources.Detalle_Identificacion_Oficial_MedicosResources.Documento">
+                                        <a href="@Url.Content("~/Frontal/Detalle_Identificacion_Oficial_Medicos/GetFile")?id=@attachedFileDocumento.File_Id" target="_blank">@attachedFileDocumento.Description</a>
+                                        <img src="@Url.Content("~/Content/Images/RemoveAttachment.png")" onclick="RemoveAttachmentMainDocumento('@attachedFileDocumento.File_Id')" />
+                                    </div>
+                                    <input id="hdnRemoveDocumento" name="RemoveDocumento" value="0" type="hidden" />
+                                    <input class="form-control col-md-12" id="hdnAttachedDocumento" type="hidden" name="Documento" value="@Model.Documento">
+                                </div>
+                            }
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Identificacion_Oficial_MedicosResources.Documento</label>
+                                <div class="col-sm-8" data-field-id="Documento" data-attribute="258295" data-field-name="@Resources.Detalle_Identificacion_Oficial_MedicosResources.Documento">
+                                    <input type="file" name="Detalle_Identificacion_Oficial_MedicosDocumentoFile" id="Detalle_Identificacion_Oficial_MedicosDocumentoFile" class="form-control" />
+                                </div>
+                            </div>
+
+								</div>	
+							</div>
+									<br />
+											<div class="form-actions fluid">
+												<input type="hidden" value="@Model.Folio" id="ReferenceFolio" />
+												<input type="hidden" value="@Model.Folio" name="Folio" id="FolioId" />
+												@if (!ViewBag.Consult)
+												{
+													<div id="dvSaveJob" style="display:inline-block"></div>
+
+													<button type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton">
+														<i class="fa fa-cogs fa-spin"></i>
+													</button>
+													<a title="@Resources.Resources.Configure" id="Detalle_Identificacion_Oficial_MedicosConfigureSave" name="Detalle_Identificacion_Oficial_MedicosConfigureSave" onclick="SaveElementAttributes()" class="btn btn-success">@Resources.Resources.Configure</a>
+												}
+
+												<input type="hidden" id="hdnDetalle_Identificacion_Oficial_MedicosConfigureType" />
+												<input type="hidden" id="hdnDetalle_Identificacion_Oficial_MedicosBusinessRuleFieldId" />
+												<input type="hidden" id="hdnDetalle_Identificacion_Oficial_MedicosBusinessRuleFieldName" />
+												<input type="hidden" id="hdnDetalle_Identificacion_Oficial_MedicosBusinessRuleAttribute" />
+
+												<input data-dismiss="modal" type="button" value="@Resources.Resources.Cancelar" class="btn btn-danger noConsult" data-bind="click: cancel" tabindex="16" />
+
+												<button onclick="Detalle_Identificacion_Oficial_MedicosGetBusinessRule('', 'Al Cancelar', '3')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Detalle_Identificacion_Oficial_MedicosBusinessRule-form">
+													<a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+														<i class="fa fa-cogs fa-spin"></i>
+													</a>
+												</button>
+											</div>
+										</div>
+								}
+
+							</div>
+						</div>
+					</div>
+				</div>
+					<input id="hdnApplicationDirectory" type="hidden" value="@Url.Content("~/")" />
+				</div>
+			</div>
+		</div>
+</div>
+@section Styles {
+<link href="@Url.Content("~/Content/BootstrapDatePicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+    @Styles.Render("~/plugins/awesomeCheckboxStyles")
+    @Styles.Render("~/plugins/select2Styles")
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+    .select2-results{background-color:#fff;}
+    .select2-container .select2-dropdown{height:auto !important;}
+
+    div.dataTables_info {
+        display: inline-block;
+        float: right;
+    }
+        i {
+        font-size: 25px !important;
+        display: block;
+        color: #676a6c;
+        margin-left: 6px;
+        margin-right: 6px;
+    }
+
+    .fullWidth {
+        width: 100%;
+    }
+</style>
+}
+
+<script type="text/javascript" src="~/Uploads/Scripts/Detalle_Identificacion_Oficial_Medicos.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Scripts/Custom/Detalle_Identificacion_Oficial_MedicosGeneral.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/Detalle_Identificacion_Oficial_MedicosCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/MedicosCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
+
+    <script type="text/javascript">
+        
+        function RemoveAttachmentMainDocumento () {
+            $("#hdnRemoveDocumento").val("1");
+            $("#divAttachmentDocumento").hide();
+        }
+
+
+
+        $(document).ready(function () {
+			var currentIndex = @ViewBag.currentRowIndex
+
+            var Detalle_Identificacion_Oficial_MedicosRowElement = "Detalle_Identificacion_Oficial_MedicosPop_" + currentIndex.toString();
+            var abc = "if(dynamicFieldValidation('" + Detalle_Identificacion_Oficial_MedicosRowElement + "')){ Detalle_Identificacion_Oficial_MedicosInsertRowFromPopup(" + currentIndex + "); }";
+            var insertRowHTML = '<a class="btn btn-primary m-b" onclick="' + abc + '">Save</a>';
+            $('#dvSaveJob').html(insertRowHTML);
+			
+
+
+            initiateUIControls();
+            EjecutarValidacionesAlComienzo();
+			$('a').tooltip();
+        });
+       var AutoCompleteTipo_de_Identificacion_OficialData =[];
+       $(".AutoCompleteDetalle_Identificacion_Oficial_Medicos_Tipo_de_Identificacion_Oficial").select2({
+            dropdownCssClass: 'fullWidth form-control',
+            ajax: {
+                url: "@Url.Content("~/Frontal/Detalle_Identificacion_Oficial_Medicos/GetDetalle_Identificacion_Oficial_Medicos_Tipo_de_Identificacion_Oficial_Identificaciones_Oficiales")",
+		cache: false,
+                dataType: 'json',
+                async: true,
+                global: false,
+                data: function (params) {
+                    return {
+                        query: params.term, 
+                    };
+                },
+                processResults: function (data, params) {
+                    params.page = params.page || 1;
+
+                    return {
+                        results: GetAutoCompleteDetalle_Identificacion_Oficial_Medicos_Tipo_de_Identificacion_Oficial_Identificaciones_OficialesData(data),
+                        pagination: {
+                            more: false 
+                        }
+                    };
+                }
+            },
+            escapeMarkup: function (markup) { return markup; }, 
+            minimumInputLength: 1,
+        });
+        var $eventExternal = $(".AutoCompleteDetalle_Identificacion_Oficial_Medicos_Tipo_de_Identificacion_Oficial");
+        $eventExternal.on("select2:open", function (e) {
+            $('.select2-search__field').val('');
+            $('.select2-search__field').keyup();
+        });
+
+
+
+        function initiateUIControls() {
+            $('.gridDatePicker').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            //Time Picker
+            $('.gridTimePicker').clockpicker();
+
+        }
+		
+		function SendDetalle_Identificacion_Oficial_MedicosData(callBack) {
+			
+					
+		 var arr = []; 
+		 $("form#CreateDetalle_Identificacion_Oficial_Medicos").find(':input').each(function( index ) {		 
+			if ($(this).prop('disabled')==true|| $(this).prop('disabled')=="disabled")
+			{		
+				arr.push($(this).attr('id')); 
+				$(this).prop('disabled', false);  	
+			}
+	    });
+		
+             var formData = new FormData($("form#CreateDetalle_Identificacion_Oficial_Medicos")[0]);
+			$.each( arr, function( key, value ) {
+			  $('#' +value).prop('disabled', true);
+			});
+
+            var isNew = $('#hdnIsNew').val();
+           
+            if (checkClientValidate('Detalle_Identificacion_Oficial_MedicosCreateForm')) {
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Detalle_Identificacion_Oficial_Medicos/Post?IsNew=")' + isNew,
+                    type: 'POST',
+                    data: formData,
+                    async: true,
+                    success: function (result) {
+                        if (result < 0) {
+                            showNotification("@Resources.Resources.ErrorSave", "error");
+                        } else {
+
+                            showNotification("@Resources.Resources.SaveSuccess", "success");
+                            callBack(result);
+                        }
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            }
+            return false;
+        };
+		
+        function GetPropertyBag() {
+            $.get('@Url.Action("Detalle_Identificacion_Oficial_MedicosPropertyBag", "Detalle_Identificacion_Oficial_Medicos")', function (data) {
+                $(".PropertyModal").html(data);
+            });
+        }
+        function Detalle_Identificacion_Oficial_MedicosGetBusinessRule(FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null)
+			{
+				$('#hdnDetalle_Identificacion_Oficial_MedicosBusinessRuleFieldId').val(FieldId);
+				$('#hdnDetalle_Identificacion_Oficial_MedicosBusinessRuleFieldName').val(FieldName);
+				$('#hdnDetalle_Identificacion_Oficial_MedicosBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("BusinessRule", "BussinessRule")', { FieldId: $('#hdnDetalle_Identificacion_Oficial_MedicosBusinessRuleFieldId').val(), FieldName: $('#hdnDetalle_Identificacion_Oficial_MedicosBusinessRuleFieldName').val(), ObjectId: '44380', Attribute: $('#hdnDetalle_Identificacion_Oficial_MedicosBusinessRuleAttribute').val(), Screen: 'Detalle_Identificacion_Oficial_Medicos' }, function (data) {
+                $(".Detalle_Identificacion_Oficial_MedicosBusinessRuleModal").html(data);
+            });
+        }
+        function Detalle_Identificacion_Oficial_MedicosGetAddBusinessRule(RuleId, FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null) {
+				$('#hdnDetalle_Identificacion_Oficial_MedicosBusinessRuleFieldId').val(FieldId);
+				$('#hdnDetalle_Identificacion_Oficial_MedicosBusinessRuleFieldName').val(FieldName);
+				$('#hdnDetalle_Identificacion_Oficial_MedicosBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("AddBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnDetalle_Identificacion_Oficial_MedicosBusinessRuleFieldId').val(), FieldName: $('#hdnDetalle_Identificacion_Oficial_MedicosBusinessRuleFieldName').val(), ObjectId: '44380', Attribute: $('#hdnDetalle_Identificacion_Oficial_MedicosBusinessRuleAttribute').val(), Screen: 'Detalle_Identificacion_Oficial_Medicos' }, function (data) {
+                $(".Detalle_Identificacion_Oficial_MedicosAddBusinessRuleModal").html(data);
+                $(".datatable").DataTable();
+            });
+        }
+		function RemoveBusinessRule(RuleId) {
+			$.get('@Url.Action("RemoveBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnDetalle_Identificacion_Oficial_MedicosBusinessRuleFieldId').val(), FieldName: $('#hdnDetalle_Identificacion_Oficial_MedicosBusinessRuleFieldName').val(), ObjectId: '44380', Attribute: $('#hdnDetalle_Identificacion_Oficial_MedicosBusinessRuleAttribute').val(), Screen: 'Detalle_Identificacion_Oficial_Medicos' }, function (data) {
+				$(".Detalle_Identificacion_Oficial_MedicosBusinessRuleModal").html(data);
+			});
+		}
+
+    var permission = {
+        Consult: '@permission.Consult' == 'True',
+        New: '@permission.New' == 'True',
+        Edit: '@permission.Edit' == 'True',
+        Delete: '@permission.Delete' == 'True',
+        Export: '@permission.Export' == 'True',
+        Print: '@permission.Print' == 'True',
+        Configure: '@permission.Configure' == 'True',
+    };
+
+    
+    //MR-var statusItems;
+    //MR-var stateItems;
+    //MR-var cityItems = [];
+    var isConsultMode = "@ViewBag.Consult" == "True";
+    Consult(isConsultMode);
+        function Consult(val) {
+            if (val) {
+                $(':input').attr('readonly', 'readonly');
+                $(':input').attr('disabled', 'true');
+                $('.noConsult').removeAttr('readonly');
+                $('.noConsult').removeAttr('disabled');
+            }
+        }
+
+    function BackToGrid() {
+        location.href = "@Url.Content("~/Frontal/Detalle_Identificacion_Oficial_Medicos/")";
+    }
+	
+	function ReadScriptSettings(callback)
+    {
+        $.post("@Url.Content("~/Frontal/Detalle_Identificacion_Oficial_Medicos/ReadScriptSettings")", function (data) {
+            mainElementObject = JSON.parse(data.MainElement);
+			if (data.ChildElement != null) {
+                childElementObject = JSON.parse(data.ChildElement);
+            }
+            callback();
+        });
+    }
+
+    function SaveSettingsWithoutReload() {
+        $.post("@Url.Content("~/Frontal/Detalle_Identificacion_Oficial_Medicos/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+            //$('#hdnDetalle_Identificacion_Oficial_MedicosConfigureType').val("0");
+        }, "json");
+    }
+	
+        function SaveElementAttributes() {
+            if ($('#hdnDetalle_Identificacion_Oficial_MedicosConfigureType').val() == "1") {
+                $.post("@Url.Content("~/Frontal/Detalle_Identificacion_Oficial_Medicos/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+                    $('#hdnDetalle_Identificacion_Oficial_MedicosConfigureType').val("0");
+                    location.reload(true);
+                }, "json");
+            } else {
+                $.post("@Url.Content("~/Frontal/Detalle_Identificacion_Oficial_Medicos/ReadScriptSettings")", function (data) {
+                    mainElementObject = JSON.parse(data.MainElement);
+                    childElementObject = JSON.parse(data.ChildElement);
+
+                    for (var i = 0; i < mainElementObject.length; i++) {
+                        var mainElementAttributes = '<div class="col-sm-2">';
+                        mainElementAttributes += '<div class="displayAttributes requiredAttribute"><a class="requiredClick" title="' + (mainElementObject[i].IsRequired == true ? "Required" : "Not Required") + '" onclick="setRequired(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsRequired == true ? "@Url.Content("~/Images/Required.png")" : "@Url.Content("~/Images/Not-Required.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes visibleAttribute"><a class="visibleClick" title="' + (mainElementObject[i].IsVisible == true ? "Visible" : "In Visible") + '" onclick="setVisible(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsVisible == true ? "@Url.Content("~/Images/Visible.png")" : "@Url.Content("~/Images/InVisible.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes readOnlyAttribute"><a class="readOnlyClick" title="' + (mainElementObject[i].IsReadOnly == true ? "Disabled" : "Enabled") + '" onclick="setReadOnly(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsReadOnly == true ? "@Url.Content("~/Images/Disabled.png")" : "@Url.Content("~/Images/Enabled.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes defaultValueAttribute"><a id="hlDefaultValue_' + i.toString() + '" class="defaultValueClick" title="' + (mainElementObject[i].DefaultValue) + '" onclick="setDefaultValue(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].DefaultValue != '' && mainElementObject[i].DefaultValue != null ? "@Url.Content("~/Images/default-value.png")" : "@Url.Content("~/Images/Not-Default-Value.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes helpTextAttribute"><a id="hlHelpText_' + i.toString() + '" class="helpTextClick" title="' + (mainElementObject[i].HelpText) + '" onclick="setHelpText(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].HelpText != '' && mainElementObject[i].HelpText != null ? "@Url.Content("~/Images/green-help.png")" : "@Url.Content("~/Images/red-help.jpg")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '</div>';
+                        $('#Detalle_Identificacion_Oficial_Medicos' + mainElementObject[i].inputId).parent().closest('.form-group').show();
+
+                        $('#Detalle_Identificacion_Oficial_Medicos' + mainElementObject[i].inputId).closest('.col-sm-8').after(mainElementAttributes);
+                    }
+					if (childElementObject != null) {
+						for (var i = 0; i < childElementObject.length; i++) {
+							$('.' + childElementObject[i].inputId + 'Header').show();
+							$('.' + childElementObject[i].inputId).parent().show();
+							$('.' + childElementObject[i].inputId + 'Header').append(returnAttributeHTML(i));
+						}
+					}
+                    $('#Detalle_Identificacion_Oficial_MedicosConfigureSave').text('Save Settings');
+                    $('#hdnDetalle_Identificacion_Oficial_MedicosConfigureType').val("1");
+                });
+            }
+        }
+		$('#CreateDetalle_Identificacion_Oficial_Medicos').on('click', '.btnPopupBusinessRules', function () {
+			var fieldId = $(this).data('field-id');
+			var fieldName = $(this).data('field-name');
+			var attribute = $(this).data('attribute');
+			$('#hdnDetalle_Identificacion_Oficial_MedicosBusinessRuleFieldId').val(fieldId);
+			$('#hdnDetalle_Identificacion_Oficial_MedicosBusinessRuleFieldName').val(fieldName);
+			$('#hdnDetalle_Identificacion_Oficial_MedicosBusinessRuleAttribute').val(attribute);
+		});
+		//Initialize HTML Editors
+		
+    </script>

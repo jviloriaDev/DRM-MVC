@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_Report_Filter" value="Spartan Report Filter"></resource>
+  <resource culture="en-US" name="ReportFilterId" value="ReportFilterId"></resource>
+  <resource culture="en-US" name="Field" value="Field"></resource>
+  <resource culture="en-US" name="QuickFilter" value="QuickFilter"></resource>
+  <resource culture="en-US" name="AdvanceFilter" value="AdvanceFilter"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

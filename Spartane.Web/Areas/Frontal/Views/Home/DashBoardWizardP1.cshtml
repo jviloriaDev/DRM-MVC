@@ -1,0 +1,22 @@
+﻿
+    <div class="col-xs-12 col-md-12">
+
+        <div class="panel panel-default" style="overflow-y: scroll;height: 33vh">
+            <input type="hidden" name="DashboardEditFormUser" value="@Spartane.Web.SessionHelper.UserEntity.Id_User" />
+            <div class="panel-body">
+                <div>
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">@Resources.Resources.NameDashboard<i class="fa fa-asterisk fa-asterisk-req" aria-hidden="true"></i></label>
+                        <div class="col-sm-8">
+                            <input class="form-control inputClientRequired" type="text" name="DashboardEditFormNombre"  required value="">
+                        </div>
+                    </div>
+
+                    
+
+                </div>
+            </div>
+
+        </div>
+        <button class="btn btn-default btn-block nextBtn pull-right col-md-12" type="button" id="button-step-1">@Resources.Resources.Next</button>
+    </div>

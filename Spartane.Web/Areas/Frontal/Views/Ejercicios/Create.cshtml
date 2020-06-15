@@ -1,0 +1,1036 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Globalization
+@using Spartane.Core.Domain.Permission
+@using Spartane.Core.Domain.Spartane_File
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.EjerciciosModel
+@{
+    Spartane_File attachedFileImagen = (Spartane_File)ViewBag.ImagenSpartane_File;
+    Spartane_File attachedFileVideo = (Spartane_File)ViewBag.VideoSpartane_File;
+
+/*
+    string Fecha_de_Registro = "";
+    if (Model.Fecha_de_Registro == "")
+    { Model.Fecha_de_Registro = DateTime.Now.ToString(ConfigurationProperty.DateFormat); }
+
+*/
+    List<SelectListItem> varSpartan_User_Usuario_que_Registra = null;
+    if (ViewBag.Spartan_Users_Usuario_que_Registra != null)
+    { varSpartan_User_Usuario_que_Registra = (List<SelectListItem>)ViewBag.Spartan_Users_Usuario_que_Registra; }
+    List<SelectListItem> varTipo_Ejercicio_Tipo_de_Ejercicio = null;
+    if (ViewBag.Tipo_Ejercicios_Tipo_de_Ejercicio != null)
+    { varTipo_Ejercicio_Tipo_de_Ejercicio = (List<SelectListItem>)ViewBag.Tipo_Ejercicios_Tipo_de_Ejercicio; }
+    List<SelectListItem> varNivel_de_dificultad_Nivel_de_dificultad = null;
+    if (ViewBag.Nivel_de_dificultads_Nivel_de_dificultad != null)
+    { varNivel_de_dificultad_Nivel_de_dificultad = (List<SelectListItem>)ViewBag.Nivel_de_dificultads_Nivel_de_dificultad; }
+    List<SelectListItem> varSexo_Sexo = null;
+    if (ViewBag.Sexos_Sexo != null)
+    { varSexo_Sexo = (List<SelectListItem>)ViewBag.Sexos_Sexo; }
+    List<SelectListItem> varEstatus_Estatus = null;
+    if (ViewBag.Estatuss_Estatus != null)
+    { varEstatus_Estatus = (List<SelectListItem>)ViewBag.Estatuss_Estatus; }
+
+    Permission permissionMS_Equipamiento_para_Ejercicios = ViewBag.PermissionMS_Equipamiento_para_Ejercicios;
+
+    Permission permission = ViewBag.Permission;
+	
+	if (ViewBag.IsPartial)
+   { 
+       Layout = "~/Areas/Frontal/Views/Shared/_LayoutPopup.cshtml";
+   }
+}
+<div class="loading style-2"><div class="loading-wheel"></div></div>
+<div class="modal fade in" id="dvAttributeValue" style="background-color:rgba(0, 0, 0, 0.7);">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" id="lblAttributeType">@Resources.Resources.Value</label>
+                    <div class="col-sm-7">
+                        <input type="text" title="Value" class="form-control" id="txtAttributeValue" />
+                    </div>
+                    <div class="col-sm-2">
+                        <a class="btn btn-primary" onclick="SaveValue()">@Resources.Resources.Submit</a>
+                    </div>
+                    <input type="hidden" id="hdnAttributType" />
+                    <input type="hidden" id="hdnAttributElement" />
+                    <input type="hidden" id="hdnAttributNumber" />
+                    <input type="hidden" id="hdnElementType" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row wrapper border-bottom white-bg page-heading">
+
+    <div class="row">
+        <div class="col-lg-10">
+            <h2>
+                @Resources.EjerciciosResources.Ejercicios
+                <button onclick="EjerciciosGetBusinessRule('', 'Al Abrir Pantalla', '0')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#EjerciciosBusinessRule-form">
+                    <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+                        <i class="fa fa-cogs fa-spin"></i>
+                    </a>
+                </button>
+            </h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">@Resources.Resources.Home</a>
+                </li>
+                <li class="active">
+                @if (Session["PhaseName"] != null)
+                {
+                    <strong>@Session["PhaseName"].ToString()</strong>
+                }
+                else
+                {
+                    <strong>@Resources.EjerciciosResources.Ejercicios</strong>
+                }
+                
+            </li>
+                <li class="active">
+                    <strong>@Resources.Resources.Create</strong>
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-2">
+
+            @{
+                if (Convert.ToInt32(Spartane.Web.SessionHelper.Role) == (int)Spartane.Core.Enums.SpartanRoleEnum.Admin)
+                {
+                    <h2>&nbsp;</h2>
+                    <button onclick="EjerciciosDisplayBusinessRule()" type="button" class="btn btn-info btn-lg displayBusinessProperyButton">
+                        <i class="fa fa-cogs fa-spin"></i>
+                    </button>
+
+                    <div aria-hidden="true" class="modal fade in EjerciciosPropertyBusinessModal" id="EjerciciosPropertyBusinessModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">
+                                          @Resources.Resources.titleBussinesRules
+                                        <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">@Resources.Resources.Close</span></button>
+                                    </h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <a class="btn btn-primary full-width" data-dismiss="modal" data-toggle="modal" data-target="#PropertyModal-form" onclick="GetPropertyBag()">@Resources.Resources.Property</a>
+                                        </div>
+                                        <div class="clearfix col-sm-12">&nbsp;</div>
+                                        <div class="col-sm-12">
+                                            <a class="btn btn-primary full-width" data-dismiss="modal" data-toggle="modal" data-target="#EjerciciosBusinessRule-form" onclick="EjerciciosGetBusinessRule()">Business Rule</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     <div aria-hidden="true" data-backdrop="static" class="modal fade in PropertyModal" id="PropertyModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+					</div>
+					<div aria-hidden="true" data-backdrop="static" class="modal fade in EjerciciosBusinessRuleModal" id="EjerciciosBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+					</div>
+
+
+                }
+            }
+                    <div aria-hidden="true" class="modal fade in AddMS_Equipamiento_para_EjerciciosModal" id="AddMS_Equipamiento_para_Ejercicios-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                    </div>
+
+
+        </div>
+    </div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            @using (Html.BeginForm("Post", "Ejercicios", FormMethod.Post, new { id = "CreateEjercicios", @readonly = "true", @class = "form-horizontal", enctype = "multipart/form-data" }))
+            {
+                                <input type="hidden" id="hdnIsNew" name="hdnIsNew" value="@ViewBag.IsNew.ToString()" />
+                <span id="popupNotification"></span>
+                <div class="container-fluid EjerciciosCreateForm" id="viewmodeledit">
+				 <div class="alert alert-warning" id="controlsRequerid" style="display:none">
+                        <a href="#" class="close" onclick="$('#controlsRequerid').hide();">&times;</a>
+                        <span id="textRequired"></span>
+                 </div>
+			<div class="tabs-container">
+                        	<ul class="nav nav-tabs">
+<li class="active"><a data-toggle="tab" href="#tabDatos_Generales"> @Resources.EjerciciosResources.TabDatos_Generales</a></li>
+
+                        	</ul>
+	                	<div class="tab-content">
+                            <div id="tabDatos_Generales" class="tab-pane active">
+                                <div class="panel-body">
+                            <div class="form-group" id="divClave">
+                                <label class="col-sm-2 control-label">@Resources.EjerciciosResources.Clave</label>
+                                <div class="col-sm-8" data-field-id="Clave" data-attribute="257523" data-field-name="@Resources.EjerciciosResources.Clave">
+                                    <label class="form-control" for="Clave" id="lblClave">
+                                    @if (Model.Clave== 0)
+                                        {
+                                            <text>@Resources.Resources.ClaveDefault</text>
+                                        }
+                                        else
+                                        { 
+                                            <text>@Model.Clave</text>
+                                        }
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divFecha_de_Registro">
+                                <label class="col-sm-2 control-label">@Resources.EjerciciosResources.Fecha_de_Registro</label>
+                                <div class="col-sm-8" data-field-id="Fecha_de_Registro" data-attribute="257524" data-field-name="@Resources.EjerciciosResources.Fecha_de_Registro">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input class="form-control col-md-12 Datos_Generales" id="Fecha_de_Registro"  name="Fecha_de_Registro" type="text" value="@Model.Fecha_de_Registro">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divHora_de_Registro">
+                                <label class="col-sm-2 control-label">@Resources.EjerciciosResources.Hora_de_Registro</label>
+                                <div class="col-sm-8" data-field-id="Hora_de_Registro" data-attribute="259819" data-field-name="@Resources.EjerciciosResources.Hora_de_Registro">
+                                    <div class='input-group date' id='timePicker'>
+                                        <input class="form-control col-md-12 Datos_Generales" id="Hora_de_Registro"  name="Hora_de_Registro" type="text" data-autoclose="true" value="@Model.Hora_de_Registro">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-time"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divUsuario_que_Registra">
+                                <label class="col-sm-2 control-label">@Resources.EjerciciosResources.Usuario_que_Registra</label>
+                                <div class="col-sm-8" data-field-id="Usuario_que_Registra" data-attribute="259820" data-field-name="@Resources.EjerciciosResources.Usuario_que_Registra">
+                                    <select class="form-control Datos_Generales" data-val="true" data-val-number="The field Usuario que Registra must be a number." data-val-required="The Usuario que Registra field is required." id="Usuario_que_Registra" name="Usuario_que_Registra">
+                                        <option value=""></option>
+                                        @if (varSpartan_User_Usuario_que_Registra != null){ 
+                                            foreach (var itemUsuario_que_Registra in varSpartan_User_Usuario_que_Registra)
+                                            {
+                                                if (itemUsuario_que_Registra.Value == Convert.ToString(Model.Usuario_que_Registra))
+                                                {
+                                                    <option value="@itemUsuario_que_Registra.Value" selected>@itemUsuario_que_Registra.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemUsuario_que_Registra.Value">@itemUsuario_que_Registra.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Usuario_que_Registra" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 259820).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Spartan_User', 'Usuario_que_Registra');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divNombre_del_Ejercicio">
+                                <label class="col-sm-2 control-label">@Resources.EjerciciosResources.Nombre_del_Ejercicio</label>
+                                <div class="col-sm-8" data-field-id="Nombre_del_Ejercicio" data-attribute="259821" data-field-name="@Resources.EjerciciosResources.Nombre_del_Ejercicio">
+                                    <input class="form-control Datos_Generales" id="Nombre_del_Ejercicio" name="Nombre_del_Ejercicio" type="text" value="@Model.Nombre_del_Ejercicio">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Nombre_del_Ejercicio" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divDescripcion_del_Ejercicio">
+                                <label class="col-sm-2 control-label">@Resources.EjerciciosResources.Descripcion_del_Ejercicio</label>
+                                <div class="col-sm-8" data-field-id="Descripcion_del_Ejercicio" data-attribute="259827" data-field-name="@Resources.EjerciciosResources.Descripcion_del_Ejercicio">
+                                    <textarea id="Descripcion_del_Ejercicio" name="Descripcion_del_Ejercicio" class="form-control Datos_Generales" rows="4" cols="50">@Model.Descripcion_del_Ejercicio</textarea>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Descripcion_del_Ejercicio" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divTipo_de_Ejercicio">
+                                <label class="col-sm-2 control-label">@Resources.EjerciciosResources.Tipo_de_Ejercicio</label>
+                                <div class="col-sm-8" data-field-id="Tipo_de_Ejercicio" data-attribute="259826" data-field-name="@Resources.EjerciciosResources.Tipo_de_Ejercicio">
+                                    <select class="form-control Datos_Generales" data-val="true" data-val-number="The field Tipo de Ejercicio must be a number." data-val-required="The Tipo de Ejercicio field is required." id="Tipo_de_Ejercicio" name="Tipo_de_Ejercicio">
+                                        <option value=""></option>
+                                        @if (varTipo_Ejercicio_Tipo_de_Ejercicio != null){ 
+                                            foreach (var itemTipo_de_Ejercicio in varTipo_Ejercicio_Tipo_de_Ejercicio)
+                                            {
+                                                if (itemTipo_de_Ejercicio.Value == Convert.ToString(Model.Tipo_de_Ejercicio))
+                                                {
+                                                    <option value="@itemTipo_de_Ejercicio.Value" selected>@itemTipo_de_Ejercicio.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemTipo_de_Ejercicio.Value">@itemTipo_de_Ejercicio.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Tipo_de_Ejercicio" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 259826).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Tipo_Ejercicio', 'Tipo_de_Ejercicio');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divNivel_de_dificultad">
+                                <label class="col-sm-2 control-label">@Resources.EjerciciosResources.Nivel_de_dificultad</label>
+                                <div class="col-sm-8" data-field-id="Nivel_de_dificultad" data-attribute="259894" data-field-name="@Resources.EjerciciosResources.Nivel_de_dificultad">
+                                    <select class="form-control Datos_Generales" data-val="true" data-val-number="The field Nivel de dificultad must be a number." data-val-required="The Nivel de dificultad field is required." id="Nivel_de_dificultad" name="Nivel_de_dificultad">
+                                        <option value=""></option>
+                                        @if (varNivel_de_dificultad_Nivel_de_dificultad != null){ 
+                                            foreach (var itemNivel_de_dificultad in varNivel_de_dificultad_Nivel_de_dificultad)
+                                            {
+                                                if (itemNivel_de_dificultad.Value == Convert.ToString(Model.Nivel_de_dificultad))
+                                                {
+                                                    <option value="@itemNivel_de_dificultad.Value" selected>@itemNivel_de_dificultad.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemNivel_de_dificultad.Value">@itemNivel_de_dificultad.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Nivel_de_dificultad" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 259894).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Nivel_de_dificultad', 'Nivel_de_dificultad');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divSexo">
+                                <label class="col-sm-2 control-label">@Resources.EjerciciosResources.Sexo</label>
+                                <div class="col-sm-8" data-field-id="Sexo" data-attribute="259893" data-field-name="@Resources.EjerciciosResources.Sexo">
+                                    <select class="form-control Datos_Generales" data-val="true" data-val-number="The field Sexo must be a number." data-val-required="The Sexo field is required." id="Sexo" name="Sexo">
+                                        <option value=""></option>
+                                        @if (varSexo_Sexo != null){ 
+                                            foreach (var itemSexo in varSexo_Sexo)
+                                            {
+                                                if (itemSexo.Value == Convert.ToString(Model.Sexo))
+                                                {
+                                                    <option value="@itemSexo.Value" selected>@itemSexo.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemSexo.Value">@itemSexo.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Sexo" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 259893).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Sexo', 'Sexo');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divMusculos_trabajados">
+                                <label class="col-sm-2 control-label">@Resources.EjerciciosResources.Musculos_trabajados</label>
+                                <div class="col-sm-8" data-field-id="Musculos_trabajados" data-attribute="259836" data-field-name="@Resources.EjerciciosResources.Musculos_trabajados">
+                                    <input class="form-control inputNumber Datos_Generales" id="Musculos_trabajados" name="Musculos_trabajados" type="text" value="@Model.Musculos_trabajados">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Musculos_trabajados" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                        <div class="form-group" id="divEquipamento">
+	                     <label class="col-sm-2 control-label">@Resources.EjerciciosResources.Equipamento</label>
+	                     <div class="col-sm-8" data-field-id="Equipamento" data-attribute="259837" data-field-name="@Resources.EjerciciosResources.Equipamento">
+		                  <select id="ddlEquipamentoMult" name="ddlEquipamentoMult" class="form-control chosen-select" multiple="multiple">
+		                  </select>
+	                     </div>
+                        </div>
+                            @if (attachedFileImagen != null && attachedFileImagen.File_Id > 0)
+                            {
+                                <div class="form-group" id="divAttachmentImagen">
+                                    <label class="col-sm-2 control-label">@Resources.Resources.PreviouslyAttachedFile</label>
+                                    <div class="col-sm-8 Datos_Generales" data-field-id="Imagen" data-attribute="259828" data-field-name="@Resources.EjerciciosResources.Imagen">
+                                        <a href="@Url.Content("~/Frontal/Ejercicios/GetFile")?id=@attachedFileImagen.File_Id" target="_blank">@attachedFileImagen.Description</a>
+                                        <img src="@Url.Content("~/Content/Images/RemoveAttachment.png")" onclick="RemoveAttachmentMainImagen('@attachedFileImagen.File_Id')" />
+                                    </div>
+                                    <input id="hdnRemoveImagen" name="RemoveImagen" value="0" type="hidden" />
+                                    <input class="form-control col-md-12 Datos_Generales" id="hdnAttachedImagen" type="hidden" name="Imagen" value="@Model.Imagen">
+                                </div>
+                            }
+                            <div class="form-group" id="divImagen">
+                                <label class="col-sm-2 control-label">@Resources.EjerciciosResources.Imagen</label>
+                                <div class="col-sm-8" data-field-id="Imagen" data-attribute="259828" data-field-name="@Resources.EjerciciosResources.Imagen">
+                                    <input type="file" name="ImagenFile" id="ImagenFile" class="form-control" />
+                                </div>
+                            </div>
+                            @if (attachedFileVideo != null && attachedFileVideo.File_Id > 0)
+                            {
+                                <div class="form-group" id="divAttachmentVideo">
+                                    <label class="col-sm-2 control-label">@Resources.Resources.PreviouslyAttachedFile</label>
+                                    <div class="col-sm-8 Datos_Generales" data-field-id="Video" data-attribute="259829" data-field-name="@Resources.EjerciciosResources.Video">
+                                        <a href="@Url.Content("~/Frontal/Ejercicios/GetFile")?id=@attachedFileVideo.File_Id" target="_blank">@attachedFileVideo.Description</a>
+                                        <img src="@Url.Content("~/Content/Images/RemoveAttachment.png")" onclick="RemoveAttachmentMainVideo('@attachedFileVideo.File_Id')" />
+                                    </div>
+                                    <input id="hdnRemoveVideo" name="RemoveVideo" value="0" type="hidden" />
+                                    <input class="form-control col-md-12 Datos_Generales" id="hdnAttachedVideo" type="hidden" name="Video" value="@Model.Video">
+                                </div>
+                            }
+                            <div class="form-group" id="divVideo">
+                                <label class="col-sm-2 control-label">@Resources.EjerciciosResources.Video</label>
+                                <div class="col-sm-8" data-field-id="Video" data-attribute="259829" data-field-name="@Resources.EjerciciosResources.Video">
+                                    <input type="file" name="VideoFile" id="VideoFile" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group" id="divEstatus">
+                                <label class="col-sm-2 control-label">@Resources.EjerciciosResources.Estatus</label>
+                                <div class="col-sm-8" data-field-id="Estatus" data-attribute="259838" data-field-name="@Resources.EjerciciosResources.Estatus">
+                                    <select class="form-control Datos_Generales" data-val="true" data-val-number="The field Estatus must be a number." data-val-required="The Estatus field is required." id="Estatus" name="Estatus">
+                                        <option value=""></option>
+                                        @if (varEstatus_Estatus != null){ 
+                                            foreach (var itemEstatus in varEstatus_Estatus)
+                                            {
+                                                if (itemEstatus.Value == Convert.ToString(Model.Estatus))
+                                                {
+                                                    <option value="@itemEstatus.Value" selected>@itemEstatus.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemEstatus.Value">@itemEstatus.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Estatus" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 259838).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Estatus', 'Estatus');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            </div>
+                                </div>
+
+				</div>	
+                    <br />
+                            <div class="form-actions fluid">
+                                <input type="hidden" value="@Model.Clave" id="ReferenceClave" />
+                                <input type="hidden" value="@Model.Clave" name="Clave" id="ClaveId" />
+                                <input type="hidden" value="@ViewBag.Operation" name="Operation" id="Operation" />
+                                @if (!ViewBag.Consult)
+                                {
+                                    <input type="button" value="@Resources.Resources.Guardar" id="EjerciciosGuardar" class="btn btn-w-m btn-primary btn_save" onclick="return checkClientValidate('EjerciciosCreateForm');"  />
+									<button onclick="EjerciciosGetBusinessRule('', 'Al Guardar o al Cerrar la Pantalla', '2')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#EjerciciosBusinessRule-form">
+                                        <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleBeforeSave">
+                                            <i class="fa fa-cogs fa-spin"></i>
+                                        </a>
+                                    </button>                                    
+
+                                    <input type="button" value="@Resources.Resources.GuardarNuevo" id="EjerciciosGuardarYNuevo" onclick="return checkClientValidate('EjerciciosCreateForm');" data-bind="    click: saveAndNew" class="btn btn-w-m btn-success btn_saveandnew"  />
+                                    <input type="button" value="@Resources.Resources.GuardarCopia" id="EjerciciosGuardarYCopia" onclick="return checkClientValidate('EjerciciosCreateForm');" data-bind="    click: saveAndNew" class="btn btn-w-m btn-success btn_saveandcopy"  />
+                                    if (permission.Configure)
+                                    {
+                                        <a title="@Resources.Resources.Configure" id="ConfigureSave" name="ConfigureSave" onclick="SaveElementAttributes()" class="btn btn-success btn-configure">@Resources.Resources.Configure</a>
+                                    }
+                                }
+
+                                <input type="hidden" id="hdnConfigureType" />
+								<input type="hidden" id="hdnEjerciciosBusinessRuleFieldId" />
+                                <input type="hidden" id="hdnEjerciciosBusinessRuleFieldName" />
+                                <input type="hidden" id="hdnEjerciciosBusinessRuleAttribute" />
+
+                                <input type="button" value="@Resources.Resources.Cancelar" id="EjerciciosCancelar" name="EjerciciosCancelar" class="btn btn-danger noConsult btn_cancelar" data-bind="click: cancel" tabindex="16" />
+
+                                <button onclick="EjerciciosGetBusinessRule('', 'Al Cancelar', '4')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#EjerciciosBusinessRule-form">
+                                    <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+                                        <i class="fa fa-cogs fa-spin"></i>
+                                    </a>
+                                </button>
+                            </div>
+						</div>
+					</div>
+                }
+        </div>
+    </div>
+</div>
+<input id="hdnApplicationDirectory" type="hidden" value="@Url.Content("~/")" />
+
+@section Styles {
+<link href="@Url.Content("~/Content/BootstrapDatePicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+    @Styles.Render("~/plugins/awesomeCheckboxStyles")
+    @Styles.Render("~/plugins/select2Styles")
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+    .select2-results{background-color:#fff;}
+    .select2-container .select2-dropdown{height:auto !important;}
+
+    div.dataTables_info {
+        display: inline-block;
+        float: right;
+    }
+        /*i {
+        font-size: 25px !important;
+        display: block;
+        color: #676a6c;
+        margin-left: 6px;
+        margin-right: 6px;
+    }*/
+
+    .fullWidth {
+        width: 100%;
+    }
+</style>
+}
+
+<script type="text/javascript" src="~/Uploads/Scripts/Ejercicios.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Scripts/Custom/EjerciciosGeneral.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/EjerciciosCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
+
+@section Scripts {
+
+
+    <script type="text/javascript">
+        
+        function RemoveAttachmentMainImagen () {
+            $("#hdnRemoveImagen").val("1");
+            $("#divAttachmentImagen").hide();
+        }
+        function RemoveAttachmentMainVideo () {
+            $("#hdnRemoveVideo").val("1");
+            $("#divAttachmentVideo").hide();
+        }
+
+
+	function GetTraduction(text) {
+         switch (text.toLowerCase()) {
+            case 'edit':
+                return "@Resources.Resources.Edit";          
+            case 'delete':
+                return "@Resources.Resources.Delete";               
+            case 'required':
+                return "@Resources.Resources.Required";              
+            case 'notrequired':
+                return "@Resources.Resources.NotRequired";           
+            case 'enabled':
+                return "@Resources.Resources.Enabled";         
+            case 'disabled':
+                return "@Resources.Resources.Disabled";           
+            case 'visible':
+                return "@Resources.Resources.Visible";            
+            case 'botvisible':
+                return "@Resources.Resources.InVisible";
+            case 'messagednoinvisible':
+                return "@Resources.Resources.messagedNoInVisible";
+            case 'messagednoreadonly':
+                return "@Resources.Resources.messagedNoReadOnly";
+            case 'defaultvalue':
+                return "@Resources.Resources.DefaultValue";
+            case 'helptext':
+                return "@Resources.Resources.HelpText";                     
+            default:
+                return "";
+        }
+    }
+	
+	    var isPartial = ('@ViewBag.IsPartial' == 'True');
+        var isMR = ('@ViewBag.isMR' == 'True');
+        var nameMR = '@ViewBag.nameMR';
+		var nameAttribute = '@ViewBag.nameAttribute';
+		var Tab_Datos_Generales = true;
+
+
+        $(document).ready(function () {
+            $('#ObjectId').val('44289');
+		               GetEquipamento_MS_Equipamiento_para_EjerciciosItem();
+
+
+		   
+			
+             @if(ViewBag.IsNew)
+            { 
+                <text>$('input:checkbox').prop('checked', false);</text>
+            }
+			else
+            {
+                <text>
+				if (Tab_Datos_Generales)
+					Fill_Datos_Generales();
+
+
+                </text>
+             }
+             EjecutarValidacionesAlComienzo();
+                         $('#Fecha_de_Registro').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            $('#Hora_de_Registro').clockpicker();
+
+
+            initiateUIControls();
+			$('a').tooltip();
+			$('.loading').css('display', 'none');
+			
+
+        });
+
+var MS_Equipamiento_para_EjerciciosDataDataTable;
+var MS_Equipamiento_para_EjerciciosTable;
+var Equipamento_MS_Equipamiento_para_EjerciciosItems;
+        function GetEquipamento_MS_Equipamiento_para_EjerciciosItem() {
+            Equipamento_MS_Equipamiento_para_EjerciciosItems = null;
+            var ajaxUrl = "@Url.Content("~/Frontal/Ejercicios/GetEquipamento_MS_Equipamiento_para_EjerciciosAll")";
+            $.ajax({
+                url: ajaxUrl,
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                global: false,
+                success: function (result) {
+                    Equipamento_MS_Equipamiento_para_EjerciciosItems = result;
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+var MS_Equipamiento_para_EjerciciosData = [];
+function getMS_Equipamiento_para_EjerciciosData() {
+	$.ajax({
+		url: "@Url.Content("~/Frontal/Ejercicios/GetMS_Equipamiento_para_Ejercicios")" + "?draw=1&start=1&length=2147483647" + ($("#ReferenceClave").val() != "" ? "&RelationId=" + $("#ReferenceClave").val() : ""),
+		type: 'GET',
+		dataType: "json",
+		async: false,
+		success: function (result) {
+			MS_Equipamiento_para_EjerciciosDataDataTable = result.data;
+			$("#ddlEquipamentoMult").val(result.data);
+			$("#ddlEquipamentoMult").trigger('chosen:updated');
+		},
+		error: function (result) {
+			showNotification("@Resources.Resources.ErrorContactingServer", "error");
+		}
+	});
+}
+
+function FillEquipamento() {
+try {
+	for (var i = 0; i < Equipamento_MS_Equipamiento_para_EjerciciosItems.length ; i++) {
+ 
+		var d = Equipamento_MS_Equipamiento_para_EjerciciosItems[i]
+                $("#ddlEquipamentoMult").append(new Option(
+		d.Descripcion, d.Folio
+));
+	}
+	$(".chosen-select").chosen({ width: "100%", no_results_text: "Oops, nothing found!" });
+	$('#ddlEquipamentoMult').children("selected").each(function () {
+		$(this).prop("selected", false);
+	});
+
+	if (MS_Equipamiento_para_EjerciciosDataDataTable != undefined)
+	{
+		if (MS_Equipamiento_para_EjerciciosDataDataTable.length > 0)
+		{
+			var array = [];
+			for (var j = 0; j < MS_Equipamiento_para_EjerciciosDataDataTable.length; j++)
+			{
+                               
+				array.push(MS_Equipamiento_para_EjerciciosDataDataTable[j].Equipamento);
+
+
+			}
+			$('#ddlEquipamentoMult').val(array);
+		}  
+	}
+	$('#ddlEquipamentoMult').trigger('chosen:updated');
+}
+catch (err) {
+	alert(err.message);
+}
+}
+function SendMS_Equipamiento_para_Ejercicios(callBack, ClaveId) {
+            MS_Equipamiento_para_EjerciciosData = GetMS_Equipamiento_para_EjerciciosFromDataTable();
+
+            if (MS_Equipamiento_para_EjerciciosData.length > 0 || $("#ReferenceClave").val() != ClaveId) {
+                if ($("#ReferenceClave").val() != "0" && ClaveId ==null)
+                    ClaveId = $("#ReferenceClave").val();                
+                if ($("#ReferenceClave").val() == '')
+                    $("#ReferenceClave").val('0');
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Ejercicios/PostMS_Equipamiento_para_Ejercicios?MasterId=")' + ClaveId + "&referenceId=" + $("#ReferenceClave").val(),
+                    type: 'POST',
+                    data: GetMS_Equipamiento_para_Ejercicios(),
+                    async: true,
+                    success: function (result) {
+
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            } else {
+                //showNotification("@Resources.Resources.SaveSuccess", "success");
+                //callBack(ClaveId);
+            }
+            return true;
+        }
+
+        function ShowMessagePendingRowMS_Equipamiento_para_Ejercicios()
+        {
+            alert('@string.Format(Resources.Resources.PendingRow, "Equipamento")')
+        }
+
+$(function () {
+FillEquipamento();
+});
+
+
+        function initiateUIControls() {
+             $('.gridDatePicker').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            //Time Picker
+            $('.gridTimePicker').clockpicker();
+            $('.inputMoney').inputmask("currency", { greedy: false, prefix: "", rightAlign: false });
+			$('td.inputMoney').inputmask("currency", { greedy: false, prefix: "$ ", rightAlign: false });
+			$('td input.inputMoney').inputmask("currency", { greedy: false, prefix: "$ ", rightAlign: false });
+
+
+
+
+        }
+
+    </script>
+
+<script type="text/javascript">
+
+
+   function GetCatalogPopup(catalog, nameAttribute, isMR, nameMR) {
+        if (!isMR)
+            var url = "@Url.Action("Create", "Catalog", new { Module_Id = "1", isPartial = true, nameAttribute = "AttributoNombre" })";
+        else
+            var url = "@Url.Action("Create", "Catalog", new { Module_Id = "1", isPartial = true, isMR = true, nameMR = "Multirenglon",nameAttribute= "AttributoNombre" })";
+
+        url = url.replace("Catalog", catalog).replace("Multirenglon", nameMR).replace("AttributoNombre", nameAttribute);
+
+        window.open(htmlDecode(url), '_blank', 'left=200,top=100,width=850,height=550,toolbar=0,resizable=0');
+    }
+
+    function RefreshCatalog(catalog, control) {
+
+	 if ($('#' + control).hasClass('AutoComplete'))   {
+		   if ($('#' + control).attr("data-isfilter") == "true") {
+				eval(GetReglaFilter(control, $('#ObjectId').val()));
+				return;
+			}
+		}
+			
+			var url = '@Url.Content("~/Frontal/Ejercicios/GetCatalogAll")';
+			url = url.replace(/Catalog/g, catalog);
+
+			$.ajax({
+				url: url,
+				async: true,
+				success:function(result)
+				{
+					addItemsToSelect($('#' + control), result);
+				},
+				error: function (result)
+				{
+					showNotification("@Resources.Resources.ErrorContactingServer", "error");
+				}
+			});
+		
+    }
+
+
+        function SendEjerciciosData(callBack) {
+			
+					
+		 var arr = []; 
+		 $("form#CreateEjercicios").find(':input').each(function( index ) {		 
+			if ($(this).prop('disabled')==true|| $(this).prop('disabled')=="disabled")
+			{		
+				arr.push($(this).attr('id')); 
+				$(this).prop('disabled', false);  	
+			}
+	    });
+		
+             var formData = new FormData($("form#CreateEjercicios")[0]);
+			$.each( arr, function( key, value ) {
+			  $('#' +value).prop('disabled', true);
+			});
+			var id = $("#ReferenceClave").val();
+            var isNew = $('#hdnIsNew').val();
+           
+			if (Tab_Datos_Generales && !checkClientValidate('EjerciciosCreateForm', 'Datos_Generales')) {
+				return false;
+			}						
+
+
+			
+			if (isNew == "True")
+            {
+                id = CreateID();
+            }
+			
+			
+			if (Tab_Datos_Generales)
+				Save_Datos_Generales(id);
+
+
+			showNotification("@Resources.Resources.SaveSuccess", "success");
+			callBack(id);
+            return true;
+        };
+		function CreateID()
+		{
+			var newId = 0;
+			$.ajax({
+				url: '@Url.Content("~/Frontal/Ejercicios/CreateID")',
+				type: 'GET',
+				async: false,
+				success: function (result) {
+					if (result < 0) {
+						showNotification("@Resources.Resources.ErrorSave", "error");
+					} else {
+						newId = result;
+					}
+				},
+				error: function (result) {
+					showNotification("@Resources.Resources.ErrorContactingServer", "error");
+				},
+				cache: false,
+				contentType: false,
+				processData: false
+			});
+			return newId;
+		}
+		
+		function OpenRules()
+		{
+			$.get('@Url.Action("Index", "Business_Rule_Creation")', {}, function (data) {
+				$(".EjerciciosBusinessRuleModal").html(data);
+			});
+		}
+                function EjerciciosGetBusinessRule(FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null)
+			{
+			        $('#FieldId').val(FieldId);
+				$('#FieldName').val(FieldName);
+				$('#Attribute').val(Attribute);
+			}
+			$('#ObjectId').val('44289');
+			$('#Screen').val('Ejercicios');
+			OpenRules();
+               }
+
+    var permission = {
+        Consult: '@permission.Consult' == 'True',
+        New: '@permission.New' == 'True',
+        Edit: '@permission.Edit' == 'True',
+        Delete: '@permission.Delete' == 'True',
+        Export: '@permission.Export' == 'True',
+        Print: '@permission.Print' == 'True',
+        Configure: '@permission.Configure' == 'True',
+    };
+
+    
+    //MR-var statusItems;
+    //MR-var stateItems;
+    //MR-var cityItems = [];
+    var isConsultMode = "@ViewBag.Consult" == "True";
+    Consult(isConsultMode);
+        function Consult(val) {
+            if (val) {
+                $(':input').attr('readonly', 'readonly');
+                $(':input').attr('disabled', 'true');
+                $('.noConsult').removeAttr('readonly');
+                $('.noConsult').removeAttr('disabled');
+            }
+        }
+
+    function EjerciciosBackToGrid() {
+        		if (isPartial)
+			window.close('', '_parent', '');
+        else
+			location.href = "@Url.Content("~/Frontal/Ejercicios/")";
+    }
+	
+	function ReadScriptSettings(callback)
+    {
+        $.post("@Url.Content("~/Frontal/Ejercicios/ReadScriptSettings")", function (data) {
+            mainElementObject = JSON.parse(data.MainElement);
+			if (data.ChildElement != null) {
+                childElementObject = JSON.parse(data.ChildElement);
+            }
+            callback();
+        });
+    }
+
+    function SaveSettingsWithoutReload() {
+        $.post("@Url.Content("~/Frontal/Ejercicios/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+            //$('#hdnConfigureType').val("0");
+        }, "json");
+    }
+	
+        function SaveElementAttributes() {
+            if ($('#hdnConfigureType').val() == "1") {
+                $.post("@Url.Content("~/Frontal/Ejercicios/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+                    $('#hdnConfigureType').val("0");
+                    location.reload(true);
+                }, "json");
+            } else {
+                $.post("@Url.Content("~/Frontal/Ejercicios/ReadScriptSettings")", function (data) {
+                    mainElementObject = JSON.parse(data.MainElement);
+                    childElementObject = JSON.parse(data.ChildElement);
+
+                    for (var i = 0; i < mainElementObject.length; i++) {
+							var mainElementAttributes = '<div class="col-sm-2">';
+							mainElementAttributes += '<div class="displayAttributes requiredAttribute"><a class="requiredClick" title="' + (mainElementObject[i].IsRequired == true ? "@Resources.Resources.Required" : "@Resources.Resources.NotRequired") + '" onclick="setRequired(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsRequired == true ? "@Url.Content("~/Images/Required.png")" : "@Url.Content("~/Images/Not-Required.png")") + '" alt="" /></a></div>';
+							mainElementAttributes += '<div class="displayAttributes visibleAttribute"><a class="visibleClick" title="' + (mainElementObject[i].IsVisible == true ? "@Resources.Resources.Visible" : "@Resources.Resources.InVisible") + '" onclick="setVisible(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsVisible == true ? "@Url.Content("~/Images/Visible.png")" : "@Url.Content("~/Images/InVisible.png")") + '" alt="" /></a></div>';
+							mainElementAttributes += '<div class="displayAttributes readOnlyAttribute"><a class="readOnlyClick" title="' + (mainElementObject[i].IsReadOnly == true ? "@Resources.Resources.Disabled" : "@Resources.Resources.Enabled") + '" onclick="setReadOnly(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsReadOnly == true ? "@Url.Content("~/Images/Disabled.png")" : "@Url.Content("~/Images/Enabled.png")") + '" alt="" /></a></div>';
+							mainElementAttributes += '<div class="displayAttributes defaultValueAttribute"><a id="hlDefaultValue_' + i.toString() + '" class="defaultValueClick" title="' + (mainElementObject[i].DefaultValue) + '" onclick="setDefaultValue(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].DefaultValue != '' && mainElementObject[i].DefaultValue != null ? "@Url.Content("~/Images/default-value.png")" : "@Url.Content("~/Images/Not-Default-Value.png")") + '" alt="" /></a></div>';
+							mainElementAttributes += '<div class="displayAttributes helpTextAttribute"><a id="hlHelpText_' + i.toString() + '" class="helpTextClick" title="' + (mainElementObject[i].HelpText) + '" onclick="setHelpText(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].HelpText != '' && mainElementObject[i].HelpText != null ? "@Url.Content("~/Images/green-help.png")" : "@Url.Content("~/Images/red-help.jpg")") + '" alt="" /></a></div>';
+							mainElementAttributes += '</div>';
+							$('#' + mainElementObject[i].inputId).parent().closest('.form-group').show();
+
+							$('#' + mainElementObject[i].inputId).closest('.col-sm-8').after(mainElementAttributes);
+                  }
+					 if (childElementObject != null) {
+                        for (var j = 0; j < childElementObject.length; j++) {
+                            var table = childElementObject[j].table.trim();
+                            var grid = '#' + table + 'Grid';
+                            $(grid).find("thead").find("tr").find("th").each(function () {
+                                for (var i = 0; i < childElementObject[j].elements.length; i++) {
+                                    if ($(this).hasClass(childElementObject[j].elements[i].inputId + 'Header')) {
+                                        $(this).show();
+                                        $(this).parent().show();
+                                        $(this).append(returnAttributeHTML(childElementObject[j].elements[i], table, i));
+                                    }
+                                }
+                            });
+                        }
+
+                    }
+                     $('#ConfigureSave').text('@Html.Raw(Resources.Resources.Save  +" "+ Resources.Resources.Settings)');
+                    $('#hdnConfigureType').val("1");
+                });
+            }
+        }
+		$('#CreateEjercicios').on('click', '.btnPopupBusinessRules', function () {
+			var fieldId = $(this).data('field-id');
+			var fieldName = $(this).data('field-name');
+			var attribute = $(this).data('attribute');
+			$('#FieldId').val(fieldId);
+			$('#FieldName').val(fieldName);
+			$('#Attribute').val(attribute);
+                        EjerciciosGetBusinessRule();
+		});
+		//Initialize HTML Editors            
+  var filebrowserBrowseUrl = '../../ckfinder/ckfinder.html';
+  var filebrowserImageBrowseUrl = '../../ckfinder/ckfinder.html?type=Images';
+  var filebrowserUploadUrl = '../../ckfinder/connector?command=QuickUpload&type=Files';
+  var filebrowserImageUploadUrl = '../../ckfinder/connector?command=QuickUpload&type=Images';
+		
+		
+		function Fill_Datos_Generales()
+        {
+            $.ajax({
+                url: "@Url.Content("~/Frontal/Ejercicios/Get_Datos_Generales")?Id=" + $("#ReferenceClave").val(),
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                                        $('#Clave').val(result.data.Clave);
+                    $('#Fecha_de_Registro').val(result.data.Fecha_de_Registro);
+                    $('#Hora_de_Registro').val(result.data.Hora_de_Registro);
+                    $('#Usuario_que_Registra').val(result.data.Usuario_que_Registra);
+                    $('#Nombre_del_Ejercicio').val(result.data.Nombre_del_Ejercicio);
+                    $('#Descripcion_del_Ejercicio').val(result.data.Descripcion_del_Ejercicio);
+                    $('#Tipo_de_Ejercicio').val(result.data.Tipo_de_Ejercicio);
+                    $('#Nivel_de_dificultad').val(result.data.Nivel_de_dificultad);
+                    $('#Sexo').val(result.data.Sexo);
+                    $('#Musculos_trabajados').val(result.data.Musculos_trabajados);
+                    getMS_Equipamiento_para_EjerciciosData();
+                    $('#Imagen').val(result.data.Imagen);
+                    $('#Video').val(result.data.Video);
+                    $('#Estatus').val(result.data.Estatus);
+
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+		
+		function Save_Datos_Generales(newId) {
+			var data = new FormData();
+			data.append('Clave', newId);
+			                data.append('Fecha_de_Registro', $('#Fecha_de_Registro').val());
+                data.append('Hora_de_Registro', $('#Hora_de_Registro').val());
+                data.append('Usuario_que_Registra', $('#Usuario_que_Registra').val());
+                data.append('Nombre_del_Ejercicio', $('#Nombre_del_Ejercicio').val());
+                data.append('Descripcion_del_Ejercicio', $('#Descripcion_del_Ejercicio').val());
+                data.append('Tipo_de_Ejercicio', $('#Tipo_de_Ejercicio').val());
+                data.append('Nivel_de_dificultad', $('#Nivel_de_dificultad').val());
+                data.append('Sexo', $('#Sexo').val());
+                data.append('Musculos_trabajados', $('#Musculos_trabajados').val());
+                data.append('Imagen', $('#hdnAttachedImagen').val());
+                data.append('ImagenFile', $('#ImagenFile')[0].files[0]);
+                data.append('ImagenRemoveAttachment', $('#hdnRemoveImagen').val());
+                data.append('Video', $('#hdnAttachedVideo').val());
+                data.append('VideoFile', $('#VideoFile')[0].files[0]);
+                data.append('VideoRemoveAttachment', $('#hdnRemoveVideo').val());
+                data.append('Estatus', $('#Estatus').val());
+
+			$.ajax({
+				url: '@Url.Content("~/Frontal/Ejercicios/Post_Datos_Generales")',
+				type: 'POST',
+				data: data,
+				async: false,
+				dataType: "json",
+				contentType: false,
+				processData: false,
+				success: function (result) {
+					if (result < 0) {
+						showNotification("@Resources.Resources.ErrorSave", "Error al guardar Datos_Generales");
+					} else {
+						newId = result;
+                    					    SendMS_Equipamiento_para_Ejercicios(null, newId);
+
+					}
+				},
+				error: function (result) {
+					showNotification("@Resources.Resources.ErrorContactingServer", "Error al guardar Datos_Generales");
+				},
+				cache: false
+			});
+		}
+
+
+    </script>
+}
+    <input type="hidden" id="FieldId" name="FieldId" value="" />
+    <input type="hidden" id="FieldName" name="FieldName" value="" />
+    <input type="hidden" id="ObjectId" name="ObjectId" value="" />
+    <input type="hidden" id="Attribute" name="Attribute" value="" />
+    <input type="hidden" id="Screen" name="Screen" value="" />
+     <input type="hidden" id="Ejercicios_cmbLabelSelect" name="Ejercicios_cmbLabelSelect" value="@Resources.Resources.CmbSelect" />
+

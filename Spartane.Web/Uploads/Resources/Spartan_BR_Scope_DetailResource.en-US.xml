@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_BR_Scope_Detail" value="Business Rule Scope Detail"></resource>
+  <resource culture="en-US" name="ScopeDetailId" value="Id"></resource>
+  <resource culture="en-US" name="Scope" value="Scope"></resource>
+
+</resources>

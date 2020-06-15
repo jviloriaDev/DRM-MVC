@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Spartan_BR_Rejection_Reason" value="Spartan BR Rejection Reason"></resource>
+  <resource culture="es-es" name="Key_Rejection_Reason" value="Clave"></resource>
+  <resource culture="es-es" name="Description" value="Descripción"></resource>
+  <resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+  <resource name="1" value="Mal creada" culture="es-ES" />
+  <resource name="2" value="Error en generación" culture="es-ES" />
+</resources>

@@ -1,0 +1,551 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Globalization
+@using Spartane.Core.Domain.Permission
+@using Spartane.Core.Domain.Spartane_File
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Detalle_Especialistas_PacientesModel
+@{
+
+    string Fecha_inicio = "";
+    if (Model.Fecha_inicio == "")
+    { Model.Fecha_inicio = DateTime.Now.ToString(ConfigurationProperty.DateFormat); }
+    string Fecha_fin = "";
+    if (Model.Fecha_fin == "")
+    { Model.Fecha_fin = DateTime.Now.ToString(ConfigurationProperty.DateFormat); }
+
+    List<SelectListItem> varSpartan_User_Especialista = null;
+    if (ViewBag.Spartan_Users_Especialista != null)
+    { varSpartan_User_Especialista = (List<SelectListItem>)ViewBag.Spartan_Users_Especialista; }
+    List<SelectListItem> varEspecialidades_Especialidad = null;
+    if (ViewBag.Especialidadess_Especialidad != null)
+    { varEspecialidades_Especialidad = (List<SelectListItem>)ViewBag.Especialidadess_Especialidad; }
+    List<SelectListItem> varEstatus_Paciente_Estatus = null;
+    if (ViewBag.Estatus_Pacientes_Estatus != null)
+    { varEstatus_Paciente_Estatus = (List<SelectListItem>)ViewBag.Estatus_Pacientes_Estatus; }
+
+
+    Permission permission = ViewBag.Permission;
+}
+<div class="modal-dialog" style="width:95%;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">
+                Add Detalle Especialistas Pacientes
+                <button data-dismiss="modal" class="close" type="button" onclick="@(ViewBag.functionMode == 0 ? "Detalle_Especialistas_PacientesRemoveAddRow("+ ViewBag.currentRowIndex +")" : "")"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            </h4>
+        </div>
+        <div class="modal-body scroll_content">
+            <div class="form-horizontal Detalle_Especialistas_PacientesPop_@ViewBag.currentRowIndex">
+				<div class="modal fade in" id="dvAttributeValue" style="background-color:rgba(0, 0, 0, 0.7);">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-body">
+								<div class="form-group">
+									<label class="col-sm-3 control-label" id="lblAttributeType">Value</label>
+									<div class="col-sm-7">
+										<input type="text" title="Value" class="form-control" id="txtAttributeValue" />
+									</div>
+									<div class="col-sm-2">
+										<a class="btn btn-primary" onclick="SaveValue()">Submit</a>
+									</div>
+									<input type="hidden" id="hdnAttributType" />
+									<input type="hidden" id="hdnAttributElement" />
+									<input type="hidden" id="hdnAttributNumber" />
+									<input type="hidden" id="hdnElementType" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row wrapper border-bottom white-bg page-heading">
+
+					<div class="row">
+						<div class="col-lg-10">
+							<h2>
+								Detalle Especialistas Pacientes
+								<button onclick="Detalle_Especialistas_PacientesGetBusinessRule('', 'Abrir Pantalla', '0')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Detalle_Especialistas_PacientesBusinessRule-form">
+									<a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+										<i class="fa fa-cogs fa-spin"></i>
+									</a>
+								</button>
+							</h2>
+							<ol class="breadcrumb">
+								<li>
+									<a href="@Url.Action("Index", "Home")">@Resources.Resources.Home</a>
+								</li>
+								<li class="">
+									<label>@Resources.Detalle_Especialistas_PacientesResources.Detalle_Especialistas_Pacientes</label>
+								</li>
+								<li class="active">
+									<strong>@Resources.Resources.Create</strong>
+								</li>
+							</ol>
+						</div>
+						<div class="col-lg-2">
+
+							@{
+								if (Convert.ToInt32(Spartane.Web.SessionHelper.Role) == (int)Spartane.Core.Enums.SpartanRoleEnum.Admin)
+								{
+									<h2>&nbsp;</h2>
+									<button onclick="Detalle_Especialistas_PacientesDisplayBusinessRule()" type="button" class="btn btn-info btn-lg displayBusinessProperyButton">
+										<i class="fa fa-cogs fa-spin"></i>
+									</button>
+
+									<div aria-hidden="true" class="modal fade in Detalle_Especialistas_PacientesPropertyBusinessModal" id="Detalle_Especialistas_PacientesPropertyBusinessModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h4 class="modal-title">
+														Property & Business Rules
+														<button class="close" type="button" onclick="$(this).parent().parent().parent().parent().parent().modal('hide');"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+													</h4>
+												</div>
+												<div class="modal-body">
+													<div class="row">
+														<div class="col-sm-12">
+															<a class="btn btn-primary full-width" data-toggle="modal" data-target="#PropertyModal-form" onclick="GetPropertyBag()">Properties</a>
+														</div>
+														<div class="clearfix col-sm-12">&nbsp;</div>
+														<div class="col-sm-12">
+															<a class="btn btn-primary full-width" data-toggle="modal" data-target="#Detalle_Especialistas_PacientesBusinessRule-form" onclick="Detalle_Especialistas_PacientesGetBusinessRule()">Business Rule</a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									 <div aria-hidden="true" data-backdrop="static" class="modal fade in Detalle_Especialistas_PacientesPropertyModal" id="Detalle_Especialistas_PacientesPropertyModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+									</div>
+									<div aria-hidden="true" data-backdrop="static" class="modal fade in Detalle_Especialistas_PacientesBusinessRuleModal" id="Detalle_Especialistas_PacientesBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+									</div>
+                                    <div aria-hidden="true" data-backdrop="static" class="modal fade in Detalle_Especialistas_PacientesAddBusinessRuleModal" id="Detalle_Especialistas_PacientesAddBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                                    </div>
+
+				
+								}
+							}
+						</div>
+					</div>
+
+				<div class="wrapper wrapper-content animated fadeInRight">
+					<div class="ibox float-e-margins">
+						<div class="ibox-content">
+							@using (Html.BeginForm("Post", "Detalle_Especialistas_Pacientes", FormMethod.Post, new { id = "CreateDetalle_Especialistas_Pacientes", @readonly = "true", @class = "form-horizontal", enctype = "multipart/form-data" }))
+							{
+								<span id="popupNotification"></span>
+								<div class="container-fluid Detalle_Especialistas_PacientesCreateForm" id="viewmodeledit">
+							<div class="tabs-container">
+											<ul class="nav nav-tabs">
+				@@groupers@@
+											</ul>
+										<div class="tab-content">
+				<div class="form-group" id="divFolio">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Especialistas_PacientesResources.Folio</label>
+                                <div class="col-sm-8" data-field-id="Folio" data-attribute="258846" data-field-name="@Resources.Detalle_Especialistas_PacientesResources.Folio">
+                                    <label class="form-control" for="Detalle_Especialistas_PacientesFolio" id="Detalle_Especialistas_PacientesFolio">@Model.Folio</label>
+                                </div>
+                            </div>
+<div class="form-group" id="divEspecialista">
+	<label class="col-sm-2 control-label">@Resources.Detalle_Especialistas_PacientesResources.Especialista</label>
+	<div class="col-sm-8" data-field-id="Especialista" data-attribute="258848" data-field-name="@Resources.Detalle_Especialistas_PacientesResources.Especialista">
+		<select class="form-control" data-val="true" data-val-number="The field Especialista must be a number." data-val-required="The Especialista field is required." id="Detalle_Especialistas_PacientesEspecialista" name="Detalle_Especialistas_PacientesEspecialista">
+			<option value=""></option>
+			@if (varSpartan_User_Especialista != null){ 
+				foreach (var itemEspecialista in varSpartan_User_Especialista)
+				{
+					if (itemEspecialista.Value == Convert.ToString(Model.Especialista))
+					{
+						<option value="@itemEspecialista.Value" selected>@itemEspecialista.Text</option>
+					}
+					else
+					{
+						<option value="@itemEspecialista.Value">@itemEspecialista.Text</option>
+					}
+				}
+			}
+		</select>
+	</div>
+</div>
+<div class="form-group" id="divEspecialidad">
+	<label class="col-sm-2 control-label">@Resources.Detalle_Especialistas_PacientesResources.Especialidad</label>
+	<div class="col-sm-8" data-field-id="Especialidad" data-attribute="258849" data-field-name="@Resources.Detalle_Especialistas_PacientesResources.Especialidad">
+		<select class="form-control" data-val="true" data-val-number="The field Especialidad must be a number." data-val-required="The Especialidad field is required." id="Detalle_Especialistas_PacientesEspecialidad" name="Detalle_Especialistas_PacientesEspecialidad">
+			<option value=""></option>
+			@if (varEspecialidades_Especialidad != null){ 
+				foreach (var itemEspecialidad in varEspecialidades_Especialidad)
+				{
+					if (itemEspecialidad.Value == Convert.ToString(Model.Especialidad))
+					{
+						<option value="@itemEspecialidad.Value" selected>@itemEspecialidad.Text</option>
+					}
+					else
+					{
+						<option value="@itemEspecialidad.Value">@itemEspecialidad.Text</option>
+					}
+				}
+			}
+		</select>
+	</div>
+</div>
+<div class="form-group" id="divFecha_inicio">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Especialistas_PacientesResources.Fecha_inicio</label>
+                                <div class="col-sm-8" data-field-id="Fecha_inicio" data-attribute="258850" data-field-name="@Resources.Detalle_Especialistas_PacientesResources.Fecha_inicio">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input class="form-control col-md-12" id="Detalle_Especialistas_PacientesFecha_inicio" readonly="readonly" name="Detalle_Especialistas_PacientesFecha_inicio" type="text" value="@Model.Fecha_inicio">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+<div class="form-group" id="divFecha_fin">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Especialistas_PacientesResources.Fecha_fin</label>
+                                <div class="col-sm-8" data-field-id="Fecha_fin" data-attribute="258851" data-field-name="@Resources.Detalle_Especialistas_PacientesResources.Fecha_fin">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input class="form-control col-md-12" id="Detalle_Especialistas_PacientesFecha_fin" readonly="readonly" name="Detalle_Especialistas_PacientesFecha_fin" type="text" value="@Model.Fecha_fin">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+<div class="form-group" id="divCantidad_consultas">
+	<label class="col-sm-2 control-label">@Resources.Detalle_Especialistas_PacientesResources.Cantidad_consultas</label>
+	<div class="col-sm-8" data-field-id="Cantidad_consultas" data-attribute="258852" data-field-name="@Resources.Detalle_Especialistas_PacientesResources.Cantidad_consultas">
+		<input class="form-control inputNumber" id="Detalle_Especialistas_PacientesCantidad_consultas" name="Detalle_Especialistas_PacientesCantidad_consultas" type="text" value="@Model.Cantidad_consultas">
+	</div>
+</div>
+<div class="form-group" id="divPrincipal">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Especialistas_PacientesResources.Principal</label>
+                                <div class="col-sm-8" data-field-id="Principal" data-attribute="258853" data-field-name="@Resources.Detalle_Especialistas_PacientesResources.Principal">
+                                    @Html.CheckBoxFor(m => m.Principal, new { @class = "i-checks" })
+                                </div>
+                            </div>
+<div class="form-group" id="divEstatus">
+	<label class="col-sm-2 control-label">@Resources.Detalle_Especialistas_PacientesResources.Estatus</label>
+	<div class="col-sm-8" data-field-id="Estatus" data-attribute="258854" data-field-name="@Resources.Detalle_Especialistas_PacientesResources.Estatus">
+		<select class="form-control" data-val="true" data-val-number="The field Estatus must be a number." data-val-required="The Estatus field is required." id="Detalle_Especialistas_PacientesEstatus" name="Detalle_Especialistas_PacientesEstatus">
+			<option value=""></option>
+			@if (varEstatus_Paciente_Estatus != null){ 
+				foreach (var itemEstatus in varEstatus_Paciente_Estatus)
+				{
+					if (itemEstatus.Value == Convert.ToString(Model.Estatus))
+					{
+						<option value="@itemEstatus.Value" selected>@itemEstatus.Text</option>
+					}
+					else
+					{
+						<option value="@itemEstatus.Value">@itemEstatus.Text</option>
+					}
+				}
+			}
+		</select>
+	</div>
+</div>
+
+								</div>	
+							</div>
+									<br />
+											<div class="form-actions fluid">
+												<input type="hidden" value="@Model.Folio" id="ReferenceFolio" />
+												<input type="hidden" value="@Model.Folio" name="Folio" id="FolioId" />
+												@if (!ViewBag.Consult)
+												{
+													<div id="dvSaveJob" style="display:inline-block"></div>
+
+													<button type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton">
+														<i class="fa fa-cogs fa-spin"></i>
+													</button>
+													<a title="@Resources.Resources.Configure" id="Detalle_Especialistas_PacientesConfigureSave" name="Detalle_Especialistas_PacientesConfigureSave" onclick="SaveElementAttributes()" class="btn btn-success">@Resources.Resources.Configure</a>
+												}
+
+												<input type="hidden" id="hdnDetalle_Especialistas_PacientesConfigureType" />
+												<input type="hidden" id="hdnDetalle_Especialistas_PacientesBusinessRuleFieldId" />
+												<input type="hidden" id="hdnDetalle_Especialistas_PacientesBusinessRuleFieldName" />
+												<input type="hidden" id="hdnDetalle_Especialistas_PacientesBusinessRuleAttribute" />
+
+												<input data-dismiss="modal" type="button" value="@Resources.Resources.Cancelar" class="btn btn-danger noConsult" data-bind="click: cancel" tabindex="16" />
+
+												<button onclick="Detalle_Especialistas_PacientesGetBusinessRule('', 'Al Cancelar', '3')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Detalle_Especialistas_PacientesBusinessRule-form">
+													<a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+														<i class="fa fa-cogs fa-spin"></i>
+													</a>
+												</button>
+											</div>
+										</div>
+								}
+
+							</div>
+						</div>
+					</div>
+				</div>
+					<input id="hdnApplicationDirectory" type="hidden" value="@Url.Content("~/")" />
+				</div>
+			</div>
+		</div>
+</div>
+@section Styles {
+<link href="@Url.Content("~/Content/BootstrapDatePicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+    @Styles.Render("~/plugins/awesomeCheckboxStyles")
+    @Styles.Render("~/plugins/select2Styles")
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+    .select2-results{background-color:#fff;}
+    .select2-container .select2-dropdown{height:auto !important;}
+
+    div.dataTables_info {
+        display: inline-block;
+        float: right;
+    }
+        i {
+        font-size: 25px !important;
+        display: block;
+        color: #676a6c;
+        margin-left: 6px;
+        margin-right: 6px;
+    }
+
+    .fullWidth {
+        width: 100%;
+    }
+</style>
+}
+
+<script type="text/javascript" src="~/Uploads/Scripts/Detalle_Especialistas_Pacientes.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Scripts/Custom/Detalle_Especialistas_PacientesGeneral.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/Detalle_Especialistas_PacientesCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/PacientesCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
+
+    <script type="text/javascript">
+        
+
+
+
+        $(document).ready(function () {
+			var currentIndex = @ViewBag.currentRowIndex
+
+            var Detalle_Especialistas_PacientesRowElement = "Detalle_Especialistas_PacientesPop_" + currentIndex.toString();
+            var abc = "if(dynamicFieldValidation('" + Detalle_Especialistas_PacientesRowElement + "')){ Detalle_Especialistas_PacientesInsertRowFromPopup(" + currentIndex + "); }";
+            var insertRowHTML = '<a class="btn btn-primary m-b" onclick="' + abc + '">Save</a>';
+            $('#dvSaveJob').html(insertRowHTML);
+			
+            $('#Detalle_Especialistas_PacientesFecha_inicio').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            $('#Detalle_Especialistas_PacientesFecha_fin').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+
+
+            initiateUIControls();
+            EjecutarValidacionesAlComienzo();
+			$('a').tooltip();
+        });
+
+
+
+        function initiateUIControls() {
+            $('.gridDatePicker').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            //Time Picker
+            $('.gridTimePicker').clockpicker();
+
+        }
+		
+		function SendDetalle_Especialistas_PacientesData(callBack) {
+			
+					
+		 var arr = []; 
+		 $("form#CreateDetalle_Especialistas_Pacientes").find(':input').each(function( index ) {		 
+			if ($(this).prop('disabled')==true|| $(this).prop('disabled')=="disabled")
+			{		
+				arr.push($(this).attr('id')); 
+				$(this).prop('disabled', false);  	
+			}
+	    });
+		
+             var formData = new FormData($("form#CreateDetalle_Especialistas_Pacientes")[0]);
+			$.each( arr, function( key, value ) {
+			  $('#' +value).prop('disabled', true);
+			});
+
+            var isNew = $('#hdnIsNew').val();
+           
+            if (checkClientValidate('Detalle_Especialistas_PacientesCreateForm')) {
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Detalle_Especialistas_Pacientes/Post?IsNew=")' + isNew,
+                    type: 'POST',
+                    data: formData,
+                    async: true,
+                    success: function (result) {
+                        if (result < 0) {
+                            showNotification("@Resources.Resources.ErrorSave", "error");
+                        } else {
+
+                            showNotification("@Resources.Resources.SaveSuccess", "success");
+                            callBack(result);
+                        }
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            }
+            return false;
+        };
+		
+        function GetPropertyBag() {
+            $.get('@Url.Action("Detalle_Especialistas_PacientesPropertyBag", "Detalle_Especialistas_Pacientes")', function (data) {
+                $(".PropertyModal").html(data);
+            });
+        }
+        function Detalle_Especialistas_PacientesGetBusinessRule(FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null)
+			{
+				$('#hdnDetalle_Especialistas_PacientesBusinessRuleFieldId').val(FieldId);
+				$('#hdnDetalle_Especialistas_PacientesBusinessRuleFieldName').val(FieldName);
+				$('#hdnDetalle_Especialistas_PacientesBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("BusinessRule", "BussinessRule")', { FieldId: $('#hdnDetalle_Especialistas_PacientesBusinessRuleFieldId').val(), FieldName: $('#hdnDetalle_Especialistas_PacientesBusinessRuleFieldName').val(), ObjectId: '44446', Attribute: $('#hdnDetalle_Especialistas_PacientesBusinessRuleAttribute').val(), Screen: 'Detalle_Especialistas_Pacientes' }, function (data) {
+                $(".Detalle_Especialistas_PacientesBusinessRuleModal").html(data);
+            });
+        }
+        function Detalle_Especialistas_PacientesGetAddBusinessRule(RuleId, FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null) {
+				$('#hdnDetalle_Especialistas_PacientesBusinessRuleFieldId').val(FieldId);
+				$('#hdnDetalle_Especialistas_PacientesBusinessRuleFieldName').val(FieldName);
+				$('#hdnDetalle_Especialistas_PacientesBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("AddBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnDetalle_Especialistas_PacientesBusinessRuleFieldId').val(), FieldName: $('#hdnDetalle_Especialistas_PacientesBusinessRuleFieldName').val(), ObjectId: '44446', Attribute: $('#hdnDetalle_Especialistas_PacientesBusinessRuleAttribute').val(), Screen: 'Detalle_Especialistas_Pacientes' }, function (data) {
+                $(".Detalle_Especialistas_PacientesAddBusinessRuleModal").html(data);
+                $(".datatable").DataTable();
+            });
+        }
+		function RemoveBusinessRule(RuleId) {
+			$.get('@Url.Action("RemoveBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnDetalle_Especialistas_PacientesBusinessRuleFieldId').val(), FieldName: $('#hdnDetalle_Especialistas_PacientesBusinessRuleFieldName').val(), ObjectId: '44446', Attribute: $('#hdnDetalle_Especialistas_PacientesBusinessRuleAttribute').val(), Screen: 'Detalle_Especialistas_Pacientes' }, function (data) {
+				$(".Detalle_Especialistas_PacientesBusinessRuleModal").html(data);
+			});
+		}
+
+    var permission = {
+        Consult: '@permission.Consult' == 'True',
+        New: '@permission.New' == 'True',
+        Edit: '@permission.Edit' == 'True',
+        Delete: '@permission.Delete' == 'True',
+        Export: '@permission.Export' == 'True',
+        Print: '@permission.Print' == 'True',
+        Configure: '@permission.Configure' == 'True',
+    };
+
+    
+    //MR-var statusItems;
+    //MR-var stateItems;
+    //MR-var cityItems = [];
+    var isConsultMode = "@ViewBag.Consult" == "True";
+    Consult(isConsultMode);
+        function Consult(val) {
+            if (val) {
+                $(':input').attr('readonly', 'readonly');
+                $(':input').attr('disabled', 'true');
+                $('.noConsult').removeAttr('readonly');
+                $('.noConsult').removeAttr('disabled');
+            }
+        }
+
+    function BackToGrid() {
+        location.href = "@Url.Content("~/Frontal/Detalle_Especialistas_Pacientes/")";
+    }
+	
+	function ReadScriptSettings(callback)
+    {
+        $.post("@Url.Content("~/Frontal/Detalle_Especialistas_Pacientes/ReadScriptSettings")", function (data) {
+            mainElementObject = JSON.parse(data.MainElement);
+			if (data.ChildElement != null) {
+                childElementObject = JSON.parse(data.ChildElement);
+            }
+            callback();
+        });
+    }
+
+    function SaveSettingsWithoutReload() {
+        $.post("@Url.Content("~/Frontal/Detalle_Especialistas_Pacientes/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+            //$('#hdnDetalle_Especialistas_PacientesConfigureType').val("0");
+        }, "json");
+    }
+	
+        function SaveElementAttributes() {
+            if ($('#hdnDetalle_Especialistas_PacientesConfigureType').val() == "1") {
+                $.post("@Url.Content("~/Frontal/Detalle_Especialistas_Pacientes/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+                    $('#hdnDetalle_Especialistas_PacientesConfigureType').val("0");
+                    location.reload(true);
+                }, "json");
+            } else {
+                $.post("@Url.Content("~/Frontal/Detalle_Especialistas_Pacientes/ReadScriptSettings")", function (data) {
+                    mainElementObject = JSON.parse(data.MainElement);
+                    childElementObject = JSON.parse(data.ChildElement);
+
+                    for (var i = 0; i < mainElementObject.length; i++) {
+                        var mainElementAttributes = '<div class="col-sm-2">';
+                        mainElementAttributes += '<div class="displayAttributes requiredAttribute"><a class="requiredClick" title="' + (mainElementObject[i].IsRequired == true ? "Required" : "Not Required") + '" onclick="setRequired(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsRequired == true ? "@Url.Content("~/Images/Required.png")" : "@Url.Content("~/Images/Not-Required.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes visibleAttribute"><a class="visibleClick" title="' + (mainElementObject[i].IsVisible == true ? "Visible" : "In Visible") + '" onclick="setVisible(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsVisible == true ? "@Url.Content("~/Images/Visible.png")" : "@Url.Content("~/Images/InVisible.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes readOnlyAttribute"><a class="readOnlyClick" title="' + (mainElementObject[i].IsReadOnly == true ? "Disabled" : "Enabled") + '" onclick="setReadOnly(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsReadOnly == true ? "@Url.Content("~/Images/Disabled.png")" : "@Url.Content("~/Images/Enabled.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes defaultValueAttribute"><a id="hlDefaultValue_' + i.toString() + '" class="defaultValueClick" title="' + (mainElementObject[i].DefaultValue) + '" onclick="setDefaultValue(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].DefaultValue != '' && mainElementObject[i].DefaultValue != null ? "@Url.Content("~/Images/default-value.png")" : "@Url.Content("~/Images/Not-Default-Value.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes helpTextAttribute"><a id="hlHelpText_' + i.toString() + '" class="helpTextClick" title="' + (mainElementObject[i].HelpText) + '" onclick="setHelpText(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].HelpText != '' && mainElementObject[i].HelpText != null ? "@Url.Content("~/Images/green-help.png")" : "@Url.Content("~/Images/red-help.jpg")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '</div>';
+                        $('#Detalle_Especialistas_Pacientes' + mainElementObject[i].inputId).parent().closest('.form-group').show();
+
+                        $('#Detalle_Especialistas_Pacientes' + mainElementObject[i].inputId).closest('.col-sm-8').after(mainElementAttributes);
+                    }
+					if (childElementObject != null) {
+						for (var i = 0; i < childElementObject.length; i++) {
+							$('.' + childElementObject[i].inputId + 'Header').show();
+							$('.' + childElementObject[i].inputId).parent().show();
+							$('.' + childElementObject[i].inputId + 'Header').append(returnAttributeHTML(i));
+						}
+					}
+                    $('#Detalle_Especialistas_PacientesConfigureSave').text('Save Settings');
+                    $('#hdnDetalle_Especialistas_PacientesConfigureType').val("1");
+                });
+            }
+        }
+		$('#CreateDetalle_Especialistas_Pacientes').on('click', '.btnPopupBusinessRules', function () {
+			var fieldId = $(this).data('field-id');
+			var fieldName = $(this).data('field-name');
+			var attribute = $(this).data('attribute');
+			$('#hdnDetalle_Especialistas_PacientesBusinessRuleFieldId').val(fieldId);
+			$('#hdnDetalle_Especialistas_PacientesBusinessRuleFieldName').val(fieldName);
+			$('#hdnDetalle_Especialistas_PacientesBusinessRuleAttribute').val(attribute);
+		});
+		//Initialize HTML Editors
+		
+    </script>

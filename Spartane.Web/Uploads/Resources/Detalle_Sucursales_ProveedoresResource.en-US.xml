@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Detalle_Sucursales_Proveedores" value="Detalle Sucursales Proveedores"></resource>
+  <resource culture="en-US" name="Folio" value="Folio"></resource>
+  <resource culture="en-US" name="Tipo_de_Sucursal" value="Tipo de Sucursal"></resource>
+  <resource culture="en-US" name="Email" value="Email"></resource>
+  <resource culture="en-US" name="Telefono" value="Teléfono"></resource>
+  <resource culture="en-US" name="Calle" value="Calle"></resource>
+  <resource culture="en-US" name="Numero_exterior" value="Número exterior"></resource>
+  <resource culture="en-US" name="Numero_interior" value="Número interior"></resource>
+  <resource culture="en-US" name="Colonia" value="Colonia"></resource>
+  <resource culture="en-US" name="C_P_" value="C.P."></resource>
+  <resource culture="en-US" name="Ciudad" value="Ciudad"></resource>
+  <resource culture="en-US" name="Estado" value="Estado"></resource>
+  <resource culture="en-US" name="Pais" value="País"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

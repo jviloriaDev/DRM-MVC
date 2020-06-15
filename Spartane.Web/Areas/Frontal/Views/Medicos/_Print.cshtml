@@ -1,0 +1,458 @@
+﻿@model IList<Spartane.Web.Areas.Frontal.Models.MedicosGridModel>
+
+@{
+    var rowCounter = 0;
+}
+
+<style>
+    .table {
+        width: 100%;
+        border: 1px solid #cccccc;
+        font-family: "open sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+        /*border-collapse: separate !important;*/
+        font-size: 13px;
+    }
+
+        .table td {
+            padding: 2px;
+            border:1px solid #cccccc;
+        }
+
+    .table tr:nth-of-type(2n+1) {
+        background-color: #f9f9f9;
+    }
+
+        .table tr:nth-of-type(2n) {
+            background-color: #8da0c2;
+        }
+
+    .table-row-1 td, .table-row-1 th {
+    }
+
+    .table-row-2 td, .table-row-2 th, thead {
+    }
+
+    .tableHeaderRow {
+        font-weight: bold;
+        border: 1px solid #ff6a00;
+    }
+
+    .column1 {
+        width: 15%;
+    }
+
+    .column2 {
+        width: 15%;
+    }
+</style>
+<br />
+<body onbeforeprint="ocultarcolumnas();">
+ <span id="columnsVisible"></span>
+<table class="table" cellspacing="0" cellpadding="0" border="0">
+    <thead>
+        <tr>
+            <td class="column1">
+                @Resources.MedicosResources.Folio
+            </td>
+                        <td class="column1">
+                @Resources.MedicosResources.Folio
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Fecha_de_Registro
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Hora_de_Registro
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Usuario_que_Registra
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Titulo_Personal
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Nombres
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Apellido_Paterno
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Apellido_Materno
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Nombre_Completo
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Tipo_de_Especialista
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Foto
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Nombre_de_usuario
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Usuario_Registrado
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Email
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Celular
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Fecha_de_nacimiento
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Pais_de_nacimiento
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Entidad_de_nacimiento
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Sexo
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Email_institucional
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Estatus
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Email_ppal_publico
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Email_de_contacto
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Calle
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Numero_exterior
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Numero_interior
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Colonia
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.CP
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Ciudad
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Estado
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Pais
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Telefonos
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.En_Hospital
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Nombre_del_Hospital
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Piso_hospital
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Numero_de_consultorio
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Se_ajusta_tabulador
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Profesion
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Especialidad
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Resumen_Profesional
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Regimen_Fiscal
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Nombre_o_Razon_Social
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.RFC
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Calle_Fiscal
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Numero_exterior_Fiscal
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Numero_interior_Fiscal
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Colonia_Fiscal
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.CP_Fiscal
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Ciudad_Fiscal
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Estado_Fiscal
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Pais_Fiscal
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Telefono
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Fax
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Cedula_Fiscal_Documento
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Comprobante_de_Domicilio
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Calificacion_Red_de_Medicos
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Banco
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.CLABE_Interbancaria
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Numero_de_Cuenta
+            </td>
+            <td class="column1">
+                @Resources.MedicosResources.Nombre_del_Titular
+            </td>
+
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var item in Model)
+            {                
+                <tr>
+                    <td>
+                        @item.Folio
+                    </td>
+					                    <td>
+                        @item.Folio
+                    </td>
+                    <td>
+                        @item.Fecha_de_Registro
+                    </td>
+                    <td>
+                        @item.Hora_de_Registro
+                    </td>
+                    <td>
+                        @item.Usuario_que_RegistraName
+                    </td>
+                    <td>
+                        @item.Titulo_Personal
+                    </td>
+                    <td>
+                        @item.Nombres
+                    </td>
+                    <td>
+                        @item.Apellido_Paterno
+                    </td>
+                    <td>
+                        @item.Apellido_Materno
+                    </td>
+                    <td>
+                        @item.Nombre_Completo
+                    </td>
+                    <td>
+                        @item.Tipo_de_EspecialistaDescripcion
+                    </td>
+                    <td>
+                        @item.Foto
+                    </td>
+                    <td>
+                        @item.Nombre_de_usuario
+                    </td>
+                    <td>
+                        @item.Usuario_RegistradoName
+                    </td>
+                    <td>
+                        @item.Email
+                    </td>
+                    <td>
+                        @item.Celular
+                    </td>
+                    <td>
+                        @item.Fecha_de_nacimiento
+                    </td>
+                    <td>
+                        @item.Pais_de_nacimientoNombre_del_Pais
+                    </td>
+                    <td>
+                        @item.Entidad_de_nacimientoNombre_del_Estado
+                    </td>
+                    <td>
+                        @item.SexoDescripcion
+                    </td>
+                    <td>
+                        @item.Email_institucional
+                    </td>
+                    <td>
+                        @item.EstatusDescripcion
+                    </td>
+                    <td>
+                        @item.Email_ppal_publicoDescripcion
+                    </td>
+                    <td>
+                        @item.Email_de_contacto
+                    </td>
+                    <td>
+                        @item.Calle
+                    </td>
+                    <td>
+                        @item.Numero_exterior
+                    </td>
+                    <td>
+                        @item.Numero_interior
+                    </td>
+                    <td>
+                        @item.Colonia
+                    </td>
+                    <td>
+                        @item.CP
+                    </td>
+                    <td>
+                        @item.Ciudad
+                    </td>
+                    <td>
+                        @item.EstadoNombre_del_Estado
+                    </td>
+                    <td>
+                        @item.PaisNombre_del_Pais
+                    </td>
+                    <td>
+                        @item.Telefonos
+                    </td>
+                    <td>
+                        @item.En_HospitalDescripcion
+                    </td>
+                    <td>
+                        @item.Nombre_del_Hospital
+                    </td>
+                    <td>
+                        @item.Piso_hospital
+                    </td>
+                    <td>
+                        @item.Numero_de_consultorio
+                    </td>
+                    <td>
+                        @item.Se_ajusta_tabuladorDescripcion
+                    </td>
+                    <td>
+                        @item.ProfesionDescripcion
+                    </td>
+                    <td>
+                        @item.EspecialidadEspecialidad
+                    </td>
+                    <td>
+                        @item.Resumen_Profesional
+                    </td>
+                    <td>
+                        @item.Regimen_FiscalDescripcion
+                    </td>
+                    <td>
+                        @item.Nombre_o_Razon_Social
+                    </td>
+                    <td>
+                        @item.RFC
+                    </td>
+                    <td>
+                        @item.Calle_Fiscal
+                    </td>
+                    <td>
+                        @item.Numero_exterior_Fiscal
+                    </td>
+                    <td>
+                        @item.Numero_interior_Fiscal
+                    </td>
+                    <td>
+                        @item.Colonia_Fiscal
+                    </td>
+                    <td>
+                        @item.CP_Fiscal
+                    </td>
+                    <td>
+                        @item.Ciudad_Fiscal
+                    </td>
+                    <td>
+                        @item.Estado_FiscalNombre_del_Estado
+                    </td>
+                    <td>
+                        @item.Pais_FiscalNombre_del_Pais
+                    </td>
+                    <td>
+                        @item.Telefono
+                    </td>
+                    <td>
+                        @item.Fax
+                    </td>
+                    <td>
+                        @item.Cedula_Fiscal_Documento
+                    </td>
+                    <td>
+                        @item.Comprobante_de_Domicilio
+                    </td>
+                    <td>
+                        @item.Calificacion_Red_de_Medicos
+                    </td>
+                    <td>
+                        @item.BancoNombre
+                    </td>
+                    <td>
+                        @item.CLABE_Interbancaria
+                    </td>
+                    <td>
+                        @item.Numero_de_Cuenta
+                    </td>
+                    <td>
+                        @item.Nombre_del_Titular
+                    </td>
+
+                </tr>
+                rowCounter++;
+            }
+        }
+    </tbody>
+</table>
+</body>
+
+<script>
+    function ocultarcolumnas() {        
+        var arr = document.getElementById('columnsVisible').text.split(',');
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i] == "false") {
+                show_hide_column(i-1, false);
+            }
+        }    
+    };
+
+    function show_hide_column(col_no, do_show) {
+        var rows = document.getElementsByClassName('table')[0].rows;
+        for (var row = 0; row < rows.length; row++) {
+            var cols = rows[row].cells;
+            if (col_no >= 0 && col_no < cols.length) {
+                console.log(col_no);
+                cols[col_no].style.display = do_show ? '' : 'none';
+            }
+        }
+    }
+</script>
+

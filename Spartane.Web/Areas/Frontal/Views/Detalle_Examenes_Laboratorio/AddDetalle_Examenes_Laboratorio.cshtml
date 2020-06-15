@@ -1,0 +1,493 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Globalization
+@using Spartane.Core.Domain.Permission
+@using Spartane.Core.Domain.Spartane_File
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Detalle_Examenes_LaboratorioModel
+@{
+
+    string Fecha_de_Resultado = "";
+    if (Model.Fecha_de_Resultado == "")
+    { Model.Fecha_de_Resultado = DateTime.Now.ToString(ConfigurationProperty.DateFormat); }
+
+    List<SelectListItem> varIndicadores_Laboratorio_Indicador = null;
+    if (ViewBag.Indicadores_Laboratorios_Indicador != null)
+    { varIndicadores_Laboratorio_Indicador = (List<SelectListItem>)ViewBag.Indicadores_Laboratorios_Indicador; }
+
+
+    Permission permission = ViewBag.Permission;
+}
+<div class="modal-dialog" style="width:95%;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">
+                Add Detalle Exámenes Laboratorio
+                <button data-dismiss="modal" class="close" type="button" onclick="@(ViewBag.functionMode == 0 ? "Detalle_Examenes_LaboratorioRemoveAddRow("+ ViewBag.currentRowIndex +")" : "")"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            </h4>
+        </div>
+        <div class="modal-body scroll_content">
+            <div class="form-horizontal Detalle_Examenes_LaboratorioPop_@ViewBag.currentRowIndex">
+				<div class="modal fade in" id="dvAttributeValue" style="background-color:rgba(0, 0, 0, 0.7);">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-body">
+								<div class="form-group">
+									<label class="col-sm-3 control-label" id="lblAttributeType">Value</label>
+									<div class="col-sm-7">
+										<input type="text" title="Value" class="form-control" id="txtAttributeValue" />
+									</div>
+									<div class="col-sm-2">
+										<a class="btn btn-primary" onclick="SaveValue()">Submit</a>
+									</div>
+									<input type="hidden" id="hdnAttributType" />
+									<input type="hidden" id="hdnAttributElement" />
+									<input type="hidden" id="hdnAttributNumber" />
+									<input type="hidden" id="hdnElementType" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row wrapper border-bottom white-bg page-heading">
+
+					<div class="row">
+						<div class="col-lg-10">
+							<h2>
+								Detalle Exámenes Laboratorio
+								<button onclick="Detalle_Examenes_LaboratorioGetBusinessRule('', 'Abrir Pantalla', '0')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Detalle_Examenes_LaboratorioBusinessRule-form">
+									<a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+										<i class="fa fa-cogs fa-spin"></i>
+									</a>
+								</button>
+							</h2>
+							<ol class="breadcrumb">
+								<li>
+									<a href="@Url.Action("Index", "Home")">@Resources.Resources.Home</a>
+								</li>
+								<li class="">
+									<label>@Resources.Detalle_Examenes_LaboratorioResources.Detalle_Examenes_Laboratorio</label>
+								</li>
+								<li class="active">
+									<strong>@Resources.Resources.Create</strong>
+								</li>
+							</ol>
+						</div>
+						<div class="col-lg-2">
+
+							@{
+								if (Convert.ToInt32(Spartane.Web.SessionHelper.Role) == (int)Spartane.Core.Enums.SpartanRoleEnum.Admin)
+								{
+									<h2>&nbsp;</h2>
+									<button onclick="Detalle_Examenes_LaboratorioDisplayBusinessRule()" type="button" class="btn btn-info btn-lg displayBusinessProperyButton">
+										<i class="fa fa-cogs fa-spin"></i>
+									</button>
+
+									<div aria-hidden="true" class="modal fade in Detalle_Examenes_LaboratorioPropertyBusinessModal" id="Detalle_Examenes_LaboratorioPropertyBusinessModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h4 class="modal-title">
+														Property & Business Rules
+														<button class="close" type="button" onclick="$(this).parent().parent().parent().parent().parent().modal('hide');"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+													</h4>
+												</div>
+												<div class="modal-body">
+													<div class="row">
+														<div class="col-sm-12">
+															<a class="btn btn-primary full-width" data-toggle="modal" data-target="#PropertyModal-form" onclick="GetPropertyBag()">Properties</a>
+														</div>
+														<div class="clearfix col-sm-12">&nbsp;</div>
+														<div class="col-sm-12">
+															<a class="btn btn-primary full-width" data-toggle="modal" data-target="#Detalle_Examenes_LaboratorioBusinessRule-form" onclick="Detalle_Examenes_LaboratorioGetBusinessRule()">Business Rule</a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									 <div aria-hidden="true" data-backdrop="static" class="modal fade in Detalle_Examenes_LaboratorioPropertyModal" id="Detalle_Examenes_LaboratorioPropertyModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+									</div>
+									<div aria-hidden="true" data-backdrop="static" class="modal fade in Detalle_Examenes_LaboratorioBusinessRuleModal" id="Detalle_Examenes_LaboratorioBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+									</div>
+                                    <div aria-hidden="true" data-backdrop="static" class="modal fade in Detalle_Examenes_LaboratorioAddBusinessRuleModal" id="Detalle_Examenes_LaboratorioAddBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                                    </div>
+
+				
+								}
+							}
+						</div>
+					</div>
+
+				<div class="wrapper wrapper-content animated fadeInRight">
+					<div class="ibox float-e-margins">
+						<div class="ibox-content">
+							@using (Html.BeginForm("Post", "Detalle_Examenes_Laboratorio", FormMethod.Post, new { id = "CreateDetalle_Examenes_Laboratorio", @readonly = "true", @class = "form-horizontal", enctype = "multipart/form-data" }))
+							{
+								<span id="popupNotification"></span>
+								<div class="container-fluid Detalle_Examenes_LaboratorioCreateForm" id="viewmodeledit">
+							<div class="tabs-container">
+											<ul class="nav nav-tabs">
+				@@groupers@@
+											</ul>
+										<div class="tab-content">
+				<div class="form-group" id="divFolio">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Examenes_LaboratorioResources.Folio</label>
+                                <div class="col-sm-8" data-field-id="Folio" data-attribute="257771" data-field-name="@Resources.Detalle_Examenes_LaboratorioResources.Folio">
+                                    <label class="form-control" for="Detalle_Examenes_LaboratorioFolio" id="Detalle_Examenes_LaboratorioFolio">@Model.Folio</label>
+                                </div>
+                            </div>
+<div class="form-group" id="divIndicador">
+	<label class="col-sm-2 control-label">@Resources.Detalle_Examenes_LaboratorioResources.Indicador</label>
+	<div class="col-sm-8" data-field-id="Indicador" data-attribute="257773" data-field-name="@Resources.Detalle_Examenes_LaboratorioResources.Indicador">
+		<select class="form-control" data-val="true" data-val-number="The field Indicador must be a number." data-val-required="The Indicador field is required." id="Detalle_Examenes_LaboratorioIndicador" name="Detalle_Examenes_LaboratorioIndicador">
+			<option value=""></option>
+			@if (varIndicadores_Laboratorio_Indicador != null){ 
+				foreach (var itemIndicador in varIndicadores_Laboratorio_Indicador)
+				{
+					if (itemIndicador.Value == Convert.ToString(Model.Indicador))
+					{
+						<option value="@itemIndicador.Value" selected>@itemIndicador.Text</option>
+					}
+					else
+					{
+						<option value="@itemIndicador.Value">@itemIndicador.Text</option>
+					}
+				}
+			}
+		</select>
+	</div>
+</div>
+<div class="form-group" id="divResultado">
+	<label class="col-sm-2 control-label">@Resources.Detalle_Examenes_LaboratorioResources.Resultado</label>
+	<div class="col-sm-8" data-field-id="Resultado" data-attribute="257774" data-field-name="@Resources.Detalle_Examenes_LaboratorioResources.Resultado">
+		<input class="form-control inputNumber" id="Detalle_Examenes_LaboratorioResultado" name="Detalle_Examenes_LaboratorioResultado" type="text" value="@Model.Resultado">
+	</div>
+</div>
+<div class="form-group" id="divUnidad">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Examenes_LaboratorioResources.Unidad</label>
+                                <div class="col-sm-8" data-field-id="Unidad" data-attribute="257775" data-field-name="@Resources.Detalle_Examenes_LaboratorioResources.Unidad">
+                                    <input class="form-control" id="Detalle_Examenes_LaboratorioUnidad" name="Detalle_Examenes_LaboratorioUnidad" type="text" value="@Model.Unidad">
+                                </div>
+                            </div>
+<div class="form-group" id="divIntervalo_de_Referencia">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Examenes_LaboratorioResources.Intervalo_de_Referencia</label>
+                                <div class="col-sm-8" data-field-id="Intervalo_de_Referencia" data-attribute="257776" data-field-name="@Resources.Detalle_Examenes_LaboratorioResources.Intervalo_de_Referencia">
+                                    <input class="form-control" id="Detalle_Examenes_LaboratorioIntervalo_de_Referencia" name="Detalle_Examenes_LaboratorioIntervalo_de_Referencia" type="text" value="@Model.Intervalo_de_Referencia">
+                                </div>
+                            </div>
+<div class="form-group" id="divFecha_de_Resultado">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Examenes_LaboratorioResources.Fecha_de_Resultado</label>
+                                <div class="col-sm-8" data-field-id="Fecha_de_Resultado" data-attribute="257777" data-field-name="@Resources.Detalle_Examenes_LaboratorioResources.Fecha_de_Resultado">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input class="form-control col-md-12" id="Detalle_Examenes_LaboratorioFecha_de_Resultado" readonly="readonly" name="Detalle_Examenes_LaboratorioFecha_de_Resultado" type="text" value="@Model.Fecha_de_Resultado">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+<div class="form-group" id="divEstatus_Indicador">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Examenes_LaboratorioResources.Estatus_Indicador</label>
+                                <div class="col-sm-8" data-field-id="Estatus_Indicador" data-attribute="257778" data-field-name="@Resources.Detalle_Examenes_LaboratorioResources.Estatus_Indicador">
+                                    <input class="form-control" id="Detalle_Examenes_LaboratorioEstatus_Indicador" name="Detalle_Examenes_LaboratorioEstatus_Indicador" type="text" value="@Model.Estatus_Indicador">
+                                </div>
+                            </div>
+
+								</div>	
+							</div>
+									<br />
+											<div class="form-actions fluid">
+												<input type="hidden" value="@Model.Folio" id="ReferenceFolio" />
+												<input type="hidden" value="@Model.Folio" name="Folio" id="FolioId" />
+												@if (!ViewBag.Consult)
+												{
+													<div id="dvSaveJob" style="display:inline-block"></div>
+
+													<button type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton">
+														<i class="fa fa-cogs fa-spin"></i>
+													</button>
+													<a title="@Resources.Resources.Configure" id="Detalle_Examenes_LaboratorioConfigureSave" name="Detalle_Examenes_LaboratorioConfigureSave" onclick="SaveElementAttributes()" class="btn btn-success">@Resources.Resources.Configure</a>
+												}
+
+												<input type="hidden" id="hdnDetalle_Examenes_LaboratorioConfigureType" />
+												<input type="hidden" id="hdnDetalle_Examenes_LaboratorioBusinessRuleFieldId" />
+												<input type="hidden" id="hdnDetalle_Examenes_LaboratorioBusinessRuleFieldName" />
+												<input type="hidden" id="hdnDetalle_Examenes_LaboratorioBusinessRuleAttribute" />
+
+												<input data-dismiss="modal" type="button" value="@Resources.Resources.Cancelar" class="btn btn-danger noConsult" data-bind="click: cancel" tabindex="16" />
+
+												<button onclick="Detalle_Examenes_LaboratorioGetBusinessRule('', 'Al Cancelar', '3')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Detalle_Examenes_LaboratorioBusinessRule-form">
+													<a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+														<i class="fa fa-cogs fa-spin"></i>
+													</a>
+												</button>
+											</div>
+										</div>
+								}
+
+							</div>
+						</div>
+					</div>
+				</div>
+					<input id="hdnApplicationDirectory" type="hidden" value="@Url.Content("~/")" />
+				</div>
+			</div>
+		</div>
+</div>
+@section Styles {
+<link href="@Url.Content("~/Content/BootstrapDatePicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+    @Styles.Render("~/plugins/awesomeCheckboxStyles")
+    @Styles.Render("~/plugins/select2Styles")
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+    .select2-results{background-color:#fff;}
+    .select2-container .select2-dropdown{height:auto !important;}
+
+    div.dataTables_info {
+        display: inline-block;
+        float: right;
+    }
+        i {
+        font-size: 25px !important;
+        display: block;
+        color: #676a6c;
+        margin-left: 6px;
+        margin-right: 6px;
+    }
+
+    .fullWidth {
+        width: 100%;
+    }
+</style>
+}
+
+<script type="text/javascript" src="~/Uploads/Scripts/Detalle_Examenes_Laboratorio.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Scripts/Custom/Detalle_Examenes_LaboratorioGeneral.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/Detalle_Examenes_LaboratorioCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/PacientesCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
+
+    <script type="text/javascript">
+        
+
+
+
+        $(document).ready(function () {
+			var currentIndex = @ViewBag.currentRowIndex
+
+            var Detalle_Examenes_LaboratorioRowElement = "Detalle_Examenes_LaboratorioPop_" + currentIndex.toString();
+            var abc = "if(dynamicFieldValidation('" + Detalle_Examenes_LaboratorioRowElement + "')){ Detalle_Examenes_LaboratorioInsertRowFromPopup(" + currentIndex + "); }";
+            var insertRowHTML = '<a class="btn btn-primary m-b" onclick="' + abc + '">Save</a>';
+            $('#dvSaveJob').html(insertRowHTML);
+			
+            $('#Detalle_Examenes_LaboratorioFecha_de_Resultado').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+
+
+            initiateUIControls();
+            EjecutarValidacionesAlComienzo();
+			$('a').tooltip();
+        });
+
+
+
+        function initiateUIControls() {
+            $('.gridDatePicker').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            //Time Picker
+            $('.gridTimePicker').clockpicker();
+
+        }
+		
+		function SendDetalle_Examenes_LaboratorioData(callBack) {
+			
+					
+		 var arr = []; 
+		 $("form#CreateDetalle_Examenes_Laboratorio").find(':input').each(function( index ) {		 
+			if ($(this).prop('disabled')==true|| $(this).prop('disabled')=="disabled")
+			{		
+				arr.push($(this).attr('id')); 
+				$(this).prop('disabled', false);  	
+			}
+	    });
+		
+             var formData = new FormData($("form#CreateDetalle_Examenes_Laboratorio")[0]);
+			$.each( arr, function( key, value ) {
+			  $('#' +value).prop('disabled', true);
+			});
+
+            var isNew = $('#hdnIsNew').val();
+           
+            if (checkClientValidate('Detalle_Examenes_LaboratorioCreateForm')) {
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Detalle_Examenes_Laboratorio/Post?IsNew=")' + isNew,
+                    type: 'POST',
+                    data: formData,
+                    async: true,
+                    success: function (result) {
+                        if (result < 0) {
+                            showNotification("@Resources.Resources.ErrorSave", "error");
+                        } else {
+
+                            showNotification("@Resources.Resources.SaveSuccess", "success");
+                            callBack(result);
+                        }
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            }
+            return false;
+        };
+		
+        function GetPropertyBag() {
+            $.get('@Url.Action("Detalle_Examenes_LaboratorioPropertyBag", "Detalle_Examenes_Laboratorio")', function (data) {
+                $(".PropertyModal").html(data);
+            });
+        }
+        function Detalle_Examenes_LaboratorioGetBusinessRule(FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null)
+			{
+				$('#hdnDetalle_Examenes_LaboratorioBusinessRuleFieldId').val(FieldId);
+				$('#hdnDetalle_Examenes_LaboratorioBusinessRuleFieldName').val(FieldName);
+				$('#hdnDetalle_Examenes_LaboratorioBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("BusinessRule", "BussinessRule")', { FieldId: $('#hdnDetalle_Examenes_LaboratorioBusinessRuleFieldId').val(), FieldName: $('#hdnDetalle_Examenes_LaboratorioBusinessRuleFieldName').val(), ObjectId: '44344', Attribute: $('#hdnDetalle_Examenes_LaboratorioBusinessRuleAttribute').val(), Screen: 'Detalle_Examenes_Laboratorio' }, function (data) {
+                $(".Detalle_Examenes_LaboratorioBusinessRuleModal").html(data);
+            });
+        }
+        function Detalle_Examenes_LaboratorioGetAddBusinessRule(RuleId, FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null) {
+				$('#hdnDetalle_Examenes_LaboratorioBusinessRuleFieldId').val(FieldId);
+				$('#hdnDetalle_Examenes_LaboratorioBusinessRuleFieldName').val(FieldName);
+				$('#hdnDetalle_Examenes_LaboratorioBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("AddBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnDetalle_Examenes_LaboratorioBusinessRuleFieldId').val(), FieldName: $('#hdnDetalle_Examenes_LaboratorioBusinessRuleFieldName').val(), ObjectId: '44344', Attribute: $('#hdnDetalle_Examenes_LaboratorioBusinessRuleAttribute').val(), Screen: 'Detalle_Examenes_Laboratorio' }, function (data) {
+                $(".Detalle_Examenes_LaboratorioAddBusinessRuleModal").html(data);
+                $(".datatable").DataTable();
+            });
+        }
+		function RemoveBusinessRule(RuleId) {
+			$.get('@Url.Action("RemoveBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnDetalle_Examenes_LaboratorioBusinessRuleFieldId').val(), FieldName: $('#hdnDetalle_Examenes_LaboratorioBusinessRuleFieldName').val(), ObjectId: '44344', Attribute: $('#hdnDetalle_Examenes_LaboratorioBusinessRuleAttribute').val(), Screen: 'Detalle_Examenes_Laboratorio' }, function (data) {
+				$(".Detalle_Examenes_LaboratorioBusinessRuleModal").html(data);
+			});
+		}
+
+    var permission = {
+        Consult: '@permission.Consult' == 'True',
+        New: '@permission.New' == 'True',
+        Edit: '@permission.Edit' == 'True',
+        Delete: '@permission.Delete' == 'True',
+        Export: '@permission.Export' == 'True',
+        Print: '@permission.Print' == 'True',
+        Configure: '@permission.Configure' == 'True',
+    };
+
+    
+    //MR-var statusItems;
+    //MR-var stateItems;
+    //MR-var cityItems = [];
+    var isConsultMode = "@ViewBag.Consult" == "True";
+    Consult(isConsultMode);
+        function Consult(val) {
+            if (val) {
+                $(':input').attr('readonly', 'readonly');
+                $(':input').attr('disabled', 'true');
+                $('.noConsult').removeAttr('readonly');
+                $('.noConsult').removeAttr('disabled');
+            }
+        }
+
+    function BackToGrid() {
+        location.href = "@Url.Content("~/Frontal/Detalle_Examenes_Laboratorio/")";
+    }
+	
+	function ReadScriptSettings(callback)
+    {
+        $.post("@Url.Content("~/Frontal/Detalle_Examenes_Laboratorio/ReadScriptSettings")", function (data) {
+            mainElementObject = JSON.parse(data.MainElement);
+			if (data.ChildElement != null) {
+                childElementObject = JSON.parse(data.ChildElement);
+            }
+            callback();
+        });
+    }
+
+    function SaveSettingsWithoutReload() {
+        $.post("@Url.Content("~/Frontal/Detalle_Examenes_Laboratorio/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+            //$('#hdnDetalle_Examenes_LaboratorioConfigureType').val("0");
+        }, "json");
+    }
+	
+        function SaveElementAttributes() {
+            if ($('#hdnDetalle_Examenes_LaboratorioConfigureType').val() == "1") {
+                $.post("@Url.Content("~/Frontal/Detalle_Examenes_Laboratorio/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+                    $('#hdnDetalle_Examenes_LaboratorioConfigureType').val("0");
+                    location.reload(true);
+                }, "json");
+            } else {
+                $.post("@Url.Content("~/Frontal/Detalle_Examenes_Laboratorio/ReadScriptSettings")", function (data) {
+                    mainElementObject = JSON.parse(data.MainElement);
+                    childElementObject = JSON.parse(data.ChildElement);
+
+                    for (var i = 0; i < mainElementObject.length; i++) {
+                        var mainElementAttributes = '<div class="col-sm-2">';
+                        mainElementAttributes += '<div class="displayAttributes requiredAttribute"><a class="requiredClick" title="' + (mainElementObject[i].IsRequired == true ? "Required" : "Not Required") + '" onclick="setRequired(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsRequired == true ? "@Url.Content("~/Images/Required.png")" : "@Url.Content("~/Images/Not-Required.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes visibleAttribute"><a class="visibleClick" title="' + (mainElementObject[i].IsVisible == true ? "Visible" : "In Visible") + '" onclick="setVisible(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsVisible == true ? "@Url.Content("~/Images/Visible.png")" : "@Url.Content("~/Images/InVisible.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes readOnlyAttribute"><a class="readOnlyClick" title="' + (mainElementObject[i].IsReadOnly == true ? "Disabled" : "Enabled") + '" onclick="setReadOnly(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsReadOnly == true ? "@Url.Content("~/Images/Disabled.png")" : "@Url.Content("~/Images/Enabled.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes defaultValueAttribute"><a id="hlDefaultValue_' + i.toString() + '" class="defaultValueClick" title="' + (mainElementObject[i].DefaultValue) + '" onclick="setDefaultValue(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].DefaultValue != '' && mainElementObject[i].DefaultValue != null ? "@Url.Content("~/Images/default-value.png")" : "@Url.Content("~/Images/Not-Default-Value.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes helpTextAttribute"><a id="hlHelpText_' + i.toString() + '" class="helpTextClick" title="' + (mainElementObject[i].HelpText) + '" onclick="setHelpText(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].HelpText != '' && mainElementObject[i].HelpText != null ? "@Url.Content("~/Images/green-help.png")" : "@Url.Content("~/Images/red-help.jpg")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '</div>';
+                        $('#Detalle_Examenes_Laboratorio' + mainElementObject[i].inputId).parent().closest('.form-group').show();
+
+                        $('#Detalle_Examenes_Laboratorio' + mainElementObject[i].inputId).closest('.col-sm-8').after(mainElementAttributes);
+                    }
+					if (childElementObject != null) {
+						for (var i = 0; i < childElementObject.length; i++) {
+							$('.' + childElementObject[i].inputId + 'Header').show();
+							$('.' + childElementObject[i].inputId).parent().show();
+							$('.' + childElementObject[i].inputId + 'Header').append(returnAttributeHTML(i));
+						}
+					}
+                    $('#Detalle_Examenes_LaboratorioConfigureSave').text('Save Settings');
+                    $('#hdnDetalle_Examenes_LaboratorioConfigureType').val("1");
+                });
+            }
+        }
+		$('#CreateDetalle_Examenes_Laboratorio').on('click', '.btnPopupBusinessRules', function () {
+			var fieldId = $(this).data('field-id');
+			var fieldName = $(this).data('field-name');
+			var attribute = $(this).data('attribute');
+			$('#hdnDetalle_Examenes_LaboratorioBusinessRuleFieldId').val(fieldId);
+			$('#hdnDetalle_Examenes_LaboratorioBusinessRuleFieldName').val(fieldName);
+			$('#hdnDetalle_Examenes_LaboratorioBusinessRuleAttribute').val(attribute);
+		});
+		//Initialize HTML Editors
+		
+    </script>

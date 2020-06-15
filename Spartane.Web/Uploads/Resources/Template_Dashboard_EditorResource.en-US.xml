@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Template_Dashboard_Editor" value="Spartan Template Dashboard Editor"></resource>
+  <resource culture="en-US" name="Template_Id" value="Template Id"></resource>
+  <resource culture="en-US" name="Description" value="Description"></resource>
+  <resource culture="en-US" name="Template_Image_Thumbnail" value="Template Image Thumbnail"></resource>
+  <resource culture="en-US" name="Detail" value="Detail"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

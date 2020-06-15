@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Business_Rule_Creation" value="Business Rule Creation"></resource>
+  <resource culture="en-US" name="Key_Business_Rule_Creation" value="Key"></resource>
+  <resource culture="en-US" name="User" value="User"></resource>
+  <resource culture="en-US" name="Creation_Date" value="Creation Date"></resource>
+  <resource culture="en-US" name="Creation_Hour" value="Creation Hour"></resource>
+  <resource culture="en-US" name="Last_Updated_Date" value="Last Updated Date"></resource>
+  <resource culture="en-US" name="Last_Updated_Hour" value="Last Updated Hour"></resource>
+  <resource culture="en-US" name="Time_that_took" value="Time that took"></resource>
+  <resource culture="en-US" name="Name" value="Name"></resource>
+  <resource culture="en-US" name="Documentation" value="Documentation"></resource>
+  <resource culture="en-US" name="Conditions" value="Conditions"></resource>
+  <resource culture="en-US" name="Actions_if_conditions_are_True" value="Actions if conditions are True"></resource>
+  <resource culture="en-US" name="Actions_if_conditions_are_False" value="Actions if conditions are False"></resource>
+  <resource culture="en-US" name="Operations" value="Operations"></resource>
+  <resource culture="en-US" name="Events" value="Events"></resource>
+  <resource culture="en-US" name="Peer_Reviews" value="Peer Reviews"></resource>
+  <resource culture="en-US" name="Testing" value="Testing"></resource>
+  <resource culture="en-US" name="Scopes" value="Scopes"></resource>
+  <resource culture="en-US" name="Status" value="Status"></resource>
+  <resource culture="en-US" name="Complexity" value="Complexity"></resource>
+  <resource culture="en-US" name="ErrorName" value="The name exist"></resource>
+  <resource culture="en-US" name="StatusChanged" value="Status Changed"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="General Data"></resource>
+<resource culture="en-US" name="TabPeer_Review" value="Peer Review"></resource>
+<resource culture="en-US" name="TabTesting" value="Testing"></resource>
+  <resource culture="en-US" name="TabHistory" value="History"></resource>
+
+</resources>

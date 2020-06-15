@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Spartan_WorkFlow_Information_by_State" value="Spartan WorkFlow Information by State"></resource>
+  <resource culture="es-es" name="Information_by_StateId" value="Information by StateId"></resource>
+  <resource culture="es-es" name="Phase" value="Phase"></resource>
+  <resource culture="es-es" name="State" value="State"></resource>
+  <resource culture="es-es" name="Folder" value="Folder"></resource>
+  <resource culture="es-es" name="Visible" value="Visible"></resource>
+  <resource culture="es-es" name="Read_Only" value="Read Only"></resource>
+  <resource culture="es-es" name="Required" value="Required"></resource>
+  <resource culture="es-es" name="Label" value="Label"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

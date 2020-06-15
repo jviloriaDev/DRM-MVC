@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Roles>
+  <Role culture="en-us" Id="1" value="Administrator"></Role>
+  <Role culture="es-es" Id="1" value="Administrador"></Role>
+  <Role culture="en-us" Id="7" value="Super Admin"></Role>
+  <Role culture="es-es" Id="7" value="Super Admin"></Role>
+  <Role culture="en-us" Id="8" value="Médico"></Role>
+  <Role culture="es-es" Id="8" value="Médico"></Role>
+  <Role culture="en-us" Id="9" value="Paciente"></Role>
+  <Role culture="es-es" Id="9" value="Paciente"></Role>
+  <Role culture="en-us" Id="10" value="Empresa"></Role>
+  <Role culture="es-es" Id="10" value="Empresa"></Role>
+  <Role culture="en-us" Id="0" value="DRM Staff"></Role>
+  <Role culture="es-es" Id="0" value="DRM Staff"></Role>
+  <Role culture="en-us" Id="11" value="Red de Especialistas"></Role>
+  <Role culture="es-es" Id="11" value="Red de Especialistas"></Role>
+  <Role culture="en-us" Id="12" value="Empresa Usuaria de Fit Eat"></Role>
+  <Role culture="es-es" Id="12" value="Empresa Usuaria de Fit Eat"></Role>
+  <Role culture="en-us" Id="13" value="Empresa con Eventos"></Role>
+  <Role culture="es-es" Id="13" value="Empresa con Eventos"></Role>
+  <Role culture="en-us" Id="14" value="Empresa Usuaria de Fit Eat + Eventos"></Role>
+  <Role culture="es-es" Id="14" value="Empresa Usuaria de Fit Eat + Eventos"></Role>
+  <Role culture="en-us" Id="15" value="Especialista Expositor en Eventos"></Role>
+  <Role culture="es-es" Id="15" value="Especialista Expositor en Eventos"></Role>
+  <Role culture="en-us" Id="16" value="Paciente Particular"></Role>
+  <Role culture="es-es" Id="16" value="Paciente Particular"></Role>
+  <Role culture="en-us" Id="17" value="Paciente Beneficiario de Empresa"></Role>
+  <Role culture="es-es" Id="17" value="Paciente Beneficiario de Empresa"></Role>
+</Roles>

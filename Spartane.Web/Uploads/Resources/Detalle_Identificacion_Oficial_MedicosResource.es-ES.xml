@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Detalle_Identificacion_Oficial_Medicos" value="Detalle Identificación Oficial Médicos"></resource>
+  <resource culture="es-es" name="Folio" value="Folio"></resource>
+  <resource culture="es-es" name="Tipo_de_Identificacion_Oficial" value="Tipo de Identificación Oficial"></resource>
+  <resource culture="es-es" name="Documento" value="Documento"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Spartan_Report_Fields_Detail" value="Spartan Report Fields Detail"></resource>
+  <resource culture="es-es" name="DesignDetailId" value="DesignDetailId"></resource>
+  <resource culture="es-es" name="PathField" value="PathField"></resource>
+  <resource culture="es-es" name="Physical_Name" value="Physical Name"></resource>
+  <resource culture="es-es" name="Title" value="Title"></resource>
+  <resource culture="es-es" name="Function" value="Function"></resource>
+  <resource culture="es-es" name="Format" value="Format"></resource>
+  <resource culture="es-es" name="Order_Type" value="Order Type"></resource>
+  <resource culture="es-es" name="Field_Type" value="Field Type"></resource>
+  <resource culture="es-es" name="Order_Number" value="Order Number"></resource>
+  <resource culture="es-es" name="AttributeId" value="AttributeId"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

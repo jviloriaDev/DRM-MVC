@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Detalle_Antecedentes_No_Patologicos" value="Detalle Antecedentes No Patológicos"></resource>
+  <resource culture="en-US" name="Folio" value="Folio"></resource>
+  <resource culture="en-US" name="Sustancia" value="Sustancia"></resource>
+  <resource culture="en-US" name="Frecuencia" value="Frecuencia"></resource>
+  <resource culture="en-US" name="Cantidad" value="Cantidad"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

@@ -1,0 +1,415 @@
+﻿@using System.Collections.Generic
+@using Spartane.Web.Areas.Frontal.Models
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Spartan_BR_Conditions_DetailAdvanceSearchModel
+@{
+    List<SelectListItem> varSpartan_BR_Condition_Operator = null;
+    if (ViewBag.Spartan_BR_Condition_Operators != null)
+    { varSpartan_BR_Condition_Operator = (List<SelectListItem>)ViewBag.Spartan_BR_Condition_Operators; }    
+    List<SelectListItem> varSpartan_BR_Operator_Type = null;
+    if (ViewBag.Spartan_BR_Operator_Types != null)
+    { varSpartan_BR_Operator_Type = (List<SelectListItem>)ViewBag.Spartan_BR_Operator_Types; }    
+    List<SelectListItem> varSpartan_BR_Condition = null;
+    if (ViewBag.Spartan_BR_Conditions != null)
+    { varSpartan_BR_Condition = (List<SelectListItem>)ViewBag.Spartan_BR_Conditions; }    
+
+    var filters = (List<SelectListItem>)ViewBag.Filter;
+}
+<style>
+    .input-validation-error {
+        background: rgb(251, 227, 228);
+        border: 1px solid #fbc2c4;
+        color: #8a1f11;
+    }
+
+    .MarginBottom {
+        margin-bottom: 1%;
+    }
+
+    #divAdvanceSearch input {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch button {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch select {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch h3 {
+        margin-top: 2%;
+    }
+
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins" id="divAdvanceSearch">
+        <div class="ibox-content">
+            @using (Html.BeginForm("ShowAdvanceFilter", "Spartan_BR_Conditions_Detail", FormMethod.Post, new { @id = "frmAdvanceSearch", @role = "form" }))
+            {
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_BR_Conditions_DetailResources.ConditionsDetailId</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromConditionsDetailId, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromConditionsDetailId" })
+                    @Html.ValidationMessageFor(m => m.FromConditionsDetailId)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToConditionsDetailId, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToConditionsDetailId", @data_min = "txtAdvanceFromConditionsDetailId" })
+                    @Html.ValidationMessageFor(m => m.ToConditionsDetailId)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_BR_Conditions_DetailResources.Condition_Operator</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Condition_OperatorFilter, filters, new { @class = "form-control", @id = "ddlCondition_OperatorFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceCondition_Operator, new { @class = "form-control", @type = "text", @id = "txtAdvanceCondition_Operator" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSpartan_BR_Condition_Operator!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceCondition_OperatorMultiple, varSpartan_BR_Condition_Operator,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceCondition_Operator"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_BR_Conditions_DetailResources.First_Operator_Type</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.First_Operator_TypeFilter, filters, new { @class = "form-control", @id = "ddlFirst_Operator_TypeFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceFirst_Operator_Type, new { @class = "form-control", @type = "text", @id = "txtAdvanceFirst_Operator_Type" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSpartan_BR_Operator_Type!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceFirst_Operator_TypeMultiple, varSpartan_BR_Operator_Type,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceFirst_Operator_Type"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_BR_Conditions_DetailResources.First_Operator_Value</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.First_Operator_ValueFilter, filters, new { @class = "form-control", @id = "ddlFirst_Operator_ValueFilter" })
+                    @Html.TextBoxFor(m => m.First_Operator_Value, new { @class = "form-control", @type = "text", @id = "txtFirst_Operator_Value" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_BR_Conditions_DetailResources.Condition</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.ConditionFilter, filters, new { @class = "form-control", @id = "ddlConditionFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceCondition, new { @class = "form-control", @type = "text", @id = "txtAdvanceCondition" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSpartan_BR_Condition!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceConditionMultiple, varSpartan_BR_Condition,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceCondition"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_BR_Conditions_DetailResources.Second_Operator_Type</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Second_Operator_TypeFilter, filters, new { @class = "form-control", @id = "ddlSecond_Operator_TypeFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceSecond_Operator_Type, new { @class = "form-control", @type = "text", @id = "txtAdvanceSecond_Operator_Type" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSpartan_BR_Operator_Type!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceSecond_Operator_TypeMultiple, varSpartan_BR_Operator_Type,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceSecond_Operator_Type"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_BR_Conditions_DetailResources.Second_Operator_Value</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Second_Operator_ValueFilter, filters, new { @class = "form-control", @id = "ddlSecond_Operator_ValueFilter" })
+                    @Html.TextBoxFor(m => m.Second_Operator_Value, new { @class = "form-control", @type = "text", @id = "txtSecond_Operator_Value" })
+                </div>
+
+                <div class="MarginBottom form-inline">
+                    <input type="submit" class="btn btn-primary" value="@Resources.Resources.Search"><a class="btn btn-primary" href="@Url.Content("~/Frontal/Spartan_BR_Conditions_Detail/")" value=" ">@Resources.Resources.Cancelar</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function InitiateAdvanceSearch() {
+        var advanceSearch = {}, hasParameter = false;
+        if ($("#txtAdvanceFromConditionsDetailId").val() != "" || $("#txtAdvanceToConditionsDetailId").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_BR_Conditions_DetailConditionsDetailIdFrom = $("#txtAdvanceFromConditionsDetailId").val();
+            advanceSearch.Spartan_BR_Conditions_DetailConditionsDetailIdTo = $("#txtAdvanceToConditionsDetailId").val();
+        }
+        advanceSearch.Condition_OperatorSearchType = 0;
+        if ($('#ddlAdvanceCondition_Operator').val().length > 0 || $("#txtAdvanceCondition_Operator").val() == "") {
+
+
+            if (isSpartan_BR_Conditions_DetailTextSearch) {
+                advanceSearch.Condition_OperatorName = $("#txtAdvanceCondition_Operator").val();
+                advanceSearch.Condition_OperatorNameSearchType = $("#ddlAdvanceCondition_Operator").val();
+                advanceSearch.Condition_OperatorSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Condition_OperatorToSearch = $("#ddlAdvanceCondition_Operator").val();
+                advanceSearch.Condition_OperatorSearchType = 2;
+            }
+        }
+        advanceSearch.First_Operator_TypeSearchType = 0;
+        if ($('#ddlAdvanceFirst_Operator_Type').val().length > 0 || $("#txtAdvanceFirst_Operator_Type").val() == "") {
+
+
+            if (isSpartan_BR_Conditions_DetailTextSearch) {
+                advanceSearch.First_Operator_TypeName = $("#txtAdvanceFirst_Operator_Type").val();
+                advanceSearch.First_Operator_TypeNameSearchType = $("#ddlAdvanceFirst_Operator_Type").val();
+                advanceSearch.First_Operator_TypeSearchType = 1;
+            }
+            else {
+
+                advanceSearch.First_Operator_TypeToSearch = $("#ddlAdvanceFirst_Operator_Type").val();
+                advanceSearch.First_Operator_TypeSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceFirst_Operator_Value").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_BR_Conditions_DetailFirst_Operator_Value = $("#txtAdvanceFirst_Operator_Value").val();
+            advanceSearch.Spartan_BR_Conditions_DetailFirst_Operator_ValueSearchType = $("#ddlAdvanceFirst_Operator_ValueFilter").val();
+        }
+        advanceSearch.ConditionSearchType = 0;
+        if ($('#ddlAdvanceCondition').val().length > 0 || $("#txtAdvanceCondition").val() == "") {
+
+
+            if (isSpartan_BR_Conditions_DetailTextSearch) {
+                advanceSearch.ConditionName = $("#txtAdvanceCondition").val();
+                advanceSearch.ConditionNameSearchType = $("#ddlAdvanceCondition").val();
+                advanceSearch.ConditionSearchType = 1;
+            }
+            else {
+
+                advanceSearch.ConditionToSearch = $("#ddlAdvanceCondition").val();
+                advanceSearch.ConditionSearchType = 2;
+            }
+        }
+        advanceSearch.Second_Operator_TypeSearchType = 0;
+        if ($('#ddlAdvanceSecond_Operator_Type').val().length > 0 || $("#txtAdvanceSecond_Operator_Type").val() == "") {
+
+
+            if (isSpartan_BR_Conditions_DetailTextSearch) {
+                advanceSearch.Second_Operator_TypeName = $("#txtAdvanceSecond_Operator_Type").val();
+                advanceSearch.Second_Operator_TypeNameSearchType = $("#ddlAdvanceSecond_Operator_Type").val();
+                advanceSearch.Second_Operator_TypeSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Second_Operator_TypeToSearch = $("#ddlAdvanceSecond_Operator_Type").val();
+                advanceSearch.Second_Operator_TypeSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceSecond_Operator_Value").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_BR_Conditions_DetailSecond_Operator_Value = $("#txtAdvanceSecond_Operator_Value").val();
+            advanceSearch.Spartan_BR_Conditions_DetailSecond_Operator_ValueSearchType = $("#ddlAdvanceSecond_Operator_ValueFilter").val();
+        }
+
+        advanceSearchQuery = hasParameter ? JSON.stringify(advanceSearch) : "";
+        $('#tblSpartan_BR_Conditions_Detail').DataTable().draw();
+        return false;
+    }
+
+    var advanceSearchQuery = "", isSpartan_BR_Conditions_DetailTextSearch = true;
+
+    $(document).ready(function () {
+        $('.clockpicker').clockpicker();
+        $("#txtAdvanceCondition_Operator").keypress(function () {
+            isSpartan_BR_Conditions_DetailTextSearch = true;
+            $("#ddlAdvanceCondition_Operator").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceCondition_Operator").change(function () {
+            isSpartan_BR_Conditions_DetailTextSearch = false;
+            $("#txtAdvanceCondition_Operator").val('');
+        });
+        $("#txtAdvanceFirst_Operator_Type").keypress(function () {
+            isSpartan_BR_Conditions_DetailTextSearch = true;
+            $("#ddlAdvanceFirst_Operator_Type").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceFirst_Operator_Type").change(function () {
+            isSpartan_BR_Conditions_DetailTextSearch = false;
+            $("#txtAdvanceFirst_Operator_Type").val('');
+        });
+        $("#txtAdvanceCondition").keypress(function () {
+            isSpartan_BR_Conditions_DetailTextSearch = true;
+            $("#ddlAdvanceCondition").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceCondition").change(function () {
+            isSpartan_BR_Conditions_DetailTextSearch = false;
+            $("#txtAdvanceCondition").val('');
+        });
+        $("#txtAdvanceSecond_Operator_Type").keypress(function () {
+            isSpartan_BR_Conditions_DetailTextSearch = true;
+            $("#ddlAdvanceSecond_Operator_Type").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceSecond_Operator_Type").change(function () {
+            isSpartan_BR_Conditions_DetailTextSearch = false;
+            $("#txtAdvanceSecond_Operator_Type").val('');
+        });
+
+    });
+</script>
+
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/chosen")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/clockpicker")
+
+
+    <script>
+        //Adding Rules
+        jQuery.validator.unobtrusive
+      .adapters.addSingleVal("isnumberafter", "propertyname");
+        jQuery.validator.unobtrusive
+    .adapters.addSingleVal("isdateafter", "propertyname");
+
+        //Number after method
+        jQuery.validator.addMethod("isnumberafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+                //if (Date.parse(val) <= Date.parse(otherVal)) {
+                if (Number(val) < Number(otherVal)) {
+                    return false;
+                }
+                        }
+            return true;
+        });
+
+        //Date after after method
+        jQuery.validator.addMethod("isdateafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+
+                if (GetDateObject(val) < GetDateObject(otherVal)) {
+
+                    return false;
+                    }
+                }
+            return true;
+            });
+
+
+        function GetDateObject(value) {
+            var delimiter = GetDelimiter(dateFormat);
+            var dateCollection = value.split(delimiter);
+            var formatCollection = dateFormat.split(delimiter);
+            var dateModel = GetDateModel(dateCollection, formatCollection);
+            return new Date(dateModel.Year, dateModel.Month - 1, dateModel.Day);
+        }
+        //Used to get the date model by parsing the date and the format
+        function GetDateModel(dateCollection,formatCollection) {
+            var day, month, year;
+            for (var i = 0; i < formatCollection.length; i++) {
+                switch (formatCollection[i][0].toUpperCase()) {
+                
+                    case "D":
+                        day = dateCollection[i];
+                        break;
+
+                    case "Y":
+                        year = dateCollection[i];
+                        break;
+
+                    case "M":
+                        month = dateCollection[i];
+                        break;
+                }
+            }
+
+            return {
+                Day:day,
+                Month:month,
+                Year:year
+            };
+        }
+
+        function GetDelimiter(format) {
+
+            for (var i = 0; i < format.length; i++) {
+                if (/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(format[i])) {
+                    return format[i];
+                }
+            }
+            return null;
+        }
+
+        var dateFormat = "@ConfigurationProperty.DateFormatDatePicker";
+
+        $(document).ready(function () {
+
+
+
+            $('.input-daterange').datepicker({
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                format: dateFormat,
+                message: 'The date is not a valid'
+            });
+
+            $(".chosen-select").chosen({ width: "22%", no_results_text: "Oops, nothing found!" });
+
+        });
+
+    </script>
+}
+

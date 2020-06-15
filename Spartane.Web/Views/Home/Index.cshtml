@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "SPARTANE - TOTALTECH";
+}
+
+<div class="jumbotron">
+    <h1>SPARTANE</h1>
+    <p class="lead">A new version of the SPARTANE platform with all the old and new incredible features in an modern environment and better performance.</p>
+    <p><a href="http://www.totaltech.com.mx/" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>BUSINESS RULES</h2>
+        <p>
+            <b>Pilot test</b> - applying business rules over controls injecting JQUERY sentences.
+        </p>
+        <p>
+            <span>
+                @Html.Raw(Html.ActionLink("Show me..", "BusinessRulesTest01", "Home").ToHtmlString().Replace("<a", "<a class=\"btn btn-default\""))
+            </span>
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>ARCHITECTURE TESTS</h2>
+        <p>This chapter examples of simple object are shown. </p>
+        <p>
+            <span>
+                @Html.Raw(Html.ActionLink("Show me..", "index", "Home").ToHtmlString().Replace("<a", "<a class=\"btn btn-default\""))
+            </span>
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>WEBSITE TEST</h2>
+        <p>This section provides working examples of web site pages.</p>
+        <p>
+            <span>
+                @*@Html.Raw(Html.ActionLink("Users", "Index", "Users", new { area = "Frontal" }, new { }).ToHtmlString().Replace("<a", "<a class=\"btn btn-default\""))*@
+                @Html.Raw(Html.ActionLink("Empleados", "Index", "Empleados", new { area = "Frontal" }, new { }).ToHtmlString().Replace("<a", "<a class=\"btn btn-default\""))
+            </span>
+        </p>
+        <p>
+            <span>
+                @Html.Raw(Html.ActionLink("Departamento", "Index", "Departamento", new { area = "Frontal" }, new { }).ToHtmlString().Replace("<a", "<a class=\"btn btn-default\""))
+            </span>
+        </p>
+    </div>
+</div>

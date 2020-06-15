@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Detalle_Facturacion_Especialistas" value="Detalle Facturación Especialistas"></resource>
+  <resource culture="es-es" name="Folio" value="Folio"></resource>
+  <resource culture="es-es" name="Fecha_de_Registro" value="Fecha de Registro"></resource>
+  <resource culture="es-es" name="Folio_Factura" value="Folio Factura"></resource>
+  <resource culture="es-es" name="Periodo_Facturado" value="Periodo Facturado"></resource>
+  <resource culture="es-es" name="Cantidad" value="Cantidad"></resource>
+  <resource culture="es-es" name="Archivo_XML" value="Archivo XML"></resource>
+  <resource culture="es-es" name="Archivo_PDF" value="Archivo PDF"></resource>
+  <resource culture="es-es" name="Estatus" value="Estatus"></resource>
+  <resource culture="es-es" name="Fecha_programada_de_Pago" value="Fecha programada de Pago"></resource>
+  <resource culture="es-es" name="Pagada" value="Pagada"></resource>
+  <resource culture="es-es" name="Fecha_de_pago" value="Fecha de pago"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

@@ -1,0 +1,525 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Globalization
+@using Spartane.Core.Domain.Permission
+@using Spartane.Core.Domain.Spartane_File
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Detalle_de_IngredientesModel
+@{
+
+
+    List<SelectListItem> varUnidades_de_Medida_Unidad = null;
+    if (ViewBag.Unidades_de_Medidas_Unidad != null)
+    { varUnidades_de_Medida_Unidad = (List<SelectListItem>)ViewBag.Unidades_de_Medidas_Unidad; }
+    List<SelectListItem> varIngredientes_Nombre_del_Ingrediente = null;
+    if (ViewBag.Ingredientess_Nombre_del_Ingrediente != null)
+    { varIngredientes_Nombre_del_Ingrediente = (List<SelectListItem>)ViewBag.Ingredientess_Nombre_del_Ingrediente; }
+    List<SelectListItem> varPresentacion_Nombre_de_presentacion = null;
+    if (ViewBag.Presentacions_Nombre_de_presentacion != null)
+    { varPresentacion_Nombre_de_presentacion = (List<SelectListItem>)ViewBag.Presentacions_Nombre_de_presentacion; }
+    List<SelectListItem> varMarca_Nombre_de_Marca = null;
+    if (ViewBag.Marcas_Nombre_de_Marca != null)
+    { varMarca_Nombre_de_Marca = (List<SelectListItem>)ViewBag.Marcas_Nombre_de_Marca; }
+
+
+    Permission permission = ViewBag.Permission;
+}
+<div class="modal-dialog" style="width:95%;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">
+                Add Detalle de Ingredientes
+                <button data-dismiss="modal" class="close" type="button" onclick="@(ViewBag.functionMode == 0 ? "Detalle_de_IngredientesRemoveAddRow("+ ViewBag.currentRowIndex +")" : "")"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            </h4>
+        </div>
+        <div class="modal-body scroll_content">
+            <div class="form-horizontal Detalle_de_IngredientesPop_@ViewBag.currentRowIndex">
+				<div class="modal fade in" id="dvAttributeValue" style="background-color:rgba(0, 0, 0, 0.7);">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-body">
+								<div class="form-group">
+									<label class="col-sm-3 control-label" id="lblAttributeType">Value</label>
+									<div class="col-sm-7">
+										<input type="text" title="Value" class="form-control" id="txtAttributeValue" />
+									</div>
+									<div class="col-sm-2">
+										<a class="btn btn-primary" onclick="SaveValue()">Submit</a>
+									</div>
+									<input type="hidden" id="hdnAttributType" />
+									<input type="hidden" id="hdnAttributElement" />
+									<input type="hidden" id="hdnAttributNumber" />
+									<input type="hidden" id="hdnElementType" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row wrapper border-bottom white-bg page-heading">
+
+					<div class="row">
+						<div class="col-lg-10">
+							<h2>
+								Detalle de Ingredientes
+								<button onclick="Detalle_de_IngredientesGetBusinessRule('', 'Abrir Pantalla', '0')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Detalle_de_IngredientesBusinessRule-form">
+									<a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+										<i class="fa fa-cogs fa-spin"></i>
+									</a>
+								</button>
+							</h2>
+							<ol class="breadcrumb">
+								<li>
+									<a href="@Url.Action("Index", "Home")">@Resources.Resources.Home</a>
+								</li>
+								<li class="">
+									<label>@Resources.Detalle_de_IngredientesResources.Detalle_de_Ingredientes</label>
+								</li>
+								<li class="active">
+									<strong>@Resources.Resources.Create</strong>
+								</li>
+							</ol>
+						</div>
+						<div class="col-lg-2">
+
+							@{
+								if (Convert.ToInt32(Spartane.Web.SessionHelper.Role) == (int)Spartane.Core.Enums.SpartanRoleEnum.Admin)
+								{
+									<h2>&nbsp;</h2>
+									<button onclick="Detalle_de_IngredientesDisplayBusinessRule()" type="button" class="btn btn-info btn-lg displayBusinessProperyButton">
+										<i class="fa fa-cogs fa-spin"></i>
+									</button>
+
+									<div aria-hidden="true" class="modal fade in Detalle_de_IngredientesPropertyBusinessModal" id="Detalle_de_IngredientesPropertyBusinessModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h4 class="modal-title">
+														Property & Business Rules
+														<button class="close" type="button" onclick="$(this).parent().parent().parent().parent().parent().modal('hide');"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+													</h4>
+												</div>
+												<div class="modal-body">
+													<div class="row">
+														<div class="col-sm-12">
+															<a class="btn btn-primary full-width" data-toggle="modal" data-target="#PropertyModal-form" onclick="GetPropertyBag()">Properties</a>
+														</div>
+														<div class="clearfix col-sm-12">&nbsp;</div>
+														<div class="col-sm-12">
+															<a class="btn btn-primary full-width" data-toggle="modal" data-target="#Detalle_de_IngredientesBusinessRule-form" onclick="Detalle_de_IngredientesGetBusinessRule()">Business Rule</a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									 <div aria-hidden="true" data-backdrop="static" class="modal fade in Detalle_de_IngredientesPropertyModal" id="Detalle_de_IngredientesPropertyModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+									</div>
+									<div aria-hidden="true" data-backdrop="static" class="modal fade in Detalle_de_IngredientesBusinessRuleModal" id="Detalle_de_IngredientesBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+									</div>
+                                    <div aria-hidden="true" data-backdrop="static" class="modal fade in Detalle_de_IngredientesAddBusinessRuleModal" id="Detalle_de_IngredientesAddBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                                    </div>
+
+				
+								}
+							}
+						</div>
+					</div>
+
+				<div class="wrapper wrapper-content animated fadeInRight">
+					<div class="ibox float-e-margins">
+						<div class="ibox-content">
+							@using (Html.BeginForm("Post", "Detalle_de_Ingredientes", FormMethod.Post, new { id = "CreateDetalle_de_Ingredientes", @readonly = "true", @class = "form-horizontal", enctype = "multipart/form-data" }))
+							{
+								<span id="popupNotification"></span>
+								<div class="container-fluid Detalle_de_IngredientesCreateForm" id="viewmodeledit">
+							<div class="tabs-container">
+											<ul class="nav nav-tabs">
+				@@groupers@@
+											</ul>
+										<div class="tab-content">
+				<div class="form-group" id="divClave">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_de_IngredientesResources.Clave</label>
+                                <div class="col-sm-8" data-field-id="Clave" data-attribute="254833" data-field-name="@Resources.Detalle_de_IngredientesResources.Clave">
+                                    <label class="form-control" for="Detalle_de_IngredientesClave" id="Detalle_de_IngredientesClave">@Model.Clave</label>
+                                </div>
+                            </div>
+<div class="form-group" id="divCantidad">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_de_IngredientesResources.Cantidad</label>
+                                <div class="col-sm-8" data-field-id="Cantidad" data-attribute="254834" data-field-name="@Resources.Detalle_de_IngredientesResources.Cantidad">
+                                    <input class="form-control" id="Detalle_de_IngredientesCantidad" name="Detalle_de_IngredientesCantidad" type="text" value="@Model.Cantidad">
+                                </div>
+                            </div>
+<div class="form-group" id="divUnidad">
+	<label class="col-sm-2 control-label">@Resources.Detalle_de_IngredientesResources.Unidad</label>
+	<div class="col-sm-8" data-field-id="Unidad" data-attribute="254849" data-field-name="@Resources.Detalle_de_IngredientesResources.Unidad">
+		<select class="form-control" data-val="true" data-val-number="The field Unidad must be a number." data-val-required="The Unidad field is required." id="Detalle_de_IngredientesUnidad" name="Detalle_de_IngredientesUnidad">
+			<option value=""></option>
+			@if (varUnidades_de_Medida_Unidad != null){ 
+				foreach (var itemUnidad in varUnidades_de_Medida_Unidad)
+				{
+					if (itemUnidad.Value == Convert.ToString(Model.Unidad))
+					{
+						<option value="@itemUnidad.Value" selected>@itemUnidad.Text</option>
+					}
+					else
+					{
+						<option value="@itemUnidad.Value">@itemUnidad.Text</option>
+					}
+				}
+			}
+		</select>
+	</div>
+</div>
+<div class="form-group" id="divNombre_del_Ingrediente">
+	<label class="col-sm-2 control-label">@Resources.Detalle_de_IngredientesResources.Nombre_del_Ingrediente</label>
+	<div class="col-sm-8" data-field-id="Nombre_del_Ingrediente" data-attribute="254848" data-field-name="@Resources.Detalle_de_IngredientesResources.Nombre_del_Ingrediente">
+		<select class="form-control" data-val="true" data-val-number="The field Nombre del Ingrediente must be a number." data-val-required="The Nombre del Ingrediente field is required." id="Detalle_de_IngredientesNombre_del_Ingrediente" name="Detalle_de_IngredientesNombre_del_Ingrediente">
+			<option value=""></option>
+			@if (varIngredientes_Nombre_del_Ingrediente != null){ 
+				foreach (var itemNombre_del_Ingrediente in varIngredientes_Nombre_del_Ingrediente)
+				{
+					if (itemNombre_del_Ingrediente.Value == Convert.ToString(Model.Nombre_del_Ingrediente))
+					{
+						<option value="@itemNombre_del_Ingrediente.Value" selected>@itemNombre_del_Ingrediente.Text</option>
+					}
+					else
+					{
+						<option value="@itemNombre_del_Ingrediente.Value">@itemNombre_del_Ingrediente.Text</option>
+					}
+				}
+			}
+		</select>
+	</div>
+</div>
+<div class="form-group" id="divNombre_de_presentacion">
+	<label class="col-sm-2 control-label">@Resources.Detalle_de_IngredientesResources.Nombre_de_presentacion</label>
+	<div class="col-sm-8" data-field-id="Nombre_de_presentacion" data-attribute="254861" data-field-name="@Resources.Detalle_de_IngredientesResources.Nombre_de_presentacion">
+		<select class="form-control" data-val="true" data-val-number="The field Nombre de presentacion must be a number." data-val-required="The Nombre de presentacion field is required." id="Detalle_de_IngredientesNombre_de_presentacion" name="Detalle_de_IngredientesNombre_de_presentacion">
+			<option value=""></option>
+			@if (varPresentacion_Nombre_de_presentacion != null){ 
+				foreach (var itemNombre_de_presentacion in varPresentacion_Nombre_de_presentacion)
+				{
+					if (itemNombre_de_presentacion.Value == Convert.ToString(Model.Nombre_de_presentacion))
+					{
+						<option value="@itemNombre_de_presentacion.Value" selected>@itemNombre_de_presentacion.Text</option>
+					}
+					else
+					{
+						<option value="@itemNombre_de_presentacion.Value">@itemNombre_de_presentacion.Text</option>
+					}
+				}
+			}
+		</select>
+	</div>
+</div>
+<div class="form-group" id="divNombre_de_Marca">
+	<label class="col-sm-2 control-label">@Resources.Detalle_de_IngredientesResources.Nombre_de_Marca</label>
+	<div class="col-sm-8" data-field-id="Nombre_de_Marca" data-attribute="254862" data-field-name="@Resources.Detalle_de_IngredientesResources.Nombre_de_Marca">
+		<select class="form-control" data-val="true" data-val-number="The field Nombre de Marca must be a number." data-val-required="The Nombre de Marca field is required." id="Detalle_de_IngredientesNombre_de_Marca" name="Detalle_de_IngredientesNombre_de_Marca">
+			<option value=""></option>
+			@if (varMarca_Nombre_de_Marca != null){ 
+				foreach (var itemNombre_de_Marca in varMarca_Nombre_de_Marca)
+				{
+					if (itemNombre_de_Marca.Value == Convert.ToString(Model.Nombre_de_Marca))
+					{
+						<option value="@itemNombre_de_Marca.Value" selected>@itemNombre_de_Marca.Text</option>
+					}
+					else
+					{
+						<option value="@itemNombre_de_Marca.Value">@itemNombre_de_Marca.Text</option>
+					}
+				}
+			}
+		</select>
+	</div>
+</div>
+
+								</div>	
+							</div>
+									<br />
+											<div class="form-actions fluid">
+												<input type="hidden" value="@Model.Clave" id="ReferenceClave" />
+												<input type="hidden" value="@Model.Clave" name="Clave" id="ClaveId" />
+												@if (!ViewBag.Consult)
+												{
+													<div id="dvSaveJob" style="display:inline-block"></div>
+
+													<button type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton">
+														<i class="fa fa-cogs fa-spin"></i>
+													</button>
+													<a title="@Resources.Resources.Configure" id="Detalle_de_IngredientesConfigureSave" name="Detalle_de_IngredientesConfigureSave" onclick="SaveElementAttributes()" class="btn btn-success">@Resources.Resources.Configure</a>
+												}
+
+												<input type="hidden" id="hdnDetalle_de_IngredientesConfigureType" />
+												<input type="hidden" id="hdnDetalle_de_IngredientesBusinessRuleFieldId" />
+												<input type="hidden" id="hdnDetalle_de_IngredientesBusinessRuleFieldName" />
+												<input type="hidden" id="hdnDetalle_de_IngredientesBusinessRuleAttribute" />
+
+												<input data-dismiss="modal" type="button" value="@Resources.Resources.Cancelar" class="btn btn-danger noConsult" data-bind="click: cancel" tabindex="16" />
+
+												<button onclick="Detalle_de_IngredientesGetBusinessRule('', 'Al Cancelar', '3')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Detalle_de_IngredientesBusinessRule-form">
+													<a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+														<i class="fa fa-cogs fa-spin"></i>
+													</a>
+												</button>
+											</div>
+										</div>
+								}
+
+							</div>
+						</div>
+					</div>
+				</div>
+					<input id="hdnApplicationDirectory" type="hidden" value="@Url.Content("~/")" />
+				</div>
+			</div>
+		</div>
+</div>
+@section Styles {
+<link href="@Url.Content("~/Content/BootstrapDatePicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+    @Styles.Render("~/plugins/awesomeCheckboxStyles")
+    @Styles.Render("~/plugins/select2Styles")
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+    .select2-results{background-color:#fff;}
+    .select2-container .select2-dropdown{height:auto !important;}
+
+    div.dataTables_info {
+        display: inline-block;
+        float: right;
+    }
+        i {
+        font-size: 25px !important;
+        display: block;
+        color: #676a6c;
+        margin-left: 6px;
+        margin-right: 6px;
+    }
+
+    .fullWidth {
+        width: 100%;
+    }
+</style>
+}
+
+<script type="text/javascript" src="~/Uploads/Scripts/Detalle_de_Ingredientes.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Scripts/Custom/Detalle_de_IngredientesGeneral.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/Detalle_de_IngredientesCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/PlatillosCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
+
+    <script type="text/javascript">
+        
+
+
+
+        $(document).ready(function () {
+			var currentIndex = @ViewBag.currentRowIndex
+
+            var Detalle_de_IngredientesRowElement = "Detalle_de_IngredientesPop_" + currentIndex.toString();
+            var abc = "if(dynamicFieldValidation('" + Detalle_de_IngredientesRowElement + "')){ Detalle_de_IngredientesInsertRowFromPopup(" + currentIndex + "); }";
+            var insertRowHTML = '<a class="btn btn-primary m-b" onclick="' + abc + '">Save</a>';
+            $('#dvSaveJob').html(insertRowHTML);
+			
+
+
+            initiateUIControls();
+            EjecutarValidacionesAlComienzo();
+			$('a').tooltip();
+        });
+
+
+
+        function initiateUIControls() {
+            $('.gridDatePicker').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            //Time Picker
+            $('.gridTimePicker').clockpicker();
+
+        }
+		
+		function SendDetalle_de_IngredientesData(callBack) {
+			
+					
+		 var arr = []; 
+		 $("form#CreateDetalle_de_Ingredientes").find(':input').each(function( index ) {		 
+			if ($(this).prop('disabled')==true|| $(this).prop('disabled')=="disabled")
+			{		
+				arr.push($(this).attr('id')); 
+				$(this).prop('disabled', false);  	
+			}
+	    });
+		
+             var formData = new FormData($("form#CreateDetalle_de_Ingredientes")[0]);
+			$.each( arr, function( key, value ) {
+			  $('#' +value).prop('disabled', true);
+			});
+
+            var isNew = $('#hdnIsNew').val();
+           
+            if (checkClientValidate('Detalle_de_IngredientesCreateForm')) {
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Detalle_de_Ingredientes/Post?IsNew=")' + isNew,
+                    type: 'POST',
+                    data: formData,
+                    async: true,
+                    success: function (result) {
+                        if (result < 0) {
+                            showNotification("@Resources.Resources.ErrorSave", "error");
+                        } else {
+
+                            showNotification("@Resources.Resources.SaveSuccess", "success");
+                            callBack(result);
+                        }
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            }
+            return false;
+        };
+		
+        function GetPropertyBag() {
+            $.get('@Url.Action("Detalle_de_IngredientesPropertyBag", "Detalle_de_Ingredientes")', function (data) {
+                $(".PropertyModal").html(data);
+            });
+        }
+        function Detalle_de_IngredientesGetBusinessRule(FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null)
+			{
+				$('#hdnDetalle_de_IngredientesBusinessRuleFieldId').val(FieldId);
+				$('#hdnDetalle_de_IngredientesBusinessRuleFieldName').val(FieldName);
+				$('#hdnDetalle_de_IngredientesBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("BusinessRule", "BussinessRule")', { FieldId: $('#hdnDetalle_de_IngredientesBusinessRuleFieldId').val(), FieldName: $('#hdnDetalle_de_IngredientesBusinessRuleFieldName').val(), ObjectId: '43968', Attribute: $('#hdnDetalle_de_IngredientesBusinessRuleAttribute').val(), Screen: 'Detalle_de_Ingredientes' }, function (data) {
+                $(".Detalle_de_IngredientesBusinessRuleModal").html(data);
+            });
+        }
+        function Detalle_de_IngredientesGetAddBusinessRule(RuleId, FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null) {
+				$('#hdnDetalle_de_IngredientesBusinessRuleFieldId').val(FieldId);
+				$('#hdnDetalle_de_IngredientesBusinessRuleFieldName').val(FieldName);
+				$('#hdnDetalle_de_IngredientesBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("AddBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnDetalle_de_IngredientesBusinessRuleFieldId').val(), FieldName: $('#hdnDetalle_de_IngredientesBusinessRuleFieldName').val(), ObjectId: '43968', Attribute: $('#hdnDetalle_de_IngredientesBusinessRuleAttribute').val(), Screen: 'Detalle_de_Ingredientes' }, function (data) {
+                $(".Detalle_de_IngredientesAddBusinessRuleModal").html(data);
+                $(".datatable").DataTable();
+            });
+        }
+		function RemoveBusinessRule(RuleId) {
+			$.get('@Url.Action("RemoveBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnDetalle_de_IngredientesBusinessRuleFieldId').val(), FieldName: $('#hdnDetalle_de_IngredientesBusinessRuleFieldName').val(), ObjectId: '43968', Attribute: $('#hdnDetalle_de_IngredientesBusinessRuleAttribute').val(), Screen: 'Detalle_de_Ingredientes' }, function (data) {
+				$(".Detalle_de_IngredientesBusinessRuleModal").html(data);
+			});
+		}
+
+    var permission = {
+        Consult: '@permission.Consult' == 'True',
+        New: '@permission.New' == 'True',
+        Edit: '@permission.Edit' == 'True',
+        Delete: '@permission.Delete' == 'True',
+        Export: '@permission.Export' == 'True',
+        Print: '@permission.Print' == 'True',
+        Configure: '@permission.Configure' == 'True',
+    };
+
+    
+    //MR-var statusItems;
+    //MR-var stateItems;
+    //MR-var cityItems = [];
+    var isConsultMode = "@ViewBag.Consult" == "True";
+    Consult(isConsultMode);
+        function Consult(val) {
+            if (val) {
+                $(':input').attr('readonly', 'readonly');
+                $(':input').attr('disabled', 'true');
+                $('.noConsult').removeAttr('readonly');
+                $('.noConsult').removeAttr('disabled');
+            }
+        }
+
+    function BackToGrid() {
+        location.href = "@Url.Content("~/Frontal/Detalle_de_Ingredientes/")";
+    }
+	
+	function ReadScriptSettings(callback)
+    {
+        $.post("@Url.Content("~/Frontal/Detalle_de_Ingredientes/ReadScriptSettings")", function (data) {
+            mainElementObject = JSON.parse(data.MainElement);
+			if (data.ChildElement != null) {
+                childElementObject = JSON.parse(data.ChildElement);
+            }
+            callback();
+        });
+    }
+
+    function SaveSettingsWithoutReload() {
+        $.post("@Url.Content("~/Frontal/Detalle_de_Ingredientes/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+            //$('#hdnDetalle_de_IngredientesConfigureType').val("0");
+        }, "json");
+    }
+	
+        function SaveElementAttributes() {
+            if ($('#hdnDetalle_de_IngredientesConfigureType').val() == "1") {
+                $.post("@Url.Content("~/Frontal/Detalle_de_Ingredientes/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+                    $('#hdnDetalle_de_IngredientesConfigureType').val("0");
+                    location.reload(true);
+                }, "json");
+            } else {
+                $.post("@Url.Content("~/Frontal/Detalle_de_Ingredientes/ReadScriptSettings")", function (data) {
+                    mainElementObject = JSON.parse(data.MainElement);
+                    childElementObject = JSON.parse(data.ChildElement);
+
+                    for (var i = 0; i < mainElementObject.length; i++) {
+                        var mainElementAttributes = '<div class="col-sm-2">';
+                        mainElementAttributes += '<div class="displayAttributes requiredAttribute"><a class="requiredClick" title="' + (mainElementObject[i].IsRequired == true ? "Required" : "Not Required") + '" onclick="setRequired(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsRequired == true ? "@Url.Content("~/Images/Required.png")" : "@Url.Content("~/Images/Not-Required.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes visibleAttribute"><a class="visibleClick" title="' + (mainElementObject[i].IsVisible == true ? "Visible" : "In Visible") + '" onclick="setVisible(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsVisible == true ? "@Url.Content("~/Images/Visible.png")" : "@Url.Content("~/Images/InVisible.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes readOnlyAttribute"><a class="readOnlyClick" title="' + (mainElementObject[i].IsReadOnly == true ? "Disabled" : "Enabled") + '" onclick="setReadOnly(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsReadOnly == true ? "@Url.Content("~/Images/Disabled.png")" : "@Url.Content("~/Images/Enabled.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes defaultValueAttribute"><a id="hlDefaultValue_' + i.toString() + '" class="defaultValueClick" title="' + (mainElementObject[i].DefaultValue) + '" onclick="setDefaultValue(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].DefaultValue != '' && mainElementObject[i].DefaultValue != null ? "@Url.Content("~/Images/default-value.png")" : "@Url.Content("~/Images/Not-Default-Value.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes helpTextAttribute"><a id="hlHelpText_' + i.toString() + '" class="helpTextClick" title="' + (mainElementObject[i].HelpText) + '" onclick="setHelpText(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].HelpText != '' && mainElementObject[i].HelpText != null ? "@Url.Content("~/Images/green-help.png")" : "@Url.Content("~/Images/red-help.jpg")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '</div>';
+                        $('#Detalle_de_Ingredientes' + mainElementObject[i].inputId).parent().closest('.form-group').show();
+
+                        $('#Detalle_de_Ingredientes' + mainElementObject[i].inputId).closest('.col-sm-8').after(mainElementAttributes);
+                    }
+					if (childElementObject != null) {
+						for (var i = 0; i < childElementObject.length; i++) {
+							$('.' + childElementObject[i].inputId + 'Header').show();
+							$('.' + childElementObject[i].inputId).parent().show();
+							$('.' + childElementObject[i].inputId + 'Header').append(returnAttributeHTML(i));
+						}
+					}
+                    $('#Detalle_de_IngredientesConfigureSave').text('Save Settings');
+                    $('#hdnDetalle_de_IngredientesConfigureType').val("1");
+                });
+            }
+        }
+		$('#CreateDetalle_de_Ingredientes').on('click', '.btnPopupBusinessRules', function () {
+			var fieldId = $(this).data('field-id');
+			var fieldName = $(this).data('field-name');
+			var attribute = $(this).data('attribute');
+			$('#hdnDetalle_de_IngredientesBusinessRuleFieldId').val(fieldId);
+			$('#hdnDetalle_de_IngredientesBusinessRuleFieldName').val(fieldName);
+			$('#hdnDetalle_de_IngredientesBusinessRuleAttribute').val(attribute);
+		});
+		//Initialize HTML Editors
+		
+    </script>

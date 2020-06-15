@@ -1,0 +1,2201 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Globalization
+@using Spartane.Core.Domain.Permission
+@using Spartane.Core.Domain.Spartane_File
+@*@model Spartane.Core.Domain.Spartan_Business_Rule.Spartan_Business_Rule*@
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Spartan_Business_RuleModel
+@{
+
+    string Registration_Date = "";
+    if (Model.Registration_Date == "")
+    { Model.Registration_Date = DateTime.Now.ToString(ConfigurationProperty.DateFormat); }
+
+
+    Permission permissionSpartan_BR_Scope_Detail = ViewBag.PermissionSpartan_BR_Scope_Detail;
+    Permission permissionSpartan_BR_Operation_Detail = ViewBag.PermissionSpartan_BR_Operation_Detail;
+    Permission permissionSpartan_BR_Process_Event_Detail = ViewBag.PermissionSpartan_BR_Process_Event_Detail;
+    Permission permissionSpartan_BR_Conditions_Detail = ViewBag.PermissionSpartan_BR_Conditions_Detail;
+    Permission permissionSpartan_BR_Actions_True_Detail = ViewBag.PermissionSpartan_BR_Actions_True_Detail;
+    Permission permissionSpartan_BR_Actions_False_Detail = ViewBag.PermissionSpartan_BR_Actions_False_Detail;
+    Permission permissionSpartan_BR_Modifications_Log = ViewBag.PermissionSpartan_BR_Modifications_Log;
+
+    Permission permission = ViewBag.Permission;
+}
+@Scripts.Render("~/plugins/dataTables")
+
+<script src="@Url.Content("~/Scripts/BootstrapDatePicker/moment.js")"></script>
+<script src="@Url.Content("~/Scripts/BootstrapDatePicker/bootstrap-datetimepicker.js")"></script>
+
+<div class="modal fade in" id="dvAttributeValue" style="background-color:rgba(0, 0, 0, 0.7);">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" id="lblAttributeType">Value</label>
+                    <div class="col-sm-7">
+                        <input type="text" title="Value" class="form-control" id="txtAttributeValue" />
+                    </div>
+                    <div class="col-sm-2">
+                        <a class="btn btn-primary" onclick="SaveValue()">Submit</a>
+                    </div>
+                    <input type="hidden" id="hdnAttributType" />
+                    <input type="hidden" id="hdnAttributElement" />
+                    <input type="hidden" id="hdnAttributNumber" />
+                    <input type="hidden" id="hdnElementType" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row wrapper border-bottom white-bg page-heading">
+
+    <div class="row">
+        <div class="col-lg-10">
+            <h2>
+                Business Rule
+                <button onclick="GetBusinessRule()" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#BusinessRule-form">
+                    <i class="fa fa-cogs fa-spin"></i>
+                </button>
+            </h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">@Resources.Resources.Home</a>
+                </li>
+                <li class="">
+                    <label>@Resources.Spartan_Business_RuleResources.Spartan_Business_Rule</label>
+                </li>
+                <li class="active">
+                    <strong>@Resources.Resources.Create</strong>
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-2">
+
+            @{
+                if (Convert.ToInt32(Spartane.Web.SessionHelper.Role) == (int)Spartane.Core.Enums.SpartanRoleEnum.Admin)
+                {
+                    <h2>&nbsp;</h2>
+                    <button onclick="DisplayBusinessRule()" type="button" class="btn btn-info btn-lg displayBusinessProperyButton">
+                        <i class="fa fa-cogs fa-spin"></i>
+                    </button>
+
+                    <div aria-hidden="true" class="modal fade in PropertyBusinessModal" id="PropertyBusinessModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">
+                                        Property & Business Rules
+                                        <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                                    </h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <a class="btn btn-primary full-width" data-dismiss="modal" data-toggle="modal" data-target="#PropertyModal-form" onclick="GetPropertyBag()">Properties</a>
+                                        </div>
+                                        <div class="clearfix col-sm-12">&nbsp;</div>
+                                        <div class="col-sm-12">
+                                            <a class="btn btn-primary full-width" data-dismiss="modal" data-toggle="modal" data-target="#BusinessRule-form" onclick="GetBusinessRule()">Business Rule</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div aria-hidden="true" class="modal fade in PropertyModal" id="PropertyModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                    </div>
+
+                    <div aria-hidden="true" class="modal fade in BusinessRuleModal" id="BusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                    </div>
+
+                    <div aria-hidden="true" class="modal fade in AddBusinessRuleModal" id="AddBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                    </div>
+
+                    <div aria-hidden="true" class="modal fade in AddSpartan_BR_Scope_DetailModal" id="AddSpartan_BR_Scope_Detail-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                    </div>
+
+                    <div aria-hidden="true" class="modal fade in AddSpartan_BR_Operation_DetailModal" id="AddSpartan_BR_Operation_Detail-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                    </div>
+
+                    <div aria-hidden="true" class="modal fade in AddSpartan_BR_Process_Event_DetailModal" id="AddSpartan_BR_Process_Event_Detail-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                    </div>
+
+                    <div aria-hidden="true" class="modal fade in AddSpartan_BR_Conditions_DetailModal" id="AddSpartan_BR_Conditions_Detail-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                    </div>
+
+                    <div aria-hidden="true" class="modal fade in AddSpartan_BR_Actions_True_DetailModal" id="AddSpartan_BR_Actions_True_Detail-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                    </div>
+
+                    <div aria-hidden="true" class="modal fade in AddSpartan_BR_Actions_False_DetailModal" id="AddSpartan_BR_Actions_False_Detail-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                    </div>
+
+                    <div aria-hidden="true" class="modal fade in AddSpartan_BR_Modifications_LogModal" id="AddSpartan_BR_Modifications_Log-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                    </div>
+
+
+                }
+            }
+        </div>
+    </div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            @using (Html.BeginForm("Post", "Spartan_Business_Rule", FormMethod.Post, new { id = "CreateSpartan_Business_Rule", @readonly = "true", @class = "form-horizontal", enctype = "multipart/form-data" }))
+            {
+                @*<script src="~/Scripts/BootstrapDatePicker/bootstrap-datetimepicker.js"></script>*@
+                <script src="@Url.Content("~/Scripts/BootstrapDatePicker/bootstrap-datetimepicker.js")"></script>
+                <span id="popupNotification"></span>
+                <div class="container-fluid Spartan_Business_RuleCreateForm" id="viewmodeledit">
+			<div class="tabs-container">
+                        	<ul class="nav nav-tabs">
+<li class="active"><a data-toggle="tab" href="#tabDatos_Generales"> Datos Generales</a></li>
+<li class=""><a data-toggle="tab" href="#tabConditions"> Conditions</a></li>
+<li class=""><a data-toggle="tab" href="#tabActions"> Actions</a></li>
+<li class=""><a data-toggle="tab" href="#tabModifications_Log"> Modifications Log</a></li>
+<li class=""><a data-toggle="tab" href="#tabImplementation_Code"> Implementation Code</a></li>
+
+                        	</ul>
+	                	<div class="tab-content">
+                            <div id="tabDatos_Generales" class="tab-pane active">
+                                <div class="panel-body">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Business_RuleResources.BusinessRuleId</label>
+                                <div class="col-sm-8">
+                                    <label class="form-control" for="BusinessRuleId" id="lblBusinessRuleId">@Model.BusinessRuleId</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Business_RuleResources.Registration_Date</label>
+                                <div class="col-sm-8">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input class="form-control col-md-12" id="Registration_Date" readonly="readonly" name="Registration_Date" type="text" value="@Model.Registration_Date">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Business_RuleResources.Registration_Hour</label>
+                                <div class="col-sm-8">
+                                    <div class='input-group date' id='timePicker'>
+                                        <input class="form-control col-md-12" id="Registration_Hour" readonly="readonly" name="Registration_Hour" type="text" data-autoclose="true" value="@Model.Registration_Hour">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-time"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Business_RuleResources.User_who_registers</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control inputNumber" id="User_who_registers" name="User_who_registers" type="text" value="@Model.User_who_registers">
+                                    @*<span class="field-validation-valid" data-valmsg-for="User_who_registers" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Business_RuleResources.Description</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="Description" name="Description" type="text" value="@Model.Description">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Description" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Business_RuleResources.Object</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control inputNumber" id="Object" name="Object" type="text" value="@Model.Object">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Object" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="ibox-title">
+                                <h5>@Resources.Spartan_BR_Scope_DetailResources.Spartan_BR_Scope_Detail</h5>
+                                <div class="ibox-tools">
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="">
+                                    <a onclick="Spartan_BR_Scope_DetailfnClickAddRow();" href="javascript:void(0);" title="@Resources.Resources.AddNewRow" class="btn btn-primary @( !permissionSpartan_BR_Scope_Detail.New || ViewBag.Consult ? "disabled" : "")">
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                    </a>
+                                    @*<a onclick="Spartan_BR_Scope_DetailfnOpenAddRowPopUp();" data-toggle="modal" title="@Resources.Resources.AddNewRow" data-target="#AddSpartan_BR_Scope_Detail-form" data-backdrop="static" data-keyboard="false" class="btn btn-primary @( !permissionSpartan_BR_Scope_Detail.New || ViewBag.Consult ? "disabled" : "")">
+                                    <i class="glyphicon glyphicon-new-window"></i>
+                                    </a>*@
+                                </div>
+
+                                <br />
+
+                                <div style='overflow-x: auto;'>
+                                    <table class="table table-striped table-bordered table-hover childValidateTable" id="Spartan_BR_Scope_DetailGrid">
+                                        <thead>
+                                            <tr>
+                                                <th class="ActionHeader"><span>@Resources.Resources.Actions</span></th>
+                                                <th class="ScopeHeader"><span>@Resources.Spartan_BR_Scope_DetailResources.Scope</span></th>
+
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Business_RuleResources.Attribute</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control inputNumber" id="Attribute" name="Attribute" type="text" value="@Model.Attribute">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Attribute" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="ibox-title">
+                                <h5>@Resources.Spartan_BR_Operation_DetailResources.Spartan_BR_Operation_Detail</h5>
+                                <div class="ibox-tools">
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="">
+                                    <a onclick="Spartan_BR_Operation_DetailfnClickAddRow();" href="javascript:void(0);" title="@Resources.Resources.AddNewRow" class="btn btn-primary @( !permissionSpartan_BR_Operation_Detail.New || ViewBag.Consult ? "disabled" : "")">
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                    </a>
+                                    @*<a onclick="Spartan_BR_Operation_DetailfnOpenAddRowPopUp();" data-toggle="modal" title="@Resources.Resources.AddNewRow" data-target="#AddSpartan_BR_Operation_Detail-form" data-backdrop="static" data-keyboard="false" class="btn btn-primary @( !permissionSpartan_BR_Operation_Detail.New || ViewBag.Consult ? "disabled" : "")">
+                                    <i class="glyphicon glyphicon-new-window"></i>
+                                    </a>*@
+                                </div>
+
+                                <br />
+
+                                <div style='overflow-x: auto;'>
+                                    <table class="table table-striped table-bordered table-hover childValidateTable" id="Spartan_BR_Operation_DetailGrid">
+                                        <thead>
+                                            <tr>
+                                                <th class="ActionHeader"><span>@Resources.Resources.Actions</span></th>
+                                                <th class="OperationHeader"><span>@Resources.Spartan_BR_Operation_DetailResources.Operation</span></th>
+
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="ibox-title">
+                                <h5>@Resources.Spartan_BR_Process_Event_DetailResources.Spartan_BR_Process_Event_Detail</h5>
+                                <div class="ibox-tools">
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="">
+                                    <a onclick="Spartan_BR_Process_Event_DetailfnClickAddRow();" href="javascript:void(0);" title="@Resources.Resources.AddNewRow" class="btn btn-primary @( !permissionSpartan_BR_Process_Event_Detail.New || ViewBag.Consult ? "disabled" : "")">
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                    </a>
+                                    @*<a onclick="Spartan_BR_Process_Event_DetailfnOpenAddRowPopUp();" data-toggle="modal" title="@Resources.Resources.AddNewRow" data-target="#AddSpartan_BR_Process_Event_Detail-form" data-backdrop="static" data-keyboard="false" class="btn btn-primary @( !permissionSpartan_BR_Process_Event_Detail.New || ViewBag.Consult ? "disabled" : "")">
+                                    <i class="glyphicon glyphicon-new-window"></i>
+                                    </a>*@
+                                </div>
+
+                                <br />
+
+                                <div style='overflow-x: auto;'>
+                                    <table class="table table-striped table-bordered table-hover childValidateTable" id="Spartan_BR_Process_Event_DetailGrid">
+                                        <thead>
+                                            <tr>
+                                                <th class="ActionHeader"><span>@Resources.Resources.Actions</span></th>
+                                                <th class="Process_EventHeader"><span>@Resources.Spartan_BR_Process_Event_DetailResources.Process_Event</span></th>
+
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                            </div>
+                                </div>
+
+
+                            <div id="tabConditions" class="tab-pane">
+                                <div class="panel-body">
+                            <div class="ibox-title">
+                                <h5>@Resources.Spartan_BR_Conditions_DetailResources.Spartan_BR_Conditions_Detail</h5>
+                                <div class="ibox-tools">
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="">
+                                    <a onclick="Spartan_BR_Conditions_DetailfnClickAddRow();" href="javascript:void(0);" title="@Resources.Resources.AddNewRow" class="btn btn-primary @( !permissionSpartan_BR_Conditions_Detail.New || ViewBag.Consult ? "disabled" : "")">
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                    </a>
+                                    @*<a onclick="Spartan_BR_Conditions_DetailfnOpenAddRowPopUp();" data-toggle="modal" title="@Resources.Resources.AddNewRow" data-target="#AddSpartan_BR_Conditions_Detail-form" data-backdrop="static" data-keyboard="false" class="btn btn-primary @( !permissionSpartan_BR_Conditions_Detail.New || ViewBag.Consult ? "disabled" : "")">
+                                    <i class="glyphicon glyphicon-new-window"></i>
+                                    </a>*@
+                                </div>
+
+                                <br />
+
+                                <div style='overflow-x: auto;'>
+                                    <table class="table table-striped table-bordered table-hover childValidateTable" id="Spartan_BR_Conditions_DetailGrid">
+                                        <thead>
+                                            <tr>
+                                                <th class="ActionHeader"><span>@Resources.Resources.Actions</span></th>
+                                                <th class="Condition_OperatorHeader"><span>@Resources.Spartan_BR_Conditions_DetailResources.Condition_Operator</span></th>
+                                                <th class="First_Operator_TypeHeader"><span>@Resources.Spartan_BR_Conditions_DetailResources.First_Operator_Type</span></th>
+                                                <th class="First_Operator_ValueHeader"><span>@Resources.Spartan_BR_Conditions_DetailResources.First_Operator_Value</span></th>
+                                                <th class="ConditionHeader"><span>@Resources.Spartan_BR_Conditions_DetailResources.Condition</span></th>
+                                                <th class="Second_Operator_TypeHeader"><span>@Resources.Spartan_BR_Conditions_DetailResources.Second_Operator_Type</span></th>
+                                                <th class="Second_Operator_ValueHeader"><span>@Resources.Spartan_BR_Conditions_DetailResources.Second_Operator_Value</span></th>
+
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                            </div>
+                                </div>
+
+
+                            <div id="tabActions" class="tab-pane">
+                                <div class="panel-body">
+                            <div class="ibox-title">
+                                <h5>@Resources.Spartan_BR_Actions_True_DetailResources.Spartan_BR_Actions_True_Detail</h5>
+                                <div class="ibox-tools">
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="">
+                                    <a onclick="Spartan_BR_Actions_True_DetailfnClickAddRow();" href="javascript:void(0);" title="@Resources.Resources.AddNewRow" class="btn btn-primary @( !permissionSpartan_BR_Actions_True_Detail.New || ViewBag.Consult ? "disabled" : "")">
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                    </a>
+                                    @*<a onclick="Spartan_BR_Actions_True_DetailfnOpenAddRowPopUp();" data-toggle="modal" title="@Resources.Resources.AddNewRow" data-target="#AddSpartan_BR_Actions_True_Detail-form" data-backdrop="static" data-keyboard="false" class="btn btn-primary @( !permissionSpartan_BR_Actions_True_Detail.New || ViewBag.Consult ? "disabled" : "")">
+                                    <i class="glyphicon glyphicon-new-window"></i>
+                                    </a>*@
+                                </div>
+
+                                <br />
+
+                                <div style='overflow-x: auto;'>
+                                    <table class="table table-striped table-bordered table-hover childValidateTable" id="Spartan_BR_Actions_True_DetailGrid">
+                                        <thead>
+                                            <tr>
+                                                <th class="ActionHeader"><span>@Resources.Resources.Actions</span></th>
+                                                <th class="Action_ClassificationHeader"><span>@Resources.Spartan_BR_Actions_True_DetailResources.Action_Classification</span></th>
+                                                <th class="ActionHeader"><span>@Resources.Spartan_BR_Actions_True_DetailResources.Action</span></th>
+                                                <th class="Action_ResultHeader"><span>@Resources.Spartan_BR_Actions_True_DetailResources.Action_Result</span></th>
+                                                <th class="Parameter_1Header"><span>@Resources.Spartan_BR_Actions_True_DetailResources.Parameter_1</span></th>
+                                                <th class="Parameter_2Header"><span>@Resources.Spartan_BR_Actions_True_DetailResources.Parameter_2</span></th>
+                                                <th class="Paramater_3Header"><span>@Resources.Spartan_BR_Actions_True_DetailResources.Paramater_3</span></th>
+                                                <th class="Paramater_4Header"><span>@Resources.Spartan_BR_Actions_True_DetailResources.Paramater_4</span></th>
+                                                <th class="Parameter_5Header"><span>@Resources.Spartan_BR_Actions_True_DetailResources.Parameter_5</span></th>
+
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="ibox-title">
+                                <h5>@Resources.Spartan_BR_Actions_False_DetailResources.Spartan_BR_Actions_False_Detail</h5>
+                                <div class="ibox-tools">
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="">
+                                    <a onclick="Spartan_BR_Actions_False_DetailfnClickAddRow();" href="javascript:void(0);" title="@Resources.Resources.AddNewRow" class="btn btn-primary @( !permissionSpartan_BR_Actions_False_Detail.New || ViewBag.Consult ? "disabled" : "")">
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                    </a>
+                                    @*<a onclick="Spartan_BR_Actions_False_DetailfnOpenAddRowPopUp();" data-toggle="modal" title="@Resources.Resources.AddNewRow" data-target="#AddSpartan_BR_Actions_False_Detail-form" data-backdrop="static" data-keyboard="false" class="btn btn-primary @( !permissionSpartan_BR_Actions_False_Detail.New || ViewBag.Consult ? "disabled" : "")">
+                                    <i class="glyphicon glyphicon-new-window"></i>
+                                    </a>*@
+                                </div>
+
+                                <br />
+
+                                <div style='overflow-x: auto;'>
+                                    <table class="table table-striped table-bordered table-hover childValidateTable" id="Spartan_BR_Actions_False_DetailGrid">
+                                        <thead>
+                                            <tr>
+                                                <th class="ActionHeader"><span>@Resources.Resources.Actions</span></th>
+                                                <th class="Action_ClassificationHeader"><span>@Resources.Spartan_BR_Actions_False_DetailResources.Action_Classification</span></th>
+                                                <th class="ActionHeader"><span>@Resources.Spartan_BR_Actions_False_DetailResources.Action</span></th>
+                                                <th class="Action_ResultHeader"><span>@Resources.Spartan_BR_Actions_False_DetailResources.Action_Result</span></th>
+                                                <th class="Parameter_1Header"><span>@Resources.Spartan_BR_Actions_False_DetailResources.Parameter_1</span></th>
+                                                <th class="Parameter_2Header"><span>@Resources.Spartan_BR_Actions_False_DetailResources.Parameter_2</span></th>
+                                                <th class="Parameter_3Header"><span>@Resources.Spartan_BR_Actions_False_DetailResources.Parameter_3</span></th>
+                                                <th class="Parameter_4Header"><span>@Resources.Spartan_BR_Actions_False_DetailResources.Parameter_4</span></th>
+                                                <th class="Parameter_5Header"><span>@Resources.Spartan_BR_Actions_False_DetailResources.Parameter_5</span></th>
+
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                            </div>
+                                </div>
+
+
+                            <div id="tabModifications_Log" class="tab-pane">
+                                <div class="panel-body">
+                            <div class="ibox-title">
+                                <h5>@Resources.Spartan_BR_Modifications_LogResources.Spartan_BR_Modifications_Log</h5>
+                                <div class="ibox-tools">
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="">
+                                    <a onclick="Spartan_BR_Modifications_LogfnClickAddRow();" href="javascript:void(0);" title="@Resources.Resources.AddNewRow" class="btn btn-primary @( !permissionSpartan_BR_Modifications_Log.New || ViewBag.Consult ? "disabled" : "")">
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                    </a>
+                                    @*<a onclick="Spartan_BR_Modifications_LogfnOpenAddRowPopUp();" data-toggle="modal" title="@Resources.Resources.AddNewRow" data-target="#AddSpartan_BR_Modifications_Log-form" data-backdrop="static" data-keyboard="false" class="btn btn-primary @( !permissionSpartan_BR_Modifications_Log.New || ViewBag.Consult ? "disabled" : "")">
+                                    <i class="glyphicon glyphicon-new-window"></i>
+                                    </a>*@
+                                </div>
+
+                                <br />
+
+                                <div style='overflow-x: auto;'>
+                                    <table class="table table-striped table-bordered table-hover childValidateTable" id="Spartan_BR_Modifications_LogGrid">
+                                        <thead>
+                                            <tr>
+                                                <th class="ActionHeader"><span>@Resources.Resources.Actions</span></th>
+                                                <th class="Modification_DateHeader"><span>@Resources.Spartan_BR_Modifications_LogResources.Modification_Date</span></th>
+                                                <th class="Modification_HourHeader"><span>@Resources.Spartan_BR_Modifications_LogResources.Modification_Hour</span></th>
+                                                <th class="Modification_UserHeader"><span>@Resources.Spartan_BR_Modifications_LogResources.Modification_User</span></th>
+                                                <th class="CommentsHeader"><span>@Resources.Spartan_BR_Modifications_LogResources.Comments</span></th>
+                                                <th class="Implementation_CodeHeader"><span>@Resources.Spartan_BR_Modifications_LogResources.Implementation_Code</span></th>
+
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                            </div>
+                                </div>
+
+
+                            <div id="tabImplementation_Code" class="tab-pane">
+                                <div class="panel-body">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Business_RuleResources.Implementation_Code</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="Implementation_Code" name="Implementation_Code" type="text" value="@Model.Implementation_Code">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Implementation_Code" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            </div>
+                                </div>
+
+				</div>	
+			</div>
+                    <br />
+                            <div class="form-actions fluid">
+                                <input type="hidden" value="@Model.BusinessRuleId" id="ReferenceBusinessRuleId" />
+                                <input type="hidden" value="@Model.BusinessRuleId" name="BusinessRuleId" id="BusinessRuleIdId" />
+                                @if (!ViewBag.Consult)
+                                {
+                                    <input type="button" value="@Resources.Resources.Guardar" id="Guardar" class="btn btn-w-m btn-primary" onclick="return checkClientValidate('Spartan_Business_RuleCreateForm');"  />
+
+                                    <button type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton">
+                                        <i class="fa fa-cogs fa-spin"></i>
+                                    </button>
+
+                                    <input type="button" value="@Resources.Resources.GuardarNuevo" id="GuardarYNuevo" onclick="return checkClientValidate('Spartan_Business_RuleCreateForm');" data-bind="    click: saveAndNew" class="btn btn-w-m btn-success"  />
+                                    <input type="button" value="@Resources.Resources.GuardarCopia" id="GuardarYCopia" onclick="return checkClientValidate('Spartan_Business_RuleCreateForm');" data-bind="    click: saveAndNew" class="btn btn-w-m btn-success"  />
+                                    <a title="@Resources.Resources.Configure" id="ConfigureSave" name="ConfigureSave" onclick="SaveElementAttributes()" class="btn btn-success">@Resources.Resources.Configure</a>
+                                }
+
+                                @*<input type="submit" value="@Resources.Resources.Configure" id="Configure" name="Configure" class="btn btn-warning" tabindex="16" />*@
+                                <input type="hidden" id="hdnConfigureType" />
+
+                                <input type="button" value="@Resources.Resources.Cancelar" id="Cancelar" name="Cancelar" class="btn btn-danger noConsult" data-bind="click: cancel" tabindex="16" />
+
+                                <button type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton">
+                                    <i class="fa fa-cogs fa-spin"></i>
+                                </button>
+                            </div>
+                        </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+<input id="hdnApplicationDirectory" type="hidden" value="@Url.Content("~/")" />
+
+@section Styles {
+<link href="@Url.Content("~/Content/BootstrapDatePicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+    @Styles.Render("~/plugins/awesomeCheckboxStyles")
+    @Styles.Render("~/plugins/select2Styles")
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+    .select2-results{background-color:#fff;}
+    .select2-container .select2-dropdown{height:auto !important;}
+
+    div.dataTables_info {
+        display: inline-block;
+        float: right;
+    }
+        i {
+        font-size: 25px !important;
+        display: block;
+        color: #676a6c;
+        margin-left: 6px;
+        margin-right: 6px;
+    }
+
+    .fullWidth {
+        width: 100%;
+    }
+</style>
+}
+
+@section Scripts {
+
+
+
+    @Scripts.Render("~/plugins/iCheck")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/clockpicker")
+    @Scripts.Render("~/plugins/select2")
+
+@*<script src="~/Scripts/plugins/ckeditor/ckeditor.js"></script>*@
+    <script type="text/javascript">
+        
+
+
+
+        $(document).ready(function () {
+
+            $('#Registration_Date').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            $('#Registration_Hour').clockpicker();
+
+            GetSpartan_BR_Scope_Detail_Spartan_BR_ScopeItem();
+
+            getSpartan_BR_Scope_DetailData();
+            GetSpartan_BR_Operation_Detail_Spartan_BR_OperationItem();
+
+            getSpartan_BR_Operation_DetailData();
+            GetSpartan_BR_Process_Event_Detail_Spartan_BR_Process_EventItem();
+
+            getSpartan_BR_Process_Event_DetailData();
+            GetSpartan_BR_Conditions_Detail_Spartan_BR_Condition_OperatorItem();
+            GetSpartan_BR_Conditions_Detail_Spartan_BR_Operator_TypeItem();
+            GetSpartan_BR_Conditions_Detail_Spartan_BR_ConditionItem();
+
+            getSpartan_BR_Conditions_DetailData();
+            GetSpartan_BR_Actions_True_Detail_Spartan_BR_Action_ClassificationItem();
+            GetSpartan_BR_Actions_True_Detail_Spartan_BR_ActionItem();
+            GetSpartan_BR_Actions_True_Detail_Spartan_BR_Action_ResultItem();
+
+            getSpartan_BR_Actions_True_DetailData();
+            GetSpartan_BR_Actions_False_Detail_Spartan_BR_Action_ClassificationItem();
+            GetSpartan_BR_Actions_False_Detail_Spartan_BR_ActionItem();
+            GetSpartan_BR_Actions_False_Detail_Spartan_BR_Action_ResultItem();
+
+            getSpartan_BR_Actions_False_DetailData();
+
+            getSpartan_BR_Modifications_LogData();
+
+            initiateUIControls();
+        });
+
+        var Spartan_BR_Scope_DetailinsertRowCurrentIndex = -1;
+        var Spartan_BR_Scope_DetailDataDataTable;
+        function getSpartan_BR_Scope_DetailData() {
+            $.ajax({
+                url: "@Url.Content("~/Frontal/Spartan_Business_Rule/GetSpartan_BR_Scope_Detail")" + "?draw=1&start=1&length=2147483647" + ($("#ReferenceBusinessRuleId").val() != "" ? "&RelationId=" + $("#ReferenceBusinessRuleId").val() : ""),
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    Spartan_BR_Scope_DetailDataDataTable = result.data;
+                    showSpartan_BR_Scope_DetailGrid(result.data);
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+        function Spartan_BR_Scope_DetailGetUpdateRowControls(data) {
+
+            var columnData = [];
+            var inputData = "<input type='text' class='fullWidth form-control' />";
+            columnData[0] = $($(GetSpartan_BR_Scope_Detail_Spartan_BR_ScopeDropDown()).val(data.Scope)).addClass('Scope');
+
+            return columnData;
+        }
+
+        var removedSpartan_BR_Scope_DetailData = [];
+        function Spartan_BR_Scope_DetailDeleteRow(rowIndex) {
+            if (!permission.Delete || isConsultMode)
+                return;
+
+            if (confirm("@Resources.Resources.DeleteConfirm")) {
+                var prevData = Spartan_BR_Scope_DetailTable.fnGetData(rowIndex);
+                removedSpartan_BR_Scope_DetailData.push(prevData);
+                Spartan_BR_Scope_DetailTable.fnDeleteRow(rowIndex);
+            }
+
+        }
+
+        function Spartan_BR_Scope_DetailrowCreationGrid(row, data, index) {
+            //debugger;
+            var Spartan_BR_Scope_DetailRowElement = "Spartan_BR_Scope_Detail_" + index.toString();
+            $(row).addClass(Spartan_BR_Scope_DetailRowElement);
+
+            row.innerHTML = "";
+
+            if (data.IsInsertRow) {
+
+                if (row.childNodes.length != 0) {
+                    for (var i = 0; i < row.childNodes.length; i++) {
+                        row.childNodes[i].remove();
+                    }
+                }
+                var controls = GetInsertSpartan_BR_Scope_DetailRowControls(index);
+
+                var actionColInsert = $('<td>');
+
+                var abc = "if(dynamicFieldValidation('" + Spartan_BR_Scope_DetailRowElement + "')){ Spartan_BR_Scope_DetailInsertRow(" + index + "); }";
+                var insertRowHTML = '<a  onclick="' + abc + '">';
+                $('<i class="fa fa-check">').appendTo($(insertRowHTML).appendTo(actionColInsert));
+				$('<i class="fa fa-times">').appendTo($("<a  onclick='Spartan_BR_Scope_DetailCancelRow(" + index + ")'>").appendTo(actionColInsert));
+                actionColInsert.appendTo(row);
+
+                for (i = 0; i < controls.length; i++) {
+                    $(controls[i]).appendTo($('<td>').appendTo(row));
+                }
+                return;
+            }
+
+            var actionCol = $('<td>');
+            $('<i class="fa fa-pencil">').appendTo($("<a title='Edit' class='" + (!permission.Edit || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Scope_DetailEditRow(" + index + ")'>").appendTo(actionCol));
+            @*$('<i class="fa fa-edit">').appendTo($("<a title='Edit' data-toggle='modal' data-target='#AddSpartan_BR_Scope_Detail-form' class='" + (!permission.Edit || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Scope_DetailEditRowPopup(" + index + ")'>").appendTo(actionCol));*@
+            $('<i class="fa fa-trash-o">').appendTo($("<a title='Delete' class='" + (!permission.Delete || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Scope_DetailDeleteRow(" + index + ")'>").appendTo(actionCol));
+            actionCol.appendTo(row);
+            $('<td>').text(GetSpartan_BR_Scope_Detail_Spartan_BR_ScopeName(data.Scope)).appendTo(row);
+
+        }
+
+        var Spartan_BR_Scope_DetailTable;
+        function showSpartan_BR_Scope_DetailGrid(dataSet) {
+            removedSpartan_BR_Scope_DetailData = [];
+            Spartan_BR_Scope_DetailTable = $('#Spartan_BR_Scope_DetailGrid').dataTable({
+                dom: '<"html5buttons"B>lTgitp',
+                buttons: [
+                ],
+                "createdRow": Spartan_BR_Scope_DetailrowCreationGrid,
+                "lengthMenu": [[5, 10, 20, 50, -1], [5, 10, 20, 50, "All"]],
+                data: dataSet,
+                "columns": [
+                    { "data": null, 'visible': true, "orderable": false },
+                    { "data": "Scope", "orderable": false },
+
+                ],
+                "order": [[0, "asc"]],
+                "language": {
+                    "lengthMenu": "@Resources.Resources.Display" + " _MENU_ " + "@Resources.Resources.RecordsPerPage",
+                    "zeroRecords": "@Resources.Resources.NothingFound",
+                    "info": "@Resources.Resources.ShowingPages" + " _PAGE_ " + "@Resources.Resources.of" + " _PAGES_",
+                    "infoEmpty": "@Resources.Resources.NoRecords",
+                    "infoFiltered": "(" + "@Resources.Resources.FilteredFrom" + " _MAX_ " + "@Resources.Resources.TotalRecords" + ")",
+                    "sSearch": "@Resources.Resources.Search",
+                    "paginate": {
+                        "previous": "@Resources.Resources.Previous",
+                        "next": "@Resources.Resources.Next"
+                    }
+                },
+                "fnDrawCallback": function (settings) {
+                    setSpartan_BR_Scope_DetailValidation();
+                }
+            });
+        }
+
+    var Spartan_BR_Scope_Detail_Spartan_BR_ScopeItems;
+        function GetSpartan_BR_Scope_Detail_Spartan_BR_ScopeItem() {
+            Spartan_BR_Scope_Detail_Spartan_BR_ScopeItems = null;
+            var ajaxUrl = "@Url.Content("~/Frontal/Spartan_Business_Rule/GetSpartan_BR_Scope_Detail_Spartan_BR_ScopeAll")";
+            $.ajax({
+                url: ajaxUrl,
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                global: false,
+                success: function (result) {
+                    Spartan_BR_Scope_Detail_Spartan_BR_ScopeItems = result;
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+
+        var Spartan_BR_Scope_DetailData = [];
+        var Spartan_BR_Scope_DetaildeletedItem = [];
+        var Spartan_BR_Scope_DetailDataMain = [];
+        var Spartan_BR_Scope_DetailDataMainPages = [];
+        var Spartan_BR_Scope_DetailnewItemCount = 0;
+        var Spartan_BR_Scope_DetailmaxItemIndex = 0;
+        var Spartan_BR_Scope_DetailDataMainInitialized = false;
+
+        function SendSpartan_BR_Scope_Detail(callBack, BusinessRuleIdId) {
+            Spartan_BR_Scope_DetailData = GetSpartan_BR_Scope_DetailFromDataTable();
+
+            if (Spartan_BR_Scope_DetailData.length > 0 || $("#ReferenceBusinessRuleId").val() != BusinessRuleIdId) {
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Spartan_Business_Rule/PostSpartan_BR_Scope_Detail?MasterId=")' + BusinessRuleIdId + "&referenceId=" + $("#ReferenceBusinessRuleId").val(),
+                    type: 'POST',
+                    data: GetSpartan_BR_Scope_Detail(),
+                    async: true,
+                    success: function (result) {
+
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            } else {
+                //showNotification("@Resources.Resources.SaveSuccess", "success");
+                //callBack(BusinessRuleIdId);
+            }
+            return true;
+        }
+
+        function GetAddSpartan_BR_Scope_DetailPopup(currentRowIndex, mode) {
+
+            $.ajax({
+                url: "@Url.Action("AddSpartan_BR_Scope_Detail", "Spartan_Business_Rule")",
+                type: "GET",
+                async: false,
+                data: { rowIndex: currentRowIndex, functionMode: mode },
+                success: function (data) {
+                    $(".AddSpartan_BR_Scope_DetailModal").html(data);
+                },
+                error: function () {
+
+                }
+            });
+
+            @*$.get('@Url.Action("AddSpartan_BR_Scope_Detail", "Spartan_Business_Rule")', { rowIndex: currentRowIndex }, function (data) {
+                $(".AddSpartan_BR_Scope_DetailModal").html(data);
+            });*@
+        }
+        var Spartan_BR_Operation_DetailinsertRowCurrentIndex = -1;
+        var Spartan_BR_Operation_DetailDataDataTable;
+        function getSpartan_BR_Operation_DetailData() {
+            $.ajax({
+                url: "@Url.Content("~/Frontal/Spartan_Business_Rule/GetSpartan_BR_Operation_Detail")" + "?draw=1&start=1&length=2147483647" + ($("#ReferenceBusinessRuleId").val() != "" ? "&RelationId=" + $("#ReferenceBusinessRuleId").val() : ""),
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    Spartan_BR_Operation_DetailDataDataTable = result.data;
+                    showSpartan_BR_Operation_DetailGrid(result.data);
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+        function Spartan_BR_Operation_DetailGetUpdateRowControls(data) {
+
+            var columnData = [];
+            var inputData = "<input type='text' class='fullWidth form-control' />";
+            columnData[0] = $($(GetSpartan_BR_Operation_Detail_Spartan_BR_OperationDropDown()).val(data.Operation)).addClass('Operation');
+
+            return columnData;
+        }
+
+        var removedSpartan_BR_Operation_DetailData = [];
+        function Spartan_BR_Operation_DetailDeleteRow(rowIndex) {
+            if (!permission.Delete || isConsultMode)
+                return;
+
+            if (confirm("@Resources.Resources.DeleteConfirm")) {
+                var prevData = Spartan_BR_Operation_DetailTable.fnGetData(rowIndex);
+                removedSpartan_BR_Operation_DetailData.push(prevData);
+                Spartan_BR_Operation_DetailTable.fnDeleteRow(rowIndex);
+            }
+
+        }
+
+        function Spartan_BR_Operation_DetailrowCreationGrid(row, data, index) {
+            //debugger;
+            var Spartan_BR_Operation_DetailRowElement = "Spartan_BR_Operation_Detail_" + index.toString();
+            $(row).addClass(Spartan_BR_Operation_DetailRowElement);
+
+            row.innerHTML = "";
+
+            if (data.IsInsertRow) {
+
+                if (row.childNodes.length != 0) {
+                    for (var i = 0; i < row.childNodes.length; i++) {
+                        row.childNodes[i].remove();
+                    }
+                }
+                var controls = GetInsertSpartan_BR_Operation_DetailRowControls(index);
+
+                var actionColInsert = $('<td>');
+
+                var abc = "if(dynamicFieldValidation('" + Spartan_BR_Operation_DetailRowElement + "')){ Spartan_BR_Operation_DetailInsertRow(" + index + "); }";
+                var insertRowHTML = '<a  onclick="' + abc + '">';
+                $('<i class="fa fa-check">').appendTo($(insertRowHTML).appendTo(actionColInsert));
+				$('<i class="fa fa-times">').appendTo($("<a  onclick='Spartan_BR_Operation_DetailCancelRow(" + index + ")'>").appendTo(actionColInsert));
+                actionColInsert.appendTo(row);
+
+                for (i = 0; i < controls.length; i++) {
+                    $(controls[i]).appendTo($('<td>').appendTo(row));
+                }
+                return;
+            }
+
+            var actionCol = $('<td>');
+            $('<i class="fa fa-pencil">').appendTo($("<a title='Edit' class='" + (!permission.Edit || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Operation_DetailEditRow(" + index + ")'>").appendTo(actionCol));
+            @*$('<i class="fa fa-edit">').appendTo($("<a title='Edit' data-toggle='modal' data-target='#AddSpartan_BR_Operation_Detail-form' class='" + (!permission.Edit || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Operation_DetailEditRowPopup(" + index + ")'>").appendTo(actionCol));*@
+            $('<i class="fa fa-trash-o">').appendTo($("<a title='Delete' class='" + (!permission.Delete || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Operation_DetailDeleteRow(" + index + ")'>").appendTo(actionCol));
+            actionCol.appendTo(row);
+            $('<td>').text(GetSpartan_BR_Operation_Detail_Spartan_BR_OperationName(data.Operation)).appendTo(row);
+
+        }
+
+        var Spartan_BR_Operation_DetailTable;
+        function showSpartan_BR_Operation_DetailGrid(dataSet) {
+            removedSpartan_BR_Operation_DetailData = [];
+            Spartan_BR_Operation_DetailTable = $('#Spartan_BR_Operation_DetailGrid').dataTable({
+                dom: '<"html5buttons"B>lTgitp',
+                buttons: [
+                ],
+                "createdRow": Spartan_BR_Operation_DetailrowCreationGrid,
+                "lengthMenu": [[5, 10, 20, 50, -1], [5, 10, 20, 50, "All"]],
+                data: dataSet,
+                "columns": [
+                    { "data": null, 'visible': true, "orderable": false },
+                    { "data": "Operation", "orderable": false },
+
+                ],
+                "order": [[0, "asc"]],
+                "language": {
+                    "lengthMenu": "@Resources.Resources.Display" + " _MENU_ " + "@Resources.Resources.RecordsPerPage",
+                    "zeroRecords": "@Resources.Resources.NothingFound",
+                    "info": "@Resources.Resources.ShowingPages" + " _PAGE_ " + "@Resources.Resources.of" + " _PAGES_",
+                    "infoEmpty": "@Resources.Resources.NoRecords",
+                    "infoFiltered": "(" + "@Resources.Resources.FilteredFrom" + " _MAX_ " + "@Resources.Resources.TotalRecords" + ")",
+                    "sSearch": "@Resources.Resources.Search",
+                    "paginate": {
+                        "previous": "@Resources.Resources.Previous",
+                        "next": "@Resources.Resources.Next"
+                    }
+                },
+                "fnDrawCallback": function (settings) {
+                    setSpartan_BR_Operation_DetailValidation();
+                }
+            });
+        }
+
+    var Spartan_BR_Operation_Detail_Spartan_BR_OperationItems;
+        function GetSpartan_BR_Operation_Detail_Spartan_BR_OperationItem() {
+            Spartan_BR_Operation_Detail_Spartan_BR_OperationItems = null;
+            var ajaxUrl = "@Url.Content("~/Frontal/Spartan_Business_Rule/GetSpartan_BR_Operation_Detail_Spartan_BR_OperationAll")";
+            $.ajax({
+                url: ajaxUrl,
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                global: false,
+                success: function (result) {
+                    Spartan_BR_Operation_Detail_Spartan_BR_OperationItems = result;
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+
+        var Spartan_BR_Operation_DetailData = [];
+        var Spartan_BR_Operation_DetaildeletedItem = [];
+        var Spartan_BR_Operation_DetailDataMain = [];
+        var Spartan_BR_Operation_DetailDataMainPages = [];
+        var Spartan_BR_Operation_DetailnewItemCount = 0;
+        var Spartan_BR_Operation_DetailmaxItemIndex = 0;
+        var Spartan_BR_Operation_DetailDataMainInitialized = false;
+
+        function SendSpartan_BR_Operation_Detail(callBack, BusinessRuleIdId) {
+            Spartan_BR_Operation_DetailData = GetSpartan_BR_Operation_DetailFromDataTable();
+
+            if (Spartan_BR_Operation_DetailData.length > 0 || $("#ReferenceBusinessRuleId").val() != BusinessRuleIdId) {
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Spartan_Business_Rule/PostSpartan_BR_Operation_Detail?MasterId=")' + BusinessRuleIdId + "&referenceId=" + $("#ReferenceBusinessRuleId").val(),
+                    type: 'POST',
+                    data: GetSpartan_BR_Operation_Detail(),
+                    async: true,
+                    success: function (result) {
+
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            } else {
+                //showNotification("@Resources.Resources.SaveSuccess", "success");
+                //callBack(BusinessRuleIdId);
+            }
+            return true;
+        }
+
+        function GetAddSpartan_BR_Operation_DetailPopup(currentRowIndex, mode) {
+
+            $.ajax({
+                url: "@Url.Action("AddSpartan_BR_Operation_Detail", "Spartan_Business_Rule")",
+                type: "GET",
+                async: false,
+                data: { rowIndex: currentRowIndex, functionMode: mode },
+                success: function (data) {
+                    $(".AddSpartan_BR_Operation_DetailModal").html(data);
+                },
+                error: function () {
+
+                }
+            });
+
+            @*$.get('@Url.Action("AddSpartan_BR_Operation_Detail", "Spartan_Business_Rule")', { rowIndex: currentRowIndex }, function (data) {
+                $(".AddSpartan_BR_Operation_DetailModal").html(data);
+            });*@
+        }
+        var Spartan_BR_Process_Event_DetailinsertRowCurrentIndex = -1;
+        var Spartan_BR_Process_Event_DetailDataDataTable;
+        function getSpartan_BR_Process_Event_DetailData() {
+            $.ajax({
+                url: "@Url.Content("~/Frontal/Spartan_Business_Rule/GetSpartan_BR_Process_Event_Detail")" + "?draw=1&start=1&length=2147483647" + ($("#ReferenceBusinessRuleId").val() != "" ? "&RelationId=" + $("#ReferenceBusinessRuleId").val() : ""),
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    Spartan_BR_Process_Event_DetailDataDataTable = result.data;
+                    showSpartan_BR_Process_Event_DetailGrid(result.data);
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+        function Spartan_BR_Process_Event_DetailGetUpdateRowControls(data) {
+
+            var columnData = [];
+            var inputData = "<input type='text' class='fullWidth form-control' />";
+            columnData[0] = $($(GetSpartan_BR_Process_Event_Detail_Spartan_BR_Process_EventDropDown()).val(data.Process_Event)).addClass('Process_Event');
+
+            return columnData;
+        }
+
+        var removedSpartan_BR_Process_Event_DetailData = [];
+        function Spartan_BR_Process_Event_DetailDeleteRow(rowIndex) {
+            if (!permission.Delete || isConsultMode)
+                return;
+
+            if (confirm("@Resources.Resources.DeleteConfirm")) {
+                var prevData = Spartan_BR_Process_Event_DetailTable.fnGetData(rowIndex);
+                removedSpartan_BR_Process_Event_DetailData.push(prevData);
+                Spartan_BR_Process_Event_DetailTable.fnDeleteRow(rowIndex);
+            }
+
+        }
+
+        function Spartan_BR_Process_Event_DetailrowCreationGrid(row, data, index) {
+            //debugger;
+            var Spartan_BR_Process_Event_DetailRowElement = "Spartan_BR_Process_Event_Detail_" + index.toString();
+            $(row).addClass(Spartan_BR_Process_Event_DetailRowElement);
+
+            row.innerHTML = "";
+
+            if (data.IsInsertRow) {
+
+                if (row.childNodes.length != 0) {
+                    for (var i = 0; i < row.childNodes.length; i++) {
+                        row.childNodes[i].remove();
+                    }
+                }
+                var controls = GetInsertSpartan_BR_Process_Event_DetailRowControls(index);
+
+                var actionColInsert = $('<td>');
+
+                var abc = "if(dynamicFieldValidation('" + Spartan_BR_Process_Event_DetailRowElement + "')){ Spartan_BR_Process_Event_DetailInsertRow(" + index + "); }";
+                var insertRowHTML = '<a  onclick="' + abc + '">';
+                $('<i class="fa fa-check">').appendTo($(insertRowHTML).appendTo(actionColInsert));
+				$('<i class="fa fa-times">').appendTo($("<a  onclick='Spartan_BR_Process_Event_DetailCancelRow(" + index + ")'>").appendTo(actionColInsert));
+                actionColInsert.appendTo(row);
+
+                for (i = 0; i < controls.length; i++) {
+                    $(controls[i]).appendTo($('<td>').appendTo(row));
+                }
+                return;
+            }
+
+            var actionCol = $('<td>');
+            $('<i class="fa fa-pencil">').appendTo($("<a title='Edit' class='" + (!permission.Edit || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Process_Event_DetailEditRow(" + index + ")'>").appendTo(actionCol));
+            @*$('<i class="fa fa-edit">').appendTo($("<a title='Edit' data-toggle='modal' data-target='#AddSpartan_BR_Process_Event_Detail-form' class='" + (!permission.Edit || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Process_Event_DetailEditRowPopup(" + index + ")'>").appendTo(actionCol));*@
+            $('<i class="fa fa-trash-o">').appendTo($("<a title='Delete' class='" + (!permission.Delete || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Process_Event_DetailDeleteRow(" + index + ")'>").appendTo(actionCol));
+            actionCol.appendTo(row);
+            $('<td>').text(GetSpartan_BR_Process_Event_Detail_Spartan_BR_Process_EventName(data.Process_Event)).appendTo(row);
+
+        }
+
+        var Spartan_BR_Process_Event_DetailTable;
+        function showSpartan_BR_Process_Event_DetailGrid(dataSet) {
+            removedSpartan_BR_Process_Event_DetailData = [];
+            Spartan_BR_Process_Event_DetailTable = $('#Spartan_BR_Process_Event_DetailGrid').dataTable({
+                dom: '<"html5buttons"B>lTgitp',
+                buttons: [
+                ],
+                "createdRow": Spartan_BR_Process_Event_DetailrowCreationGrid,
+                "lengthMenu": [[5, 10, 20, 50, -1], [5, 10, 20, 50, "All"]],
+                data: dataSet,
+                "columns": [
+                    { "data": null, 'visible': true, "orderable": false },
+                    { "data": "Process_Event", "orderable": false },
+
+                ],
+                "order": [[0, "asc"]],
+                "language": {
+                    "lengthMenu": "@Resources.Resources.Display" + " _MENU_ " + "@Resources.Resources.RecordsPerPage",
+                    "zeroRecords": "@Resources.Resources.NothingFound",
+                    "info": "@Resources.Resources.ShowingPages" + " _PAGE_ " + "@Resources.Resources.of" + " _PAGES_",
+                    "infoEmpty": "@Resources.Resources.NoRecords",
+                    "infoFiltered": "(" + "@Resources.Resources.FilteredFrom" + " _MAX_ " + "@Resources.Resources.TotalRecords" + ")",
+                    "sSearch": "@Resources.Resources.Search",
+                    "paginate": {
+                        "previous": "@Resources.Resources.Previous",
+                        "next": "@Resources.Resources.Next"
+                    }
+                },
+                "fnDrawCallback": function (settings) {
+                    setSpartan_BR_Process_Event_DetailValidation();
+                }
+            });
+        }
+
+    var Spartan_BR_Process_Event_Detail_Spartan_BR_Process_EventItems;
+        function GetSpartan_BR_Process_Event_Detail_Spartan_BR_Process_EventItem() {
+            Spartan_BR_Process_Event_Detail_Spartan_BR_Process_EventItems = null;
+            var ajaxUrl = "@Url.Content("~/Frontal/Spartan_Business_Rule/GetSpartan_BR_Process_Event_Detail_Spartan_BR_Process_EventAll")";
+            $.ajax({
+                url: ajaxUrl,
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                global: false,
+                success: function (result) {
+                    Spartan_BR_Process_Event_Detail_Spartan_BR_Process_EventItems = result;
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+
+        var Spartan_BR_Process_Event_DetailData = [];
+        var Spartan_BR_Process_Event_DetaildeletedItem = [];
+        var Spartan_BR_Process_Event_DetailDataMain = [];
+        var Spartan_BR_Process_Event_DetailDataMainPages = [];
+        var Spartan_BR_Process_Event_DetailnewItemCount = 0;
+        var Spartan_BR_Process_Event_DetailmaxItemIndex = 0;
+        var Spartan_BR_Process_Event_DetailDataMainInitialized = false;
+
+        function SendSpartan_BR_Process_Event_Detail(callBack, BusinessRuleIdId) {
+            Spartan_BR_Process_Event_DetailData = GetSpartan_BR_Process_Event_DetailFromDataTable();
+
+            if (Spartan_BR_Process_Event_DetailData.length > 0 || $("#ReferenceBusinessRuleId").val() != BusinessRuleIdId) {
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Spartan_Business_Rule/PostSpartan_BR_Process_Event_Detail?MasterId=")' + BusinessRuleIdId + "&referenceId=" + $("#ReferenceBusinessRuleId").val(),
+                    type: 'POST',
+                    data: GetSpartan_BR_Process_Event_Detail(),
+                    async: true,
+                    success: function (result) {
+
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            } else {
+                //showNotification("@Resources.Resources.SaveSuccess", "success");
+                //callBack(BusinessRuleIdId);
+            }
+            return true;
+        }
+
+        function GetAddSpartan_BR_Process_Event_DetailPopup(currentRowIndex, mode) {
+
+            $.ajax({
+                url: "@Url.Action("AddSpartan_BR_Process_Event_Detail", "Spartan_Business_Rule")",
+                type: "GET",
+                async: false,
+                data: { rowIndex: currentRowIndex, functionMode: mode },
+                success: function (data) {
+                    $(".AddSpartan_BR_Process_Event_DetailModal").html(data);
+                },
+                error: function () {
+
+                }
+            });
+
+            @*$.get('@Url.Action("AddSpartan_BR_Process_Event_Detail", "Spartan_Business_Rule")', { rowIndex: currentRowIndex }, function (data) {
+                $(".AddSpartan_BR_Process_Event_DetailModal").html(data);
+            });*@
+        }
+        var Spartan_BR_Conditions_DetailinsertRowCurrentIndex = -1;
+        var Spartan_BR_Conditions_DetailDataDataTable;
+        function getSpartan_BR_Conditions_DetailData() {
+            $.ajax({
+                url: "@Url.Content("~/Frontal/Spartan_Business_Rule/GetSpartan_BR_Conditions_Detail")" + "?draw=1&start=1&length=2147483647" + ($("#ReferenceBusinessRuleId").val() != "" ? "&RelationId=" + $("#ReferenceBusinessRuleId").val() : ""),
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    Spartan_BR_Conditions_DetailDataDataTable = result.data;
+                    showSpartan_BR_Conditions_DetailGrid(result.data);
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+        function Spartan_BR_Conditions_DetailGetUpdateRowControls(data) {
+
+            var columnData = [];
+            var inputData = "<input type='text' class='fullWidth form-control' />";
+            columnData[0] = $($(GetSpartan_BR_Conditions_Detail_Spartan_BR_Condition_OperatorDropDown()).val(data.Condition_Operator)).addClass('Condition_Operator');
+            columnData[1] = $($(GetSpartan_BR_Conditions_Detail_Spartan_BR_Operator_TypeDropDown()).val(data.First_Operator_Type)).addClass('First_Operator_Type');
+            columnData[2] = $($($.parseHTML(inputData)).val(data.First_Operator_Value)).addClass('First_Operator_Value');
+            columnData[3] = $($(GetSpartan_BR_Conditions_Detail_Spartan_BR_ConditionDropDown()).val(data.Condition)).addClass('Condition');
+            columnData[4] = $($(GetSpartan_BR_Conditions_Detail_Spartan_BR_Operator_TypeDropDown()).val(data.Second_Operator_Type)).addClass('Second_Operator_Type');
+            columnData[5] = $($($.parseHTML(inputData)).val(data.Second_Operator_Value)).addClass('Second_Operator_Value');
+
+            return columnData;
+        }
+
+        var removedSpartan_BR_Conditions_DetailData = [];
+        function Spartan_BR_Conditions_DetailDeleteRow(rowIndex) {
+            if (!permission.Delete || isConsultMode)
+                return;
+
+            if (confirm("@Resources.Resources.DeleteConfirm")) {
+                var prevData = Spartan_BR_Conditions_DetailTable.fnGetData(rowIndex);
+                removedSpartan_BR_Conditions_DetailData.push(prevData);
+                Spartan_BR_Conditions_DetailTable.fnDeleteRow(rowIndex);
+            }
+
+        }
+
+        function Spartan_BR_Conditions_DetailrowCreationGrid(row, data, index) {
+            //debugger;
+            var Spartan_BR_Conditions_DetailRowElement = "Spartan_BR_Conditions_Detail_" + index.toString();
+            $(row).addClass(Spartan_BR_Conditions_DetailRowElement);
+
+            row.innerHTML = "";
+
+            if (data.IsInsertRow) {
+
+                if (row.childNodes.length != 0) {
+                    for (var i = 0; i < row.childNodes.length; i++) {
+                        row.childNodes[i].remove();
+                    }
+                }
+                var controls = GetInsertSpartan_BR_Conditions_DetailRowControls(index);
+
+                var actionColInsert = $('<td>');
+
+                var abc = "if(dynamicFieldValidation('" + Spartan_BR_Conditions_DetailRowElement + "')){ Spartan_BR_Conditions_DetailInsertRow(" + index + "); }";
+                var insertRowHTML = '<a  onclick="' + abc + '">';
+                $('<i class="fa fa-check">').appendTo($(insertRowHTML).appendTo(actionColInsert));
+				$('<i class="fa fa-times">').appendTo($("<a  onclick='Spartan_BR_Conditions_DetailCancelRow(" + index + ")'>").appendTo(actionColInsert));
+                actionColInsert.appendTo(row);
+
+                for (i = 0; i < controls.length; i++) {
+                    $(controls[i]).appendTo($('<td>').appendTo(row));
+                }
+                return;
+            }
+
+            var actionCol = $('<td>');
+            $('<i class="fa fa-pencil">').appendTo($("<a title='Edit' class='" + (!permission.Edit || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Conditions_DetailEditRow(" + index + ")'>").appendTo(actionCol));
+            @*$('<i class="fa fa-edit">').appendTo($("<a title='Edit' data-toggle='modal' data-target='#AddSpartan_BR_Conditions_Detail-form' class='" + (!permission.Edit || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Conditions_DetailEditRowPopup(" + index + ")'>").appendTo(actionCol));*@
+            $('<i class="fa fa-trash-o">').appendTo($("<a title='Delete' class='" + (!permission.Delete || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Conditions_DetailDeleteRow(" + index + ")'>").appendTo(actionCol));
+            actionCol.appendTo(row);
+            $('<td>').text(GetSpartan_BR_Conditions_Detail_Spartan_BR_Condition_OperatorName(data.Condition_Operator)).appendTo(row);
+            $('<td>').text(GetSpartan_BR_Conditions_Detail_Spartan_BR_Operator_TypeName(data.First_Operator_Type)).appendTo(row);
+            $('<td>').text(data.First_Operator_Value).appendTo(row);
+            $('<td>').text(GetSpartan_BR_Conditions_Detail_Spartan_BR_ConditionName(data.Condition)).appendTo(row);
+            $('<td>').text(GetSpartan_BR_Conditions_Detail_Spartan_BR_Operator_TypeName(data.Second_Operator_Type)).appendTo(row);
+            $('<td>').text(data.Second_Operator_Value).appendTo(row);
+
+        }
+
+        var Spartan_BR_Conditions_DetailTable;
+        function showSpartan_BR_Conditions_DetailGrid(dataSet) {
+            removedSpartan_BR_Conditions_DetailData = [];
+            Spartan_BR_Conditions_DetailTable = $('#Spartan_BR_Conditions_DetailGrid').dataTable({
+                dom: '<"html5buttons"B>lTgitp',
+                buttons: [
+                ],
+                "createdRow": Spartan_BR_Conditions_DetailrowCreationGrid,
+                "lengthMenu": [[5, 10, 20, 50, -1], [5, 10, 20, 50, "All"]],
+                data: dataSet,
+                "columns": [
+                    { "data": null, 'visible': true, "orderable": false },
+                    { "data": "Condition_Operator", "orderable": false },
+                    { "data": "First_Operator_Type", "orderable": false },
+                    { "data": "First_Operator_Value", "orderable": false },
+                    { "data": "Condition", "orderable": false },
+                    { "data": "Second_Operator_Type", "orderable": false },
+                    { "data": "Second_Operator_Value", "orderable": false },
+
+                ],
+                "order": [[0, "asc"]],
+                "language": {
+                    "lengthMenu": "@Resources.Resources.Display" + " _MENU_ " + "@Resources.Resources.RecordsPerPage",
+                    "zeroRecords": "@Resources.Resources.NothingFound",
+                    "info": "@Resources.Resources.ShowingPages" + " _PAGE_ " + "@Resources.Resources.of" + " _PAGES_",
+                    "infoEmpty": "@Resources.Resources.NoRecords",
+                    "infoFiltered": "(" + "@Resources.Resources.FilteredFrom" + " _MAX_ " + "@Resources.Resources.TotalRecords" + ")",
+                    "sSearch": "@Resources.Resources.Search",
+                    "paginate": {
+                        "previous": "@Resources.Resources.Previous",
+                        "next": "@Resources.Resources.Next"
+                    }
+                },
+                "fnDrawCallback": function (settings) {
+                    setSpartan_BR_Conditions_DetailValidation();
+                }
+            });
+        }
+
+    var Spartan_BR_Conditions_Detail_Spartan_BR_Condition_OperatorItems;
+        function GetSpartan_BR_Conditions_Detail_Spartan_BR_Condition_OperatorItem() {
+            Spartan_BR_Conditions_Detail_Spartan_BR_Condition_OperatorItems = null;
+            var ajaxUrl = "@Url.Content("~/Frontal/Spartan_Business_Rule/GetSpartan_BR_Conditions_Detail_Spartan_BR_Condition_OperatorAll")";
+            $.ajax({
+                url: ajaxUrl,
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                global: false,
+                success: function (result) {
+                    Spartan_BR_Conditions_Detail_Spartan_BR_Condition_OperatorItems = result;
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+    var Spartan_BR_Conditions_Detail_Spartan_BR_Operator_TypeItems;
+        function GetSpartan_BR_Conditions_Detail_Spartan_BR_Operator_TypeItem() {
+            Spartan_BR_Conditions_Detail_Spartan_BR_Operator_TypeItems = null;
+            var ajaxUrl = "@Url.Content("~/Frontal/Spartan_Business_Rule/GetSpartan_BR_Conditions_Detail_Spartan_BR_Operator_TypeAll")";
+            $.ajax({
+                url: ajaxUrl,
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                global: false,
+                success: function (result) {
+                    Spartan_BR_Conditions_Detail_Spartan_BR_Operator_TypeItems = result;
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+    var Spartan_BR_Conditions_Detail_Spartan_BR_ConditionItems;
+        function GetSpartan_BR_Conditions_Detail_Spartan_BR_ConditionItem() {
+            Spartan_BR_Conditions_Detail_Spartan_BR_ConditionItems = null;
+            var ajaxUrl = "@Url.Content("~/Frontal/Spartan_Business_Rule/GetSpartan_BR_Conditions_Detail_Spartan_BR_ConditionAll")";
+            $.ajax({
+                url: ajaxUrl,
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                global: false,
+                success: function (result) {
+                    Spartan_BR_Conditions_Detail_Spartan_BR_ConditionItems = result;
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+
+        var Spartan_BR_Conditions_DetailData = [];
+        var Spartan_BR_Conditions_DetaildeletedItem = [];
+        var Spartan_BR_Conditions_DetailDataMain = [];
+        var Spartan_BR_Conditions_DetailDataMainPages = [];
+        var Spartan_BR_Conditions_DetailnewItemCount = 0;
+        var Spartan_BR_Conditions_DetailmaxItemIndex = 0;
+        var Spartan_BR_Conditions_DetailDataMainInitialized = false;
+
+        function SendSpartan_BR_Conditions_Detail(callBack, BusinessRuleIdId) {
+            Spartan_BR_Conditions_DetailData = GetSpartan_BR_Conditions_DetailFromDataTable();
+
+            if (Spartan_BR_Conditions_DetailData.length > 0 || $("#ReferenceBusinessRuleId").val() != BusinessRuleIdId) {
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Spartan_Business_Rule/PostSpartan_BR_Conditions_Detail?MasterId=")' + BusinessRuleIdId + "&referenceId=" + $("#ReferenceBusinessRuleId").val(),
+                    type: 'POST',
+                    data: GetSpartan_BR_Conditions_Detail(),
+                    async: true,
+                    success: function (result) {
+
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            } else {
+                //showNotification("@Resources.Resources.SaveSuccess", "success");
+                //callBack(BusinessRuleIdId);
+            }
+            return true;
+        }
+
+        function GetAddSpartan_BR_Conditions_DetailPopup(currentRowIndex, mode) {
+
+            $.ajax({
+                url: "@Url.Action("AddSpartan_BR_Conditions_Detail", "Spartan_Business_Rule")",
+                type: "GET",
+                async: false,
+                data: { rowIndex: currentRowIndex, functionMode: mode },
+                success: function (data) {
+                    $(".AddSpartan_BR_Conditions_DetailModal").html(data);
+                },
+                error: function () {
+
+                }
+            });
+
+            @*$.get('@Url.Action("AddSpartan_BR_Conditions_Detail", "Spartan_Business_Rule")', { rowIndex: currentRowIndex }, function (data) {
+                $(".AddSpartan_BR_Conditions_DetailModal").html(data);
+            });*@
+        }
+        var Spartan_BR_Actions_True_DetailinsertRowCurrentIndex = -1;
+        var Spartan_BR_Actions_True_DetailDataDataTable;
+        function getSpartan_BR_Actions_True_DetailData() {
+            $.ajax({
+                url: "@Url.Content("~/Frontal/Spartan_Business_Rule/GetSpartan_BR_Actions_True_Detail")" + "?draw=1&start=1&length=2147483647" + ($("#ReferenceBusinessRuleId").val() != "" ? "&RelationId=" + $("#ReferenceBusinessRuleId").val() : ""),
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    Spartan_BR_Actions_True_DetailDataDataTable = result.data;
+                    showSpartan_BR_Actions_True_DetailGrid(result.data);
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+        function Spartan_BR_Actions_True_DetailGetUpdateRowControls(data) {
+
+            var columnData = [];
+            var inputData = "<input type='text' class='fullWidth form-control' />";
+            columnData[0] = $($(GetSpartan_BR_Actions_True_Detail_Spartan_BR_Action_ClassificationDropDown()).val(data.Action_Classification)).addClass('Action_Classification');
+            columnData[1] = $($(GetSpartan_BR_Actions_True_Detail_Spartan_BR_ActionDropDown()).val(data.Action)).addClass('Action');
+            columnData[2] = $($(GetSpartan_BR_Actions_True_Detail_Spartan_BR_Action_ResultDropDown()).val(data.Action_Result)).addClass('Action_Result');
+            columnData[3] = $($($.parseHTML(inputData)).val(data.Parameter_1)).addClass('Parameter_1');
+            columnData[4] = $($($.parseHTML(inputData)).val(data.Parameter_2)).addClass('Parameter_2');
+            columnData[5] = $($($.parseHTML(inputData)).val(data.Paramater_3)).addClass('Paramater_3');
+            columnData[6] = $($($.parseHTML(inputData)).val(data.Paramater_4)).addClass('Paramater_4');
+            columnData[7] = $($($.parseHTML(inputData)).val(data.Parameter_5)).addClass('Parameter_5');
+
+            return columnData;
+        }
+
+        var removedSpartan_BR_Actions_True_DetailData = [];
+        function Spartan_BR_Actions_True_DetailDeleteRow(rowIndex) {
+            if (!permission.Delete || isConsultMode)
+                return;
+
+            if (confirm("@Resources.Resources.DeleteConfirm")) {
+                var prevData = Spartan_BR_Actions_True_DetailTable.fnGetData(rowIndex);
+                removedSpartan_BR_Actions_True_DetailData.push(prevData);
+                Spartan_BR_Actions_True_DetailTable.fnDeleteRow(rowIndex);
+            }
+
+        }
+
+        function Spartan_BR_Actions_True_DetailrowCreationGrid(row, data, index) {
+            //debugger;
+            var Spartan_BR_Actions_True_DetailRowElement = "Spartan_BR_Actions_True_Detail_" + index.toString();
+            $(row).addClass(Spartan_BR_Actions_True_DetailRowElement);
+
+            row.innerHTML = "";
+
+            if (data.IsInsertRow) {
+
+                if (row.childNodes.length != 0) {
+                    for (var i = 0; i < row.childNodes.length; i++) {
+                        row.childNodes[i].remove();
+                    }
+                }
+                var controls = GetInsertSpartan_BR_Actions_True_DetailRowControls(index);
+
+                var actionColInsert = $('<td>');
+
+                var abc = "if(dynamicFieldValidation('" + Spartan_BR_Actions_True_DetailRowElement + "')){ Spartan_BR_Actions_True_DetailInsertRow(" + index + "); }";
+                var insertRowHTML = '<a  onclick="' + abc + '">';
+                $('<i class="fa fa-check">').appendTo($(insertRowHTML).appendTo(actionColInsert));
+				$('<i class="fa fa-times">').appendTo($("<a  onclick='Spartan_BR_Actions_True_DetailCancelRow(" + index + ")'>").appendTo(actionColInsert));
+                actionColInsert.appendTo(row);
+
+                for (i = 0; i < controls.length; i++) {
+                    $(controls[i]).appendTo($('<td>').appendTo(row));
+                }
+                return;
+            }
+
+            var actionCol = $('<td>');
+            $('<i class="fa fa-pencil">').appendTo($("<a title='Edit' class='" + (!permission.Edit || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Actions_True_DetailEditRow(" + index + ")'>").appendTo(actionCol));
+            @*$('<i class="fa fa-edit">').appendTo($("<a title='Edit' data-toggle='modal' data-target='#AddSpartan_BR_Actions_True_Detail-form' class='" + (!permission.Edit || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Actions_True_DetailEditRowPopup(" + index + ")'>").appendTo(actionCol));*@
+            $('<i class="fa fa-trash-o">').appendTo($("<a title='Delete' class='" + (!permission.Delete || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Actions_True_DetailDeleteRow(" + index + ")'>").appendTo(actionCol));
+            actionCol.appendTo(row);
+            $('<td>').text(GetSpartan_BR_Actions_True_Detail_Spartan_BR_Action_ClassificationName(data.Action_Classification)).appendTo(row);
+            $('<td>').text(GetSpartan_BR_Actions_True_Detail_Spartan_BR_ActionName(data.Action)).appendTo(row);
+            $('<td>').text(GetSpartan_BR_Actions_True_Detail_Spartan_BR_Action_ResultName(data.Action_Result)).appendTo(row);
+            $('<td>').text(data.Parameter_1).appendTo(row);
+            $('<td>').text(data.Parameter_2).appendTo(row);
+            $('<td>').text(data.Paramater_3).appendTo(row);
+            $('<td>').text(data.Paramater_4).appendTo(row);
+            $('<td>').text(data.Parameter_5).appendTo(row);
+
+        }
+
+        var Spartan_BR_Actions_True_DetailTable;
+        function showSpartan_BR_Actions_True_DetailGrid(dataSet) {
+            removedSpartan_BR_Actions_True_DetailData = [];
+            Spartan_BR_Actions_True_DetailTable = $('#Spartan_BR_Actions_True_DetailGrid').dataTable({
+                dom: '<"html5buttons"B>lTgitp',
+                buttons: [
+                ],
+                "createdRow": Spartan_BR_Actions_True_DetailrowCreationGrid,
+                "lengthMenu": [[5, 10, 20, 50, -1], [5, 10, 20, 50, "All"]],
+                data: dataSet,
+                "columns": [
+                    { "data": null, 'visible': true, "orderable": false },
+                    { "data": "Action_Classification", "orderable": false },
+                    { "data": "Action", "orderable": false },
+                    { "data": "Action_Result", "orderable": false },
+                    { "data": "Parameter_1", "orderable": false },
+                    { "data": "Parameter_2", "orderable": false },
+                    { "data": "Paramater_3", "orderable": false },
+                    { "data": "Paramater_4", "orderable": false },
+                    { "data": "Parameter_5", "orderable": false },
+
+                ],
+                "order": [[0, "asc"]],
+                "language": {
+                    "lengthMenu": "@Resources.Resources.Display" + " _MENU_ " + "@Resources.Resources.RecordsPerPage",
+                    "zeroRecords": "@Resources.Resources.NothingFound",
+                    "info": "@Resources.Resources.ShowingPages" + " _PAGE_ " + "@Resources.Resources.of" + " _PAGES_",
+                    "infoEmpty": "@Resources.Resources.NoRecords",
+                    "infoFiltered": "(" + "@Resources.Resources.FilteredFrom" + " _MAX_ " + "@Resources.Resources.TotalRecords" + ")",
+                    "sSearch": "@Resources.Resources.Search",
+                    "paginate": {
+                        "previous": "@Resources.Resources.Previous",
+                        "next": "@Resources.Resources.Next"
+                    }
+                },
+                "fnDrawCallback": function (settings) {
+                    setSpartan_BR_Actions_True_DetailValidation();
+                }
+            });
+        }
+
+    var Spartan_BR_Actions_True_Detail_Spartan_BR_Action_ClassificationItems;
+        function GetSpartan_BR_Actions_True_Detail_Spartan_BR_Action_ClassificationItem() {
+            Spartan_BR_Actions_True_Detail_Spartan_BR_Action_ClassificationItems = null;
+            var ajaxUrl = "@Url.Content("~/Frontal/Spartan_Business_Rule/GetSpartan_BR_Actions_True_Detail_Spartan_BR_Action_ClassificationAll")";
+            $.ajax({
+                url: ajaxUrl,
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                global: false,
+                success: function (result) {
+                    Spartan_BR_Actions_True_Detail_Spartan_BR_Action_ClassificationItems = result;
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+    var Spartan_BR_Actions_True_Detail_Spartan_BR_ActionItems;
+        function GetSpartan_BR_Actions_True_Detail_Spartan_BR_ActionItem() {
+            Spartan_BR_Actions_True_Detail_Spartan_BR_ActionItems = null;
+            var ajaxUrl = "@Url.Content("~/Frontal/Spartan_Business_Rule/GetSpartan_BR_Actions_True_Detail_Spartan_BR_ActionAll")";
+            $.ajax({
+                url: ajaxUrl,
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                global: false,
+                success: function (result) {
+                    Spartan_BR_Actions_True_Detail_Spartan_BR_ActionItems = result;
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+    var Spartan_BR_Actions_True_Detail_Spartan_BR_Action_ResultItems;
+        function GetSpartan_BR_Actions_True_Detail_Spartan_BR_Action_ResultItem() {
+            Spartan_BR_Actions_True_Detail_Spartan_BR_Action_ResultItems = null;
+            var ajaxUrl = "@Url.Content("~/Frontal/Spartan_Business_Rule/GetSpartan_BR_Actions_True_Detail_Spartan_BR_Action_ResultAll")";
+            $.ajax({
+                url: ajaxUrl,
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                global: false,
+                success: function (result) {
+                    Spartan_BR_Actions_True_Detail_Spartan_BR_Action_ResultItems = result;
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+
+        var Spartan_BR_Actions_True_DetailData = [];
+        var Spartan_BR_Actions_True_DetaildeletedItem = [];
+        var Spartan_BR_Actions_True_DetailDataMain = [];
+        var Spartan_BR_Actions_True_DetailDataMainPages = [];
+        var Spartan_BR_Actions_True_DetailnewItemCount = 0;
+        var Spartan_BR_Actions_True_DetailmaxItemIndex = 0;
+        var Spartan_BR_Actions_True_DetailDataMainInitialized = false;
+
+        function SendSpartan_BR_Actions_True_Detail(callBack, BusinessRuleIdId) {
+            Spartan_BR_Actions_True_DetailData = GetSpartan_BR_Actions_True_DetailFromDataTable();
+
+            if (Spartan_BR_Actions_True_DetailData.length > 0 || $("#ReferenceBusinessRuleId").val() != BusinessRuleIdId) {
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Spartan_Business_Rule/PostSpartan_BR_Actions_True_Detail?MasterId=")' + BusinessRuleIdId + "&referenceId=" + $("#ReferenceBusinessRuleId").val(),
+                    type: 'POST',
+                    data: GetSpartan_BR_Actions_True_Detail(),
+                    async: true,
+                    success: function (result) {
+
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            } else {
+                //showNotification("@Resources.Resources.SaveSuccess", "success");
+                //callBack(BusinessRuleIdId);
+            }
+            return true;
+        }
+
+        function GetAddSpartan_BR_Actions_True_DetailPopup(currentRowIndex, mode) {
+
+            $.ajax({
+                url: "@Url.Action("AddSpartan_BR_Actions_True_Detail", "Spartan_Business_Rule")",
+                type: "GET",
+                async: false,
+                data: { rowIndex: currentRowIndex, functionMode: mode },
+                success: function (data) {
+                    $(".AddSpartan_BR_Actions_True_DetailModal").html(data);
+                },
+                error: function () {
+
+                }
+            });
+
+            @*$.get('@Url.Action("AddSpartan_BR_Actions_True_Detail", "Spartan_Business_Rule")', { rowIndex: currentRowIndex }, function (data) {
+                $(".AddSpartan_BR_Actions_True_DetailModal").html(data);
+            });*@
+        }
+        var Spartan_BR_Actions_False_DetailinsertRowCurrentIndex = -1;
+        var Spartan_BR_Actions_False_DetailDataDataTable;
+        function getSpartan_BR_Actions_False_DetailData() {
+            $.ajax({
+                url: "@Url.Content("~/Frontal/Spartan_Business_Rule/GetSpartan_BR_Actions_False_Detail")" + "?draw=1&start=1&length=2147483647" + ($("#ReferenceBusinessRuleId").val() != "" ? "&RelationId=" + $("#ReferenceBusinessRuleId").val() : ""),
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    Spartan_BR_Actions_False_DetailDataDataTable = result.data;
+                    showSpartan_BR_Actions_False_DetailGrid(result.data);
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+        function Spartan_BR_Actions_False_DetailGetUpdateRowControls(data) {
+
+            var columnData = [];
+            var inputData = "<input type='text' class='fullWidth form-control' />";
+            columnData[0] = $($(GetSpartan_BR_Actions_False_Detail_Spartan_BR_Action_ClassificationDropDown()).val(data.Action_Classification)).addClass('Action_Classification');
+            columnData[1] = $($(GetSpartan_BR_Actions_False_Detail_Spartan_BR_ActionDropDown()).val(data.Action)).addClass('Action');
+            columnData[2] = $($(GetSpartan_BR_Actions_False_Detail_Spartan_BR_Action_ResultDropDown()).val(data.Action_Result)).addClass('Action_Result');
+            columnData[3] = $($($.parseHTML(inputData)).val(data.Parameter_1)).addClass('Parameter_1');
+            columnData[4] = $($($.parseHTML(inputData)).val(data.Parameter_2)).addClass('Parameter_2');
+            columnData[5] = $($($.parseHTML(inputData)).val(data.Parameter_3)).addClass('Parameter_3');
+            columnData[6] = $($($.parseHTML(inputData)).val(data.Parameter_4)).addClass('Parameter_4');
+            columnData[7] = $($($.parseHTML(inputData)).val(data.Parameter_5)).addClass('Parameter_5');
+
+            return columnData;
+        }
+
+        var removedSpartan_BR_Actions_False_DetailData = [];
+        function Spartan_BR_Actions_False_DetailDeleteRow(rowIndex) {
+            if (!permission.Delete || isConsultMode)
+                return;
+
+            if (confirm("@Resources.Resources.DeleteConfirm")) {
+                var prevData = Spartan_BR_Actions_False_DetailTable.fnGetData(rowIndex);
+                removedSpartan_BR_Actions_False_DetailData.push(prevData);
+                Spartan_BR_Actions_False_DetailTable.fnDeleteRow(rowIndex);
+            }
+
+        }
+
+        function Spartan_BR_Actions_False_DetailrowCreationGrid(row, data, index) {
+            //debugger;
+            var Spartan_BR_Actions_False_DetailRowElement = "Spartan_BR_Actions_False_Detail_" + index.toString();
+            $(row).addClass(Spartan_BR_Actions_False_DetailRowElement);
+
+            row.innerHTML = "";
+
+            if (data.IsInsertRow) {
+
+                if (row.childNodes.length != 0) {
+                    for (var i = 0; i < row.childNodes.length; i++) {
+                        row.childNodes[i].remove();
+                    }
+                }
+                var controls = GetInsertSpartan_BR_Actions_False_DetailRowControls(index);
+
+                var actionColInsert = $('<td>');
+
+                var abc = "if(dynamicFieldValidation('" + Spartan_BR_Actions_False_DetailRowElement + "')){ Spartan_BR_Actions_False_DetailInsertRow(" + index + "); }";
+                var insertRowHTML = '<a  onclick="' + abc + '">';
+                $('<i class="fa fa-check">').appendTo($(insertRowHTML).appendTo(actionColInsert));
+				$('<i class="fa fa-times">').appendTo($("<a  onclick='Spartan_BR_Actions_False_DetailCancelRow(" + index + ")'>").appendTo(actionColInsert));
+                actionColInsert.appendTo(row);
+
+                for (i = 0; i < controls.length; i++) {
+                    $(controls[i]).appendTo($('<td>').appendTo(row));
+                }
+                return;
+            }
+
+            var actionCol = $('<td>');
+            $('<i class="fa fa-pencil">').appendTo($("<a title='Edit' class='" + (!permission.Edit || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Actions_False_DetailEditRow(" + index + ")'>").appendTo(actionCol));
+            @*$('<i class="fa fa-edit">').appendTo($("<a title='Edit' data-toggle='modal' data-target='#AddSpartan_BR_Actions_False_Detail-form' class='" + (!permission.Edit || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Actions_False_DetailEditRowPopup(" + index + ")'>").appendTo(actionCol));*@
+            $('<i class="fa fa-trash-o">').appendTo($("<a title='Delete' class='" + (!permission.Delete || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Actions_False_DetailDeleteRow(" + index + ")'>").appendTo(actionCol));
+            actionCol.appendTo(row);
+            $('<td>').text(GetSpartan_BR_Actions_False_Detail_Spartan_BR_Action_ClassificationName(data.Action_Classification)).appendTo(row);
+            $('<td>').text(GetSpartan_BR_Actions_False_Detail_Spartan_BR_ActionName(data.Action)).appendTo(row);
+            $('<td>').text(GetSpartan_BR_Actions_False_Detail_Spartan_BR_Action_ResultName(data.Action_Result)).appendTo(row);
+            $('<td>').text(data.Parameter_1).appendTo(row);
+            $('<td>').text(data.Parameter_2).appendTo(row);
+            $('<td>').text(data.Parameter_3).appendTo(row);
+            $('<td>').text(data.Parameter_4).appendTo(row);
+            $('<td>').text(data.Parameter_5).appendTo(row);
+
+        }
+
+        var Spartan_BR_Actions_False_DetailTable;
+        function showSpartan_BR_Actions_False_DetailGrid(dataSet) {
+            removedSpartan_BR_Actions_False_DetailData = [];
+            Spartan_BR_Actions_False_DetailTable = $('#Spartan_BR_Actions_False_DetailGrid').dataTable({
+                dom: '<"html5buttons"B>lTgitp',
+                buttons: [
+                ],
+                "createdRow": Spartan_BR_Actions_False_DetailrowCreationGrid,
+                "lengthMenu": [[5, 10, 20, 50, -1], [5, 10, 20, 50, "All"]],
+                data: dataSet,
+                "columns": [
+                    { "data": null, 'visible': true, "orderable": false },
+                    { "data": "Action_Classification", "orderable": false },
+                    { "data": "Action", "orderable": false },
+                    { "data": "Action_Result", "orderable": false },
+                    { "data": "Parameter_1", "orderable": false },
+                    { "data": "Parameter_2", "orderable": false },
+                    { "data": "Parameter_3", "orderable": false },
+                    { "data": "Parameter_4", "orderable": false },
+                    { "data": "Parameter_5", "orderable": false },
+
+                ],
+                "order": [[0, "asc"]],
+                "language": {
+                    "lengthMenu": "@Resources.Resources.Display" + " _MENU_ " + "@Resources.Resources.RecordsPerPage",
+                    "zeroRecords": "@Resources.Resources.NothingFound",
+                    "info": "@Resources.Resources.ShowingPages" + " _PAGE_ " + "@Resources.Resources.of" + " _PAGES_",
+                    "infoEmpty": "@Resources.Resources.NoRecords",
+                    "infoFiltered": "(" + "@Resources.Resources.FilteredFrom" + " _MAX_ " + "@Resources.Resources.TotalRecords" + ")",
+                    "sSearch": "@Resources.Resources.Search",
+                    "paginate": {
+                        "previous": "@Resources.Resources.Previous",
+                        "next": "@Resources.Resources.Next"
+                    }
+                },
+                "fnDrawCallback": function (settings) {
+                    setSpartan_BR_Actions_False_DetailValidation();
+                }
+            });
+        }
+
+    var Spartan_BR_Actions_False_Detail_Spartan_BR_Action_ClassificationItems;
+        function GetSpartan_BR_Actions_False_Detail_Spartan_BR_Action_ClassificationItem() {
+            Spartan_BR_Actions_False_Detail_Spartan_BR_Action_ClassificationItems = null;
+            var ajaxUrl = "@Url.Content("~/Frontal/Spartan_Business_Rule/GetSpartan_BR_Actions_False_Detail_Spartan_BR_Action_ClassificationAll")";
+            $.ajax({
+                url: ajaxUrl,
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                global: false,
+                success: function (result) {
+                    Spartan_BR_Actions_False_Detail_Spartan_BR_Action_ClassificationItems = result;
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+    var Spartan_BR_Actions_False_Detail_Spartan_BR_ActionItems;
+        function GetSpartan_BR_Actions_False_Detail_Spartan_BR_ActionItem() {
+            Spartan_BR_Actions_False_Detail_Spartan_BR_ActionItems = null;
+            var ajaxUrl = "@Url.Content("~/Frontal/Spartan_Business_Rule/GetSpartan_BR_Actions_False_Detail_Spartan_BR_ActionAll")";
+            $.ajax({
+                url: ajaxUrl,
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                global: false,
+                success: function (result) {
+                    Spartan_BR_Actions_False_Detail_Spartan_BR_ActionItems = result;
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+    var Spartan_BR_Actions_False_Detail_Spartan_BR_Action_ResultItems;
+        function GetSpartan_BR_Actions_False_Detail_Spartan_BR_Action_ResultItem() {
+            Spartan_BR_Actions_False_Detail_Spartan_BR_Action_ResultItems = null;
+            var ajaxUrl = "@Url.Content("~/Frontal/Spartan_Business_Rule/GetSpartan_BR_Actions_False_Detail_Spartan_BR_Action_ResultAll")";
+            $.ajax({
+                url: ajaxUrl,
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                global: false,
+                success: function (result) {
+                    Spartan_BR_Actions_False_Detail_Spartan_BR_Action_ResultItems = result;
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+
+        var Spartan_BR_Actions_False_DetailData = [];
+        var Spartan_BR_Actions_False_DetaildeletedItem = [];
+        var Spartan_BR_Actions_False_DetailDataMain = [];
+        var Spartan_BR_Actions_False_DetailDataMainPages = [];
+        var Spartan_BR_Actions_False_DetailnewItemCount = 0;
+        var Spartan_BR_Actions_False_DetailmaxItemIndex = 0;
+        var Spartan_BR_Actions_False_DetailDataMainInitialized = false;
+
+        function SendSpartan_BR_Actions_False_Detail(callBack, BusinessRuleIdId) {
+            Spartan_BR_Actions_False_DetailData = GetSpartan_BR_Actions_False_DetailFromDataTable();
+
+            if (Spartan_BR_Actions_False_DetailData.length > 0 || $("#ReferenceBusinessRuleId").val() != BusinessRuleIdId) {
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Spartan_Business_Rule/PostSpartan_BR_Actions_False_Detail?MasterId=")' + BusinessRuleIdId + "&referenceId=" + $("#ReferenceBusinessRuleId").val(),
+                    type: 'POST',
+                    data: GetSpartan_BR_Actions_False_Detail(),
+                    async: true,
+                    success: function (result) {
+
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            } else {
+                //showNotification("@Resources.Resources.SaveSuccess", "success");
+                //callBack(BusinessRuleIdId);
+            }
+            return true;
+        }
+
+        function GetAddSpartan_BR_Actions_False_DetailPopup(currentRowIndex, mode) {
+
+            $.ajax({
+                url: "@Url.Action("AddSpartan_BR_Actions_False_Detail", "Spartan_Business_Rule")",
+                type: "GET",
+                async: false,
+                data: { rowIndex: currentRowIndex, functionMode: mode },
+                success: function (data) {
+                    $(".AddSpartan_BR_Actions_False_DetailModal").html(data);
+                },
+                error: function () {
+
+                }
+            });
+
+            @*$.get('@Url.Action("AddSpartan_BR_Actions_False_Detail", "Spartan_Business_Rule")', { rowIndex: currentRowIndex }, function (data) {
+                $(".AddSpartan_BR_Actions_False_DetailModal").html(data);
+            });*@
+        }
+        var Spartan_BR_Modifications_LoginsertRowCurrentIndex = -1;
+        var Spartan_BR_Modifications_LogDataDataTable;
+        function getSpartan_BR_Modifications_LogData() {
+            $.ajax({
+                url: "@Url.Content("~/Frontal/Spartan_Business_Rule/GetSpartan_BR_Modifications_Log")" + "?draw=1&start=1&length=2147483647" + ($("#ReferenceBusinessRuleId").val() != "" ? "&RelationId=" + $("#ReferenceBusinessRuleId").val() : ""),
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    Spartan_BR_Modifications_LogDataDataTable = result.data;
+                    showSpartan_BR_Modifications_LogGrid(result.data);
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+        function Spartan_BR_Modifications_LogGetUpdateRowControls(data) {
+
+            var columnData = [];
+            var inputData = "<input type='text' class='fullWidth form-control' />";
+            columnData[0] = $($($.parseHTML(GetGridDatePicker())).val(data.Modification_Date)).addClass('Modification_Date');
+            columnData[1] = $($($.parseHTML(GetGridTimePicker())).val(data.Modification_Hour)).addClass('Modification_Hour');
+            columnData[2] = $($($.parseHTML("<input type='text' class='fullWidth inputNumber form-control' />")).val(data.Modification_User)).addClass('Modification_User');
+            columnData[3] = $($($.parseHTML(inputData)).val(data.Comments)).addClass('Comments');
+            columnData[4] = $($($.parseHTML(inputData)).val(data.Implementation_Code)).addClass('Implementation_Code');
+
+            return columnData;
+        }
+
+        var removedSpartan_BR_Modifications_LogData = [];
+        function Spartan_BR_Modifications_LogDeleteRow(rowIndex) {
+            if (!permission.Delete || isConsultMode)
+                return;
+
+            if (confirm("@Resources.Resources.DeleteConfirm")) {
+                var prevData = Spartan_BR_Modifications_LogTable.fnGetData(rowIndex);
+                removedSpartan_BR_Modifications_LogData.push(prevData);
+                Spartan_BR_Modifications_LogTable.fnDeleteRow(rowIndex);
+            }
+
+        }
+
+        function Spartan_BR_Modifications_LogrowCreationGrid(row, data, index) {
+            //debugger;
+            var Spartan_BR_Modifications_LogRowElement = "Spartan_BR_Modifications_Log_" + index.toString();
+            $(row).addClass(Spartan_BR_Modifications_LogRowElement);
+
+            row.innerHTML = "";
+
+            if (data.IsInsertRow) {
+
+                if (row.childNodes.length != 0) {
+                    for (var i = 0; i < row.childNodes.length; i++) {
+                        row.childNodes[i].remove();
+                    }
+                }
+                var controls = GetInsertSpartan_BR_Modifications_LogRowControls(index);
+
+                var actionColInsert = $('<td>');
+
+                var abc = "if(dynamicFieldValidation('" + Spartan_BR_Modifications_LogRowElement + "')){ Spartan_BR_Modifications_LogInsertRow(" + index + "); }";
+                var insertRowHTML = '<a  onclick="' + abc + '">';
+                $('<i class="fa fa-check">').appendTo($(insertRowHTML).appendTo(actionColInsert));
+				$('<i class="fa fa-times">').appendTo($("<a  onclick='Spartan_BR_Modifications_LogCancelRow(" + index + ")'>").appendTo(actionColInsert));
+                actionColInsert.appendTo(row);
+
+                for (i = 0; i < controls.length; i++) {
+                    $(controls[i]).appendTo($('<td>').appendTo(row));
+                }
+                return;
+            }
+
+            var actionCol = $('<td>');
+            $('<i class="fa fa-pencil">').appendTo($("<a title='Edit' class='" + (!permission.Edit || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Modifications_LogEditRow(" + index + ")'>").appendTo(actionCol));
+            @*$('<i class="fa fa-edit">').appendTo($("<a title='Edit' data-toggle='modal' data-target='#AddSpartan_BR_Modifications_Log-form' class='" + (!permission.Edit || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Modifications_LogEditRowPopup(" + index + ")'>").appendTo(actionCol));*@
+            $('<i class="fa fa-trash-o">').appendTo($("<a title='Delete' class='" + (!permission.Delete || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Modifications_LogDeleteRow(" + index + ")'>").appendTo(actionCol));
+            actionCol.appendTo(row);
+            $('<td>').text(data.Modification_Date).appendTo(row);
+            $('<td>').text(data.Modification_Hour).appendTo(row);
+            $('<td>').text(data.Modification_User).appendTo(row);
+            $('<td>').text(data.Comments).appendTo(row);
+            $('<td>').text(data.Implementation_Code).appendTo(row);
+
+        }
+
+        var Spartan_BR_Modifications_LogTable;
+        function showSpartan_BR_Modifications_LogGrid(dataSet) {
+            removedSpartan_BR_Modifications_LogData = [];
+            Spartan_BR_Modifications_LogTable = $('#Spartan_BR_Modifications_LogGrid').dataTable({
+                dom: '<"html5buttons"B>lTgitp',
+                buttons: [
+                ],
+                "createdRow": Spartan_BR_Modifications_LogrowCreationGrid,
+                "lengthMenu": [[5, 10, 20, 50, -1], [5, 10, 20, 50, "All"]],
+                data: dataSet,
+                "columns": [
+                    { "data": null, 'visible': true, "orderable": false },
+                    { "data": "Modification_Date", "orderable": false },
+                    { "data": "Modification_Hour", "orderable": false },
+                    { "data": "Modification_User", "orderable": false },
+                    { "data": "Comments", "orderable": false },
+                    { "data": "Implementation_Code", "orderable": false },
+
+                ],
+                "order": [[0, "asc"]],
+                "language": {
+                    "lengthMenu": "@Resources.Resources.Display" + " _MENU_ " + "@Resources.Resources.RecordsPerPage",
+                    "zeroRecords": "@Resources.Resources.NothingFound",
+                    "info": "@Resources.Resources.ShowingPages" + " _PAGE_ " + "@Resources.Resources.of" + " _PAGES_",
+                    "infoEmpty": "@Resources.Resources.NoRecords",
+                    "infoFiltered": "(" + "@Resources.Resources.FilteredFrom" + " _MAX_ " + "@Resources.Resources.TotalRecords" + ")",
+                    "sSearch": "@Resources.Resources.Search",
+                    "paginate": {
+                        "previous": "@Resources.Resources.Previous",
+                        "next": "@Resources.Resources.Next"
+                    }
+                },
+                "fnDrawCallback": function (settings) {
+                    setSpartan_BR_Modifications_LogValidation();
+                }
+            });
+        }
+
+
+        var Spartan_BR_Modifications_LogData = [];
+        var Spartan_BR_Modifications_LogdeletedItem = [];
+        var Spartan_BR_Modifications_LogDataMain = [];
+        var Spartan_BR_Modifications_LogDataMainPages = [];
+        var Spartan_BR_Modifications_LognewItemCount = 0;
+        var Spartan_BR_Modifications_LogmaxItemIndex = 0;
+        var Spartan_BR_Modifications_LogDataMainInitialized = false;
+
+        function SendSpartan_BR_Modifications_Log(callBack, BusinessRuleIdId) {
+            Spartan_BR_Modifications_LogData = GetSpartan_BR_Modifications_LogFromDataTable();
+
+            if (Spartan_BR_Modifications_LogData.length > 0 || $("#ReferenceBusinessRuleId").val() != BusinessRuleIdId) {
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Spartan_Business_Rule/PostSpartan_BR_Modifications_Log?MasterId=")' + BusinessRuleIdId + "&referenceId=" + $("#ReferenceBusinessRuleId").val(),
+                    type: 'POST',
+                    data: GetSpartan_BR_Modifications_Log(),
+                    async: true,
+                    success: function (result) {
+
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            } else {
+                //showNotification("@Resources.Resources.SaveSuccess", "success");
+                //callBack(BusinessRuleIdId);
+            }
+            return true;
+        }
+
+        function GetAddSpartan_BR_Modifications_LogPopup(currentRowIndex, mode) {
+
+            $.ajax({
+                url: "@Url.Action("AddSpartan_BR_Modifications_Log", "Spartan_Business_Rule")",
+                type: "GET",
+                async: false,
+                data: { rowIndex: currentRowIndex, functionMode: mode },
+                success: function (data) {
+                    $(".AddSpartan_BR_Modifications_LogModal").html(data);
+                },
+                error: function () {
+
+                }
+            });
+
+            @*$.get('@Url.Action("AddSpartan_BR_Modifications_Log", "Spartan_Business_Rule")', { rowIndex: currentRowIndex }, function (data) {
+                $(".AddSpartan_BR_Modifications_LogModal").html(data);
+            });*@
+        }
+
+
+        function initiateUIControls() {
+            $('.gridDatePicker').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            //Time Picker
+            $('.gridTimePicker').clockpicker();
+
+
+
+
+
+
+
+
+        }
+
+    </script>
+
+<script type="text/javascript">
+
+        function SendSpartan_Business_RuleData(callBack) {
+            var formData = new FormData($("form#CreateSpartan_Business_Rule")[0]);
+            if (checkClientValidate('Spartan_Business_RuleCreateForm')) {
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Spartan_Business_Rule/Post/")',
+                    type: 'POST',
+                    data: formData,
+                    async: true,
+                    success: function (result) {
+                        if (result < 0) {
+                            showNotification("@Resources.Resources.ErrorSave", "error");
+                        } else {
+                            SendSpartan_BR_Scope_Detail(callBack, result);
+                            SendSpartan_BR_Operation_Detail(callBack, result);
+                            SendSpartan_BR_Process_Event_Detail(callBack, result);
+                            SendSpartan_BR_Conditions_Detail(callBack, result);
+                            SendSpartan_BR_Actions_True_Detail(callBack, result);
+                            SendSpartan_BR_Actions_False_Detail(callBack, result);
+                            SendSpartan_BR_Modifications_Log(callBack, result);
+
+                            showNotification("@Resources.Resources.SaveSuccess", "success");
+                            callBack(result);
+                        }
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            }
+            return false;
+        };
+        function GetPropertyBag() {
+            $.get('@Url.Action("Spartan_Business_RulePropertyBag", "Spartan_Business_Rule")', function (data) {
+                $(".PropertyModal").html(data);
+            });
+        }
+        function GetBusinessRule() {
+            $.get('@Url.Action("Spartan_Business_RuleBusinessRule", "Spartan_Business_Rule")', function (data) {
+                $(".BusinessRuleModal").html(data);
+            });
+        }
+        function GetAddBusinessRule(RuleId) {
+            $.get('@Url.Action("AddBusinessRule", "Spartan_Business_Rule")', { BusinessRuleId: RuleId }, function (data) {
+                $(".AddBusinessRuleModal").html(data);
+                $(".datatable").DataTable();
+            });
+        }
+
+    var permission = {
+        Consult: '@permission.Consult' == 'True',
+        New: '@permission.New' == 'True',
+        Edit: '@permission.Edit' == 'True',
+        Delete: '@permission.Delete' == 'True',
+        Export: '@permission.Export' == 'True',
+        Print: '@permission.Print' == 'True',
+        Configure: '@permission.Configure' == 'True',
+    };
+
+    
+    //MR-var statusItems;
+    //MR-var stateItems;
+    //MR-var cityItems = [];
+    var isConsultMode = "@ViewBag.Consult" == "True";
+    Consult(isConsultMode);
+        function Consult(val) {
+            if (val) {
+                $(':input').attr('readonly', 'readonly');
+                $(':input').attr('disabled', 'true');
+                $('.noConsult').removeAttr('readonly');
+                $('.noConsult').removeAttr('disabled');
+            }
+        }
+
+    function BackToGrid() {
+        location.href = "@Url.Content("~/Frontal/Spartan_Business_Rule/")";
+    }
+
+        function SaveElementAttributes() {
+            if ($('#hdnConfigureType').val() == "1") {
+                $.post("@Url.Content("~/Frontal/Spartan_Business_Rule/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+                    $('#hdnConfigureType').val("0");
+                    location.reload(true);
+                }, "json");
+            } else {
+                $.post("@Url.Content("~/Frontal/Spartan_Business_Rule/ReadScriptSettings")", function (data) {
+                    mainElementObject = JSON.parse(data.MainElement);
+                    childElementObject = JSON.parse(data.ChildElement);
+
+                    for (var i = 0; i < mainElementObject.length; i++) {
+                        var mainElementAttributes = '<div class="col-sm-2">';
+                        mainElementAttributes += '<div class="displayAttributes requiredAttribute"><a class="requiredClick" title="' + (mainElementObject[i].IsRequired == true ? "Required" : "Not Required") + '" onclick="setRequired(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsRequired == true ? "@Url.Content("~/Images/Required.png")" : "@Url.Content("~/Images/Not-Required.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes visibleAttribute"><a class="visibleClick" title="' + (mainElementObject[i].IsVisible == true ? "Visible" : "In Visible") + '" onclick="setVisible(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsVisible == true ? "@Url.Content("~/Images/Visible.png")" : "@Url.Content("~/Images/InVisible.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes readOnlyAttribute"><a class="readOnlyClick" title="' + (mainElementObject[i].IsReadOnly == true ? "Disabled" : "Enabled") + '" onclick="setReadOnly(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsReadOnly == true ? "@Url.Content("~/Images/Disabled.png")" : "@Url.Content("~/Images/Enabled.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes defaultValueAttribute"><a id="hlDefaultValue_' + i.toString() + '" class="defaultValueClick" title="' + (mainElementObject[i].DefaultValue) + '" onclick="setDefaultValue(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].DefaultValue != '' && mainElementObject[i].DefaultValue != null ? "@Url.Content("~/Images/default-value.png")" : "@Url.Content("~/Images/Not-Default-Value.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes helpTextAttribute"><a id="hlHelpText_' + i.toString() + '" class="helpTextClick" title="' + (mainElementObject[i].HelpText) + '" onclick="setHelpText(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].HelpText != '' && mainElementObject[i].HelpText != null ? "@Url.Content("~/Images/green-help.png")" : "@Url.Content("~/Images/red-help.jpg")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '</div>';
+                        $('#' + mainElementObject[i].inputId).parent().closest('.form-group').show();
+
+                        $('#' + mainElementObject[i].inputId).closest('.col-sm-8').after(mainElementAttributes);
+                    }
+
+                    for (var i = 0; i < childElementObject.length; i++) {
+                        $('.' + childElementObject[i].inputId + 'Header').show();
+                        $('.' + childElementObject[i].inputId).parent().show();
+                        $('.' + childElementObject[i].inputId + 'Header').append(returnAttributeHTML(i));
+                    }
+
+                    $('#ConfigureSave').text('Save Settings');
+                    $('#hdnConfigureType').val("1");
+                });
+            }
+        }
+    </script>
+<script type="text/javascript" src="~/Uploads/Scripts/Spartan_Business_Rule.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Scripts/Custom/Spartan_Business_RuleGeneral.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+}

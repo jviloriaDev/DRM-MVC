@@ -1,0 +1,1302 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Globalization
+@using Spartane.Core.Domain.Permission
+@using Spartane.Core.Domain.Spartane_File
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Dashboard_EditorModel
+@{
+
+    /*
+        string Registration_Date = "";
+        if (Model.Registration_Date == "")
+        { Model.Registration_Date = DateTime.Now.ToString(ConfigurationProperty.DateFormat); }
+
+    */
+    List<SelectListItem> varSpartan_User_Registration_User = null;
+    if (ViewBag.Spartan_Users_Registration_User != null)
+    { varSpartan_User_Registration_User = (List<SelectListItem>)ViewBag.Spartan_Users_Registration_User; }
+    //List<SelectListItem> varTemplate_Dashboard_Editor_Dashboard_Template = null;
+    //if (ViewBag.Template_Dashboard_Editors_Dashboard_Template != null)
+    var varTemplate_Dashboard_Editor_Dashboard_Template = ViewBag.Template_Dashboard_Editors_Dashboard_Template;
+    List<SelectListItem> varDashboard_Status_Status = null;
+    if (ViewBag.Dashboard_Statuss_Status != null)
+    { varDashboard_Status_Status = (List<SelectListItem>)ViewBag.Dashboard_Statuss_Status; }
+
+    Permission permissionDashboard_Config_Detail = ViewBag.PermissionDashboard_Config_Detail;
+
+    Permission permission = ViewBag.Permission;
+
+    if (ViewBag.IsPartial)
+    {
+        Layout = "~/Areas/Frontal/Views/Shared/_LayoutPopup.cshtml";
+    }
+}
+<style>
+    ul.thumbnails.image_picker_selector {
+        overflow: auto;
+        list-style-image: none;
+        list-style-position: outside;
+        list-style-type: none;
+        padding: 0px;
+        margin: 0px;
+    }
+
+        ul.thumbnails.image_picker_selector ul {
+            overflow: auto;
+            list-style-image: none;
+            list-style-position: outside;
+            list-style-type: none;
+            padding: 0px;
+            margin: 0px;
+        }
+
+        ul.thumbnails.image_picker_selector li.group {
+            width: 100%;
+        }
+
+        ul.thumbnails.image_picker_selector li.group_title {
+            float: none;
+        }
+
+        ul.thumbnails.image_picker_selector li {
+            margin: 0px 12px 12px 0px;
+            float: left;
+        }
+
+            ul.thumbnails.image_picker_selector li .thumbnail {
+                padding: 6px;
+                border: 1px solid #dddddd;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+            }
+
+                ul.thumbnails.image_picker_selector li .thumbnail img {
+                    -webkit-user-drag: none;
+                }
+
+                ul.thumbnails.image_picker_selector li .thumbnail.selected {
+                    background: #0088cc;
+                }
+</style>
+<div class="loading style-2"><div class="loading-wheel"></div></div>
+<div class="modal fade in" id="dvAttributeValue" style="background-color:rgba(0, 0, 0, 0.7);">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" id="lblAttributeType">@Resources.Resources.Value</label>
+                    <div class="col-sm-7">
+                        <input type="text" title="Value" class="form-control" id="txtAttributeValue" />
+                    </div>
+                    <div class="col-sm-2">
+                        <a class="btn btn-primary" onclick="SaveValue()">@Resources.Resources.Submit</a>
+                    </div>
+                    <input type="hidden" id="hdnAttributType" />
+                    <input type="hidden" id="hdnAttributElement" />
+                    <input type="hidden" id="hdnAttributNumber" />
+                    <input type="hidden" id="hdnElementType" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="row">
+        <div class="col-lg-10">
+            <h2>
+                @Resources.Dashboard_EditorResources.Dashboard_Editor
+                <button onclick="Dashboard_EditorGetBusinessRule('', 'Al Abrir Pantalla', '0')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Dashboard_EditorBusinessRule-form">
+                    <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+                        <i class="fa fa-cogs fa-spin"></i>
+                    </a>
+                </button>
+            </h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">@Resources.Resources.Home</a>
+                </li>
+                <li class="active">
+                    @if (Session["PhaseName"] != null)
+                    {
+                        <strong>@Session["PhaseName"].ToString()</strong>
+                    }
+                    else
+                    {
+                        <strong>@Resources.Dashboard_EditorResources.Dashboard_Editor</strong>
+                    }
+
+                </li>
+                <li class="active">
+                    <strong>@Resources.Resources.Create</strong>
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-2">
+            @{
+                if (Convert.ToInt32(Spartane.Web.SessionHelper.Role) == (int)Spartane.Core.Enums.SpartanRoleEnum.Admin)
+                {
+                    <h2>&nbsp;</h2>
+                    <button onclick="Dashboard_EditorDisplayBusinessRule()" type="button" class="btn btn-info btn-lg displayBusinessProperyButton">
+                        <i class="fa fa-cogs fa-spin"></i>
+                    </button>
+
+                    <div aria-hidden="true" class="modal fade in Dashboard_EditorPropertyBusinessModal" id="Dashboard_EditorPropertyBusinessModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">
+                                        @Resources.Resources.titleBussinesRules
+                                        <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">@Resources.Resources.Close</span></button>
+                                    </h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <a class="btn btn-primary full-width" data-dismiss="modal" data-toggle="modal" data-target="#PropertyModal-form" onclick="GetPropertyBag()">@Resources.Resources.Property</a>
+                                        </div>
+                                        <div class="clearfix col-sm-12">&nbsp;</div>
+                                        <div class="col-sm-12">
+                                            <a class="btn btn-primary full-width" data-dismiss="modal" data-toggle="modal" data-target="#Dashboard_EditorBusinessRule-form" onclick="Dashboard_EditorGetBusinessRule()">Business Rule</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div aria-hidden="true" data-backdrop="static" class="modal fade in PropertyModal" id="PropertyModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                    </div>
+                    <div aria-hidden="true" data-backdrop="static" class="modal fade in Dashboard_EditorBusinessRuleModal" id="Dashboard_EditorBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                    </div>
+
+
+                }
+            }
+            <div aria-hidden="true" class="modal fade in AddDashboard_Config_DetailModal" id="AddDashboard_Config_Detail-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+            </div>
+
+        </div>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                @using (Html.BeginForm("Post", "Dashboard_Editor", FormMethod.Post, new { id = "CreateDashboard_Editor", @readonly = "true", @class = "form-horizontal", enctype = "multipart/form-data" }))
+                {
+                    <input type="hidden" id="hdnIsNew" name="hdnIsNew" value="@ViewBag.IsNew.ToString()" />
+                    <span id="popupNotification"></span>
+                    <div class="container-fluid Dashboard_EditorCreateForm" id="viewmodeledit">
+                        <div class="alert alert-warning" id="controlsRequerid" style="display:none">
+                            <a href="#" class="close" onclick="$('#controlsRequerid').hide();">&times;</a>
+                            <span id="textRequired"></span>
+                        </div>
+                        <div class="tabs-container">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a data-toggle="tab" href="#tabDatos_Generales"> @Resources.Dashboard_EditorResources.TabDatos_Generales</a></li>
+                                <li class=""><a data-toggle="tab" href="#tabConfiguracion"> @Resources.Dashboard_EditorResources.TabConfiguracion</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div id="tabDatos_Generales" class="tab-pane active">
+                                    <div class="panel-body">
+                                        <div class="form-group" id="divDashboard_Id">
+                                            <label class="col-sm-2 control-label">@Resources.Dashboard_EditorResources.Dashboard_Id</label>
+                                            <div class="col-sm-8" data-field-id="Dashboard_Id" data-attribute="223477" data-field-name="@Resources.Dashboard_EditorResources.Dashboard_Id">
+                                                <label class="form-control" for="Dashboard_Id" id="lblDashboard_Id">
+                                                    @if (Model.Dashboard_Id == 0)
+                                                    {
+                                                        <text>@Resources.Resources.ClaveDefault</text>
+                                                    }
+                                                    else
+                                                    {
+                                                        <text>@Model.Dashboard_Id</text>
+                                                    }
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" id="divRegistration_Date">
+                                            <label class="col-sm-2 control-label">@Resources.Dashboard_EditorResources.Registration_Date</label>
+                                            <div class="col-sm-8" data-field-id="Registration_Date" data-attribute="223478" data-field-name="@Resources.Dashboard_EditorResources.Registration_Date">
+                                                <div class='input-group date' id='datetimepicker1'>
+                                                    <input class="form-control col-md-12 Datos_Generales" id="Registration_Date" name="Registration_Date" type="text" value="@Model.Registration_Date">
+                                                    <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" id="divRegistration_User">
+                                            <label class="col-sm-2 control-label">@Resources.Dashboard_EditorResources.Registration_User</label>
+                                            <div class="col-sm-8" data-field-id="Registration_User" data-attribute="223479" data-field-name="@Resources.Dashboard_EditorResources.Registration_User">
+                                                <select class="form-control Datos_Generales" data-val="true" data-val-number="The field Registration User must be a number." data-val-required="The Registration User field is required." id="Registration_User" name="Registration_User">
+                                                    <option value=""></option>
+                                                    @if (varSpartan_User_Registration_User != null)
+                                                    {
+                                                        foreach (var itemRegistration_User in varSpartan_User_Registration_User)
+                                                        {
+                                                            if (itemRegistration_User.Value == Convert.ToString(Model.Registration_User))
+                                                            {
+                                                                <option value="@itemRegistration_User.Value" selected>@itemRegistration_User.Text</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@itemRegistration_User.Value">@itemRegistration_User.Text</option>
+                                                            }
+                                                        }
+                                                    }
+                                                </select>
+                                                @*<span class="field-validation-valid" data-valmsg-for="Registration_User" data-valmsg-replace="true"></span>*@
+                                            </div>
+                                            @if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 1, 223479).New)
+                                            {
+                                                <div class="col-sm-1 abm-icons">
+                                                    <a id="Estado_New" onclick="GetCatalogPopup('Spartan_User', 'Registration_User');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                                </div>
+                                            }
+                                        </div>
+                                        <div class="form-group" id="divName">
+                                            <label class="col-sm-2 control-label">@Resources.Dashboard_EditorResources.Name</label>
+                                            <div class="col-sm-8" data-field-id="Name" data-attribute="223480" data-field-name="@Resources.Dashboard_EditorResources.Name">
+                                                <input class="form-control Datos_Generales" id="Name" name="Name" type="text" value="@Model.Name">
+                                                @*<span class="field-validation-valid" data-valmsg-for="Name" data-valmsg-replace="true"></span>*@
+                                            </div>
+                                        </div>
+                                        <div class="form-group" id="divDashboard_Template">
+                                            <label class="col-sm-2 control-label">@Resources.Dashboard_EditorResources.Dashboard_Template</label>
+                                            <div class="col-sm-8" data-field-id="Dashboard_Template" data-attribute="223481" data-field-name="@Resources.Dashboard_EditorResources.Dashboard_Template">
+                                                <select class="form-control Datos_Generales" data-val="true" data-val-number="The field Dashboard Template must be a number." data-val-required="The Dashboard Template field is required." id="Dashboard_Template" name="Dashboard_Template">
+                                                    <option value=""></option>
+                                                    @if (varTemplate_Dashboard_Editor_Dashboard_Template != null)
+                                                    {
+                                                        foreach (var itemDashboard_Template in varTemplate_Dashboard_Editor_Dashboard_Template)
+                                                        {
+                                                            if (itemDashboard_Template.Template_Id.ToString() == Convert.ToString(Model.Dashboard_Template))
+                                                            {
+                                                                <option data-img-src="@Url.Content("~/Images/Dashboard/")@itemDashboard_Template.Path" value="@itemDashboard_Template.Template_Id" selected>@itemDashboard_Template.Description</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option data-img-src="@Url.Content("~/Images/Dashboard/")@itemDashboard_Template.Path" value="@itemDashboard_Template.Template_Id">@itemDashboard_Template.Description</option>
+                                                            }
+                                                        }
+                                                    }
+                                                </select>
+                                                @*<span class="field-validation-valid" data-valmsg-for="Dashboard_Template" data-valmsg-replace="true"></span>*@
+                                            </div>
+                                            @if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 1, 223481).New)
+                                            {
+                                                <div class="col-sm-1 abm-icons">
+                                                    <a id="Estado_New" onclick="GetCatalogPopup('Template_Dashboard_Editor', 'Dashboard_Template');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                                </div>
+                                            }
+                                        </div>
+                                        <div class="form-group" id="divShow_in_Home">
+                                            <label class="col-sm-2 control-label">@Resources.Dashboard_EditorResources.Show_in_Home</label>
+                                            <div class="col-sm-8" data-field-id="Show_in_Home" data-attribute="223482" data-field-name="@Resources.Dashboard_EditorResources.Show_in_Home">
+                                                @Html.CheckBoxFor(m => m.Show_in_Home, new { @class = "i-checks Datos_Generales" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group" id="divStatus">
+                                            <label class="col-sm-2 control-label">@Resources.Dashboard_EditorResources.Status</label>
+                                            <div class="col-sm-8" data-field-id="Status" data-attribute="223483" data-field-name="@Resources.Dashboard_EditorResources.Status">
+                                                <select class="form-control Datos_Generales" data-val="true" data-val-number="The field Status must be a number." data-val-required="The Status field is required." id="Status" name="Status">
+                                                    <option value=""></option>
+                                                    @if (varDashboard_Status_Status != null)
+                                                    {
+                                                        foreach (var itemStatus in varDashboard_Status_Status)
+                                                        {
+                                                            if (itemStatus.Value == Convert.ToString(Model.Status))
+                                                            {
+                                                                <option value="@itemStatus.Value" selected>@itemStatus.Text</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@itemStatus.Value">@itemStatus.Text</option>
+                                                            }
+                                                        }
+                                                    }
+                                                </select>
+                                                @*<span class="field-validation-valid" data-valmsg-for="Status" data-valmsg-replace="true"></span>*@
+                                            </div>
+                                            @if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 1, 223483).New)
+                                            {
+                                                <div class="col-sm-1 abm-icons">
+                                                    <a id="Estado_New" onclick="GetCatalogPopup('Dashboard_Status', 'Status');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                                </div>
+                                            }
+                                        </div>
+                                        <div class="form-group" id="divSpartan_Object">
+                                            <label class="col-sm-2 control-label">@Resources.Dashboard_EditorResources.Spartan_Object</label>
+                                            <div class="col-sm-8" data-field-id="Spartan_Object" data-attribute="223484" data-field-name="@Resources.Dashboard_EditorResources.Spartan_Object">
+                                                <input class="form-control inputNumber Datos_Generales" id="Spartan_Object" name="Spartan_Object" type="text" value="@Model.Spartan_Object">
+                                                @*<span class="field-validation-valid" data-valmsg-for="Spartan_Object" data-valmsg-replace="true"></span>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="tabConfiguracion" class="tab-pane">
+                                    <div class="panel-body">
+                                        <div id="divDetail">
+                                            <div class="ibox-title">
+                                                <h5>@Resources.Dashboard_EditorResources.Detail</h5>
+                                                <div class="ibox-tools">
+                                                </div>
+                                            </div>
+                                            <div class="ibox-content">
+                                                @*<div class="">
+                                                                                        @if (permissionDashboard_Config_Detail.New && !ViewBag.Consult)
+                                                                                        {
+                                                                                            <a onclick="Dashboard_Config_DetailfnClickAddRow();" href="javascript:void(0);" title="@Resources.Resources.AddNewRow" class="Dashboard_Config_DetailAddRow btn btn-primary">
+                                                                                                <i class="glyphicon glyphicon-plus"></i>
+                                                                                            </a>
+                                                                                        }
+                                                                                        <button onclick="Dashboard_EditorGetBusinessRule('', 'Al Guardar o al Eliminar una Row', '223485')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Dashboard_EditorBusinessRule-form">
+                                                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToCreateGrid">
+                                                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                                                            </a>
+                                                                                        </button>
+                                                                                        @if (permissionDashboard_Config_Detail.New && !ViewBag.Consult)
+                                                                                        {
+                                                                                            <a onclick="Dashboard_Config_DetailfnOpenAddRowPopUp();" data-toggle="modal" title="@Resources.Resources.AddNewRow" data-target="#AddDashboard_Config_Detail-form" data-backdrop="static" data-keyboard="false" class="btn_mrpopup btn btn-primary">
+                                                                                                <i class="glyphicon glyphicon-new-window"></i>
+                                                                                            </a>
+                                                                                        }
+                                                                                    </div>
+
+                                                                                    <br />
+
+                                                                                    <div>
+
+                                                                                    </div>
+                                                                                    <div style='overflow-x: auto;'>
+                                                                                        <table class="table table-striped table-bordered table-hover childValidateTable" id="Dashboard_Config_DetailGrid">
+                                                                                            <thead>
+                                                                                                <tr>
+                                                                                                    <th class="ActionHeader"><span>@Resources.Resources.Actions</span></th>
+                                                                                                    <th class="Report_IdHeader"><span>
+                                                    <button type="button" data-attribute="223488" data-field-id="Dashboard_Config_DetailReport_Id" data-field-name="@Resources.Dashboard_Config_DetailResources.Report_Id" data-toggle="modal" data-target="#Dashboard_EditorBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                                                                                <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Dashboard_Config_DetailResources.Report_Id">
+                                                                                                                    <i class="fa fa-cogs fa-spin"></i>
+                                                                                                                </a>
+                                                                                                            </button>
+                                                    @Resources.Dashboard_Config_DetailResources.Report_Id</span></th>
+                                                                                                    <th class="Report_NameHeader"><span>
+                                                    <button type="button" data-attribute="223489" data-field-id="Dashboard_Config_DetailReport_Name" data-field-name="@Resources.Dashboard_Config_DetailResources.Report_Name" data-toggle="modal" data-target="#Dashboard_EditorBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                                                                                <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Dashboard_Config_DetailResources.Report_Name">
+                                                                                                                    <i class="fa fa-cogs fa-spin"></i>
+                                                                                                                </a>
+                                                                                                            </button>@Resources.Dashboard_Config_DetailResources.Report_Name</span></th>
+                                                                                                    <th class="ConfigRowHeader"><span>
+                                                    <button type="button" data-attribute="223499" data-field-id="Dashboard_Config_DetailConfigRow" data-field-name="@Resources.Dashboard_Config_DetailResources.ConfigRow" data-toggle="modal" data-target="#Dashboard_EditorBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                                                                                <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Dashboard_Config_DetailResources.ConfigRow">
+                                                                                                                    <i class="fa fa-cogs fa-spin"></i>
+                                                                                                                </a>
+                                                                                                            </button>
+                                                    @Resources.Dashboard_Config_DetailResources.ConfigRow</span></th>
+                                                                                                    <th class="ConfigColumnHeader"><span>
+                                                    <button type="button" data-attribute="223500" data-field-id="Dashboard_Config_DetailConfigColumn" data-field-name="@Resources.Dashboard_Config_DetailResources.ConfigColumn" data-toggle="modal" data-target="#Dashboard_EditorBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                                                                                <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Dashboard_Config_DetailResources.ConfigColumn">
+                                                                                                                    <i class="fa fa-cogs fa-spin"></i>
+                                                                                                                </a>
+                                                                                                            </button>
+                                                    @Resources.Dashboard_Config_DetailResources.ConfigColumn</span></th>
+
+                                                                                                </tr>
+                                                                                            </thead>
+                                                                                        </table>
+                                                                                    </div>*@
+                                                <div id="previewDasboard">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="form-actions fluid">
+                                <input type="hidden" value="@Model.Dashboard_Id" id="ReferenceDashboard_Id" />
+                                <input type="hidden" value="@Model.Dashboard_Id" name="Dashboard_Id" id="Dashboard_IdId" />
+                                <input type="hidden" value="@ViewBag.Operation" name="Operation" id="Operation" />
+                                @if (!ViewBag.Consult)
+                                {
+                                    <input type="button" value="@Resources.Resources.Guardar" id="Dashboard_EditorGuardar" class="btn btn-w-m btn-primary btn_save" onclick="return checkClientValidate('Dashboard_EditorCreateForm');" />
+                                    <button onclick="Dashboard_EditorGetBusinessRule('', 'Al Guardar o al Cerrar la Pantalla', '2')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Dashboard_EditorBusinessRule-form">
+                                        <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleBeforeSave">
+                                            <i class="fa fa-cogs fa-spin"></i>
+                                        </a>
+                                    </button>
+
+                                    <input type="button" value="@Resources.Resources.GuardarNuevo" id="Dashboard_EditorGuardarYNuevo" onclick="return checkClientValidate('Dashboard_EditorCreateForm');" data-bind="    click: saveAndNew" class="btn btn-w-m btn-success btn_saveandnew" />
+                                    <input type="button" value="@Resources.Resources.GuardarCopia" id="Dashboard_EditorGuardarYCopia" onclick="return checkClientValidate('Dashboard_EditorCreateForm');" data-bind="    click: saveAndNew" class="btn btn-w-m btn-success btn_saveandcopy" />
+                                    if (permission.Configure)
+                                    {
+                                        <a title="@Resources.Resources.Configure" id="ConfigureSave" name="ConfigureSave" onclick="SaveElementAttributes()" class="btn btn-success btn-configure">@Resources.Resources.Configure</a>
+                                    }
+                                }
+                                <input type="hidden" id="hdnConfigureType" />
+                                <input type="hidden" id="hdnDashboard_EditorBusinessRuleFieldId" />
+                                <input type="hidden" id="hdnDashboard_EditorBusinessRuleFieldName" />
+                                <input type="hidden" id="hdnDashboard_EditorBusinessRuleAttribute" />
+                                <input type="button" value="@Resources.Resources.Cancelar" id="Dashboard_EditorCancelar" name="Dashboard_EditorCancelar" class="btn btn-danger noConsult btn_cancelar" data-bind="click: cancel" tabindex="16" />
+                                <button onclick="Dashboard_EditorGetBusinessRule('', 'Al Cancelar', '4')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Dashboard_EditorBusinessRule-form">
+                                    <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+                                        <i class="fa fa-cogs fa-spin"></i>
+                                    </a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <input id="hdnApplicationDirectory" type="hidden" value="@Url.Content("~/")" />
+    @section Styles {
+        <link href="@Url.Content("~/Content/BootstrapDatePicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+        @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+        @Styles.Render("~/plugins/dateRangeStyles")
+        @Styles.Render("~/plugins/dataPickerStyles")
+        @Styles.Render("~/plugins/clockpickerStyles")
+        @Styles.Render("~/plugins/awesomeCheckboxStyles")
+        @Styles.Render("~/plugins/select2Styles")
+        @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+        <style>
+                    .dataTables_filter {
+                        display: none;
+                    }
+
+                    .select2-results {
+                        background-color: #fff;
+                    }
+
+                    .select2-container .select2-dropdown {
+                        height: auto !important;
+                    }
+
+                    div.dataTables_info {
+                        display: inline-block;
+                        float: right;
+                    }
+                    /*i {
+                font-size: 25px !important;
+                display: block;
+                color: #676a6c;
+                margin-left: 6px;
+                margin-right: 6px;
+            }*/
+
+                    .fullWidth {
+                        width: 100%;
+                    }
+        </style>
+    }
+    <script type="text/javascript" src="~/Uploads/Scripts/Dashboard_Editor.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+    <script type="text/javascript" src="~/Scripts/Custom/Dashboard_EditorGeneral.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+    <script type="text/javascript" src="~/Uploads/Scripts/Rules/Dashboard_EditorCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+    <script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
+    @section Scripts {
+
+        <script type="text/javascript">
+
+
+
+            function GetTraduction(text) {
+                switch (text.toLowerCase()) {
+                    case 'edit':
+                        return "@Resources.Resources.Edit";
+                    case 'delete':
+                        return "@Resources.Resources.Delete";
+                    case 'required':
+                        return "@Resources.Resources.Required";
+                    case 'notrequired':
+                        return "@Resources.Resources.NotRequired";
+                    case 'enabled':
+                        return "@Resources.Resources.Enabled";
+                    case 'disabled':
+                        return "@Resources.Resources.Disabled";
+                    case 'visible':
+                        return "@Resources.Resources.Visible";
+                    case 'botvisible':
+                        return "@Resources.Resources.InVisible";
+                    case 'messagednoinvisible':
+                        return "@Resources.Resources.messagedNoInVisible";
+                    case 'messagednoreadonly':
+                        return "@Resources.Resources.messagedNoReadOnly";
+                    case 'defaultvalue':
+                        return "@Resources.Resources.DefaultValue";
+                    case 'helptext':
+                        return "@Resources.Resources.HelpText";
+                    default:
+                        return "";
+                }
+            }
+
+            var isPartial = ('@ViewBag.IsPartial' == 'True');
+            var isMR = ('@ViewBag.isMR' == 'True');
+            var nameMR = '@ViewBag.nameMR';
+            var nameAttribute = '@ViewBag.nameAttribute';
+            var Tab_Datos_Generales = true;
+
+            var Tab_Configuracion = true;
+
+
+            $(document).ready(function () {
+                $('#ObjectId').val('40176');
+
+                //showDashboard_Config_DetailGrid(null);
+
+                @if(ViewBag.IsNew)
+            {
+                <text>$('input:checkbox').prop('checked', false);</text>
+            }
+			else
+            {
+                <text>
+                if (Tab_Datos_Generales)
+                    Fill_Datos_Generales();
+
+                if (Tab_Configuracion)
+                    Fill_Configuracion();
+
+
+                </text>
+             }
+                $('#Registration_Date').datepicker({
+                    todayBtn: "linked",
+                    keyboardNavigation: false,
+                    forceParse: false,
+                    calendarWeeks: true,
+                    autoclose: true,
+                    format: "@ConfigurationProperty.DateFormatDatePicker"
+                });
+
+
+                initiateUIControls();
+                $('a').tooltip();
+                EjecutarValidacionesAlComienzo();
+                $('.loading').css('display', 'none');
+
+                $("#Dashboard_Template").imagepicker({
+                    show_label: false,
+                    clicked: function () {
+                        $("#previewDasboard").html("");
+
+                        GetLayoutByTemplate($(this).val());
+
+                    },
+                    selected: function () {
+                    }
+                });
+
+                if ($("#Dashboard_Template").val() != 0) {
+                    GetLayoutByTemplate($("#Dashboard_Template").val());
+                }
+
+                //layoutPreview();
+
+            });
+            var totalRows = 1;
+
+            function GetLayoutByTemplate(templateId) {
+                $.ajax({
+                    url: "@Url.Content("~/Frontal/Dashboard_Editor/GetLayout")" + "?templateId=" + templateId,
+                    type: 'GET',
+                    dataType: "json",
+                    async: false,
+                    success: function (result) {
+
+                        $(result).each(function () {
+                            drawDashboard($(this).attr("Row_Number"), $(this).attr("Columns"));
+                        });
+
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    }
+                });
+            }
+
+            function drawDashboard(rowVal, colVal) {
+                var row = rowVal;
+                var column = colVal;
+                var html = "";
+                var imgPreview = "@Url.Content("~/Images/img_397337.png")";
+                //debugger;
+                html = "<div class='row'>";
+                for (var i = 0; i < row; i++) {
+                    if (row == 1) {
+                        html += "<div class='col-xs-12'><div class='row'>";
+                    } else {
+                        //more rows...
+                    }
+                    for (var j = 0; j < column; j++) {
+                        html += "<div class='" + getColumnCss(column) + "' id='" + totalRows + column + "'><img src='" + imgPreview + "' id='img" + totalRows + j + "' style='width:35px;' onclick='previewDetal(this.id);' /></div>";
+                    }
+                    html += "</div></div>";
+                    //</div>"
+                }
+                html += "</div>";
+                $("#previewDasboard").append(html);
+                totalRows++;
+            }
+
+            function getColumnCss(cols) {
+                switch (cols) {
+                    case 1:
+                        return "col-xs-12 .lchart";
+                        break;
+                    case 2:
+                        return "col-xs-6 .lchart";
+                        break;
+                    case 3:
+                        return "col-xs-4 .lchart";
+                        break;
+                    case 4:
+                        return "col-xs-3 .lchart";
+                        break;
+                    case 5:
+                        return "col-xs-2 .lchart";
+                        break;
+                    case 6:
+                        return "col-xs-2 .lchart";
+                        break;
+                }
+            }
+
+            function previewDetal(id) {
+                alert(id);
+            }
+
+            var Dashboard_Config_DetailinsertRowCurrentIndex = -1;
+            var Dashboard_Config_DetailDataDataTable;
+            function getDashboard_Config_DetailData() {
+                $.ajax({
+                    url: "@Url.Content("~/Frontal/Dashboard_Editor/GetDashboard_Config_Detail")" + "?draw=1&start=1&length=2147483647" + ($("#ReferenceDashboard_Id").val() != "" ? "&RelationId=" + $("#ReferenceDashboard_Id").val() : ""),
+                    type: 'GET',
+                    dataType: "json",
+                    async: false,
+                    success: function (result) {
+                        Dashboard_Config_DetailDataDataTable = result.data;
+                        showDashboard_Config_DetailGrid(result.data);
+                        $('#Dashboard_Config_DetailGrid .inputMoney').inputmask("currency", { prefix: "$", rightAlign: false });
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    }
+                });
+            }
+            function Dashboard_Config_DetailGetUpdateRowControls(data, nameOfTable, rowIndex) {
+
+                var columnData = [];
+                var counter = 0;
+                var inputData = "<input type='text' class='fullWidth form-control' />";
+                columnData[counter++] = $($($.parseHTML(inputData)).val(data.Report_Id)).addClass('Report_Id inputNumber').attr('id', nameOfTable + 'Report_Id' + rowIndex).attr('data-field', 'Report_Id');
+                columnData[counter++] = $($($.parseHTML(inputData)).val(data.Report_Name)).addClass('Report_Name').attr('id', nameOfTable + 'Report_Name' + rowIndex).attr('data-field', 'Report_Name');
+                columnData[counter++] = $($($.parseHTML(inputData)).val(data.ConfigRow)).addClass('ConfigRow inputNumber').attr('id', nameOfTable + 'ConfigRow' + rowIndex).attr('data-field', 'ConfigRow');
+                columnData[counter++] = $($($.parseHTML(inputData)).val(data.ConfigColumn)).addClass('ConfigColumn inputNumber').attr('id', nameOfTable + 'ConfigColumn' + rowIndex).attr('data-field', 'ConfigColumn');
+
+                return columnData;
+            }
+
+
+
+            function GetFileInfo(fileData, fileUploadData) {
+
+                var $div = $("<div>");
+                if (fileUploadData != null && fileUploadData.files.length > 0) {
+
+                    $div.append("<label>" + fileUploadData.files[0].name + "</label>");
+                    //<i class="fa fa-times-circle" id='removeFileAttachment'>
+                    $div.append($("<i class='fa fa-times-circle' id='removeFileAttachment'>").click(function () {
+                        if (confirm(htmlDecode("@Resources.Resources.DeleteConfirm"))) {
+                            var parent = $(this).parent().parent();
+                            parent.empty();
+                            parent.append("<input type='file'>");
+                        }
+                    }));
+                    return $div;
+
+                } else if (fileUploadData != null) {
+                    return $.parseHTML(GetFileUploader());
+                } else {
+                    $div.append("<label>" + fileData.FileName + "</label>");
+                    $div.append($("<i class='fa fa-times-circle' id='removeFileAttachment'>").click(function () {
+                        if (confirm(htmlDecode("@Resources.Resources.DeleteConfirm"))) {
+                            var parent = $(this).parent().parent();
+                            parent.empty();
+                            parent.append("<input type='file'>");
+                        }
+                    }));
+                    return $div;
+                }
+            }
+
+            var removedDashboard_Config_DetailData = [];
+            function Dashboard_Config_DetailDeleteRow(rowIndex, row) {
+                var rowIndexTable = Dashboard_Config_DetailTable.fnGetPosition($(row).parent().parent()[0]);
+                var permission = {
+                    Delete: '@permissionDashboard_Config_Detail.Delete' == 'True'
+                };
+                if (!permission.Delete || isConsultMode)
+                    return;
+                if (confirm(htmlDecode("@Resources.Resources.DeleteConfirm"))) {
+                    if (EjecutarValidacionesAlEliminarMRDashboard_Config_Detail('Dashboard_Config_Detail_', '_' + rowIndex)) {
+                        var prevData = Dashboard_Config_DetailTable.fnGetData(rowIndexTable);
+                        removedDashboard_Config_DetailData.push(prevData);
+                        Dashboard_Config_DetailTable.fnDeleteRow(rowIndexTable);
+                        showDashboard_Config_DetailGrid(Dashboard_Config_DetailTable.fnGetData());
+                    }
+                }
+                initiateUIControls();
+            }
+
+            function Dashboard_Config_DetailrowCreationGrid(row, data, index) {
+                var permission = {
+                    Edit: '@permissionDashboard_Config_Detail.Edit' == 'True',
+                    Delete: '@permissionDashboard_Config_Detail.Delete' == 'True'
+                };
+                setDashboard_Config_DetailValidation();
+                var Dashboard_Config_DetailRowElement = "Dashboard_Config_Detail_" + index.toString();
+                $(row).addClass(Dashboard_Config_DetailRowElement);
+                var nameOfTable = 'Dashboard_Config_Detail_';
+                var rowIndex = '_' + index;
+                Dashboard_Config_DetailinsertRowCurrentIndex = index;
+
+                row.innerHTML = "";
+
+                if (data.IsInsertRow) {
+
+                    if (row.childNodes.length != 0) {
+                        for (var i = 0; i < row.childNodes.length; i++) {
+                            row.childNodes[i].remove();
+                        }
+                    }
+                    var controls = GetInsertDashboard_Config_DetailRowControls(index);
+                    var actionColInsert = $('<td>');
+
+                    var abc = "if(dynamicFieldValidation('" + Dashboard_Config_DetailRowElement + "')){ Dashboard_Config_DetailInsertRow(" + index + "); }";
+                    var insertRowHTML = '<a  onclick="' + abc + '">';
+                    $('<i class="fa fa-check">').appendTo($(insertRowHTML).appendTo(actionColInsert));
+                    $('<i class="fa fa-times">').appendTo($("<a  onclick='Dashboard_Config_DetailCancelRow(" + index + ")'>").appendTo(actionColInsert));
+                    actionColInsert.appendTo(row);
+
+                    for (i = 0; i < controls.length; i++) {
+                        var idHeader = $(controls[i]).data('field') + 'Header';
+                        if ($(controls[i]).length > 1) {
+                            idHeader = $($(controls[i])[1]).data('field') + 'Header';
+                        }
+
+                        var classe = ($('#Dashboard_Config_DetailGrid .' + idHeader).hasClass('dt-right') ? "dt-right" : "") + $('#Dashboard_Config_DetailGrid .' + idHeader).css('display') == 'none' ? " hide" : "";
+
+                        if ($(controls[i]).next().length > 0) {
+                            var div = $(controls[i]).next();
+                            $('<td class="' + classe + '">').append($(controls[i])).append(div).appendTo(row);
+                        } else
+                            $(controls[i]).appendTo($('<td class="' + classe + '">').appendTo(row));
+
+                    }
+                    $('#Dashboard_Config_DetailGrid .inputMoney').inputmask("currency", { prefix: "", rightAlign: false });
+                    return;
+                }
+
+                var actionCol = $('<td>');
+                var edit = "<a title='@Resources.Resources.Edit' class='edit-MR' onclick='Dashboard_Config_DetailEditRow(" + index + ", this)'>";
+                if (!permission.Edit || isConsultMode)
+                    edit = "";
+                var editPopUp = "<a title='@Resources.Resources.Edit' class='edit-popup-MR' data-toggle='modal' data-target='#AddDashboard_Config_Detail-form' onclick='Dashboard_Config_DetailEditRowPopup(" + index + ", this)'>";
+                if (!permission.Edit || isConsultMode)
+                    editPopUp = "";
+                var eliminar = "<a title='@Resources.Resources.Delete' class='eliminar-MR' onclick='Dashboard_Config_DetailDeleteRow(" + index + ", this)'>";
+                if (!permission.Delete || isConsultMode)
+                    eliminar = "";
+                $('<i class="fa fa-pencil">').appendTo($(edit).appendTo(actionCol));
+                $('<i class="fa fa-edit">').appendTo($(editPopUp).appendTo(actionCol));
+                $('<i class="fa fa-trash-o">').appendTo($(eliminar).appendTo(actionCol));
+                if ($('.Action' + 'Header').css('display') != 'none')
+                    actionCol.appendTo(row);
+                if ($('.Report_Id' + 'Header').css('display') != 'none')
+                    $('<td class="dt-right"  id="' + nameOfTable + 'Report_Id' + rowIndex + '">').text(data.Report_Id).appendTo(row);
+                else
+                    $('<td class="dt-right" style="display:none;"  id="' + nameOfTable + 'Report_Id' + rowIndex + '">').text(data.Report_Id).appendTo(row);
+                if ($('.Report_Name' + 'Header').css('display') != 'none')
+                    $('<td id="' + nameOfTable + 'Report_Name' + rowIndex + '">').text(data.Report_Name).appendTo(row);
+                else
+                    $('<td style="display:none;" id="' + nameOfTable + 'Report_Name' + rowIndex + '">').text(data.Report_Name).appendTo(row);
+                if ($('.ConfigRow' + 'Header').css('display') != 'none')
+                    $('<td class="dt-right"  id="' + nameOfTable + 'ConfigRow' + rowIndex + '">').text(data.ConfigRow).appendTo(row);
+                else
+                    $('<td class="dt-right" style="display:none;"  id="' + nameOfTable + 'ConfigRow' + rowIndex + '">').text(data.ConfigRow).appendTo(row);
+                if ($('.ConfigColumn' + 'Header').css('display') != 'none')
+                    $('<td class="dt-right"  id="' + nameOfTable + 'ConfigColumn' + rowIndex + '">').text(data.ConfigColumn).appendTo(row);
+                else
+                    $('<td class="dt-right" style="display:none;"  id="' + nameOfTable + 'ConfigColumn' + rowIndex + '">').text(data.ConfigColumn).appendTo(row);
+
+            }
+
+            var Dashboard_Config_DetailTable;
+            function showDashboard_Config_DetailGrid(dataSet) {
+                //removedDashboard_Config_DetailData = [];
+                Dashboard_Config_DetailTable = $('#Dashboard_Config_DetailGrid').dataTable({
+                    dom: '<"html5buttons"B>lTgitp',
+                    buttons: [
+                    ],
+                    "createdRow": Dashboard_Config_DetailrowCreationGrid,
+                    "lengthMenu": [[5, 10, 20, 50, -1], [5, 10, 20, 50, "All"]],
+                    data: dataSet,
+                    "columns": [
+                        { "data": null, 'visible': true, "orderable": false },
+                        { "data": "Report_Id", "className": "dt-right", "orderable": false },
+                        { "data": "Report_Name", "orderable": false },
+                        { "data": "ConfigRow", "className": "dt-right", "orderable": false },
+                        { "data": "ConfigColumn", "className": "dt-right", "orderable": false },
+
+                    ],
+                    "order": [[0, "asc"]],
+                    "language": {
+                        "lengthMenu": "@Resources.Resources.Display" + " _MENU_ " + "@Resources.Resources.RecordsPerPage",
+                        "zeroRecords": "@Resources.Resources.NothingFound",
+                        "info": "@Resources.Resources.ShowingPages" + " _PAGE_ " + "@Resources.Resources.of" + " _PAGES_",
+                        "infoEmpty": "@Resources.Resources.NoRecords",
+                        "infoFiltered": "(" + "@Resources.Resources.FilteredFrom" + " _MAX_ " + "@Resources.Resources.TotalRecords" + ")",
+                        "sSearch": "@Resources.Resources.Search",
+                        "paginate": {
+                            "previous": "@Resources.Resources.Previous",
+                            "next": "@Resources.Resources.Next"
+                        }
+                    },
+                    "bDestroy": true,
+                    "fnDrawCallback": function (settings) {
+                        setDashboard_Config_DetailValidation();
+                    }
+                }).on('init.dt', function (e, data) {
+                    $('a').tooltip();
+                }).on('draw.dt', function () {
+                    $('#Dashboard_Config_DetailGrid .inputMoney').inputmask("currency", { prefix: "$", rightAlign: false });
+                });
+            }
+
+
+            var Dashboard_Config_DetailData = [];
+            var Dashboard_Config_DetaildeletedItem = [];
+            var Dashboard_Config_DetailDataMain = [];
+            var Dashboard_Config_DetailDataMainPages = [];
+            var Dashboard_Config_DetailnewItemCount = 0;
+            var Dashboard_Config_DetailmaxItemIndex = 0;
+            var Dashboard_Config_DetailDataMainInitialized = false;
+
+            function SendDashboard_Config_Detail(callBack, Dashboard_IdId) {
+                Dashboard_Config_DetailData = GetDashboard_Config_DetailFromDataTable();
+
+                if (Dashboard_Config_DetailData.length > 0 || $("#ReferenceDashboard_Id").val() != Dashboard_IdId) {
+                    if ($("#ReferenceDashboard_Id").val() != "0" && Dashboard_IdId == null)
+                        Dashboard_IdId = $("#ReferenceDashboard_Id").val();
+                    if ($("#ReferenceDashboard_Id").val() == '')
+                        $("#ReferenceDashboard_Id").val('0');
+                    $.ajax({
+                        url: '@Url.Content("~/Frontal/Dashboard_Editor/PostDashboard_Config_Detail?MasterId=")' + Dashboard_IdId + "&referenceId=" + $("#ReferenceDashboard_Id").val(),
+                        type: 'POST',
+                        data: GetDashboard_Config_Detail(),
+                        async: true,
+                        success: function (result) {
+
+                        },
+                        error: function (result) {
+                            showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                        },
+                        cache: false,
+                        contentType: false,
+                        processData: false
+                    });
+                } else {
+                    //showNotification("@Resources.Resources.SaveSuccess", "success");
+                    //callBack(Dashboard_IdId);
+                }
+                return true;
+            }
+
+            function GetAddDashboard_Config_DetailPopup(currentRowIndex, mode, id) {
+
+                $.ajax({
+                    url: "@Url.Action("AddDashboard_Config_Detail", "Dashboard_Config_Detail")",
+                    type: "GET",
+                    async: false,
+                    data: { rowIndex: currentRowIndex, functionMode: mode, id: id },
+                    success: function (data) {
+                        $(".AddDashboard_Config_DetailModal").html(data);
+                    },
+                    error: function () {
+
+                    }
+                });
+
+                @*$.get('@Url.Action("AddDashboard_Config_Detail", "Dashboard_Config_Detail")', { rowIndex: currentRowIndex }, function (data) {
+                $(".AddDashboard_Config_DetailModal").html(data);
+            });*@
+            }
+
+            function ShowMessagePendingRowDashboard_Config_Detail() {
+                //alert('@Html.Raw(string.Format(Resources.Resources.PendingRow, "Detail"))')
+                showNotification('@Html.Raw(string.Format(Resources.Resources.PendingRow, "Detail"))', "warning");
+            }
+
+
+            function initiateUIControls() {
+                $('.gridDatePicker').datepicker({
+                    todayBtn: "linked",
+                    keyboardNavigation: false,
+                    forceParse: false,
+                    calendarWeeks: true,
+                    autoclose: true,
+                    format: "@ConfigurationProperty.DateFormatDatePicker"
+                });
+                //Time Picker
+                $('.gridTimePicker').clockpicker();
+                $('.inputMoney').inputmask("currency", { greedy: false, prefix: "", rightAlign: false });
+
+
+            }
+
+        </script>
+        <script type="text/javascript">
+
+
+            function GetCatalogPopup(catalog, nameAttribute, isMR, nameMR) {
+                if (!isMR)
+                    var url = "@Url.Action("Create", "Catalog", new { Module_Id = "1", isPartial = true, nameAttribute = "AttributoNombre" })";
+                else
+                    var url = "@Url.Action("Create", "Catalog", new { Module_Id = "1", isPartial = true, isMR = true, nameMR = "Multirenglon",nameAttribute= "AttributoNombre" })";
+
+                url = url.replace("Catalog", catalog).replace("Multirenglon", nameMR).replace("AttributoNombre", nameAttribute);
+
+                window.open(htmlDecode(url), '_blank', 'left=200,top=100,width=850,height=550,toolbar=0,resizable=0');
+            }
+
+            function RefreshCatalog(catalog, control) {
+
+                if (!$('#' + control).hasClass('AutoComplete')) {
+                    if ($('#' + control).attr("data-isfilter") == "true") {
+                        eval(GetReglaFilter(control, $('#ObjectId').val()));
+                        return;
+                    }
+
+                    var url = '@Url.Content("~/Frontal/Dashboard_Editor/GetCatalogAll")';
+                    url = url.replace("Catalog", catalog);
+
+                    $.ajax({
+                        url: url,
+                        async: true,
+                        success: function (result) {
+                            addItemsToSelect($('#' + control), result);
+                        },
+                        error: function (result) {
+                            showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                        }
+                    });
+                }
+            }
+
+
+            function SendDashboard_EditorData(callBack) {
+
+
+                var arr = [];
+                $("form#CreateDashboard_Editor").find(':input').each(function (index) {
+                    if ($(this).prop('disabled') == true || $(this).prop('disabled') == "disabled") {
+                        arr.push($(this).attr('id'));
+                        $(this).prop('disabled', false);
+                    }
+                });
+
+                var formData = new FormData($("form#CreateDashboard_Editor")[0]);
+                $.each(arr, function (key, value) {
+                    $('#' + value).prop('disabled', true);
+                });
+                var id = $("#ReferenceDashboard_Id").val();
+                var isNew = $('#hdnIsNew').val();
+
+                if (Tab_Datos_Generales && !checkClientValidate('Dashboard_EditorCreateForm', 'Datos_Generales')) {
+                    return false;
+                }
+
+                if (Tab_Configuracion && !checkClientValidate('Dashboard_EditorCreateForm', 'Configuracion')) {
+                    return false;
+                }
+
+
+
+                if (isNew == "True") {
+                    id = CreateID();
+                }
+
+
+                if (Tab_Datos_Generales)
+                    Save_Datos_Generales(id);
+
+                if (Tab_Configuracion)
+                    Save_Configuracion(id);
+
+
+                showNotification("@Resources.Resources.SaveSuccess", "success");
+                callBack();
+                return true;
+            };
+            function CreateID() {
+                var newId = 0;
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Dashboard_Editor/CreateID")',
+                    type: 'GET',
+                    async: false,
+                    success: function (result) {
+                        if (result < 0) {
+                            showNotification("@Resources.Resources.ErrorSave", "error");
+                        } else {
+                            newId = result;
+                        }
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+                return newId;
+            }
+
+            function OpenRules() {
+                $.get('@Url.Action("Index", "Business_Rule_Creation")', {}, function (data) {
+                    $(".Dashboard_EditorBusinessRuleModal").html(data);
+                });
+            }
+            function Dashboard_EditorGetBusinessRule(FieldId, FieldName, Attribute) {
+                if (FieldId != null && FieldName != null) {
+                    $('#FieldId').val(FieldId);
+                    $('#FieldName').val(FieldName);
+                    $('#Attribute').val(Attribute);
+                }
+                $('#ObjectId').val('40176');
+                $('#Screen').val('Dashboard_Editor');
+                OpenRules();
+            }
+
+            var permission = {
+                Consult: '@permission.Consult' == 'True',
+                New: '@permission.New' == 'True',
+                Edit: '@permission.Edit' == 'True',
+                Delete: '@permission.Delete' == 'True',
+                Export: '@permission.Export' == 'True',
+                Print: '@permission.Print' == 'True',
+                Configure: '@permission.Configure' == 'True',
+            };
+
+
+            //MR-var statusItems;
+            //MR-var stateItems;
+            //MR-var cityItems = [];
+            var isConsultMode = "@ViewBag.Consult" == "True";
+            Consult(isConsultMode);
+            function Consult(val) {
+                if (val) {
+                    $(':input').attr('readonly', 'readonly');
+                    $(':input').attr('disabled', 'true');
+                    $('.noConsult').removeAttr('readonly');
+                    $('.noConsult').removeAttr('disabled');
+                }
+            }
+
+            function Dashboard_EditorBackToGrid() {
+                location.href = "@Url.Content("~/Frontal/Dashboard_Editor/")";
+            }
+
+            function ReadScriptSettings(callback) {
+                $.post("@Url.Content("~/Frontal/Dashboard_Editor/ReadScriptSettings")", function (data) {
+                    mainElementObject = JSON.parse(data.MainElement);
+                    if (data.ChildElement != null) {
+                        childElementObject = JSON.parse(data.ChildElement);
+                    }
+                    callback();
+                });
+            }
+
+            function SaveSettingsWithoutReload() {
+                $.post("@Url.Content("~/Frontal/Dashboard_Editor/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+                    //$('#hdnConfigureType').val("0");
+                }, "json");
+            }
+
+            function SaveElementAttributes() {
+                if ($('#hdnConfigureType').val() == "1") {
+                    $.post("@Url.Content("~/Frontal/Dashboard_Editor/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+                        $('#hdnConfigureType').val("0");
+                        location.reload(true);
+                    }, "json");
+                } else {
+                    $.post("@Url.Content("~/Frontal/Dashboard_Editor/ReadScriptSettings")", function (data) {
+                        mainElementObject = JSON.parse(data.MainElement);
+                        childElementObject = JSON.parse(data.ChildElement);
+
+                        for (var i = 0; i < mainElementObject.length; i++) {
+                            var mainElementAttributes = '<div class="col-sm-2">';
+                            mainElementAttributes += '<div class="displayAttributes requiredAttribute"><a class="requiredClick" title="' + (mainElementObject[i].IsRequired == true ? "@Resources.Resources.Required" : "@Resources.Resources.NotRequired") + '" onclick="setRequired(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsRequired == true ? "@Url.Content("~/Images/Required.png")" : "@Url.Content("~/Images/Not-Required.png")") + '" alt="" /></a></div>';
+                            mainElementAttributes += '<div class="displayAttributes visibleAttribute"><a class="visibleClick" title="' + (mainElementObject[i].IsVisible == true ? "@Resources.Resources.Visible" : "@Resources.Resources.InVisible") + '" onclick="setVisible(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsVisible == true ? "@Url.Content("~/Images/Visible.png")" : "@Url.Content("~/Images/InVisible.png")") + '" alt="" /></a></div>';
+                            mainElementAttributes += '<div class="displayAttributes readOnlyAttribute"><a class="readOnlyClick" title="' + (mainElementObject[i].IsReadOnly == true ? "@Resources.Resources.Disabled" : "@Resources.Resources.Enabled") + '" onclick="setReadOnly(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsReadOnly == true ? "@Url.Content("~/Images/Disabled.png")" : "@Url.Content("~/Images/Enabled.png")") + '" alt="" /></a></div>';
+                            mainElementAttributes += '<div class="displayAttributes defaultValueAttribute"><a id="hlDefaultValue_' + i.toString() + '" class="defaultValueClick" title="' + (mainElementObject[i].DefaultValue) + '" onclick="setDefaultValue(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].DefaultValue != '' && mainElementObject[i].DefaultValue != null ? "@Url.Content("~/Images/default-value.png")" : "@Url.Content("~/Images/Not-Default-Value.png")") + '" alt="" /></a></div>';
+                            mainElementAttributes += '<div class="displayAttributes helpTextAttribute"><a id="hlHelpText_' + i.toString() + '" class="helpTextClick" title="' + (mainElementObject[i].HelpText) + '" onclick="setHelpText(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].HelpText != '' && mainElementObject[i].HelpText != null ? "@Url.Content("~/Images/green-help.png")" : "@Url.Content("~/Images/red-help.jpg")") + '" alt="" /></a></div>';
+                            mainElementAttributes += '</div>';
+                            $('#' + mainElementObject[i].inputId).parent().closest('.form-group').show();
+
+                            $('#' + mainElementObject[i].inputId).closest('.col-sm-8').after(mainElementAttributes);
+                        }
+                        if (childElementObject != null) {
+                            for (var j = 0; j < childElementObject.length; j++) {
+                                var table = childElementObject[j].table.trim();
+                                var grid = '#' + table + 'Grid';
+                                $(grid).find("thead").find("tr").find("th").each(function () {
+                                    for (var i = 0; i < childElementObject[j].elements.length; i++) {
+                                        if ($(this).hasClass(childElementObject[j].elements[i].inputId + 'Header')) {
+                                            $(this).show();
+                                            $(this).parent().show();
+                                            $(this).append(returnAttributeHTML(childElementObject[j].elements[i], table, i));
+                                        }
+                                    }
+                                });
+                            }
+
+                        }
+                        $('#ConfigureSave').text('@Html.Raw(Resources.Resources.Save  +" "+ Resources.Resources.Settings)');
+                        $('#hdnConfigureType').val("1");
+                    });
+                }
+            }
+            $('#CreateDashboard_Editor').on('click', '.btnPopupBusinessRules', function () {
+                var fieldId = $(this).data('field-id');
+                var fieldName = $(this).data('field-name');
+                var attribute = $(this).data('attribute');
+                $('#FieldId').val(fieldId);
+                $('#FieldName').val(fieldName);
+                $('#Attribute').val(attribute);
+                Dashboard_EditorGetBusinessRule();
+            });
+            //Initialize HTML Editors
+            var filebrowserBrowseUrl = '../../ckfinder/ckfinder.html';
+            var filebrowserImageBrowseUrl = '../../ckfinder/ckfinder.html?type=Images';
+            var filebrowserUploadUrl = '../../ckfinder/connector?command=QuickUpload&type=Files';
+            var filebrowserImageUploadUrl = '../../ckfinder/connector?command=QuickUpload&type=Images';
+
+
+            function Fill_Datos_Generales() {
+                $.ajax({
+                    url: "@Url.Content("~/Frontal/Dashboard_Editor/Get_Datos_Generales")?Id=" + $("#ReferenceDashboard_Id").val(),
+                    type: 'GET',
+                    dataType: "json",
+                    async: false,
+                    success: function (result) {
+                        $('#Dashboard_Id').val(result.data.Dashboard_Id);
+                        $('#Registration_Date').val(result.data.Registration_Date);
+                        $('#Registration_User').val(result.data.Registration_User);
+                        $('#Name').val(result.data.Name);
+                        $('#Dashboard_Template').val(result.data.Dashboard_Template);
+                        $('#Show_in_Home').prop('checked', result.data.Show_in_Home);
+                        $('#Status').val(result.data.Status);
+                        $('#Spartan_Object').val(result.data.Spartan_Object);
+
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    }
+                });
+            }
+
+            function Save_Datos_Generales(newId) {
+                var data = new FormData();
+                data.append('Dashboard_Id', newId);
+                data.append('Registration_Date', $('#Registration_Date').val());
+                data.append('Registration_User', $('#Registration_User').val());
+                data.append('Name', $('#Name').val());
+                data.append('Dashboard_Template', $('#Dashboard_Template').val());
+                data.append('Show_in_Home', $('#Show_in_Home').prop('checked'));
+                data.append('Status', $('#Status').val());
+                data.append('Spartan_Object', $('#Spartan_Object').val());
+
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Dashboard_Editor/Post_Datos_Generales")',
+                    type: 'POST',
+                    data: data,
+                    async: false,
+                    dataType: "json",
+                    contentType: false,
+                    processData: false,
+                    success: function (result) {
+                        if (result < 0) {
+                            showNotification("@Resources.Resources.ErrorSave", "Error al guardar Datos_Generales");
+                        } else {
+                            newId = result;
+
+                        }
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "Error al guardar Datos_Generales");
+                    },
+                    cache: false
+                });
+            }
+
+            function Fill_Configuracion() {
+                $.ajax({
+                    url: "@Url.Content("~/Frontal/Dashboard_Editor/Get_Configuracion")?Id=" + $("#ReferenceDashboard_Id").val(),
+                    type: 'GET',
+                    dataType: "json",
+                    async: false,
+                    success: function (result) {
+                        $('#Dashboard_Id').val(result.data.Dashboard_Id);
+                        Dashboard_Config_DetailDataDataTable = result.Detail;
+                        showDashboard_Config_DetailGrid(result.Detail);
+                        $('#Dashboard_Config_DetailGrid .inputMoney').inputmask("currency", { prefix: "$", rightAlign: false });
+
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    }
+                });
+            }
+
+            function Save_Configuracion(newId) {
+                var data = new FormData();
+                data.append('Dashboard_Id', newId);
+
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Dashboard_Editor/Post_Configuracion")',
+                    type: 'POST',
+                    data: data,
+                    async: false,
+                    dataType: "json",
+                    contentType: false,
+                    processData: false,
+                    success: function (result) {
+                        if (result < 0) {
+                            showNotification("@Resources.Resources.ErrorSave", "Error al guardar Configuracion");
+                        } else {
+                            newId = result;
+                            SendDashboard_Config_Detail(null, newId);
+
+                        }
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "Error al guardar Configuracion");
+                    },
+                    cache: false
+                });
+            }
+
+
+        </script>
+    }
+    <input type="hidden" id="FieldId" name="FieldId" value="" />
+    <input type="hidden" id="FieldName" name="FieldName" value="" />
+    <input type="hidden" id="ObjectId" name="ObjectId" value="" />
+    <input type="hidden" id="Attribute" name="Attribute" value="" />
+    <input type="hidden" id="Screen" name="Screen" value="" />
+    <script type="text/javascript" src="~/Scripts/plugins/ImagePicker/image-picker.min.js"></script>
+

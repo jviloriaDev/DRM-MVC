@@ -1,0 +1,212 @@
+﻿@model Spartane.Web.Areas.Frontal.Controllers.ModelField
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">
+                Properties
+                <button class="close" type="button" onclick="$(this).parent().parent().parent().parent().parent().modal('hide'); $('.selectedNode').removeClass('selectedNode');"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            </h4>
+        </div>
+        <div class="modal-body scroll_content">
+            <div class="tab-pane active panel-body form-horizontal">
+                <!---------------------FIELD ID----------------------------------------------------->
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">@Resources.Spartan_Report_Fields_DetailResources.DesignDetailId</label>
+                    <div class="col-sm-8">
+                        <input disabled="disabled" class="form-control" id="DesignDetailId" name="DesignDetailId" type="text" value="@Model.field.DesignDetailId">
+                    </div>
+                </div>
+                <!---------------------TITLE----------------------------------------------------->
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">@Resources.Spartan_Report_Fields_DetailResources.Title</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" id="Title" name="Title" type="text" value="@Model.field.Title">
+                    </div>
+                </div>
+                <!---------------------ATTRIBUTE----------------------------------------------------->
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">@Resources.Spartan_Report_Fields_DetailResources.AttributeId</label>
+                    <div class="col-sm-8">
+                        <input disabled="disabled" class="form-control" id="AttributeId" name="AttributeId" type="text" value="@Model.field.AttributeId">
+                    </div>
+                </div>
+                <!---------------------PATH FIELD----------------------------------------------------->
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">@Resources.Spartan_Report_Fields_DetailResources.PathField</label>
+                    <div class="col-sm-8">
+                        <input disabled="disabled" class="form-control" id="PathField" name="PathField" type="text" value="@Model.field.PathField">
+                    </div>
+                </div>               
+                <!---------------------ORDER NUMBER----------------------------------------------------->
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">@Resources.Spartan_Report_Fields_DetailResources.Order_Number</label>
+                    <div class="col-sm-8">
+                        <input disabled="disabled" class="form-control" id="Order_Number" name="Order_Number" type="number" value="@Model.field.Order_Number">
+                    </div>
+                </div>
+                <!---------------------PHYSICAL NAME----------------------------------------------------->
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">@Resources.Spartan_Report_Fields_DetailResources.Physical_Name</label>
+                    <div class="col-sm-8">
+                        <input disabled="disabled" class="form-control" id="Physical_Name" name="Physical_Name" type="text" value="@Model.field.Physical_Name">
+                    </div>
+                </div>
+                <!---------------------FUNCTION----------------------------------------------------->
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">@Resources.Spartan_Report_Fields_DetailResources.Function</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" id="Function" name="Function">
+                            <option value=""></option>
+                            @if (Model.Functions != null)
+                            {
+                                foreach (var item in Model.Functions)
+                                {
+                                    if (item.FunctionId == Model.field.Function)
+                                    {
+                                        <option value="@item.FunctionId" selected>@item.Description</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.FunctionId">@item.Description</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <!---------------------FUNCTION----------------------------------------------------->
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">@Resources.Spartan_Report_Fields_DetailResources.Field_Type</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" id="Field_Type" name="Field_Type" disabled="disabled">
+                            <option value=""></option>
+                            @if (Model.FieldTypes != null)
+                            {
+                                foreach (var item in Model.FieldTypes)
+                                {
+                                    if (item.FieldTypeId == Model.field.Field_Type)
+                                    {
+                                        <option value="@item.FieldTypeId" selected>@item.Description</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.FieldTypeId">@item.Description</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <!---------------------FORMAT----------------------------------------------------->
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">@Resources.Spartan_Report_Fields_DetailResources.Format</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" id="Format" name="Format">
+                            <option value=""></option>
+                            @if (Model.Formats != null)
+                            {
+                                foreach (var item in Model.Formats)
+                                {
+                                    if (item.FormatId == Model.field.Format)
+                                    {
+                                        <option value="@item.FormatId" selected>@item.Description</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.FormatId">@item.Description</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <!---------------------ORDER BY----------------------------------------------------->
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">@Resources.Spartan_Report_Fields_DetailResources.Order_Type</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" id="Order_Type" name="Order_Type">
+                            <option value=""></option>
+                            @if (Model.Orders != null)
+                            {
+                                foreach (var item in Model.Orders)
+                                {
+                                    if (item.OrderTypeId == Model.field.Order_Type)
+                                    {
+                                        <option value="@item.OrderTypeId" selected>@item.Description</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.OrderTypeId">@item.Description</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions fluid col-sm-8" style="float:right;">
+                    <input type="button" id="SaveField" value="Save" class="btn btn-primary" />
+                    <a title="Cerrar" class="btn btn-danger" id="closeModal" data-dismiss="modal">Cerrar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#closeModal').click(function () {
+            $('.selectedNode').removeClass('selectedNode');
+        });
+
+        if (FieldsInMemory.length != 0)
+        {
+            for (var i = 0; i < FieldsInMemory.length; i++)
+            {
+                if (FieldsInMemory[i].fieldPath == $('#PathField').val())
+                {
+                    $('#Physical_Name').val(FieldsInMemory[i].physicalName),
+                    $('#Function').val(FieldsInMemory[i].functionF),
+                    $('#Format').val(FieldsInMemory[i].format),
+                    $('#Order_Type').val(FieldsInMemory[i].orderBy),
+                    $('#Order_Number').val(FieldsInMemory[i].orderNumber),
+                    $('#PathField').val(FieldsInMemory[i].fieldPath),
+                    $('#Field_Type').val(FieldsInMemory[i].fieldType),
+                    $('#AttributeId').val(FieldsInMemory[i].attributeId),
+                    $('#Title').val(FieldsInMemory[i].title),
+                    $('#DesignDetailId').val(FieldsInMemory[i].fieldId)
+                }
+            }
+        }
+        $('#SaveField').click(function () {
+            var data = {
+                physicalName: $('#Physical_Name').val(),
+                functionF: $('#Function').val(),
+                format: $('#Format').val(),
+                orderBy: $('#Order_Type').val(),
+                orderNumber: $('#Order_Number').val(),
+                fieldPath: $('#PathField').val(),
+                fieldType: $('#Field_Type').val(),
+                attributeId: $('#AttributeId').val(),
+                title: $('#Title').val(),
+                fieldId: $('#DesignDetailId').val()
+            };
+            var toRemove = -1;
+            if (FieldsInMemory.length != 0) {
+                for (var i = 0; i < FieldsInMemory.length; i++) {
+                    if (FieldsInMemory[i].fieldPath == $('#PathField').val())
+                    {
+                        toRemove = i;
+                    }
+                }
+            }
+            if (toRemove != -1)
+                FieldsInMemory.splice(toRemove, 1);
+            FieldsInMemory.push(data);
+            if ($('#Function').val() != '1')
+                $('.selectedNode span').text($('#Function :selected').text() + '(' + $('#Title').val() + ')');
+            else
+                $('.selectedNode span').text($('#Title').val());
+            $('.selectedNode').removeClass('selectedNode');
+            $(this).parent().parent().parent().parent().parent().parent().modal('hide');
+        });
+    });
+</script>

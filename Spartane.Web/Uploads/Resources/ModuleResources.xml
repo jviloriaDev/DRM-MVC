@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Modules>
+  <Module culture="en-us" Id="1" value="Objects"></Module>
+  <Module culture="es-es" Id="1" value="Objetos"></Module>
+  <Module culture="en-us" Id="23" value="Security"></Module>
+  <Module culture="es-es" Id="23" value="Seguridad"></Module>
+  <Module culture="en-us" Id="34" value="Formats"></Module>
+  <Module culture="es-es" Id="34" value="Formatos"></Module>
+  <Module culture="en-us" Id="38" value="Reports"></Module>
+  <Module culture="es-es" Id="38" value="Reportes"></Module>
+  <Module culture="en-us" Id="39" value="Workflows"></Module>
+  <Module culture="es-es" Id="39" value="Flujos de Trabajo"></Module>
+  <Module culture="en-us" Id="45" value="Languages"></Module>
+  <Module culture="es-es" Id="45" value="Lenguajes"></Module>
+  <Module culture="en-us" Id="46" value="Workflows"></Module>
+  <Module culture="es-es" Id="46" value="Flujos de Trabajo"></Module>
+  <Module culture="en-us" Id="51" value="Business Rules"></Module>
+  <Module culture="es-es" Id="51" value="Reglas de Negocio"></Module>
+  <Module culture="en-us" Id="52" value="Expedientes Pacientes"></Module>
+  <Module culture="es-es" Id="52" value="Expedientes Pacientes"></Module>
+  <Module culture="en-us" Id="53" value="Catálogos"></Module>
+  <Module culture="es-es" Id="53" value="Catálogos"></Module>
+  <Module culture="en-us" Id="54" value="Mis Consultas"></Module>
+  <Module culture="es-es" Id="54" value="Mis Consultas"></Module>
+  <Module culture="en-us" Id="55" value="Mis Consultas"></Module>
+  <Module culture="es-es" Id="55" value="Mis Consultas"></Module>
+  <Module culture="en-us" Id="56" value="Mis Consultas"></Module>
+  <Module culture="es-es" Id="56" value="Mis Consultas"></Module>
+</Modules>

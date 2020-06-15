@@ -1,0 +1,158 @@
+﻿ <!-- Modal Wizard -->
+<div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="width:800px;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="modalWizarTitle">@Resources.Resources.SelectOption</h4>
+        </div>
+        <div class="modal-body">
+            <div id="divStep1" style="position:relative; left:40%; text-align:left;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="">
+                            <input type="radio" name="wizradio" value="Graphic" checked="checked">
+                            <span>@Resources.Resources.Graphic</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="">
+                            <input type="radio" name="wizradio" value="Report">
+                            <span>@Resources.Resources.Report</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="">
+                            <input type="radio" name="wizradio" value="Gauge">
+                            <span>@Resources.Resources.Gauge</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row hide" id="divStep2" style="position:relative; left:32%; text-align:left;">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resources.Cancelar</button>
+            <button type="button" id="btnNext" class="btn btn-primary" onclick="return WizardNext();">@Resources.Resources.Next</button>
+        </div>
+    </div>
+</div>
+<!-- End Modal Wizard -->
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script type="text/javascript">
+
+    function WizardNext() {
+
+        $("#divStep1").toggleClass("row hide");
+        $("#divStep2").removeClass("row hide");
+        $("#btnNext").hide();
+
+        var selPresType = $("input:radio[name='wizradio']:checked").val();
+        var selPresText = $("input:radio[name='wizradio']:checked").next().text();
+
+        var titleStep2 = GetStep2Title(selPresType);
+        $("#modalWizarTitle").text(titleStep2);
+
+        Step2(selPresType, selPresText);
+    }
+
+    function GetStep2Title(selPresType) {
+        var ret = "";
+        switch (selPresType) {
+            case "Graphic":
+                ret = decodeHtml("@Resources.Resources.Graphics");
+                break;
+            case "Report":
+                ret = "@Resources.Resources.Reports";
+                break;
+            case "Gauge":
+                ret = "@Resources.Resources.Gauges";
+                break;
+        }
+
+        return "Listado de " + ret + ":";
+    }
+
+    function decodeHtml(html) {
+        var txt = document.createElement("textarea");
+        txt.innerHTML = html;
+        return txt.value;
+    }
+
+    function Step2(selPresType, selPresText) {
+        var url_Step2 = '@Url.Action("WizardStep2", "Home")';
+        var options = { "backdrop": "static", keyboard: true };
+        debugger;
+        $.ajax({
+            type: "GET",
+            url: url_Step2,
+            contentType: "application/json; charset=utf-8",
+            data: { "selPresType": selPresType, "selPresText": selPresText },
+            datatype: "json",
+            success: function (json) {
+                if (!json.success)
+                    return $('#divStep2').append(json.errorText);
+                var html = '';
+                $.each(json.data, function (i, item) {
+                    html = "<div class='row'><div class='col-md-12'>";
+                    if(selPresType=='Graphic')
+                    {
+                        html += "<i class='fa fa-line-chart' aria-hidden='true'></i>";
+                    }
+                    if(selPresType=='Report')
+                    {
+                        html += "<i class='fa fa-table' aria-hidden='true'></i>";
+                    }
+                    html += "<a href='javascript:WizardReturn(" + item.ReportId + ")';' class='btn' data-todo='{'div': 'ejemplo'}'>"
+                        + item.Report_Name + "</a>";
+                    html += "</div></div>";
+                    html += "";
+                    $('#divStep2').append(html);
+
+                });
+            },
+            error: function (errorText) {
+            }
+        });
+    }
+
+    function WizardReturn(reportId) {
+
+        var url_save = '@Url.Action("WizardComplete", "Home")';
+        var dashboardId = @ViewBag.DashboardId;
+        var templateId = @ViewBag.TemplateId;
+        var row = @ViewBag.Row;
+        var column = @ViewBag.Column;
+
+        $.ajax({
+            type: "POST",
+            url: url_save,
+            contentType: 'application/json;charset=utf-8',
+            data: JSON.stringify({ idDashboard: dashboardId, reportId: reportId, row: row, column: column }),
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                $('#modalWizard').modal('hide');
+
+                //Refresh dashboard
+                var urlDash = '@Url.Action("GetDashboardDetail", "Home")';
+                $.getJSON(urlDash + '?idDashboard=' + dashboardId + '&idTemplate=' + templateId, function (data, event, jqueryXHR) {
+                    if (data.Success) {
+                        LoadDashboard(data, dashboardId, templateId);
+                    }
+                })
+
+            },
+            error: function (result) {
+            }
+        });
+    }
+
+</script>

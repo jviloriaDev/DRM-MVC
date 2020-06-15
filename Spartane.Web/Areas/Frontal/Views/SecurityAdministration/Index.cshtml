@@ -1,0 +1,1934 @@
+﻿@using System
+@using System.Collections.Generic
+@using MvcCheckBoxList.Model
+@{
+    //Layout = null;
+
+
+}
+
+<head>
+
+    @*<meta name="viewport" content="width=device-width" />*@
+    <title>Security Administration</title>
+    @*<script src="@Url.Content("~/Scripts/TreeControl/bootstrap-treeview.js")"></script>*@
+    <link href="@Url.Content("~/Content/BootStrapComboBox/bootstrap-combobox.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Scripts/BootStrapComboBox/bootstrap-combobox.js")"></script>
+
+    <link href="~/Content/Custom/SecurityAdminStyles.css" rel="stylesheet" />
+    <link href="~/Content/plugins/jsTree/style.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/plugins/jsTree/jstree.min.js"></script>
+    <script src="~/Scripts/plugins/metisMenu/metisMenu.min.js"></script>
+    <script src="~/Scripts/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="~/Scripts/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    @*<script src="@Url.Content("~/Scripts/plugins/jsTree/jstree.min.js")"></script>*@
+
+
+</head>
+
+<body>
+
+    <div id="loading" class="loadModal" style="display:none;width:100%;height:100%;
+        z-index:2002;position:fixed;left:0;top:0;background-color:rgba(0,0,0,0.5)">
+
+        <div style="color:rgb(255,255,255);font-size:20px;text-align:center;font-family:Arial;margin-top:20%;">
+            Loading....
+        </div>
+
+    </div>
+
+    <div id="wrapper">
+
+        @*Confirm Dialog Start*@
+        <div class="modal inmodal fade" id="confirmDialog" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p>
+                            Are you Sure Want to Delete This Role?
+                        </p>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" id="btnCancelRole" data-dismiss="modal">No</button>
+                        <button type="button" class="btn btn-primary" id="btnRemoveRole">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*Confirm Dialog End*@
+
+        @*Confirm Dialog Start*@
+        <div class="modal inmodal fade" id="SelectModuleDialog" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p>
+                            Are you Sure Want to Delete this Module?
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" id="btnCanceRemovingModule" data-dismiss="modal">No</button>
+                        <button type="button" class="btn btn-primary" id="btnRemoveModule">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*Confirm Dialog End*@
+
+        @*Dialog New And Update User Role Start*@
+        <div class="modal inmodal fade" id="userRolModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="userRolModalLabel">@Resources.SecurityAdminResources.UserRole</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">@Resources.Resources.Description</label>
+                                <input type="email" class="form-control" id="txtUserRole" placeholder="">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">@Resources.Resources.Status</label>
+                                <div id="divRoleStatusCombo">
+                                    <select class="form-control" id="ddlRoleStatusCombo"></select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="saveOrUpdateUserRole">@Resources.Resources.Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" id="closeDialogUser">@Resources.Resources.Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*Dialog New And Update User Role End*@
+
+        @*Dialog New And Update Module Start*@
+        <div class="modal inmodal fade" id="moduleModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="userRolModalLabel">@Resources.SecurityAdminResources.Modules</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">@Resources.Resources.Name</label>
+                                <input type="email" class="form-control" id="txtModule" placeholder="">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">@Resources.Resources.Status</label>
+                                <div id="divModuleCombo">
+                                    <select class="form-control" id="ddlModuleCombo"></select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="saveOrUpdateModule">@Resources.Resources.Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" id="closeDialogUser">@Resources.Resources.Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*Dialog New And Update Module End*@
+
+        <div class="modal inmodal fade" id="selectDialog" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p>
+                            Please Select User Role!!
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">Ok</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button type="button" id="btnRevert" data-toggle="modal" data-target="#selectDialog" aria-hidden="true" style="display:none"></button>
+
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10">
+                <h2>@Resources.SecurityAdminResources.SecurityAdministration</h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="index.html">@Resources.Resources.Home</a>
+                    </li>
+                    <li>
+                        <a>Forms</a>
+                    </li>
+                    <li class="active">
+                        <strong>@Resources.SecurityAdminResources.SecurityAdministration</strong>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-lg-2">
+
+            </div>
+        </div>
+
+        <div class="wrapper wrapper-content animated fadeInRight">
+            @*Cambios de josefina*@
+            <input type="button" class="btn btn-primary" value="Regenerar Menu" onclick="regenerateMenu();" />
+            <div class="row">
+
+                <div class="col-lg-5">
+
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>@Resources.SecurityAdminResources.Modules <small>@Resources.SecurityAdminResources.Configuration</small></h5>
+                        </div>
+                        <div class="ibox-content" style="height: 270px">
+                            <div class="row">
+                                <div class="col-sm-6 b-r" style="width:100% !important">
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <label>@Resources.SecurityAdminResources.UserRole</label>
+                                            <div style="clear:both"></div>
+                                            <div class="input-group comboBox" id="divRoleCombo" style="float:left">
+                                                <select id='ddlRoleCombo' name="RoleCombo" style="float:left" class="chosen-select" data-placeholder="Choose user role" style="width:200px">
+                                                    @*<option value="0">Select User Role</option>*@
+                                                </select>
+
+                                            </div>
+                                            <div class="ibox-tools" style="float:left">
+
+                                                <div class="infont col-md-3 col-sm-4">
+                                                    <a href="#"><i class="fa fa-plus" data-toggle="modal" id="openModalUserRoleToSave"></i></a>
+                                                </div>
+
+                                                <div class="infont col-md-3 col-sm-4">
+                                                    <a href="#"><i class="fa fa-edit" data-toggle="modal" id="openModalUserRoleToUpdate"></i></a>
+                                                </div>
+
+                                                <div class="infont col-md-3 col-sm-4" data-toggle="modal" data-target="#confirmDialog" aria-hidden="true" style="display: none">
+                                                    <a>
+                                                        <i class="fa fa-times"></i>
+                                                    </a>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            @*JS Tree Starts*@
+                            <div class="row">
+
+                                <div class="col-lg-12">
+
+                                    <div class="ibox float-e-margins">
+                                        <div class="ibox-content">
+
+                                            <div class="row">
+
+                                                <div class="" style="width: 65% !important; height:220px; overflow-y: scroll; border: 1px solid grey; float: left">
+                                                    <form role="form" class="form-inline">
+                                                        <div class="form-group">
+
+                                                            <a href="#" onclick="clearSelection();">@Resources.SecurityAdminResources.Modules</a>
+
+
+                                                            <div id="jsTreeModule">
+
+                                                            </div>
+                                                        </div>
+                                                    </form>
+
+                                                </div>
+                                                <div class="ibox-tools" style="float:left">
+
+                                                    <div class="infont col-md-3 col-sm-4" style="float: left; margin: 0 0 10px 0">
+                                                        <a style="font-size:12px" href="#"><i class="fa fa-plus" data-toggle="modal" id="openModalModuleToSave"></i></a>
+                                                    </div>
+                                                    <div style="clear:both"></div>
+                                                    <div class="infont col-md-3 col-sm-4" style="float: left; margin: 0 0 10px 0">
+                                                        <a style="font-size: 12px" href="#"><i class="fa fa-edit" data-toggle="modal" id="openModalModuleToUpdate"></i></a>
+                                                    </div>
+
+                                                    <div style="clear:both"></div>
+                                                    <div class="infont col-md-3 col-sm-4" style="float: left; margin: 0 0 10px 0;">
+                                                        <a style="font-size: 12px" href="#" data-toggle="modal" data-target="#SelectModuleDialog">
+                                                            <i class="fa fa-trash"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div style="clear:both"></div>
+
+                                                    <div class="infont col-md-3 col-sm-4" style="float: left; margin: 0 0 7px 0; padding-top: 55px">
+                                                        <a id="moveUp" style="font-size: 18px" href="#"><i class="fa fa-sort-asc"></i></a>
+                                                    </div>
+                                                    <div style="clear:both"></div>
+                                                    <div class="infont col-md-3 col-sm-4" style="float: left; margin: 0 0 7px 0">
+                                                        <a id="moveDown" style="font-size: 18px" href="#"><i class="fa fa-sort-desc"></i></a>
+                                                    </div>
+
+                                                </div>
+
+
+
+
+
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            @*JS Tree Ends*@
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-7">
+
+                    <div class="ibox float-e-margins">
+
+                        <div class="ibox-title">
+                            <h5>@Resources.SecurityAdminResources.ObjectModule</h5>
+                            <small><label id="lblObjModule" style="margin-left:5px"></label></small>
+                            <input type="hidden" id="hdnObjModule" />
+                        </div>
+
+                        <div class="ibox-content" style="height: 335px;overflow-y:scroll">
+
+                            <div class="row" style="margin-top:6px">
+                                <form class="form-horizontal" role="form">
+
+                                    <div class="form-group" style="overflow: auto">
+                                        <label class="col-lg-1 control-label">@Resources.SecurityAdminResources.Object</label>
+
+                                        <div class="col-lg-3">
+                                            <div class="col-sm-13"><input type="text" id="txtObjects" class="form-control"></div>
+                                        </div>
+
+                                        <div class="" style="float: left; margin: 0 0 10px 0">
+                                            <a id="filterObjects" href="#">
+                                                <i id="idFilterObj" class="fa fa-filter" style="margin-top:10px"></i>
+                                            </a>
+                                        </div>
+
+                                        <div class="i-checks">
+                                            <label style="margin: 7px 0 0 20px; "> <input type="checkbox" id="cbSpartaneObjects" value=""> <i></i> @Resources.Resources.textMessagge1</label>
+                                        </div>
+
+
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="row" style="margin-top: 6px;">
+
+
+                                <table border="0" style="width: 100%;" id="objectCheckBoxes">
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox-title">
+
+                        <h5>@Resources.SecurityAdminResources.textMessagge2</h5>
+                        <small><label id="lblPermissionModule" style="margin-left:5px;margin-bottom:2px"></label></small>
+                    </div>
+
+                    <div class="ibox-content">
+
+                        <div class="row" style="margin-top:6px">
+                            <form class="form-horizontal" role="form">
+
+                                <div class="form-group" style="overflow: auto">
+                                    <label class="col-lg-1 control-label">@Resources.SecurityAdminResources.Object</label>
+
+                                    <div class="col-lg-3">
+                                        <div class="col-sm-13"><input type="text" id="txtPermissions" class="form-control"></div>
+                                    </div>
+
+                                    <div class="" style="float: left; margin: 0 0 10px 0">
+                                        <a id="filterPermissions" href="#">
+                                            <i id="idFilterPermissions" style="margin-top:10px" class="fa fa-filter"></i>
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="row">
+
+                            <table class="table table-hover scroll" id="tblPermission">
+                                <thead>
+                                    <tr>
+                                        <th>@Resources.SecurityAdminResources.Object</th>
+                                        <th>
+                                            <div style="text-align:center">
+                                                <a><i class="fa fa-group"></i></a>
+                                            </div>
+                                            <div style="text-align:center">@Resources.SecurityAdminResources.allowall</div>
+                                        </th>
+                                        <th>
+                                            <div style="text-align:center">
+                                                <a><i class="fa fa-male"></i></a>
+                                            </div>
+                                            <div style="text-align:center">@Resources.Resources.Consult</div>
+                                        </th>
+                                        <th>
+                                            <div style="text-align:center">
+                                                <a href="#"><i class="fa fa-plus"></i></a>
+                                            </div>
+                                            <div style="text-align:center">@Resources.SecurityAdminResources.newtext</div>
+                                        </th>
+                                        <th>
+                                            <div style="text-align:center">
+                                                <a href="#"><i class="fa fa-edit"></i></a>
+                                            </div>
+                                            <div style="text-align:center">@Resources.Resources.Edit</div>
+                                        </th>
+                                        <th>
+                                            <div style="text-align:center">
+                                                <a><i class="fa fa-times"></i></a>
+                                            </div>
+                                            <div style="text-align:center">@Resources.Resources.Delete</div>
+                                        </th>
+                                        <th>
+                                            <div style="text-align:center">
+                                                <a><i class="fa fa-share"></i></a>
+                                            </div>
+                                            <div style="text-align:center">@Resources.SecurityAdminResources.Export</div>
+                                        </th>
+                                        <th>
+                                            <div style="text-align:center">
+                                                <a><i class="fa fa-print"></i></a>
+                                            </div>
+                                            <div style="text-align:center">@Resources.Resources.Print</div>
+                                        </th>
+                                        <th>
+                                            <div style="text-align:center">
+                                                <a><i class="fa fa-gears"></i></a>
+                                            </div>
+                                            <div style="text-align:center">@Resources.Resources.Configure</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody style="">
+                                    @*<tr>
+                                            <td>Country(Screen)</td>
+                                            <td><div style="text-align:center" class="i-checks"><label> <input type="checkbox" value=""> <i></i> </label></div></td>
+                                            <td><div style="text-align:center" class="i-checks"><label> <input type="checkbox" value=""> <i></i> </label></div></td>
+                                            <td><div style="text-align:center" class="i-checks"><label> <input type="checkbox" value=""> <i></i> </label></div></td>
+                                            <td><div style="text-align:center" class="i-checks"><label> <input type="checkbox" value=""> <i></i> </label></div></td>
+                                            <td><div style="text-align:center" class="i-checks"><label> <input type="checkbox" value=""> <i></i> </label></div></td>
+                                            <td><div style="text-align:center" class="i-checks"><label> <input type="checkbox" value=""> <i></i> </label></div></td>
+                                            <td><div style="text-align:center" class="i-checks"><label> <input type="checkbox" value=""> <i></i> </label></div></td>
+                                            <td><div style="text-align:center" class="i-checks"><label> <input type="checkbox" value=""> <i></i> </label></div></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td>State(Screen)</td>
+                                            <td><div style="text-align:center" class="i-checks"><label> <input type="checkbox" value=""> <i></i> </label></div></td>
+                                            <td><div style="text-align:center" class="i-checks"><label> <input type="checkbox" value=""> <i></i> </label></div></td>
+                                            <td><div style="text-align:center" class="i-checks"><label> <input type="checkbox" value=""> <i></i> </label></div></td>
+                                            <td><div style="text-align:center" class="i-checks"><label> <input type="checkbox" value=""> <i></i> </label></div></td>
+                                            <td><div style="text-align:center" class="i-checks"><label> <input type="checkbox" value=""> <i></i> </label></div></td>
+                                            <td><div style="text-align:center" class="i-checks"><label> <input type="checkbox" value=""> <i></i> </label></div></td>
+                                            <td><div style="text-align:center" class="i-checks"><label> <input type="checkbox" value=""> <i></i> </label></div></td>
+                                            <td><div style="text-align:center" class="i-checks"><label> <input type="checkbox" value=""> <i></i> </label></div></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td>Sales Transactions(Screen)</td>
+                                            <td><div style="text-align:center" class="i-checks"><label> <input type="checkbox" value=""> <i></i> </label></div></td>
+                                            <td><div style="text-align:center" class="i-checks"><label> <input type="checkbox" value=""> <i></i> </label></div></td>
+                                            <td><div style="text-align:center" class="i-checks"><label> <input type="checkbox" value=""> <i></i> </label></div></td>
+                                            <td><div style="text-align:center" class="i-checks"><label> <input type="checkbox" value=""> <i></i> </label></div></td>
+                                            <td><div style="text-align:center" class="i-checks"><label> <input type="checkbox" value=""> <i></i> </label></div></td>
+                                            <td><div style="text-align:center" class="i-checks"><label> <input type="checkbox" value=""> <i></i> </label></div></td>
+                                            <td><div style="text-align:center" class="i-checks"><label> <input type="checkbox" value=""> <i></i> </label></div></td>
+                                            <td><div style="text-align:center" class="i-checks"><label> <input type="checkbox" value=""> <i></i> </label></div></td>
+
+                                        </tr>*@
+
+                                </tbody>
+                            </table>
+
+
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+
+    <script>
+
+
+        var currentSelectedNode;
+        var moduleORder, moduleSelected;
+        var userRoleIdSelected = 0;
+        var moduleIdSelected = 0;
+        var parentModuleIdSelected = null;
+        var moduleIdToSaveOrUpdate = 0;
+
+        function ShowModalOverlay() {
+            $("#loading").show();
+        }
+        function clearSelection() {
+            $('#jsTreeModule').jstree('deselect_all');
+            moduleIdSelected = 0;
+        }
+
+        function HideModalOverlay() {
+            $("#loading").hide();
+        }
+        @*Cambios de josefina*@
+        function regenerateMenu() {
+			$('.loading').show();
+            $.ajax({
+                url: "@Url.Content("~/Frontal/SecurityAdministration/RegenerateMenu/")",
+                type: "Get",
+                contentType: 'application/json;charset=utf-8',
+                dataType: "json",
+                success: function (result) { $('.loading').hide(); },
+                error: function (result) { $('.loading').hide(); }
+            });
+
+        }
+        $(document).ready(function () {
+			$('.loading').show();
+            //$('#ddlRoleCombo').combobox({ bsVersion: '3' });
+
+            BindUserRoles();
+            BindUserRoleStatus();
+            BindModuleStatus();
+            var modules = [];
+            modules.push()
+            var modules = GetTreeData(0);
+
+            BindSpartanModuleTree(modules);
+
+            // For Test-- Checkebox coming checked or not.
+            //GetSpratneModuleObject(modules);
+
+            $("#btnRemoveRole").click(function () {
+
+                if (!($('#ddlRoleCombo :selected').val() == "0"))
+                    DeleteUserRole();
+                else if ($('#ddlRoleCombo :selected').val() == "0") {
+                    $("#btnCancelRole").trigger("click");
+                    $("#btnRevert").trigger("click");
+                }
+            });
+
+            $("#btnRemoveModule").click(function () {
+                //ShowModalOverlay();
+                DeleteSpartaneModule();
+                //HideModalOverlay();
+            });
+
+            $("#filterObjects").click(function () {
+                var filterText = $("#txtObjects").val();
+                var filterApplied = false;
+
+                $("#objectCheckBoxes tbody tr").each(function () {
+
+                    var span = $(this).find('span');
+
+
+                    for (i = 0; i < span.length; i++) {
+                        var spanText = span[i].innerHTML.toLowerCase().trim();
+
+                        var parentTd = span[i].parentNode;
+
+                        if ((spanText.trim().toLowerCase().indexOf(filterText)) == -1) {//Modificacion SB
+
+                            parentTd.style.display = 'none';
+                            filterApplied = true;
+                        }
+                        else {
+                            parentTd.style.display = '';
+                        }
+                    }
+                });
+
+                if (filterApplied == true && filterText != "") {
+                    $("#idFilterObj").css('color', 'green');
+                }
+                else {
+                    $("#idFilterObj").css('color', '');
+                }
+
+
+            });
+
+            $("#filterPermissions").click(function () {
+                var text = $("#txtPermissions").val();
+                var filterApplied = false;
+
+                $("#tblPermission tbody tr").each(function () {
+
+
+                    var td = $(this).find('td:first')[0];
+
+
+                    if ((td.innerHTML.toLowerCase().trim().indexOf(text)) == -1) {//Modificacion SB
+
+                        $(this).css("display", "none");
+                        filterApplied = true;
+                    }
+                    else {
+                        $(this).show();
+                    }
+                });
+
+                if (filterApplied == true && text != "") {
+                    $("#idFilterPermissions").css('color', 'green');
+                }
+                else {
+                    $("#idFilterPermissions").css('color', '');
+                }
+
+                return false;
+            });
+
+            $("#moveUp").click(function () {
+                MoveModule('up');
+            });
+
+            $("#moveDown").click(function () {
+                MoveModule('down');
+            });
+
+            $("#openModalUserRoleToSave").click(function () {
+                userRoleIdSelected = 0;
+                $('#txtUserRole').val("");
+                $('#ddlRoleStatusCombo').val(0);
+                $('#userRolModal').modal('show');
+            });
+
+            $("#openModalUserRoleToUpdate").click(function () {
+                userRoleIdSelected = $("#ddlRoleCombo :selected").val();
+                if (userRoleIdSelected > 0) {
+                    $('#txtUserRole').val($("#ddlRoleCombo option:selected").text());
+                    $('#ddlRoleStatusCombo').val($("#ddlRoleCombo option:selected").attr("rel"));
+                    $('#userRolModal').modal('show');
+                } else {
+					showNotification('Seleccione un rol', "warning");
+                }
+            });
+
+            $("#openModalModuleToSave").click(function () {
+                moduleIdToSaveOrUpdate = 0;
+                parentModuleIdSelected = moduleIdSelected > 0 ? moduleIdSelected : null;
+                $('#txtModule').val("");
+                $('#ddlModuleCombo').val(0);
+                $('#moduleModal').modal('show');
+            });
+
+            $("#openModalModuleToUpdate").click(function () {
+                moduleIdToSaveOrUpdate = moduleIdSelected;
+                if (moduleIdSelected > 0) {
+                    GetModuleById();
+                }
+            });
+
+            $("#saveOrUpdateUserRole").click(function () {
+                fnSaveOrUpdateUserRole();
+            });
+
+            $("#saveOrUpdateModule").click(function () {
+                fnSaveOrUpdateModule();
+            });
+
+            $(document).on('click', ".cbPermission", function () {
+
+                var permission = $(this).attr('permission').toLowerCase();
+
+                var userRole = $("#ddlRoleCombo :selected").val();
+                var moduleID = $('#hdnObjModule').val();
+                var functionID = $(this).attr('functionid');
+                var objectID = $(this).parents('tr').attr('id');
+                var checkBox = $(this);
+
+                if (permission == "allowall") {
+
+                    var tr = $(this).parents().eq(3);
+
+                    if ($(this).is(':checked')) {
+
+                        $(this).parents('tr').find(':checkbox[class="cbPermission"]:not(:disabled)').prop('checked', true);
+                    }
+                    else {
+                        $(this).parents('tr').find(':checkbox').prop('checked', false);
+                    }
+
+
+                    //Bulk Insert and Delete-- Function Roles.
+                    //ShowModalOverlay();
+                    $(this).parents('tr').find(':checkbox').each(function () {
+                        if ($(this).attr('disabled') != 'disabled') {
+                            var functionIDCheck = $(this).attr('functionid');
+                            var checkboxSel = $(this);
+                            var UserRuleObjectFunctionId = $(this).attr('UserRuleObjectFunctionId');
+
+                            if ($(this).is(':checked')) {
+
+                                if (functionIDCheck != 0 && UserRuleObjectFunctionId == 0) {
+
+                                    AssignUserRoleFunction(userRole, moduleID, functionIDCheck, objectID, checkboxSel);
+                                }
+                            }
+                            else {
+
+                                if (functionIDCheck != 0 && UserRuleObjectFunctionId != 0) {
+
+                                    UnAssignUserRoleFunction(UserRuleObjectFunctionId, checkboxSel);
+                                }
+                            }
+                        }
+
+                    });
+                    //HideModalOverlay();
+
+
+                } else {
+
+                    if ($(this).is(':checked')) {
+
+                        //ShowModalOverlay();
+                        AssignUserRoleFunction(userRole, moduleID, functionID, objectID, checkBox);
+                        //HideModalOverlay();
+                    }
+                    else {
+
+                        var UserRuleObjectFunctionId = $(this).attr('UserRuleObjectFunctionId');
+                        var checkBox = $(this);
+                        //ShowModalOverlay();
+                        UnAssignUserRoleFunction(UserRuleObjectFunctionId, checkBox);
+                        //HideModalOverlay();
+                    }
+
+                }
+            });
+
+            $(document).on('click', ".cbModuleObject", function () {
+                var objectID = $(this).attr('ObjectID');
+                //var moduleID = $(this).attr('ModuleID');
+                var moduleID = $('#hdnObjModule').val();
+                var userRole = $("#ddlRoleCombo :selected").val();
+
+                var checkbox = $(this);
+
+                if ($(this).is(':checked')) {
+                    //ShowModalOverlay();
+                    AssignSpartaneUserRoleModule(objectID, moduleID, userRole, checkbox);
+                    //HideModalOverlay();
+                    var childrenCheck = $("#objectCheckBoxes").find("[parentObjectId=" + objectID + "]");
+                    $.each(childrenCheck, function (key, value) {
+                        $(this).trigger('click');//.prop('checked', true);
+                    });
+                }
+                else {
+
+                    var userRoleModuleObjectID = $(this).attr('userrolemoduleobjectid');
+                    var checkbox = $(this);
+
+                    //ShowModalOverlay();
+                    UnAssignSpartaneUserRoleModule(userRoleModuleObjectID, checkbox);
+                    //HideModalOverlay();
+                }
+
+            });
+
+            $(document).on('change', '#ddlRoleCombo', function () {
+
+                //$("#loading").toggleClass("");
+                GetSpartaneUserRoleModules();
+
+
+            });
+            //Begin Modificacion SB
+            $(document).on('click', "#cbSpartaneObjects", function () {
+
+                if ($(this).is(':checked')) {
+                    var modules = GetTreeData(0);
+                    GetSpratneModuleObject(modules, true);
+                }
+                else {
+                    var modules = GetTreeData(0);
+                    GetSpratneModuleObject(modules, false);
+                    GetPermissionsForObjects(modules);
+                }
+
+            });
+            //End Modificacion SB
+            $("#jsTreeModule").on("changed.jstree", function (e, data) {
+                try {
+
+                    if (data.event.originalEvent.type == "click") {
+                        if (data.action.toLowerCase().trim() == "select_node") {
+
+
+                            var module = data.node.text;
+
+                            moduleIdSelected = data.node.id;
+                            parentModuleIdSelected = data.node.parent != '#' ? data.node.parent : null;
+
+                            SetControlText('lblObjModule', data.node.text);
+                            SetControlValue('hdnObjModule', data.node.id);
+                            SetControlText('lblPermissionModule', data.node.text);
+
+                            InsertUserRoleModule(data);
+                            @*Cambios de josefina --> se agrego el parametro "bool all"*@
+                            GetSpratneModuleObject(data, $('#cbSpartaneObjects').is(':checked'));
+
+
+
+                        }
+                        else if (data.action.toLowerCase().trim() == "deselect_node") {
+
+                            DeleteUserRoleModule(data);
+                        }
+                    }
+                }
+                catch (ex) {
+
+                }
+
+            });
+			$('.loading').hide();
+        });
+
+        function MoveModule(direction) {
+            var userRole = $("#ddlRoleCombo :selected").val();
+            var obj = {};
+            obj.userRole = userRole;
+            obj.module = moduleSelected;
+            obj.order = moduleORder;
+            obj.direction = direction;
+
+            $.ajax({
+
+                url: "@Url.Content("~/Frontal/SecurityAdministration/ReOrderUserRoleModules")",
+                type: "POST",
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify(obj),
+                dataType: "json",
+                async: false,
+                success: function (result) {
+
+
+                    if (result != "0" && result != "-1") {
+
+                        GetSpartaneUserRoleModules();
+                    }
+                    else {
+
+                    }
+
+                },
+                error: function (result) {
+
+                }
+            });
+
+        }
+
+        function GetSpartaneUserRoleModules() {
+            //setTimeout(ShowModalOverlay,500);
+            //ShowModalOverlay();
+            //Clear Permission and Module Object section
+            $("#tblPermission tbody").html('');
+            $('#objectCheckBoxes').html('');
+
+            var userRole = $("#ddlRoleCombo :selected").val();
+            var modules = GetTreeData(userRole);
+            BindSpartanModuleTree(modules);
+            //HideModalOverlay();
+
+            //setTimeout(HideModalOverlay, 500);
+
+        }
+        //Begin Modificacion SB
+        function GetSpartaneObjects(module) {
+            var moduleId;
+            if (module.node == undefined)
+                moduleId = module[0].id;
+            else
+                moduleId = module.node.id;
+            var userRole = $("#ddlRoleCombo :selected").val();
+            var filterText = $("#txtObjects").val();
+
+            var obj = {};
+            obj.roleID = userRole;
+            obj.filter = filterText;
+            $.ajax({
+
+                url: "@Url.Content("~/Frontal/SecurityAdministration/GetSpartaneObjects")",
+                type: "POST",
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify(obj),
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    if (result.RowCount != "0") {
+                        $("#objectCheckBoxes tbody tr#trObjUnselected").remove();
+                        $("#objectCheckBoxes tbody tr#trModuleObj").remove();
+
+                        AddTRinTable(result.RowCount, 'objectCheckBoxes', 'trObjUnselected');
+
+                        var count = 0;
+                        $("#objectCheckBoxes tbody tr#trObjUnselected").each(function () {
+
+                            try {
+
+                                for (j = 0; j < 2; j++) {
+                                    htmltd = '<td>';
+                                    htmltd = htmltd + '<input class="cbModuleObject" type="checkbox" UserRoleModuleObjectID ="' + result[count].User_Rule_Module_Object_Id + '" ObjectID="' + result[count].ObjectID + '" parentObjectId="' + result[count].ParentObjectId + '"  ModuleID ="' + result[count].ModuleID + '"  ModuleObjectID="' + result[count].Module_Object_Id + '" ' + result[count].Checked + ' id="' + result[count].Module_Object_Id +
+                                        '"' + '/><span id="' + result[count].Module_Object_Id + '" style= "font-weight:bold"> ' + result[count].Data + '(' + result[count].ObjectTypeDescription + ')</span>';
+                                    htmltd += '</td>';
+                                    $(this).append(htmltd);
+                                    count++;
+                                }
+                            }
+                            catch (ex) {
+
+                            }
+                        });
+
+                    }
+
+                },
+                error: function () {
+
+                }
+
+            });
+        }
+        //End Modificacion SB
+        function AssignUserRoleFunction(userRole, moduleID, functionID, objectID, checkBox) {
+            var obj = {};
+            obj.Spartan_User_Rule = userRole;
+            obj.Module_Id = moduleID;
+            obj.Fuction_Id = functionID;
+            obj.Object_Id = objectID;
+
+            $.ajax({
+
+                url: "@Url.Content("~/Frontal/SecurityAdministration/AssignUserRoleFunctions")",
+                type: "POST",
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify(obj),
+                dataType: "json",
+                async: false,
+                success: function (result) {
+
+
+                    if (result != "0" && result != "-1") {
+
+                        checkBox.attr('UserRuleObjectFunctionId', result);
+                    }
+                    else {
+                        checkBox.attr("checked", false);
+                    }
+
+                },
+                error: function (result) {
+
+                }
+            });
+
+        }
+
+        function UnAssignUserRoleFunction(UserRuleObjectFunctionId, checkBox) {
+
+            var userRole = $("#ddlRoleCombo :selected").val();
+            var obj = {};
+            obj.userRoleObjectFunctionId = UserRuleObjectFunctionId;
+            obj.userRole = userRole;
+
+            $.ajax({
+
+                url: "@Url.Content("~/Frontal/SecurityAdministration/UnAssignUserRoleFunctions")",
+                type: "POST",
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify(obj),
+                dataType: "json",
+                async: false,
+                success: function (result) {
+
+
+                    if (result != "0" && result != "-1") {
+
+                        checkBox.attr("UserRuleObjectFunctionId", 0);
+
+                    }
+                    else {
+                        checkBox.prop("checked", true);
+                    }
+                },
+                error: function (result) {
+
+                }
+            });
+        }
+
+        function AssignSpartaneUserRoleModule(objectID, moduleID, userRole, checkbox) {
+
+
+            var obj = {};
+            obj.Object_Id = objectID;
+            obj.Module_Id = moduleID;
+            obj.Spartan_User_Role = userRole;
+
+
+            $.ajax({
+
+                url: "@Url.Content("~/Frontal/SecurityAdministration/AssignSpartaneUserRoleModuleObject")",
+                //url: "/Frontal/SecurityAdministration/AssignSpartaneUserRoleModuleObject",
+                type: "POST",
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify(obj),
+                dataType: "json",
+                async: false,
+                success: function (result) {
+
+
+                    if (result != "0" && result != "-1") {
+
+                        checkbox.attr('UserRoleModuleObjectID', result);
+
+                        //debugger;
+                        var object = [];
+
+                        var objectDesc = checkbox.parent('td').find('span').text().trim();
+                        var clear = 0;
+
+                        var objectType = objectDesc.substring(objectDesc.indexOf('(') + 1, objectDesc.indexOf(')'));
+
+                        var moduleObjectID = checkbox.attr('moduleobjectid');
+
+                        object.push({
+                            User_Rule_Module_Object_Id: result,
+                            ObjectID: objectID,
+                            Data: objectDesc,
+                            ObjectTypeDescription: objectType,
+                            ModuleID: moduleID,
+                            Module_Object_Id: moduleObjectID,
+                            NewEditDisabled: ''
+
+                        });
+
+                        AppendModuleFunctions(object, clear);
+
+                    }
+                    else {
+                        checkbox.attr("checked", false);
+
+                    }
+                },
+                error: function (result) {
+
+                }
+            });
+        }
+
+        function UnAssignSpartaneUserRoleModule(userRoleModuleObjectId, checkbox) {
+
+
+            var userRole = $("#ddlRoleCombo :selected").val();
+
+            var obj = {};
+            obj.userRoleModuleObjectID = userRoleModuleObjectId;
+            obj.UserRole = userRole;
+
+
+            $.ajax({
+
+                url: "@Url.Content("~/Frontal/SecurityAdministration/UnAssignSpartaneUserRoleModuleObject")",
+                type: "POST",
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify(obj),
+                dataType: "json",
+                async: false,
+                success: function (result) {
+
+
+                    if (result != "0" & result != "-1") {
+
+                        checkbox.attr("UserRoleModuleObjectID", 0);
+
+                        var objectID = checkbox.attr('objectid');
+                        RemoveModuleFunctions(objectID);
+                    }
+                    else {
+                        checkbox.prop("checked", true);
+                    }
+                },
+                error: function (result) {
+
+                }
+            });
+        }
+
+        function resfreshJSTree(modules) {
+
+            $('#jsTreeModule').jstree(true).settings.core.data = modules;
+            //$("#jsTreeModule").jstree('refresh');
+            $('#jsTreeModule').jstree(true).refresh(true);
+        }
+
+        function GetTreeData(userRole) {
+
+            var obj = {};
+            obj.roleID = userRole;
+
+            var treeData = new Array();
+
+            $.ajax({
+
+                url: "@Url.Content("~/Frontal/SecurityAdministration/GetSpartanModules")?roleID=" + userRole,
+                type: "GET",
+                contentType: 'application/json;charset=utf-8',
+                async: false,
+                data: JSON.stringify(obj),
+                dataType: "json",
+                success: function (json) {
+
+                    treeData = json;
+
+                },
+                error: function (json) {
+
+
+                },
+                complete: function () {
+
+
+                }
+
+            });
+
+            return treeData;
+
+        }
+
+        function BindSpartanModuleTree(jsonData) {
+
+
+            $('#jsTreeModule').jstree('destroy');
+
+            $('#jsTreeModule').jstree({
+                'core': {
+                    'check_callback': true,
+                    'cache': false,
+                    'data': jsonData
+
+                },
+                checkbox: {
+
+                    'keep_selected_style': false,
+                    'tie_selection': false,
+                    'whole_node': false
+
+                },
+                plugins: ["themes", "json_data", "ui", "checkbox", "changed", "dnd"]
+            }).on("changed.jstree", function (e, data) {
+
+                try {
+
+
+                    if (data.event.originalEvent.type == "click") {
+                        if (data.action.toLowerCase().trim() == "select_node") {
+
+                            //var module = data.node.text;
+
+
+                            moduleORder = data.node.original.moduleOrder
+                            moduleSelected = data.selected[0];
+
+
+                            currentSelectedNode = data.selected[0];
+                            moduleIdSelected = data.node.id;
+                            parentModuleIdSelected = data.node.parent != '#' ? data.node.parent : null;
+                            SetControlText('lblObjModule', data.node.text);
+                            @*Cambios de josefina --*@
+                            SetControlValue('hdnObjModule', data.node.id);
+                            SetControlText('lblPermissionModule', data.node.text);
+
+                            //ShowModalOverlay();
+
+                            @*Cambios de josefina --> se agrego el parametro "bool all"*@
+                            GetSpratneModuleObject(data, $('#cbSpartaneObjects').is(':checked'));
+
+                            GetPermissionsForObjects(data);
+
+                            //HideModalOverlay();
+
+                        }
+
+                    }
+                }
+                catch (ex) {
+
+                }
+
+            }).on("check_node.jstree", function (e, data) {
+
+                //ShowModalOverlay();
+                InsertUserRoleModule(data);
+                @*Cambios de josefina --> se agrego el parametro "bool all"*@
+                GetSpratneModuleObject(data, $('#cbSpartaneObjects').is(':checked'));
+
+                GetPermissionsForObjects(data);
+
+                //HideModalOverlay();
+
+
+
+            }).on("uncheck_node.jstree", function (e, data) {
+
+                //ShowModalOverlay();
+                DeleteUserRoleModule(data);
+                //HideModalOverlay();
+
+
+            }).on("move_node.jstree", function (e, data) {
+                // data.rslt.o is a list of objects that were moved
+                // Inspect data using your fav dev tools to see what the properties are
+                debugger;
+                moduleORder = data.node.original.moduleOrder
+                moduleSelected = data.node.id;
+
+                var userRole = $("#ddlRoleCombo :selected").val();
+                var obj = {};
+                obj.userRole = userRole;
+                obj.module = moduleSelected;
+                obj.order = moduleORder;
+                obj.direction = (data.position > data.old_position) ? "down" : "up";
+
+                $.ajax({
+
+                    url: "@Url.Content("~/Frontal/SecurityAdministration/ReOrderUserRoleModules")",
+                    type: "POST",
+                    contentType: 'application/json;charset=utf-8',
+                    data: JSON.stringify(obj),
+                    dataType: "json",
+                    async: false,
+                    success: function (result) {
+
+
+                        if (result != "0" && result != "-1") {
+
+                            GetSpartaneUserRoleModules();
+                        }
+                        else {
+
+                        }
+
+                    },
+                    error: function (result) {
+
+                    }
+                });
+            });
+        }
+
+        function GetAllSpartaneUserRoleModules(id) {
+            var obj = {}
+            obj.moduleID = id;
+
+            $.ajax({
+                url: "@Url.Content("~/Frontal/SecurityAdministration/GetSpartanUserRoleModules/")",
+                type: "POST",
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify(obj),
+                dataType: "json",
+                success: function (result) {
+
+                },
+                error: function (result) {
+
+                }
+            });
+
+        }
+
+        function AppendModuleFunctions(result, clear) {
+            var disabled;
+            if (result.ObjectID > 0)
+                disabled = "";
+            if (clear == 1)
+                $("#tblPermission tbody").html('');
+            //objects = $.parseJSON(objects);
+            for (i = 0; i < result.length; i++) {
+                disabled = "disabled";
+                if (result[i].ObjectID > 0)
+                    disabled = "";
+                //debugger;
+                if (!(result[i].User_Rule_Module_Object_Id == 0)) {
+                    var html = '<tr id="' + result[i].ObjectID + '" draggable="true">'
+                    html += '<td>' + result[i].Data + '(' + result[i].ObjectTypeDescription + ')</td>'
+
+                    html += '<td><div style="text-align:center" class="i-checks"><label> <input type="checkbox" permission="allowall" functionid="0" class="cbPermission" UserRuleObjectFunctionId="0"  ModuleID="' + result[i].ModuleID + '"  value="' + result[i].Module_Object_Id + '"> <i></i> </label></div></td>'
+
+                    html += '<td><div style="text-align:center" class="i-checks"><label> <input type="checkbox" permission="consult"  functionid="1"  class="cbPermission" UserRuleObjectFunctionId="0" ModuleID="' + result[i].ModuleID + '" value="' + result[i].Module_Object_Id + '"> <i></i> </label></div></td>'
+
+                    html += '<td><div style="text-align:center" class="i-checks"><label> <input ' + disabled + ' type="checkbox" permission="new" functionid="2"  class="cbPermission" UserRuleObjectFunctionId="0" ModuleID="' + result[i].ModuleID + '" value="' + result[i].Module_Object_Id + '" ' + result[i].NewEditDisabled + '> <i></i> </label></div></td>'
+
+                    html += '<td><div style="text-align:center" class="i-checks"><label> <input ' + disabled + ' type="checkbox" permission="edit" functionid="3"  class="cbPermission" UserRuleObjectFunctionId="0" ModuleID="' + result[i].ModuleID + '" value="' + result[i].Module_Object_Id + '" ' + result[i].NewEditDisabled + '>  <i></i> </label></div></td>'
+
+                    html += '<td><div style="text-align:center" class="i-checks"><label> <input ' + disabled + ' type="checkbox" permission="delete" functionid="4"  class="cbPermission" UserRuleObjectFunctionId="0" ModuleID="' + result[i].ModuleID + '" value="' + result[i].Module_Object_Id + '"> <i></i> </label></div></td>'
+
+                    html += '<td><div style="text-align:center" class="i-checks"><label> <input ' + disabled + ' type="checkbox" permission="export" functionid="5"  class="cbPermission" UserRuleObjectFunctionId="0" ModuleID="' + result[i].ModuleID + '" value="' + result[i].Module_Object_Id + '"> <i></i> </label></div></td>'
+
+                    html += '<td><div style="text-align:center" class="i-checks"><label> <input ' + disabled + ' type="checkbox" permission="print" functionid="6"  class="cbPermission" UserRuleObjectFunctionId="0" ModuleID="' + result[i].ModuleID + '" value="' + result[i].Module_Object_Id + '"> <i></i> </label></div></td>'
+
+                    html += '<td><div style="text-align:center" class="i-checks"><label> <input ' + disabled + ' type="checkbox" permission="configure" functionid="7" class="cbPermission" UserRuleObjectFunctionId="0" ModuleID="' + result[i].ModuleID + '" value="' + result[i].Module_Object_Id + '"> <i></i> </label></div></td>'
+
+
+                    html += '</tr>'
+
+                    $("#tblPermission tbody").append(html);
+                }
+                $("#tblPermission tbody").sortable({
+                    helper: fixHelperModified,
+                    stop: updateIndex
+                }).disableSelection();
+            }
+
+        }
+
+        var fixHelperModified = function (e, tr) {
+            var $originals = tr.children();
+            var $helper = tr.clone();
+            $helper.children().each(function (index) {
+                $(this).width($originals.eq(index).width())
+            });
+            return $helper;
+        },
+            updateIndex = function (e, ui) {
+                
+                $('td.index', ui.item.parent()).each(function (i) {
+                    $(this).html(i + 1);
+                });
+                ReorderObjects();
+            };
+
+        function ReorderObjects() {
+            var trs = $('#tblPermission tbody tr');
+            var role = $('#ddlRoleCombo').val();
+            var id;
+            var order = 1;
+            var data = [];
+            //moduleSelected
+            $.each(trs, function () {
+                id = $(this).prop('id');
+                data.push({ object_id: id, order_shown: order, roleId: role, moduleId: moduleSelected });
+                order++;
+            });
+             $.ajax({
+                url: "@Url.Content("~/Frontal/SecurityAdministration/ReorderObjects")",
+                type: "POST",
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify(data),
+                dataType: "json",
+                success: function (result) {
+
+                },
+                error: function (result) {
+
+                }
+            });
+        }
+
+        function RemoveModuleFunctions(objectid) {
+            //debugger;
+            $("#tblPermission tbody").find("tr#" + objectid).remove();
+        }
+
+        function GetSpratneModuleObject(module, all) {
+
+            var userRole = $("#ddlRoleCombo :selected").val();
+            var obj = {};
+            var moduleId;
+            if (module.node == undefined)
+                moduleId = $('#hdnObjModule').val();    @*Cambios de josefina"*@
+            else
+                moduleId = module.node.id;
+
+
+            obj.ModuleID = moduleId;
+            obj.RoleID = userRole;
+            obj.All = all; @*Cambios de josefina"*@
+
+            if (obj.ModuleID == 'undefined' || obj.ModuleID == '') {
+				showNotification('Debe seleccionar un modulo', "warning");
+                return;
+            }
+
+            $.ajax({
+
+                url: "@Url.Content("~/Frontal/SecurityAdministration/GetAllSpartaneModuleObject")",
+                type: "POST",
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify(obj),
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    var count = 0;
+                    var clear = 1;
+
+                    AppendModuleFunctions(result, clear);
+
+                    // Generate Rows for Object Module Section
+                    $('#objectCheckBoxes').html('');
+                    if (result != "") {
+                        AddTRinTable(result.length, 'objectCheckBoxes', 'trModuleObj');
+                        $("#objectCheckBoxes tbody tr#trModuleObj").each(function () {
+                            try {
+
+                                for (j = 0; j < 2; j++) {
+                                    htmltd = '<td>';
+                                    htmltd = htmltd + '<input class="cbModuleObject" type="checkbox" UserRoleModuleObjectID ="' + result[count].User_Rule_Module_Object_Id + '" ObjectID="' + result[count].ObjectID + '" parentObjectId="' + result[count].ParentObjectId + '"  ModuleID ="' + result[count].ModuleID + '"  ModuleObjectID="' + result[count].Module_Object_Id + '" ' + result[count].Checked + ' id="' + result[count].Module_Object_Id +
+                                        '"' + '/><span id="' + result[count].Module_Object_Id + '" style= "font-weight:bold"> ' + result[count].Data + '(' + result[count].ObjectTypeDescription + ')</span>';
+                                    htmltd += '</td>';
+                                    $(this).append(htmltd);
+                                    count++;
+                                }
+                            }
+                            catch (ex) {
+
+                            }
+                        });
+
+
+
+                    }
+                    else {
+                        $('#objectCheckBoxes').html('No Objects present for this module');
+                    }
+
+
+                },
+                error: function (result) {
+
+
+                },
+                complete: function (result) {
+                    HideModalOverlay();
+                }
+
+
+            });
+
+
+        }
+
+        function GetPermissionsForObjects(module) {
+            var userRole = $("#ddlRoleCombo :selected").val();
+            var obj = {};
+            var moduleId;
+            if (module.node == undefined)
+                moduleId = module[0].id;
+            else
+                moduleId = module.node.id;
+            obj.ModuleID = moduleId;
+            obj.RoleID = userRole;
+
+            $.ajax({
+
+                url: "@Url.Content("~/Frontal/SecurityAdministration/GetPermissionsForObjects")",
+                type: "POST",
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify(obj),
+                dataType: "json",
+                async: false,
+                success: function (result) {
+
+                    if (result != "-1" && result != "") {
+                        $("#tblPermission tbody tr").each(function (i, data) {
+
+
+
+                            for (i = 0; i < result.length; i++) {
+
+
+                                var trobjectID = $(this).attr('id')
+
+                                var ObjectID = result[i].Object_Id;
+
+                                var UserRoleObjectFunctionID = result[i].User_Rule_Object_Function_Id;
+
+                                var functionID;
+
+                                if (ObjectID == trobjectID) {
+
+                                    functionID = result[i].Fuction_Id;
+
+                                    $(this).find("[FunctionID='" + functionID + "']").attr('checked',
+                                        true).attr('UserRuleObjectFunctionId', UserRoleObjectFunctionID);
+                                }
+
+                            }
+
+                            var length = $(this).find(':checkbox[class="cbPermission"]:checked').length;
+                            if (length == 7)
+                                $(this).find("[FunctionID='0']").attr('checked', true);
+
+                        });
+
+                    }
+
+                },
+                error: function () {
+
+                },
+                complete: function () {
+
+                    HideModalOverlay();
+                }
+            });
+
+        }
+
+        function AddTRinTable(NoOfTr, tableid, trid) {
+
+            var rows = Math.ceil(NoOfTr / 2);
+
+            var i = 0, j = 0;
+            var htmltr = '';
+            for (i = 0; i < rows; i++) {
+                htmltr = '<tr id="' + trid + '">';
+                htmltr = htmltr + '</tr>';
+                $('#' + tableid).append(htmltr);
+            }
+        }
+
+
+        function InsertUserRoleModule(module) {
+
+            var obj = {};
+            var userRole = $("#ddlRoleCombo :selected").val();
+
+            if (userRole == "0") {
+				//Traducción Pendiente
+				showNotification('Please select User Role first!!', "warning");
+                return;
+            }
+
+            obj.Data = module.node.text;
+            obj.ModuleID = module.node.id;
+            obj.UserRoleID = userRole
+            obj.childrens = module.node.children;
+
+
+            $.ajax({
+                url: "@Url.Content("~/Frontal/SecurityAdministration/AddSpartanUserRoleModules")",
+                type: "POST",
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify(obj),
+                dataType: "json",
+                async: false,
+                success: function (result) {
+
+
+                    if (result == "1") {
+
+                    }
+                    else {
+
+                    }
+
+
+                },
+                error: function (result) {
+
+
+                }
+            }).done(function () {
+
+                //resfreshJSTree();
+                var json = GetTreeData(userRole);
+                BindSpartanModuleTree(json);
+            });
+
+        }
+
+
+        function DeleteUserRoleModule(module) {
+
+            var obj = {};
+            var userRole = $("#ddlRoleCombo :selected").val();
+
+            if (userRole == "0") {
+				//Traducción Pendiente
+				showNotification('Please select User Role first!!', "warning");
+                return;
+            }
+
+            obj.Data = module.node.text;
+            obj.ModuleID = module.node.id;
+            obj.UserRoleID = userRole
+            obj.childrens = module.node.children;
+
+
+            $.ajax({
+                url: "@Url.Content("~/Frontal/SecurityAdministration/DeleteSpartanUserRoleModules")",
+                //url: "/Frontal/SecurityAdministration/DeleteSpartanUserRoleModules",
+                type: "POST",
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify(obj),
+                dataType: "json",
+                async: false,
+                success: function (result) {
+
+                },
+                error: function (result) {
+
+
+                }
+            }).done(function () {
+
+                GetSpartaneUserRoleModules();
+            });
+        }
+
+        function SetControlText(id, value) {
+            $('#' + id).text(value);
+        }
+        @*Cambios de josefina"*@
+        function SetControlValue(id, value) {
+            $('#' + id).val(value);
+        }
+
+        function DeleteSpartaneModule() {
+
+            var obj = {};
+            obj.ModuleID = moduleIdSelected;
+
+            var objects = [];
+            $('#objectCheckBoxes input:checked').each(function () {
+                objects.push($(this).attr('value'));
+            });
+
+            if (objects.lenght > 0) {
+				//Traducción Pendiente
+				showNotification('No se puede borrar el modulo porque tiene objetos relacionados', "info");
+            }
+
+            $.ajax({
+                url: "@Url.Content("~/Frontal/SecurityAdministration/DeleteSpartanModule/")",
+                type: "POST",
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify(obj),
+                dataType: "json",
+                success: function (result) {
+
+                    $("#btnCanceRemovingModule").trigger("click");
+                    if (result == false) {
+						//Traducción Pendiente
+						showNotification('No se ha podido borrar el modulo. Revise que no tenga relaciones', "info");
+                    }
+                },
+                error: function (result) {
+                    $("#btnCancelRole").trigger("click");
+                }
+            }).done(function () {
+
+                $("#btnCanceRemovingModule").trigger("click");
+                GetSpartaneUserRoleModules();
+                currentSelectedNode = "";
+            });
+
+
+        }
+
+
+        function DeleteUserRole() {
+            var obj = {};
+            obj.roleID = $('#divRoleCombo :selected').val();
+
+            $.ajax({
+                url: "@Url.Content("~/Frontal/SecurityAdministration/DeleteUserRoles/")",
+                type: "POST",
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify(obj),
+                dataType: "json",
+                success: function (result) {
+
+                },
+                error: function (result) {
+
+
+                    $("#btnCancelRole").trigger("click");
+                }
+            }).done(function () {
+
+                BindUserRoles();
+
+                $("#btnCancelRole").trigger("click");
+
+            });
+        }
+
+        //Used to Bind User Roles
+        function BindUserRoles() {
+
+            $.ajax({
+                url: "@Url.Content("~/Frontal/SecurityAdministration/GetUserRoles/")",
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    if (result != null && result.length > 0) {
+                        $("#divRoleCombo").empty();
+
+                        var ddlRoleCombo = $('<select id="ddlRoleCombo" name="RoleCombo" />');
+
+                        $('<option/>', { value: 0, text: 'Select User Role' }).appendTo(ddlRoleCombo);
+
+                        for (var i = 0; i < result.length; i++) {
+                            $('<option />', { value: result[i].Value, text: result[i].Text, rel: result[i].Status }).appendTo(ddlRoleCombo);
+                        }
+
+                        ddlRoleCombo.appendTo($("#divRoleCombo"));
+
+                        $("#ddlRoleCombo").css({ 'width': 200 });
+                    }
+                },
+                error: function (result) {
+
+                }
+            });
+        }
+
+        function BindUserRoleStatus() {
+
+            $.ajax({
+                url: "@Url.Content("~/Frontal/SecurityAdministration/GetUserRoleStatus/")",
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    if (result != null && result.length > 0) {
+                        $("#divRoleStatusCombo").empty();
+
+                        var ddlRoleStatusCombo = $('<select class="form-control" id="ddlRoleStatusCombo" name="RoleStatusCombo" />');
+
+                        $('<option/>', { value: 0, text: '@Resources.SecurityAdminResources.SelectStatus' }).appendTo(ddlRoleStatusCombo);
+
+                        for (var i = 0; i < result.length; i++) {
+                            $('<option />', { value: result[i].Value, text: result[i].Text }).appendTo(ddlRoleStatusCombo);
+                        }
+
+                        ddlRoleStatusCombo.appendTo($("#divRoleStatusCombo"));
+                    }
+                },
+                error: function (result) {
+
+                }
+            });
+        }
+
+        function BindModuleStatus() {
+
+            $.ajax({
+                url: "@Url.Content("~/Frontal/SecurityAdministration/GetUserRoleStatus/")",
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    if (result != null && result.length > 0) {
+                        $("#divModuleCombo").empty();
+
+                        var ddlModuleCombo = $('<select class="form-control" id="ddlModuleCombo" name="ModuleCombo" />');
+
+                        $('<option/>', { value: 0, text: '@Resources.SecurityAdminResources.SelectStatus' }).appendTo(ddlModuleCombo);
+
+                        for (var i = 0; i < result.length; i++) {
+                            $('<option />', { value: result[i].Value, text: result[i].Text }).appendTo(ddlModuleCombo);
+                        }
+
+                        ddlModuleCombo.appendTo($("#divModuleCombo"));
+                    }
+                },
+                error: function (result) {
+
+                }
+            });
+        }
+
+        function fnSaveOrUpdateUserRole() {
+
+            var obj = {};
+            var userRoleStatus = $("#ddlRoleStatusCombo :selected").val();
+            var txtRoleStatus = $("#txtUserRole").val();
+
+            if (txtRoleStatus == "") {
+				//Traducción Pendiente
+				showNotification('Please entry Description first!!', "warning");
+                return;
+            }
+
+            if (userRoleStatus == "0") {
+				//Traducción Pendiente
+				showNotification('Please select User Role Status first!!', "warning");
+                return;
+            }
+
+            obj.Description = txtRoleStatus;
+            obj.Status = userRoleStatus;
+            obj.User_Role_Id = userRoleIdSelected;
+
+            $.ajax({
+                url: "@Url.Content("~/Frontal/SecurityAdministration/AddOrUpdateUserRol")",
+                type: "POST",
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify(obj),
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    if (result == "1") {
+
+                    }
+                    else {
+
+                    }
+
+
+                },
+                error: function (result) {
+					showNotification('Ocurrio un problema. Vuelva a intentarlo', "error");
+                    $('#userRolModal').modal('hide');
+                }
+            }).done(function () {
+                BindUserRoles();
+                $('#userRolModal').modal('hide');
+				showNotification('Registro satisfactorio', "success");
+            });
+
+        }
+
+        function fnSaveOrUpdateModule() {
+            var obj = {};
+            var moduleStatus = $("#ddlModuleCombo :selected").val();
+            var txtModule = $("#txtModule").val();
+
+            if (txtModule == "") {
+				showNotification('Please entry name first!!', "warning");
+                return;
+            }
+
+            if (moduleStatus == "0") {
+				showNotification('Please select Module Status first!!', "warning");
+                return;
+            }
+
+            obj.Name = txtModule;
+            obj.Status = moduleStatus;
+            obj.Parent_Module = parentModuleIdSelected;
+            obj.Description = txtModule;
+            obj.Module_Id = moduleIdToSaveOrUpdate;
+
+            $.ajax({
+                url: "@Url.Content("~/Frontal/SecurityAdministration/AddOrUpdateModule")",
+                type: "POST",
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify(obj),
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    if (result == "1") {
+
+                    }
+                    else {
+
+                    }
+
+
+                },
+                error: function (result) {
+					showNotification('Ocurrio un problema. Vuelva a intentarlo', "error");
+                    $('#moduleModal').modal('hide');
+                }
+            }).done(function () {
+                GetSpartaneUserRoleModules();
+                SetControlText('lblObjModule', txtModule);
+                SetControlText('lblPermissionModule', txtModule);
+                $('#moduleModal').modal('hide');
+                //alert('Registro satisfactorio');
+            });
+
+        }
+
+        function GetModuleById() {
+            $.ajax({
+                url: "@Url.Content("~/Frontal/SecurityAdministration/GetModuleByID")",
+                type: "POST",
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify({ id: moduleIdSelected }),
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    if (result != null) {
+                        $('#txtModule').val(result.Name);
+                        $('#ddlModuleCombo').val(result.Status);
+                        $('#moduleModal').modal('show');
+                    }
+                    else {
+
+                    }
+
+
+                },
+                error: function (result) {
+                    //alert('Ocurrio un problema. Vuelva a intentarlo');
+                    //$('#moduleModal').modal('hide');
+                }
+            }).done(function () {
+                //GetSpartaneUserRoleModules();
+                //$('#moduleModal').modal('hide');
+                //alert('Registro satisfactorio');
+            });
+
+        }
+
+    </script>
+
+</body>

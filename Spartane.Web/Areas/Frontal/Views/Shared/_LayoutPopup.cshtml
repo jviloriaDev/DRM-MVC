@@ -1,0 +1,109 @@
+﻿@using Spartane.Web.Helpers
+@using System.Web.Mvc.Html;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>TotalTech</title>
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+    <!-- Add local styles, mostly for plugins css file -->
+    @Styles.Render("~/plugins/toastrStyles")
+    @if (IsSectionDefined("Styles"))
+    {@RenderSection("Styles", required: false)}
+
+
+
+    <!-- Primary Inspinia style -->
+
+    @Styles.Render("~/Content/css")
+
+    @Styles.Render("~/plugins/awesomeCheckboxStyles")
+    @Styles.Render("~/Content/plugins/iCheck/iCheckStyles")
+    @*@Styles.Render("~/font-awesome/css")*@
+    <link href="~/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+
+
+    <!-- Section for main scripts render -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/plugins/slimScroll")
+    @Scripts.Render("~/bundles/inspinia")
+    @* Toast *@
+    @Scripts.Render("~/plugins/toastr")
+
+    <!-- Skin config script - only for demo purpose-->
+    @Scripts.Render("~/bundles/skinConfig")
+
+    @*iCheck JS*@
+    @Scripts.Render("~/plugins/iCheck")
+    @* Validation *@
+    @*@Scripts.Render("~/plugins/validate")*@
+
+
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/clockpicker")
+    @Scripts.Render("~/plugins/select2")
+
+    @Scripts.Render("~/Scripts/plugins/ckeditor/ckeditor.js")
+
+	@Scripts.Render("~/Scripts/plugins/jsTree/jstree.min.js")
+    @Styles.Render("~/Content/plugins/jsTree/style.min.css")
+
+    @Scripts.Render("~/Scripts/plugins/livequery.js")
+    @Scripts.Render("~/Scripts/plugins/jquery.inputmask.bundle.js")
+    @Scripts.Render("~/Scripts/plugins/jquery.mask.min.js")
+
+   
+
+</head>
+<body>
+
+
+    <!-- @Html.Partial("_SkinConfig") -->
+
+
+            <!-- Main view  -->
+    <div id="wrapperPopup" @Html.PageClass() @ViewBag.SpecialClass">
+        @RenderBody()
+    </div>
+
+
+        <!-- Handler for local scripts -->
+        @RenderSection("scripts", required: false)
+
+        <script type="text/javascript">
+		var url_content = "@Url.Content("~/")";
+        //Notif Main function
+        function showNotification(message, type) {
+            switch (type) {
+                case "success":
+                    toastr.success(message, '');
+                    break;
+                case "warning":
+                    toastr.warning(message, '');
+                    break;
+                case "error":
+                    toastr.error(message, '');
+                    break;
+            }
+            //$.notify(message, type);
+        }
+        </script>
+
+
+
+
+        <script type="text/javascript" src="~/Scripts/Custom/general.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+        @Scripts.Render("~/plugins/dataTables")
+
+
+</body>
+
+
+ </html>

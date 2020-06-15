@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Registro_de_Asistencia_Telefonica" value="Registro de Asistencia Telefónica"></resource>
+  <resource culture="en-US" name="Folio" value="Folio"></resource>
+  <resource culture="en-US" name="Fecha_de_llamada" value="Fecha de llamada"></resource>
+  <resource culture="en-US" name="Hora_de_llamada" value="Hora de llamada"></resource>
+  <resource culture="en-US" name="Usuario_que_llama" value="Usuario que llama"></resource>
+  <resource culture="en-US" name="Dispositivo" value="Dispositivo"></resource>
+  <resource culture="en-US" name="Nombre_Paciente" value="Nombre Paciente"></resource>
+  <resource culture="en-US" name="Suscripcion" value="Suscripción"></resource>
+  <resource culture="en-US" name="Numero_telefonico_del_Paciente" value="Número telefónico del Paciente"></resource>
+  <resource culture="en-US" name="Correo_del_Paciente" value="Correo del Paciente"></resource>
+  <resource culture="en-US" name="Telefono_de_Asistencia_marcado" value="Telefono de Asistencia marcado"></resource>
+  <resource culture="en-US" name="Hora_inicio_de_la_Llamada" value="Hora inicio de la Llamada"></resource>
+  <resource culture="en-US" name="Hora_fin_de_la_Llamada" value="Hora fin de la Llamada"></resource>
+  <resource culture="en-US" name="Duracion_minutos" value="Duración (minutos)"></resource>
+  <resource culture="en-US" name="Asunto_de_la_Llamada" value="Asunto de la Llamada"></resource>
+  <resource culture="en-US" name="Atendio" value="Atendió"></resource>
+  <resource culture="en-US" name="Comentarios" value="Comentarios"></resource>
+  <resource culture="en-US" name="Estatus" value="Estatus"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

@@ -1,0 +1,407 @@
+﻿@using System.Collections.Generic
+@using Spartane.Web.Areas.Frontal.Models
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Spartan_Bitacora_SQLAdvanceSearchModel
+@{
+
+    var filters = (List<SelectListItem>)ViewBag.Filter;
+}
+<style>
+    .input-validation-error {
+        background: rgb(251, 227, 228);
+        border: 1px solid #fbc2c4;
+        color: #8a1f11;
+    }
+
+    .MarginBottom {
+        margin-bottom: 1%;
+    }
+
+    #divAdvanceSearch input {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch button {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch select {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch h3 {
+        margin-top: 2%;
+    }
+
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins" id="divAdvanceSearch">
+        <div class="ibox-content">
+            @using (Html.BeginForm("ShowAdvanceFilter", "Spartan_Bitacora_SQL", FormMethod.Post, new { @id = "frmAdvanceSearch", @role = "form" }))
+            {
+				<input type="hidden" value="-1" name="idFilter" id="idFilter" />
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_Bitacora_SQLResources.Folio</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromFolio, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromFolio" })
+                    @Html.ValidationMessageFor(m => m.FromFolio)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToFolio, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToFolio", @data_min = "txtAdvanceFromFolio" })
+                    @Html.ValidationMessageFor(m => m.ToFolio)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_Bitacora_SQLResources.Id_User</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromId_User, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromId_User" })
+                    @Html.ValidationMessageFor(m => m.FromId_User)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToId_User, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToId_User", @data_min = "txtAdvanceFromId_User" })
+                    @Html.ValidationMessageFor(m => m.ToId_User)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_Bitacora_SQLResources.Type_SQL</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Type_SQLFilter, filters, new { @class = "form-control", @id = "ddlType_SQLFilter" })
+                    @Html.TextBoxFor(m => m.Type_SQL, new { @class = "form-control", @type = "text", @id = "txtType_SQL" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_Bitacora_SQLResources.Computer_Name</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Computer_NameFilter, filters, new { @class = "form-control", @id = "ddlComputer_NameFilter" })
+                    @Html.TextBoxFor(m => m.Computer_Name, new { @class = "form-control", @type = "text", @id = "txtComputer_Name" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_Bitacora_SQLResources.Server_Name</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Server_NameFilter, filters, new { @class = "form-control", @id = "ddlServer_NameFilter" })
+                    @Html.TextBoxFor(m => m.Server_Name, new { @class = "form-control", @type = "text", @id = "txtServer_Name" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_Bitacora_SQLResources.Database_Name</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Database_NameFilter, filters, new { @class = "form-control", @id = "ddlDatabase_NameFilter" })
+                    @Html.TextBoxFor(m => m.Database_Name, new { @class = "form-control", @type = "text", @id = "txtDatabase_Name" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_Bitacora_SQLResources.System_Name</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.System_NameFilter, filters, new { @class = "form-control", @id = "ddlSystem_NameFilter" })
+                    @Html.TextBoxFor(m => m.System_Name, new { @class = "form-control", @type = "text", @id = "txtSystem_Name" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_Bitacora_SQLResources.System_Version</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.System_VersionFilter, filters, new { @class = "form-control", @id = "ddlSystem_VersionFilter" })
+                    @Html.TextBoxFor(m => m.System_Version, new { @class = "form-control", @type = "text", @id = "txtSystem_Version" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_Bitacora_SQLResources.Windows_Version</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Windows_VersionFilter, filters, new { @class = "form-control", @id = "ddlWindows_VersionFilter" })
+                    @Html.TextBoxFor(m => m.Windows_Version, new { @class = "form-control", @type = "text", @id = "txtWindows_Version" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_Bitacora_SQLResources.Command_SQL</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Command_SQLFilter, filters, new { @class = "form-control", @id = "ddlCommand_SQLFilter" })
+                    @Html.TextBoxFor(m => m.Command_SQL, new { @class = "form-control", @type = "text", @id = "txtCommand_SQL" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_Bitacora_SQLResources.Folio_SQL</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Folio_SQLFilter, filters, new { @class = "form-control", @id = "ddlFolio_SQLFilter" })
+                    @Html.TextBoxFor(m => m.Folio_SQL, new { @class = "form-control", @type = "text", @id = "txtFolio_SQL" })
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_Bitacora_SQLResources.Object_Id</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromObject_Id, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromObject_Id" })
+                    @Html.ValidationMessageFor(m => m.FromObject_Id)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToObject_Id, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToObject_Id", @data_min = "txtAdvanceFromObject_Id" })
+                    @Html.ValidationMessageFor(m => m.ToObject_Id)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_Bitacora_SQLResources.IP</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.IPFilter, filters, new { @class = "form-control", @id = "ddlIPFilter" })
+                    @Html.TextBoxFor(m => m.IP, new { @class = "form-control", @type = "text", @id = "txtIP" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_Bitacora_SQLResources.Json</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.JsonFilter, filters, new { @class = "form-control", @id = "ddlJsonFilter" })
+                    @Html.TextBoxFor(m => m.Json, new { @class = "form-control", @type = "text", @id = "txtJson" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_Bitacora_SQLResources.Error</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.ErrorFilter, filters, new { @class = "form-control", @id = "ddlErrorFilter" })
+                    @Html.TextBoxFor(m => m.Error, new { @class = "form-control", @type = "text", @id = "txtError" })
+                </div>
+
+                <div class="MarginBottom form-inline">
+                    <input type="submit" class="btn btn-primary" value="@Resources.Resources.Search"><a class="btn btn-primary" href="@Url.Content("~/Frontal/Spartan_Bitacora_SQL/")" value=" ">@Resources.Resources.Cancelar</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function InitiateAdvanceSearch() {
+        var advanceSearch = {}, hasParameter = false;
+        if ($("#txtAdvanceFromFolio").val() != "" || $("#txtAdvanceToFolio").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Bitacora_SQLFolioFrom = $("#txtAdvanceFromFolio").val();
+            advanceSearch.Spartan_Bitacora_SQLFolioTo = $("#txtAdvanceToFolio").val();
+        }
+        if ($("#txtAdvanceFromId_User").val() != "" || $("#txtAdvanceToId_User").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Bitacora_SQLId_UserFrom = $("#txtAdvanceFromId_User").val();
+            advanceSearch.Spartan_Bitacora_SQLId_UserTo = $("#txtAdvanceToId_User").val();
+        }
+        if ($("#txtAdvanceType_SQL").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Bitacora_SQLType_SQL = $("#txtAdvanceType_SQL").val();
+            advanceSearch.Spartan_Bitacora_SQLType_SQLSearchType = $("#ddlAdvanceType_SQLFilter").val();
+        }
+        if ($("#txtAdvanceFromRegister_Date").val() != "" || $("#txtAdvanceToRegister_Date").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Bitacora_SQLRegister_DateFrom = $("#txtAdvanceFromRegister_Date").val();
+            advanceSearch.Spartan_Bitacora_SQLRegister_DateTo = $("#txtAdvanceToRegister_Date").val();
+        }
+        if ($("#txtAdvanceComputer_Name").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Bitacora_SQLComputer_Name = $("#txtAdvanceComputer_Name").val();
+            advanceSearch.Spartan_Bitacora_SQLComputer_NameSearchType = $("#ddlAdvanceComputer_NameFilter").val();
+        }
+        if ($("#txtAdvanceServer_Name").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Bitacora_SQLServer_Name = $("#txtAdvanceServer_Name").val();
+            advanceSearch.Spartan_Bitacora_SQLServer_NameSearchType = $("#ddlAdvanceServer_NameFilter").val();
+        }
+        if ($("#txtAdvanceDatabase_Name").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Bitacora_SQLDatabase_Name = $("#txtAdvanceDatabase_Name").val();
+            advanceSearch.Spartan_Bitacora_SQLDatabase_NameSearchType = $("#ddlAdvanceDatabase_NameFilter").val();
+        }
+        if ($("#txtAdvanceSystem_Name").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Bitacora_SQLSystem_Name = $("#txtAdvanceSystem_Name").val();
+            advanceSearch.Spartan_Bitacora_SQLSystem_NameSearchType = $("#ddlAdvanceSystem_NameFilter").val();
+        }
+        if ($("#txtAdvanceSystem_Version").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Bitacora_SQLSystem_Version = $("#txtAdvanceSystem_Version").val();
+            advanceSearch.Spartan_Bitacora_SQLSystem_VersionSearchType = $("#ddlAdvanceSystem_VersionFilter").val();
+        }
+        if ($("#txtAdvanceWindows_Version").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Bitacora_SQLWindows_Version = $("#txtAdvanceWindows_Version").val();
+            advanceSearch.Spartan_Bitacora_SQLWindows_VersionSearchType = $("#ddlAdvanceWindows_VersionFilter").val();
+        }
+        if ($("#txtAdvanceCommand_SQL").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Bitacora_SQLCommand_SQL = $("#txtAdvanceCommand_SQL").val();
+            advanceSearch.Spartan_Bitacora_SQLCommand_SQLSearchType = $("#ddlAdvanceCommand_SQLFilter").val();
+        }
+        if ($("#txtAdvanceFolio_SQL").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Bitacora_SQLFolio_SQL = $("#txtAdvanceFolio_SQL").val();
+            advanceSearch.Spartan_Bitacora_SQLFolio_SQLSearchType = $("#ddlAdvanceFolio_SQLFilter").val();
+        }
+        if ($("#txtAdvanceFromObject_Id").val() != "" || $("#txtAdvanceToObject_Id").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Bitacora_SQLObject_IdFrom = $("#txtAdvanceFromObject_Id").val();
+            advanceSearch.Spartan_Bitacora_SQLObject_IdTo = $("#txtAdvanceToObject_Id").val();
+        }
+        if ($("#txtAdvanceIP").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Bitacora_SQLIP = $("#txtAdvanceIP").val();
+            advanceSearch.Spartan_Bitacora_SQLIPSearchType = $("#ddlAdvanceIPFilter").val();
+        }
+        if ($("#txtAdvanceJson").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Bitacora_SQLJson = $("#txtAdvanceJson").val();
+            advanceSearch.Spartan_Bitacora_SQLJsonSearchType = $("#ddlAdvanceJsonFilter").val();
+        }
+        if ($("#ddlAdvanceResult").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Bitacora_SQLResult = $("#ddlAdvanceResult").val();
+        }
+        if ($("#txtAdvanceError").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Bitacora_SQLError = $("#txtAdvanceError").val();
+            advanceSearch.Spartan_Bitacora_SQLErrorSearchType = $("#ddlAdvanceErrorFilter").val();
+        }
+
+        advanceSearchQuery = hasParameter ? JSON.stringify(advanceSearch) : "";
+        $('#tblSpartan_Bitacora_SQL').DataTable().draw();
+        return false;
+    }
+
+    var advanceSearchQuery = "", isSpartan_Bitacora_SQLTextSearch = true;
+
+    $(document).ready(function () {
+        $('.clockpicker').clockpicker();
+
+    });
+</script>
+
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/chosen")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/clockpicker")
+
+
+    <script>
+        //Adding Rules
+        jQuery.validator.unobtrusive
+      .adapters.addSingleVal("isnumberafter", "propertyname");
+        jQuery.validator.unobtrusive
+    .adapters.addSingleVal("isdateafter", "propertyname");
+
+        //Number after method
+        jQuery.validator.addMethod("isnumberafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+                //if (Date.parse(val) <= Date.parse(otherVal)) {
+                if (Number(val) < Number(otherVal)) {
+                    return false;
+                }
+                        }
+            return true;
+        });
+
+        //Date after after method
+        jQuery.validator.addMethod("isdateafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+
+                if (GetDateObject(val) < GetDateObject(otherVal)) {
+
+                    return false;
+                    }
+                }
+            return true;
+            });
+
+
+        function GetDateObject(value) {
+            var delimiter = GetDelimiter(dateFormat);
+            var dateCollection = value.split(delimiter);
+            var formatCollection = dateFormat.split(delimiter);
+            var dateModel = GetDateModel(dateCollection, formatCollection);
+            return new Date(dateModel.Year, dateModel.Month - 1, dateModel.Day);
+        }
+        //Used to get the date model by parsing the date and the format
+        function GetDateModel(dateCollection,formatCollection) {
+            var day, month, year;
+            for (var i = 0; i < formatCollection.length; i++) {
+                switch (formatCollection[i][0].toUpperCase()) {
+                
+                    case "D":
+                        day = dateCollection[i];
+                        break;
+
+                    case "Y":
+                        year = dateCollection[i];
+                        break;
+
+                    case "M":
+                        month = dateCollection[i];
+                        break;
+                }
+            }
+
+            return {
+                Day:day,
+                Month:month,
+                Year:year
+            };
+        }
+
+        function GetDelimiter(format) {
+
+            for (var i = 0; i < format.length; i++) {
+                if (/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(format[i])) {
+                    return format[i];
+                }
+            }
+            return null;
+        }
+
+        var dateFormat = "@ConfigurationProperty.DateFormatDatePicker";
+
+        $(document).ready(function () {
+
+
+
+            $('.input-daterange').datepicker({
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                format: dateFormat,
+                message: 'The date is not a valid'
+            });
+
+            $(".chosen-select").chosen({ width: "22%", no_results_text: "Oops, nothing found!" });
+			if ($('#IsFilterModal').val() == 'true') {
+                $('.ShowAdvanceFilter #right-sidebar').css('display', 'none');
+                $('.ShowAdvanceFilter .navbar-default').css('display', 'none');
+                $('.ShowAdvanceFilter .border-bottom').css('display', 'none');
+                $('.ShowAdvanceFilter #page-wrapper').css('margin', '0 auto');
+                $('.ShowAdvanceFilter .btn-save').val('@Resources.Resources.Filter');
+                $('.ShowAdvanceFilter .btn-cancelar').attr('data-dismiss', 'modal');
+                $('.ShowAdvanceFilter .btn-cancelar').removeAttr('href');
+                $('#idFilter').val($('#IdReport').val());
+            }
+        });
+
+    </script>
+}
+

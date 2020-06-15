@@ -1,0 +1,420 @@
+﻿@using System.Collections.Generic
+@using Spartane.Web.Areas.Frontal.Models
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Detalle_de_PadecimientosAdvanceSearchModel
+@{
+    List<SelectListItem> varPadecimientos_Padecimiento = null;
+    if (ViewBag.Padecimientoss_Padecimiento != null)
+    { varPadecimientos_Padecimiento = (List<SelectListItem>)ViewBag.Padecimientoss_Padecimiento; }
+    List<SelectListItem> varTiempo_Padecimiento_Tiempo_con_el_diagnostico = null;
+    if (ViewBag.Tiempo_Padecimientos_Tiempo_con_el_diagnostico != null)
+    { varTiempo_Padecimiento_Tiempo_con_el_diagnostico = (List<SelectListItem>)ViewBag.Tiempo_Padecimientos_Tiempo_con_el_diagnostico; }
+    List<SelectListItem> varRespuesta_Logica_Intervencion_quirurgica = null;
+    if (ViewBag.Respuesta_Logicas_Intervencion_quirurgica != null)
+    { varRespuesta_Logica_Intervencion_quirurgica = (List<SelectListItem>)ViewBag.Respuesta_Logicas_Intervencion_quirurgica; }
+    List<SelectListItem> varEstatus_Padecimiento_Estado_actual = null;
+    if (ViewBag.Estatus_Padecimientos_Estado_actual != null)
+    { varEstatus_Padecimiento_Estado_actual = (List<SelectListItem>)ViewBag.Estatus_Padecimientos_Estado_actual; }
+
+    var filters = (List<SelectListItem>)ViewBag.Filter;
+}
+<style>
+    .input-validation-error {
+        background: rgb(251, 227, 228);
+        border: 1px solid #fbc2c4;
+        color: #8a1f11;
+    }
+
+    .MarginBottom {
+        margin-bottom: 1%;
+    }
+
+    #divAdvanceSearch input {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch button {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch select {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch h3 {
+        margin-top: 2%;
+    }
+
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins" id="divAdvanceSearch">
+        <div class="ibox-content">
+            @using (Html.BeginForm("ShowAdvanceFilter", "Detalle_de_Padecimientos", FormMethod.Post, new { @id = "frmAdvanceSearch", @role = "form" }))
+            {
+				<input type="hidden" value="-1" name="idFilter" id="idFilter" />
+                <div class="MarginBottom ">
+                    <h3>@Resources.Detalle_de_PadecimientosResources.Folio</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromFolio, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromFolio" })
+                    @Html.ValidationMessageFor(m => m.FromFolio)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToFolio, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToFolio", @data_min = "txtAdvanceFromFolio" })
+                    @Html.ValidationMessageFor(m => m.ToFolio)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Detalle_de_PadecimientosResources.Padecimiento</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.PadecimientoFilter, filters, new { @class = "form-control", @id = "ddlPadecimientoFilter" })
+                    @Html.TextBoxFor(m => m.AdvancePadecimiento, new { @class = "form-control", @type = "text", @id = "txtAdvancePadecimiento" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varPadecimientos_Padecimiento!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvancePadecimientoMultiple, varPadecimientos_Padecimiento,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvancePadecimiento"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Detalle_de_PadecimientosResources.Tiempo_con_el_diagnostico</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Tiempo_con_el_diagnosticoFilter, filters, new { @class = "form-control", @id = "ddlTiempo_con_el_diagnosticoFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceTiempo_con_el_diagnostico, new { @class = "form-control", @type = "text", @id = "txtAdvanceTiempo_con_el_diagnostico" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varTiempo_Padecimiento_Tiempo_con_el_diagnostico!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceTiempo_con_el_diagnosticoMultiple, varTiempo_Padecimiento_Tiempo_con_el_diagnostico,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceTiempo_con_el_diagnostico"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Detalle_de_PadecimientosResources.Intervencion_quirurgica</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Intervencion_quirurgicaFilter, filters, new { @class = "form-control", @id = "ddlIntervencion_quirurgicaFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceIntervencion_quirurgica, new { @class = "form-control", @type = "text", @id = "txtAdvanceIntervencion_quirurgica" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varRespuesta_Logica_Intervencion_quirurgica!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceIntervencion_quirurgicaMultiple, varRespuesta_Logica_Intervencion_quirurgica,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceIntervencion_quirurgica"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Detalle_de_PadecimientosResources.Tratamiento</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.TratamientoFilter, filters, new { @class = "form-control", @id = "ddlTratamientoFilter" })
+                    @Html.TextBoxFor(m => m.Tratamiento, new { @class = "form-control", @type = "text", @id = "txtTratamiento" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Detalle_de_PadecimientosResources.Estado_actual</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Estado_actualFilter, filters, new { @class = "form-control", @id = "ddlEstado_actualFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceEstado_actual, new { @class = "form-control", @type = "text", @id = "txtAdvanceEstado_actual" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varEstatus_Padecimiento_Estado_actual!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceEstado_actualMultiple, varEstatus_Padecimiento_Estado_actual,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceEstado_actual"
+                        });
+                    }
+                </div>
+
+                <div class="MarginBottom form-inline">
+                    <input type="submit" class="btn btn-primary" value="@Resources.Resources.Search"><a class="btn btn-primary" href="@Url.Content("~/Frontal/Detalle_de_Padecimientos/")" value=" ">@Resources.Resources.Cancelar</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function InitiateAdvanceSearch() {
+        var advanceSearch = {}, hasParameter = false;
+        if ($("#txtAdvanceFromFolio").val() != "" || $("#txtAdvanceToFolio").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_de_PadecimientosFolioFrom = $("#txtAdvanceFromFolio").val();
+            advanceSearch.Detalle_de_PadecimientosFolioTo = $("#txtAdvanceToFolio").val();
+        }
+        advanceSearch.PadecimientoSearchType = 0;
+        if ($('#ddlAdvancePadecimiento').val().length > 0 || $("#txtAdvancePadecimiento").val() == "") {
+
+
+            if (isDetalle_de_PadecimientosTextSearch) {
+                advanceSearch.PadecimientoName = $("#txtAdvancePadecimiento").val();
+                advanceSearch.PadecimientoNameSearchType = $("#ddlAdvancePadecimiento").val();
+                advanceSearch.PadecimientoSearchType = 1;
+            }
+            else {
+
+                advanceSearch.PadecimientoToSearch = $("#ddlAdvancePadecimiento").val();
+                advanceSearch.PadecimientoSearchType = 2;
+            }
+        }
+        advanceSearch.Tiempo_con_el_diagnosticoSearchType = 0;
+        if ($('#ddlAdvanceTiempo_con_el_diagnostico').val().length > 0 || $("#txtAdvanceTiempo_con_el_diagnostico").val() == "") {
+
+
+            if (isDetalle_de_PadecimientosTextSearch) {
+                advanceSearch.Tiempo_con_el_diagnosticoName = $("#txtAdvanceTiempo_con_el_diagnostico").val();
+                advanceSearch.Tiempo_con_el_diagnosticoNameSearchType = $("#ddlAdvanceTiempo_con_el_diagnostico").val();
+                advanceSearch.Tiempo_con_el_diagnosticoSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Tiempo_con_el_diagnosticoToSearch = $("#ddlAdvanceTiempo_con_el_diagnostico").val();
+                advanceSearch.Tiempo_con_el_diagnosticoSearchType = 2;
+            }
+        }
+        advanceSearch.Intervencion_quirurgicaSearchType = 0;
+        if ($('#ddlAdvanceIntervencion_quirurgica').val().length > 0 || $("#txtAdvanceIntervencion_quirurgica").val() == "") {
+
+
+            if (isDetalle_de_PadecimientosTextSearch) {
+                advanceSearch.Intervencion_quirurgicaName = $("#txtAdvanceIntervencion_quirurgica").val();
+                advanceSearch.Intervencion_quirurgicaNameSearchType = $("#ddlAdvanceIntervencion_quirurgica").val();
+                advanceSearch.Intervencion_quirurgicaSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Intervencion_quirurgicaToSearch = $("#ddlAdvanceIntervencion_quirurgica").val();
+                advanceSearch.Intervencion_quirurgicaSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceTratamiento").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_de_PadecimientosTratamiento = $("#txtAdvanceTratamiento").val();
+            advanceSearch.Detalle_de_PadecimientosTratamientoSearchType = $("#ddlAdvanceTratamientoFilter").val();
+        }
+        advanceSearch.Estado_actualSearchType = 0;
+        if ($('#ddlAdvanceEstado_actual').val().length > 0 || $("#txtAdvanceEstado_actual").val() == "") {
+
+
+            if (isDetalle_de_PadecimientosTextSearch) {
+                advanceSearch.Estado_actualName = $("#txtAdvanceEstado_actual").val();
+                advanceSearch.Estado_actualNameSearchType = $("#ddlAdvanceEstado_actual").val();
+                advanceSearch.Estado_actualSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Estado_actualToSearch = $("#ddlAdvanceEstado_actual").val();
+                advanceSearch.Estado_actualSearchType = 2;
+            }
+        }
+
+        advanceSearchQuery = hasParameter ? JSON.stringify(advanceSearch) : "";
+        $('#tblDetalle_de_Padecimientos').DataTable().draw();
+        return false;
+    }
+
+    var advanceSearchQuery = "", isDetalle_de_PadecimientosTextSearch = true;
+
+    $(document).ready(function () {
+        $('.clock').clockpicker();
+		$('.date').datepicker({
+			todayBtn: "linked",
+			keyboardNavigation: false,
+			forceParse: false,
+			calendarWeeks: true,
+			autoclose: true,
+			format: "@ConfigurationProperty.DateFormatDatePicker"
+		});
+        $("#txtAdvancePadecimiento").keypress(function () {
+            isDetalle_de_PadecimientosTextSearch = true;
+            $("#ddlAdvancePadecimiento").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvancePadecimiento").change(function () {
+            isDetalle_de_PadecimientosTextSearch = false;
+            $("#txtAdvancePadecimiento").val('');
+        });
+        $("#txtAdvanceTiempo_con_el_diagnostico").keypress(function () {
+            isDetalle_de_PadecimientosTextSearch = true;
+            $("#ddlAdvanceTiempo_con_el_diagnostico").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceTiempo_con_el_diagnostico").change(function () {
+            isDetalle_de_PadecimientosTextSearch = false;
+            $("#txtAdvanceTiempo_con_el_diagnostico").val('');
+        });
+        $("#txtAdvanceIntervencion_quirurgica").keypress(function () {
+            isDetalle_de_PadecimientosTextSearch = true;
+            $("#ddlAdvanceIntervencion_quirurgica").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceIntervencion_quirurgica").change(function () {
+            isDetalle_de_PadecimientosTextSearch = false;
+            $("#txtAdvanceIntervencion_quirurgica").val('');
+        });
+        $("#txtAdvanceEstado_actual").keypress(function () {
+            isDetalle_de_PadecimientosTextSearch = true;
+            $("#ddlAdvanceEstado_actual").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceEstado_actual").change(function () {
+            isDetalle_de_PadecimientosTextSearch = false;
+            $("#txtAdvanceEstado_actual").val('');
+        });
+
+    });
+</script>
+
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/chosen")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/clockpicker")
+
+
+    <script>
+        //Adding Rules
+        jQuery.validator.unobtrusive
+      .adapters.addSingleVal("isnumberafter", "propertyname");
+        jQuery.validator.unobtrusive
+    .adapters.addSingleVal("isdateafter", "propertyname");
+
+        //Number after method
+        jQuery.validator.addMethod("isnumberafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+                //if (Date.parse(val) <= Date.parse(otherVal)) {
+                if (Number(val) < Number(otherVal)) {
+                    return false;
+                }
+                        }
+            return true;
+        });
+
+        //Date after after method
+        jQuery.validator.addMethod("isdateafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+
+                if (GetDateObject(val) < GetDateObject(otherVal)) {
+
+                    return false;
+                    }
+                }
+            return true;
+            });
+
+
+        function GetDateObject(value) {
+            var delimiter = GetDelimiter(dateFormat);
+            var dateCollection = value.split(delimiter);
+            var formatCollection = dateFormat.split(delimiter);
+            var dateModel = GetDateModel(dateCollection, formatCollection);
+            return new Date(dateModel.Year, dateModel.Month - 1, dateModel.Day);
+        }
+        //Used to get the date model by parsing the date and the format
+        function GetDateModel(dateCollection,formatCollection) {
+            var day, month, year;
+            for (var i = 0; i < formatCollection.length; i++) {
+                switch (formatCollection[i][0].toUpperCase()) {
+                
+                    case "D":
+                        day = dateCollection[i];
+                        break;
+
+                    case "Y":
+                        year = dateCollection[i];
+                        break;
+
+                    case "M":
+                        month = dateCollection[i];
+                        break;
+                }
+            }
+
+            return {
+                Day:day,
+                Month:month,
+                Year:year
+            };
+        }
+
+        function GetDelimiter(format) {
+
+            for (var i = 0; i < format.length; i++) {
+                if (/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(format[i])) {
+                    return format[i];
+                }
+            }
+            return null;
+        }
+
+        var dateFormat = "@ConfigurationProperty.DateFormatDatePicker";
+
+        $(document).ready(function () {
+            $('.input-daterange').datepicker({
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                format: dateFormat,
+                message: 'The date is not a valid'
+            });
+
+            $(".chosen-select").chosen({ width: "22%", no_results_text: "Oops, nothing found!" });
+			if ($('#IsFilterModal').val() == 'true') {
+                $('.ShowAdvanceFilter #right-sidebar').css('display', 'none');
+                $('.ShowAdvanceFilter .navbar-default').css('display', 'none');
+                $('.ShowAdvanceFilter .border-bottom').css('display', 'none');
+                $('.ShowAdvanceFilter #page-wrapper').css('margin', '0 auto');
+                $('.ShowAdvanceFilter .btn-save').val('@Resources.Resources.Filter');
+                $('.ShowAdvanceFilter .btn-cancelar').attr('data-dismiss', 'modal');
+                $('.ShowAdvanceFilter .btn-cancelar').removeAttr('href');
+                $('#idFilter').val($('#IdReport').val());
+            }
+        });
+
+    </script>
+}
+

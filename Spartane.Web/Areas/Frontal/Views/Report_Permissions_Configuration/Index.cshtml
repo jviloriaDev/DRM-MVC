@@ -1,0 +1,308 @@
+﻿@using Spartane.Core.Domain.Spartan_User_Role;
+@{
+    ViewBag.Title = "Report Permission";
+    Layout = Spartane.Web.SessionHelper.UserLayout;
+    List<Spartan_User_Role> lista = (List<Spartan_User_Role>)ViewBag.combo;
+}
+
+<div class="row  border-bottom white-bg dashboard-header">
+    <div class="col-sm-3">
+        @if ((User as Spartane.Web.AuthenticationExt.Authentication) != null)
+        {
+            var CurrentUser = (User as Spartane.Web.AuthenticationExt.Authentication).UserContext;
+
+            @*<h2>Hello @CurrentUser.CurrentUser.Name</h2>*@
+        }
+    </div>
+</div>
+
+
+
+
+
+<div class="container">
+    <div class="row center-orientation">
+        <h1 style="text-align: center;">Report Permissions Configuration</h1>
+    </div>
+    <div class="row col-lg-2 col-md-2 col-sm-6">
+        <label for="dllRoles">User Role: </label>
+        <select id="ddlRoles" class="form-control" onchange="changeRol();">
+            <option value="0">Choose...</option>
+            @foreach (Spartan_User_Role u in lista)
+            {
+                <option value="@u.User_Role_Id">@u.Description</option>
+            }
+        </select>
+    </div>
+    <div class="row"></div><br /><br />
+    <div class="table-responsive col-lg-10 col-md-10 col-sm-10">
+        <table id="tbPermisos" class="table table-bordered">
+            <thead>
+            </thead>
+            <tbody id="tbdPermisos"></tbody>
+        </table>
+    </div>
+
+    <br /><br /><br />
+    <div class="row hidden_">
+        <div class="col-sm-12 text-center">
+            <button id="btnGuardar" class="btn btn-primary btn-md center-block" Style="width: 100px;" OnClick="guardar();">Guardar</button>
+            <button id="btnClear" class="btn btn-default btn-md center-block" Style="width: 100px;" OnClick="home();">Cancelar</button>
+        </div>
+    </div>
+
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+</div>  @*FIN CONTAINER*@
+
+@Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+@Styles.Render("~/plugins/dataPickerStyles")
+@Styles.Render("~/plugins/clockpickerStyles")
+@Styles.Render("~/plugins/awesomeCheckboxStyles")
+
+@Scripts.Render("~/plugins/dataTables")
+@Scripts.Render("~/plugins/dataPicker")
+@Scripts.Render("~/plugins/clockpicker")
+
+<style type="text/css">
+    #btnGuardar,
+    #btnClear {
+        display: inline-block;
+        vertical-align: top;
+    }
+    .hidden_ {
+        display:none;
+    }
+</style>
+<script type="text/javascript" src="~/Scripts/Custom/tablePlugin.js"></script>
+
+<script type="text/javascript">
+
+    function home() {
+        window.location.href = "Home/Index";
+    }
+
+
+    // Base object to store information
+    var storageData = [];
+    var permisos = [];
+
+    // get the Spartan_Format
+    function changeRol() {
+        storageData = [];
+        var mandatory = false;
+        var Spartan_User_Role_Opcion = $("#ddlRoles").val();
+
+        $.ajax({
+            url: '@Url.Content("~/Frontal/Report_Permissions_Configuration/getReportFormat")',
+            type: 'POST',
+            dataType: "json",
+            success: function (result) {
+                //debugger;
+                mandatory = true;
+                $("#tbPermisos > thead").empty();
+                $("#tbPermisos > tbody").empty();
+                $("#tbPermisos > thead").append("<tr><th>Format</th></tr>");
+                $.each(result, function (index, value) {
+                    //debugger;
+                    $("#tbdPermisos").append("<tr data-reportid='" + value.ReportId + "'>" + "<td>" + value.Report_Name + "</td>" + "</tr>");
+                });
+                getSpartanReportPermissionType();
+            },
+            error: function (result) {
+                debugger;
+                mandatory = false;
+                showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                return null;
+            }
+        });
+    }
+
+    function getSpartanReportPermissionType() {
+        //debugger;
+        var Spartan_User_Role_Opcion = $("#ddlRoles").val();
+        $.ajax({
+            url: '@Url.Content("~/Frontal/Report_Permissions_Configuration/getSpartanReportPermissionType")',
+            type: 'POST',
+            dataType: "json",
+            success: function (result) {
+                //debugger;
+                $.each(result, function (index, value) {
+                    debugger;
+                    $("#tbPermisos > thead > tr").append("<th>" + value.Description + "</th>");
+
+                    ///add N--Td with checkbox for row
+                    $.each($("#tbdPermisos > tr"), function (ind, val) {
+                        //debugger;
+                        var FormatReportId = $(val).data("reportid");
+                        var chk = "<td><input data-reportid='" + FormatReportId + "' data-permissiontypeid='" + value.PermissionTypeId + "' type='checkbox' name='options[]' /></td>";
+                        $(val).append(chk);
+
+                        // save the data of permission per format
+                        storageData.push({
+                            ReportPermissionId: 0,
+                            Report: FormatReportId,
+                            User_Role: parseInt(Spartan_User_Role_Opcion),
+                            Permission_Type: value.PermissionTypeId,
+                            Apply: false
+                        });
+                    });
+                    //add N--Td with checkbox for row FINISH
+                });
+                $(".hidden_").show();
+                getSpartanReportPermissions();
+            },
+            error: function (result) {
+                debugger;
+                showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                return null;
+            }
+        });
+    }
+
+
+    function getSpartanReportPermissions() {
+        // debugger;
+        var id = $("#ddlRoles").val();
+        $.ajax({
+            url: '@Url.Content("~/Frontal/Report_Permissions_Configuration/getSpartanReportPermissions")',
+            type: 'POST',
+            dataType: "json",
+            data: { id: id },
+            success: function (result) {
+                //debugger;
+                var inputs = [];
+                $("input[name='options[]']").each(function () {
+                    inputs.push($(this));
+                });
+
+                //travel array
+                $.each(inputs, function (index, value) {
+                    //debugger;
+                    $.each(result, function (i, v) {
+                        //debugger;
+                        if (parseInt(value[0].dataset.reportid) == parseInt(result[i].Report) && parseInt(value[0].dataset.permissiontypeid) == parseInt(result[i].Permission_Type)) {
+                            //if (result[i].Apply == true) {
+                            //    value[0].checked = true;
+                            //} else {
+                            //    value[0].checked = false;
+                            //}
+                            value[0].checked = true;
+                        }
+                    });
+
+                });
+                // travel array END
+
+                $.each(storageData, function (index, value) {
+                    //debugger;
+                    $.each(result, function (i, v) {
+                        if (parseInt(value.Report) == parseInt(result[i].Report) && parseInt(value.Permission_Type) == parseInt(result[i].Permission_Type)) {
+                            debugger;
+                            value.ReportPermissionId = result[i].ReportPermissionId;
+                        }
+                    });
+                });
+
+
+            },
+            error: function (result) {
+                debugger;
+                showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                return null;
+            }
+        });
+    }
+
+
+    function guardar() {
+        debugger;
+        updateSpartanReportPermissions();
+        var listaObjetos = [];
+        var checked = [];
+        $("input[name='options[]']").each(function () {
+            checked.push($(this));
+        });
+
+        $.each(checked, function (index, value) {
+
+            $.each(storageData, function (i, v) {
+                debugger;
+                if (parseInt(v.Report) == parseInt(value[0].dataset.reportid) && parseInt(v.Permission_Type) == parseInt(value[0].dataset.permissiontypeid)) {
+
+                    if (value[0].checked == true) {
+                        listaObjetos.push({
+                            ReportPermissionId: v.ReportPermissionId = 0 ? 0 : v.ReportPermissionId,
+                            Report: parseInt(v.Report),
+                            Permission_Type: parseInt(value[0].dataset.permissiontypeid),
+                            //Apply: value[0].checked == true ? true : false,
+                            User_Role: parseInt(v.User_Role)
+                        });
+                    }
+                }
+            });
+            debugger;
+        });
+        console.log(listaObjetos);
+
+        $.ajax({
+            url: '@Url.Content("~/Frontal/Report_Permissions_Configuration/processReportPermissions")',
+            type: 'POST',
+            dataType: "json",
+            data: { list: listaObjetos },
+            success: function (result) {
+                debugger;
+                showNotification("Exito!!!");
+                location.reload();
+            },
+            error: function (result) {
+                debugger;
+                showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                return null;
+            }
+        });
+
+    }
+
+
+
+
+
+    function updateSpartanReportPermissions() {
+        // debugger;
+        var id = $("#ddlRoles").val();
+        $.ajax({
+            url: '@Url.Content("~/Frontal/Report_Permissions_Configuration/getSpartanReportPermissions")',
+            type: 'POST',
+            dataType: "json",
+            data: { id: id },
+            success: function (result) {
+                //debugger;
+                var inputs = [];
+                $("input[name='options[]']").each(function () {
+                    inputs.push($(this));
+                });
+
+                $.each(storageData, function (index, value) {
+                    //debugger;
+                    $.each(result, function (i, v) {
+                        if (parseInt(value.Report) == parseInt(result[i].Report) && parseInt(value.Permission_Type) == parseInt(result[i].Permission_Type)) {
+                            debugger;
+                            value.ReportPermissionId = result[i].ReportPermissionId;
+                        }
+                    });
+                });
+
+
+            },
+            error: function (result) {
+                debugger;
+                showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                return null;
+            }
+        });
+    }
+
+
+</script>
+
+

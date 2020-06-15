@@ -1,0 +1,553 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Globalization
+@using Spartane.Core.Domain.Permission
+@using Spartane.Core.Domain.Spartane_File
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Spartan_BR_HistoryModel
+@{
+
+    string Change_Date = "";
+    if (Model.Change_Date == "")
+    { Model.Change_Date = DateTime.Now.ToString(ConfigurationProperty.DateFormat); }
+
+    List<SelectListItem> varSpartan_User_User_logged = null;
+    if (ViewBag.Spartan_Users_User_logged != null)
+    { varSpartan_User_User_logged = (List<SelectListItem>)ViewBag.Spartan_Users_User_logged; }
+    List<SelectListItem> varSpartan_BR_Status_Status = null;
+    if (ViewBag.Spartan_BR_Statuss_Status != null)
+    { varSpartan_BR_Status_Status = (List<SelectListItem>)ViewBag.Spartan_BR_Statuss_Status; }
+    List<SelectListItem> varSpartan_BR_Type_History_Change_Type = null;
+    if (ViewBag.Spartan_BR_Type_Historys_Change_Type != null)
+    { varSpartan_BR_Type_History_Change_Type = (List<SelectListItem>)ViewBag.Spartan_BR_Type_Historys_Change_Type; }
+
+
+    Permission permission = ViewBag.Permission;
+}
+<div class="modal-dialog" style="width:95%;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">
+                Add Spartan BR History
+                <button data-dismiss="modal" class="close" type="button" onclick="@(ViewBag.functionMode == 0 ? "Spartan_BR_HistoryRemoveAddRow("+ ViewBag.currentRowIndex +")" : "")"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            </h4>
+        </div>
+        <div class="modal-body scroll_content">
+            <div class="form-horizontal Spartan_BR_HistoryPop_@ViewBag.currentRowIndex">
+				<div class="modal fade in" id="dvAttributeValue" style="background-color:rgba(0, 0, 0, 0.7);">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-body">
+								<div class="form-group">
+									<label class="col-sm-3 control-label" id="lblAttributeType">Value</label>
+									<div class="col-sm-7">
+										<input type="text" title="Value" class="form-control" id="txtAttributeValue" />
+									</div>
+									<div class="col-sm-2">
+										<a class="btn btn-primary" onclick="SaveValue()">Submit</a>
+									</div>
+									<input type="hidden" id="hdnAttributType" />
+									<input type="hidden" id="hdnAttributElement" />
+									<input type="hidden" id="hdnAttributNumber" />
+									<input type="hidden" id="hdnElementType" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row wrapper border-bottom white-bg page-heading">
+
+					<div class="row">
+						<div class="col-lg-10">
+							<h2>
+								Spartan BR History
+								<button onclick="Spartan_BR_HistoryGetBusinessRule('', 'Abrir Pantalla', '0')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Spartan_BR_HistoryBusinessRule-form">
+									<a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+										<i class="fa fa-cogs fa-spin"></i>
+									</a>
+								</button>
+							</h2>
+							<ol class="breadcrumb">
+								<li>
+									<a href="@Url.Action("Index", "Home")">@Resources.Resources.Home</a>
+								</li>
+								<li class="">
+									<label>@Resources.Spartan_BR_HistoryResources.Spartan_BR_History</label>
+								</li>
+								<li class="active">
+									<strong>@Resources.Resources.Create</strong>
+								</li>
+							</ol>
+						</div>
+						<div class="col-lg-2">
+
+							@{
+								if (Convert.ToInt32(Spartane.Web.SessionHelper.Role) == (int)Spartane.Core.Enums.SpartanRoleEnum.Admin)
+								{
+									<h2>&nbsp;</h2>
+									<button onclick="Spartan_BR_HistoryDisplayBusinessRule()" type="button" class="btn btn-info btn-lg displayBusinessProperyButton">
+										<i class="fa fa-cogs fa-spin"></i>
+									</button>
+
+									<div aria-hidden="true" class="modal fade in Spartan_BR_HistoryPropertyBusinessModal" id="Spartan_BR_HistoryPropertyBusinessModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h4 class="modal-title">
+														Property & Business Rules
+														<button class="close" type="button" onclick="$(this).parent().parent().parent().parent().parent().modal('hide');"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+													</h4>
+												</div>
+												<div class="modal-body">
+													<div class="row">
+														<div class="col-sm-12">
+															<a class="btn btn-primary full-width" data-toggle="modal" data-target="#PropertyModal-form" onclick="GetPropertyBag()">Properties</a>
+														</div>
+														<div class="clearfix col-sm-12">&nbsp;</div>
+														<div class="col-sm-12">
+															<a class="btn btn-primary full-width" data-toggle="modal" data-target="#Spartan_BR_HistoryBusinessRule-form" onclick="Spartan_BR_HistoryGetBusinessRule()">Business Rule</a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									 <div aria-hidden="true" data-backdrop="static" class="modal fade in Spartan_BR_HistoryPropertyModal" id="Spartan_BR_HistoryPropertyModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+									</div>
+									<div aria-hidden="true" data-backdrop="static" class="modal fade in Spartan_BR_HistoryBusinessRuleModal" id="Spartan_BR_HistoryBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+									</div>
+                                    <div aria-hidden="true" data-backdrop="static" class="modal fade in Spartan_BR_HistoryAddBusinessRuleModal" id="Spartan_BR_HistoryAddBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                                    </div>
+
+				
+								}
+							}
+						</div>
+					</div>
+
+				<div class="wrapper wrapper-content animated fadeInRight">
+					<div class="ibox float-e-margins">
+						<div class="ibox-content">
+							@using (Html.BeginForm("Post", "Spartan_BR_History", FormMethod.Post, new { id = "CreateSpartan_BR_History", @readonly = "true", @class = "form-horizontal", enctype = "multipart/form-data" }))
+							{
+								<span id="popupNotification"></span>
+								<div class="container-fluid Spartan_BR_HistoryCreateForm" id="viewmodeledit">
+							<div class="tabs-container">
+											<ul class="nav nav-tabs">
+				@@groupers@@
+											</ul>
+										<div class="tab-content">
+				<div class="form-group" id="divKey_History">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_BR_HistoryResources.Key_History</label>
+                                <div class="col-sm-8" data-field-id="Key_History" data-attribute="188598" data-field-name="@Resources.Spartan_BR_HistoryResources.Key_History">
+                                    <label class="form-control" for="Spartan_BR_HistoryKey_History" id="Spartan_BR_HistoryKey_History">@Model.Key_History</label>
+                                </div>
+                            </div>
+<div class="form-group" id="divUser_logged">
+	<label class="col-sm-2 control-label">@Resources.Spartan_BR_HistoryResources.User_logged</label>
+	<div class="col-sm-8" data-field-id="User_logged" data-attribute="188599" data-field-name="@Resources.Spartan_BR_HistoryResources.User_logged">
+		<select class="form-control" data-val="true" data-val-number="The field User logged must be a number." data-val-required="The User logged field is required." id="Spartan_BR_HistoryUser_logged" name="Spartan_BR_HistoryUser_logged">
+			<option value=""></option>
+			@if (varSpartan_User_User_logged != null){ 
+				foreach (var itemUser_logged in varSpartan_User_User_logged)
+				{
+					if (itemUser_logged.Value == Convert.ToString(Model.User_logged))
+					{
+						<option value="@itemUser_logged.Value" selected>@itemUser_logged.Text</option>
+					}
+					else
+					{
+						<option value="@itemUser_logged.Value">@itemUser_logged.Text</option>
+					}
+				}
+			}
+		</select>
+	</div>
+</div>
+<div class="form-group" id="divStatus">
+	<label class="col-sm-2 control-label">@Resources.Spartan_BR_HistoryResources.Status</label>
+	<div class="col-sm-8" data-field-id="Status" data-attribute="188600" data-field-name="@Resources.Spartan_BR_HistoryResources.Status">
+		<select class="form-control" data-val="true" data-val-number="The field Status must be a number." data-val-required="The Status field is required." id="Spartan_BR_HistoryStatus" name="Spartan_BR_HistoryStatus">
+			<option value=""></option>
+			@if (varSpartan_BR_Status_Status != null){ 
+				foreach (var itemStatus in varSpartan_BR_Status_Status)
+				{
+					if (itemStatus.Value == Convert.ToString(Model.Status))
+					{
+						<option value="@itemStatus.Value" selected>@itemStatus.Text</option>
+					}
+					else
+					{
+						<option value="@itemStatus.Value">@itemStatus.Text</option>
+					}
+				}
+			}
+		</select>
+	</div>
+</div>
+<div class="form-group" id="divChange_Date">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_BR_HistoryResources.Change_Date</label>
+                                <div class="col-sm-8" data-field-id="Change_Date" data-attribute="188601" data-field-name="@Resources.Spartan_BR_HistoryResources.Change_Date">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input class="form-control col-md-12" id="Spartan_BR_HistoryChange_Date" readonly="readonly" name="Spartan_BR_HistoryChange_Date" type="text" value="@Model.Change_Date">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+<div class="form-group" id="divHour_Date">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_BR_HistoryResources.Hour_Date</label>
+                                <div class="col-sm-8" data-field-id="Hour_Date" data-attribute="188602" data-field-name="@Resources.Spartan_BR_HistoryResources.Hour_Date">
+                                    <div class='input-group date' id='timePicker'>
+                                        <input class="form-control col-md-12" id="Spartan_BR_HistoryHour_Date" readonly="readonly" name="Spartan_BR_HistoryHour_Date" type="text" data-autoclose="true" value="@Model.Hour_Date">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-time"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+<div class="form-group" id="divTime_elapsed">
+	<label class="col-sm-2 control-label">@Resources.Spartan_BR_HistoryResources.Time_elapsed</label>
+	<div class="col-sm-8" data-field-id="Time_elapsed" data-attribute="188603" data-field-name="@Resources.Spartan_BR_HistoryResources.Time_elapsed">
+		<input class="form-control inputNumber" id="Spartan_BR_HistoryTime_elapsed" name="Spartan_BR_HistoryTime_elapsed" type="text" value="@Model.Time_elapsed">
+	</div>
+</div>
+<div class="form-group" id="divChange_Type">
+	<label class="col-sm-2 control-label">@Resources.Spartan_BR_HistoryResources.Change_Type</label>
+	<div class="col-sm-8" data-field-id="Change_Type" data-attribute="188606" data-field-name="@Resources.Spartan_BR_HistoryResources.Change_Type">
+		<select class="form-control" data-val="true" data-val-number="The field Change Type must be a number." data-val-required="The Change Type field is required." id="Spartan_BR_HistoryChange_Type" name="Spartan_BR_HistoryChange_Type">
+			<option value=""></option>
+			@if (varSpartan_BR_Type_History_Change_Type != null){ 
+				foreach (var itemChange_Type in varSpartan_BR_Type_History_Change_Type)
+				{
+					if (itemChange_Type.Value == Convert.ToString(Model.Change_Type))
+					{
+						<option value="@itemChange_Type.Value" selected>@itemChange_Type.Text</option>
+					}
+					else
+					{
+						<option value="@itemChange_Type.Value">@itemChange_Type.Text</option>
+					}
+				}
+			}
+		</select>
+	</div>
+</div>
+<div class="form-group" id="divConditions">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_BR_HistoryResources.Conditions</label>
+                                <div class="col-sm-8" data-field-id="Conditions" data-attribute="188607" data-field-name="@Resources.Spartan_BR_HistoryResources.Conditions">
+                                    <input class="form-control" id="Spartan_BR_HistoryConditions" name="Spartan_BR_HistoryConditions" type="text" value="@Model.Conditions">
+                                </div>
+                            </div>
+<div class="form-group" id="divActions_True">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_BR_HistoryResources.Actions_True</label>
+                                <div class="col-sm-8" data-field-id="Actions_True" data-attribute="188608" data-field-name="@Resources.Spartan_BR_HistoryResources.Actions_True">
+                                    <input class="form-control" id="Spartan_BR_HistoryActions_True" name="Spartan_BR_HistoryActions_True" type="text" value="@Model.Actions_True">
+                                </div>
+                            </div>
+<div class="form-group" id="divActions_False">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_BR_HistoryResources.Actions_False</label>
+                                <div class="col-sm-8" data-field-id="Actions_False" data-attribute="188609" data-field-name="@Resources.Spartan_BR_HistoryResources.Actions_False">
+                                    <input class="form-control" id="Spartan_BR_HistoryActions_False" name="Spartan_BR_HistoryActions_False" type="text" value="@Model.Actions_False">
+                                </div>
+                            </div>
+
+								</div>	
+							</div>
+									<br />
+											<div class="form-actions fluid">
+												<input type="hidden" value="@Model.Key_History" id="ReferenceKey_History" />
+												<input type="hidden" value="@Model.Key_History" name="Key_History" id="Key_HistoryId" />
+												@if (!ViewBag.Consult)
+												{
+													<div id="dvSaveJob" style="display:inline-block"></div>
+
+													<button type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton">
+														<i class="fa fa-cogs fa-spin"></i>
+													</button>
+													<a title="@Resources.Resources.Configure" id="Spartan_BR_HistoryConfigureSave" name="Spartan_BR_HistoryConfigureSave" onclick="SaveElementAttributes()" class="btn btn-success">@Resources.Resources.Configure</a>
+												}
+
+												<input type="hidden" id="hdnSpartan_BR_HistoryConfigureType" />
+												<input type="hidden" id="hdnSpartan_BR_HistoryBusinessRuleFieldId" />
+												<input type="hidden" id="hdnSpartan_BR_HistoryBusinessRuleFieldName" />
+												<input type="hidden" id="hdnSpartan_BR_HistoryBusinessRuleAttribute" />
+
+												<input data-dismiss="modal" type="button" value="@Resources.Resources.Cancelar" class="btn btn-danger noConsult" data-bind="click: cancel" tabindex="16" />
+
+												<button onclick="Spartan_BR_HistoryGetBusinessRule('', 'Al Cancelar', '3')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Spartan_BR_HistoryBusinessRule-form">
+													<a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+														<i class="fa fa-cogs fa-spin"></i>
+													</a>
+												</button>
+											</div>
+										</div>
+								}
+
+							</div>
+						</div>
+					</div>
+				</div>
+					<input id="hdnApplicationDirectory" type="hidden" value="@Url.Content("~/")" />
+				</div>
+			</div>
+		</div>
+</div>
+@section Styles {
+<link href="@Url.Content("~/Content/BootstrapDatePicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+    @Styles.Render("~/plugins/awesomeCheckboxStyles")
+    @Styles.Render("~/plugins/select2Styles")
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+    .select2-results{background-color:#fff;}
+    .select2-container .select2-dropdown{height:auto !important;}
+
+    div.dataTables_info {
+        display: inline-block;
+        float: right;
+    }
+        i {
+        font-size: 25px !important;
+        display: block;
+        color: #676a6c;
+        margin-left: 6px;
+        margin-right: 6px;
+    }
+
+    .fullWidth {
+        width: 100%;
+    }
+</style>
+}
+
+<script type="text/javascript" src="~/Uploads/Scripts/Spartan_BR_History.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Scripts/Custom/Spartan_BR_HistoryGeneral.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/Spartan_BR_HistoryCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/Business_Rule_CreationCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
+
+    <script type="text/javascript">
+        
+
+
+
+        $(document).ready(function () {
+			var currentIndex = @ViewBag.currentRowIndex
+
+            var Spartan_BR_HistoryRowElement = "Spartan_BR_HistoryPop_" + currentIndex.toString();
+            var abc = "if(dynamicFieldValidation('" + Spartan_BR_HistoryRowElement + "')){ Spartan_BR_HistoryInsertRowFromPopup(" + currentIndex + "); }";
+            var insertRowHTML = '<a class="btn btn-primary m-b" onclick="' + abc + '">Save</a>';
+            $('#dvSaveJob').html(insertRowHTML);
+			
+            $('#Spartan_BR_HistoryChange_Date').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            $('#Spartan_BR_HistoryHour_Date').clockpicker();
+
+
+            initiateUIControls();
+            EjecutarValidacionesAlComienzo();
+			$('a').tooltip();
+        });
+
+
+
+        function initiateUIControls() {
+            $('.gridDatePicker').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            //Time Picker
+            $('.gridTimePicker').clockpicker();
+
+        }
+		
+		function SendSpartan_BR_HistoryData(callBack) {
+			
+					
+		 var arr = []; 
+		 $("form#CreateSpartan_BR_History").find(':input').each(function( index ) {		 
+			if ($(this).prop('disabled')==true|| $(this).prop('disabled')=="disabled")
+			{		
+				arr.push($(this).attr('id')); 
+				$(this).prop('disabled', false);  	
+			}
+	    });
+		
+             var formData = new FormData($("form#CreateSpartan_BR_History")[0]);
+			$.each( arr, function( key, value ) {
+			  $('#' +value).prop('disabled', true);
+			});
+
+            var isNew = $('#hdnIsNew').val();
+           
+            if (checkClientValidate('Spartan_BR_HistoryCreateForm')) {
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Spartan_BR_History/Post?IsNew=")' + isNew,
+                    type: 'POST',
+                    data: formData,
+                    async: true,
+                    success: function (result) {
+                        if (result < 0) {
+                            showNotification("@Resources.Resources.ErrorSave", "error");
+                        } else {
+
+                            showNotification("@Resources.Resources.SaveSuccess", "success");
+                            callBack(result);
+                        }
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            }
+            return false;
+        };
+		
+        function GetPropertyBag() {
+            $.get('@Url.Action("Spartan_BR_HistoryPropertyBag", "Spartan_BR_History")', function (data) {
+                $(".PropertyModal").html(data);
+            });
+        }
+        function Spartan_BR_HistoryGetBusinessRule(FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null)
+			{
+				$('#hdnSpartan_BR_HistoryBusinessRuleFieldId').val(FieldId);
+				$('#hdnSpartan_BR_HistoryBusinessRuleFieldName').val(FieldName);
+				$('#hdnSpartan_BR_HistoryBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("BusinessRule", "BussinessRule")', { FieldId: $('#hdnSpartan_BR_HistoryBusinessRuleFieldId').val(), FieldName: $('#hdnSpartan_BR_HistoryBusinessRuleFieldName').val(), ObjectId: '35398', Attribute: $('#hdnSpartan_BR_HistoryBusinessRuleAttribute').val(), Screen: 'Spartan_BR_History' }, function (data) {
+                $(".Spartan_BR_HistoryBusinessRuleModal").html(data);
+            });
+        }
+        function Spartan_BR_HistoryGetAddBusinessRule(RuleId, FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null) {
+				$('#hdnSpartan_BR_HistoryBusinessRuleFieldId').val(FieldId);
+				$('#hdnSpartan_BR_HistoryBusinessRuleFieldName').val(FieldName);
+				$('#hdnSpartan_BR_HistoryBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("AddBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnSpartan_BR_HistoryBusinessRuleFieldId').val(), FieldName: $('#hdnSpartan_BR_HistoryBusinessRuleFieldName').val(), ObjectId: '35398', Attribute: $('#hdnSpartan_BR_HistoryBusinessRuleAttribute').val(), Screen: 'Spartan_BR_History' }, function (data) {
+                $(".Spartan_BR_HistoryAddBusinessRuleModal").html(data);
+                $(".datatable").DataTable();
+            });
+        }
+		function RemoveBusinessRule(RuleId) {
+			$.get('@Url.Action("RemoveBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnSpartan_BR_HistoryBusinessRuleFieldId').val(), FieldName: $('#hdnSpartan_BR_HistoryBusinessRuleFieldName').val(), ObjectId: '35398', Attribute: $('#hdnSpartan_BR_HistoryBusinessRuleAttribute').val(), Screen: 'Spartan_BR_History' }, function (data) {
+				$(".Spartan_BR_HistoryBusinessRuleModal").html(data);
+			});
+		}
+
+    var permission = {
+        Consult: '@permission.Consult' == 'True',
+        New: '@permission.New' == 'True',
+        Edit: '@permission.Edit' == 'True',
+        Delete: '@permission.Delete' == 'True',
+        Export: '@permission.Export' == 'True',
+        Print: '@permission.Print' == 'True',
+        Configure: '@permission.Configure' == 'True',
+    };
+
+    
+    //MR-var statusItems;
+    //MR-var stateItems;
+    //MR-var cityItems = [];
+    var isConsultMode = "@ViewBag.Consult" == "True";
+    Consult(isConsultMode);
+        function Consult(val) {
+            if (val) {
+                $(':input').attr('readonly', 'readonly');
+                $(':input').attr('disabled', 'true');
+                $('.noConsult').removeAttr('readonly');
+                $('.noConsult').removeAttr('disabled');
+            }
+        }
+
+    function BackToGrid() {
+        location.href = "@Url.Content("~/Frontal/Spartan_BR_History/")";
+    }
+	
+	function ReadScriptSettings(callback)
+    {
+        $.post("@Url.Content("~/Frontal/Spartan_BR_History/ReadScriptSettings")", function (data) {
+            mainElementObject = JSON.parse(data.MainElement);
+			if (data.ChildElement != null) {
+                childElementObject = JSON.parse(data.ChildElement);
+            }
+            callback();
+        });
+    }
+
+    function SaveSettingsWithoutReload() {
+        $.post("@Url.Content("~/Frontal/Spartan_BR_History/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+            //$('#hdnSpartan_BR_HistoryConfigureType').val("0");
+        }, "json");
+    }
+	
+        function SaveElementAttributes() {
+            if ($('#hdnSpartan_BR_HistoryConfigureType').val() == "1") {
+                $.post("@Url.Content("~/Frontal/Spartan_BR_History/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+                    $('#hdnSpartan_BR_HistoryConfigureType').val("0");
+                    location.reload(true);
+                }, "json");
+            } else {
+                $.post("@Url.Content("~/Frontal/Spartan_BR_History/ReadScriptSettings")", function (data) {
+                    mainElementObject = JSON.parse(data.MainElement);
+                    childElementObject = JSON.parse(data.ChildElement);
+
+                    for (var i = 0; i < mainElementObject.length; i++) {
+                        var mainElementAttributes = '<div class="col-sm-2">';
+                        mainElementAttributes += '<div class="displayAttributes requiredAttribute"><a class="requiredClick" title="' + (mainElementObject[i].IsRequired == true ? "Required" : "Not Required") + '" onclick="setRequired(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsRequired == true ? "@Url.Content("~/Images/Required.png")" : "@Url.Content("~/Images/Not-Required.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes visibleAttribute"><a class="visibleClick" title="' + (mainElementObject[i].IsVisible == true ? "Visible" : "In Visible") + '" onclick="setVisible(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsVisible == true ? "@Url.Content("~/Images/Visible.png")" : "@Url.Content("~/Images/InVisible.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes readOnlyAttribute"><a class="readOnlyClick" title="' + (mainElementObject[i].IsReadOnly == true ? "Disabled" : "Enabled") + '" onclick="setReadOnly(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsReadOnly == true ? "@Url.Content("~/Images/Disabled.png")" : "@Url.Content("~/Images/Enabled.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes defaultValueAttribute"><a id="hlDefaultValue_' + i.toString() + '" class="defaultValueClick" title="' + (mainElementObject[i].DefaultValue) + '" onclick="setDefaultValue(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].DefaultValue != '' && mainElementObject[i].DefaultValue != null ? "@Url.Content("~/Images/default-value.png")" : "@Url.Content("~/Images/Not-Default-Value.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes helpTextAttribute"><a id="hlHelpText_' + i.toString() + '" class="helpTextClick" title="' + (mainElementObject[i].HelpText) + '" onclick="setHelpText(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].HelpText != '' && mainElementObject[i].HelpText != null ? "@Url.Content("~/Images/green-help.png")" : "@Url.Content("~/Images/red-help.jpg")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '</div>';
+                        $('#Spartan_BR_History' + mainElementObject[i].inputId).parent().closest('.form-group').show();
+
+                        $('#Spartan_BR_History' + mainElementObject[i].inputId).closest('.col-sm-8').after(mainElementAttributes);
+                    }
+					if (childElementObject != null) {
+						for (var i = 0; i < childElementObject.length; i++) {
+							$('.' + childElementObject[i].inputId + 'Header').show();
+							$('.' + childElementObject[i].inputId).parent().show();
+							$('.' + childElementObject[i].inputId + 'Header').append(returnAttributeHTML(i));
+						}
+					}
+                    $('#Spartan_BR_HistoryConfigureSave').text('Save Settings');
+                    $('#hdnSpartan_BR_HistoryConfigureType').val("1");
+                });
+            }
+        }
+		$('#CreateSpartan_BR_History').on('click', '.btnPopupBusinessRules', function () {
+			var fieldId = $(this).data('field-id');
+			var fieldName = $(this).data('field-name');
+			var attribute = $(this).data('attribute');
+			$('#hdnSpartan_BR_HistoryBusinessRuleFieldId').val(fieldId);
+			$('#hdnSpartan_BR_HistoryBusinessRuleFieldName').val(fieldName);
+			$('#hdnSpartan_BR_HistoryBusinessRuleAttribute').val(attribute);
+		});
+		//Initialize HTML Editors
+		
+    </script>

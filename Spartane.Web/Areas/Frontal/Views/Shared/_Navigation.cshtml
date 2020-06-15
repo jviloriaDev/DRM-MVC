@@ -1,0 +1,117 @@
+﻿@using System
+@using Spartane.Web
+@using Spartane.Web.Helpers
+@{
+    var roleMenus = MenuHelper.GetCurrentRoleMenus();
+    //var base64 = Convert.ToBase64String(SessionHelper.UserImage);
+    var userImage = MenuHelper.GetImageBase64(SessionHelper.UserImage);//String.Format("data:image/gif;base64,{0}", base64);
+}
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav" id="side-menu">
+          <li class="nav-header" >
+                    <div class="dropdown profile-element">
+                        <span>
+                           <!-- <img alt="image" class="img-circle" style="width: 48px" src="@userImage" /> -->
+                           <img src="~/Images/Logo-white.png" width="150" />
+                        </span>
+<a href="#">
+                            <span class="clear">
+                                <span class="block m-t-xs">
+                                    <strong class="font-bold">@SessionHelper.UserEntity.Name</strong>
+                                </span> <span class="text-white text-xs block" style="display:none !important;">@SessionHelper.UserEntity.Role_Spartan_User_Role.Description <b class="caret"></b></span>
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                            <li><a href="@Url.Action("Profile", "AppViews")">Profile</a></li>
+                            <li><a href="@Url.Action("Contacts", "AppViews")">Contacts</a></li>
+                            <li><a href="@Url.Action("Inbox", "Mailbox")">Mailbox</a></li>
+                            <li class="divider"></li>
+                            @*<li>
+                            @using (Html.BeginForm("LogOff", "Account", new { area = "" }, FormMethod.Post, new { id = "userLogoutForm" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <a href="javascript: document.getElementById('userLogoutForm').submit()">Logout</a>
+                            }
+                            </li>*@
+
+
+                            
+
+
+                        </ul>
+                    </div>
+                    <div class="logo-element">
+                        <img src="~/Images/Logo-90-90-white.png" width="60" />
+                    </div>
+                </li>
+            <li class="search-menu"><input class="form-control" type="text" id="myInput" onkeyup="myFunction()" placeholder="@Resources.Resources.Search..."></li>
+            @{
+                foreach (var roleMenu in roleMenus)
+                {
+                    Html.RenderPartial("_Menu", roleMenu);
+                }
+               
+            }
+            
+           
+        </ul>
+    </div>
+</nav>
+
+<script>
+    function myFunction() {
+        // Declare variables
+        var input, filter, ul, li, a, i, j, ulSecond, liSecond, auxSecond, ulThird, liThird, auxThird;
+        input = document.getElementById('myInput');
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("side-menu");
+        li = ul.getElementsByTagName('li');
+        ulSecond = document.getElementsByClassName("nav-second-level");
+        ulThird = document.getElementsByClassName("nav-third-level");
+
+        // Loop through all list items, and hide those who don't match the search query
+        for (i = 0; i < li.length; i++) {
+            if ($(li[i]).attr('class') != 'nav-header') {
+                a = li[i].getElementsByTagName("a")[0];
+                if (a != undefined && $(a).attr('href') != '#') {
+                    if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        li[i].style.display = "";
+                    } else {
+                        li[i].style.display = "none";
+                    }
+                }
+            }
+        }
+        for (i = 0; i < ulThird.length; i++) {
+            auxThird = false;
+            liThird = ulThird[i].getElementsByTagName('li');
+            for (j = 0; j < liThird.length; j++) {
+                if ($(liThird[j]).css('display') != 'none')
+                    auxThird = true;
+            }
+            if (!auxThird) {
+                $($(ulThird[i]).parent()).css('display', 'none');
+            }
+            else {
+                $($(ulThird[i]).parent()).css('display', '');
+            }
+        }
+        for (i = 0; i < ulSecond.length; i++) {
+            auxSecond = false;
+            liSecond = ulSecond[i].getElementsByTagName('li');
+            for (j = 0; j < liSecond.length; j++) {
+                if ($(liSecond[j]).css('display') != 'none')
+                    auxSecond = true;
+            }
+            if (!auxSecond) {
+                $($(ulSecond[i]).parent()).css('display', 'none');
+            }
+            else {
+                $($(ulSecond[i]).parent()).css('display', '');
+            }
+        }
+    }
+</script>
+
+

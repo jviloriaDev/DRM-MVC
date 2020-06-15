@@ -1,0 +1,143 @@
+﻿@using System.Globalization
+@using System.Linq
+@using Spartane.Web
+@using Spartane.Web.Helpers
+@using Spartane.Core.Domain.Spartan_Additional_Menu;
+@model  Spartane.Core.Domain.SpartanModule.RecursiveObject
+<li>
+    @if (Model.children.Any() || Model.Objects.Any())
+    {
+        <a href="#">
+            <i class="fa fa-edit"></i><span class="nav-label">@Resources.Modules.GetModuleValueById(Model.id)</span>
+            <span class="fa arrow"></span>
+        </a>
+    }
+    else if (Model.AdditionalMenu.Any() || !string.IsNullOrWhiteSpace(Model.Link))
+    {
+        int x;
+        if (string.IsNullOrWhiteSpace(Model.Link))
+        {
+            <a href="#"><i class="fa fa-edit"></i><span class="nav-label">@Model.text</span><span class="fa arrow"></span></a>
+        }
+        else
+        {
+            if (!string.IsNullOrWhiteSpace(Model.Link))
+            {
+                <a href="@Url.Content("~/" + Model.Link)">@Model.text</a>
+            }
+        }
+    }
+    else
+    {
+        <a href="#"><i class="fa "></i><span class="nav-label">@Resources.Modules.GetModuleValueById(Model.id)</span></a>
+    }
+    @if (Model.children.Any() || Model.Objects.Any())
+    {
+        <ul class="nav nav-second-level collapse">
+            @if (Model.children.Any())
+            {
+
+                foreach (var childMenu in Model.children)
+                {
+                    Html.RenderPartial("_Menu", childMenu);
+                }
+
+            }
+
+            @if (Model.Objects.Any())
+            {
+                foreach (var objectData in Model.Objects)
+                {
+                    //WORKFLOW TRAY
+                    if (objectData.Object_Id > 0)
+                    {
+                        if (objectData.Description != objectData.Object_Id.ToString())
+                        {
+
+                            <li class="module_@Model.id">
+                                <a href="@Url.Content("~/Frontal/" + objectData.URL + "?ModuleId=" + Model.id)">@Resources.Objects.GetObjectValueById(objectData.Object_Id)</a>
+                            </li>
+                        }
+                        else
+                        {
+                            string sParameter = "";
+                            sParameter = objectData.Object_Id.ToString() + SessionHelper.UserEntity.Id_User.ToString();
+                            Spartane.Web.Areas.WebApiConsumer.SpartaneUserRoleModuleObject.ISpartaneUserRoleModuleObjectApiConsumer _spartaneUserRoleModuleObjectApiConsumer;
+                            _spartaneUserRoleModuleObjectApiConsumer = DependencyResolver.Current.GetService<Spartane.Web.Areas.WebApiConsumer.SpartaneUserRoleModuleObject.ISpartaneUserRoleModuleObjectApiConsumer>();
+                            var UserAdditionalMenu = _spartaneUserRoleModuleObjectApiConsumer.GetAdditionalMenu(int.Parse(sParameter), SessionHelper.languageid).Resource.ToList();
+                            int i = 0;
+                            string Charola = "";
+                            foreach (var objectItem in UserAdditionalMenu)
+                            {
+                                i++;
+                            }
+                            if (i != 0)
+                            {
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-envelope"></i><span class="nav-label">@objectData.Name</span>
+                                        <span class="fa arrow"></span>
+                                    </a>
+                                    <ul class="nav nav-third-level collapse">
+                                        @foreach (var objectItem in UserAdditionalMenu)
+                                        {
+                                            i++;
+                                            Charola = objectItem.OptionMenu.ToString();
+                                            <li>
+                                                <a href="@Url.Content("~/Frontal/" + objectItem.OptionPath + "?ModuleId=" + Model.id)">
+                                                    @Charola
+                                                @if (!objectItem.OptionPath.Contains("Create"))
+                                                { 
+                                                    <span class="label label-warning">@objectItem.ParentMenu</span>
+                                                }
+                                            </a>
+
+                                        </li>
+                                        }
+                                    </ul>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <a href="@Url.Content("~/Frontal/" + objectData.URL + "?ModuleId=" + Model.id)">@Resources.Objects.GetObjectValueById(objectData.Object_Id)</a>
+                                </li>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <li class="module_@Model.id">
+                            <a href="@Url.Content("~/Frontal/" + objectData.URL)">@Resources.Objects.GetObjectValueById(objectData.Object_Id)</a>
+                        </li>
+                    }
+                    //WORKFLOW TRAY
+                }
+            }
+
+        </ul>
+    }
+
+    @if (Model.AdditionalMenu != null && Model.AdditionalMenu.Any())
+    {
+        //if (!string.IsNullOrWhiteSpace(Model.Link))
+        //{
+            <ul class="nav nav-second-level collapse">
+                @foreach (var item in Model.AdditionalMenu)
+                {
+                    item.text = CultureHelper.GetTraductionAdd(item.id.ToString(), "Report", item.text);
+                    Html.RenderPartial("_Menu", item);
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Model.Link))
+                {
+                    <li>
+                        <a href="@Model.Link.Replace("Home/","")">@Model.text</a>
+                    </li>
+                }
+            </ul>
+       // }
+    }
+</li>
+
+

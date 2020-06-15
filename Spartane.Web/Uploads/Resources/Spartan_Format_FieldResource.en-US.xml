@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_Format_Field" value="Spartan Format Field"></resource>
+  <resource culture="en-US" name="FormatFieldId" value="FormatFieldId"></resource>
+  <resource culture="en-US" name="Format" value="Format"></resource>
+  <resource culture="en-US" name="Field_Path" value="Field Path"></resource>
+  <resource culture="en-US" name="Physical_Field_Name" value="Physical Field Name"></resource>
+  <resource culture="en-US" name="Logical_Field_Name" value="Logical Field Name"></resource>
+  <resource culture="en-US" name="Creation_Date" value="Creation Date"></resource>
+  <resource culture="en-US" name="Creation_Hour" value="Creation Hour"></resource>
+  <resource culture="en-US" name="Creation_User" value="Creation User"></resource>
+  <resource culture="en-US" name="Properties" value="Properties"></resource>
+
+</resources>

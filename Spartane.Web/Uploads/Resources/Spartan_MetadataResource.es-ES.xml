@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Spartan_Metadata" value="Spartan Metadata"></resource>
+  <resource culture="es-es" name="AttributeId" value="AttributeId"></resource>
+  <resource culture="es-es" name="Class_Id" value="Class Id"></resource>
+  <resource culture="es-es" name="Class_Name" value="Class Name"></resource>
+  <resource culture="es-es" name="Object_Id" value="Object Id"></resource>
+  <resource culture="es-es" name="Physical_Name" value="Physical Name"></resource>
+  <resource culture="es-es" name="Logical_Name" value="Logical Name"></resource>
+  <resource culture="es-es" name="Identifier_Type" value="Identifier Type"></resource>
+  <resource culture="es-es" name="Attribute_Type" value="Attribute Type"></resource>
+  <resource culture="es-es" name="Length" value="Length"></resource>
+  <resource culture="es-es" name="Decimals_Length" value="Decimals Length"></resource>
+  <resource culture="es-es" name="Relation_Type" value="Relation Type"></resource>
+  <resource culture="es-es" name="Related_Object_Id" value="Related Object Id"></resource>
+  <resource culture="es-es" name="Related_Class_Id" value="Related Class Id"></resource>
+  <resource culture="es-es" name="Related_Class_Name" value="Related Class Name"></resource>
+  <resource culture="es-es" name="Related_Class_Identifier" value="Related Class Identifier"></resource>
+  <resource culture="es-es" name="Related_Class_Description" value="Related Class Description"></resource>
+  <resource culture="es-es" name="Required" value="Required"></resource>
+  <resource culture="es-es" name="DefaultValue" value="DefaultValue"></resource>
+  <resource culture="es-es" name="Visible" value="Visible"></resource>
+  <resource culture="es-es" name="Help_Text" value="Help Text"></resource>
+  <resource culture="es-es" name="Read_Only" value="Read Only"></resource>
+  <resource culture="es-es" name="ScreenOrder" value="ScreenOrder"></resource>
+  <resource culture="es-es" name="Control_Type" value="Control Type"></resource>
+  <resource culture="es-es" name="Group_Name" value="Group Name"></resource>
+
+</resources>

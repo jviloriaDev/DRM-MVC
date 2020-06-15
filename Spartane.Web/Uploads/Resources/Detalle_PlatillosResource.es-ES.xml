@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Detalle_Platillos" value="Detalle Platillos"></resource>
+  <resource culture="es-es" name="Folio" value="Folio"></resource>
+  <resource culture="es-es" name="Lleva_fracciones" value="Lleva fracciones"></resource>
+  <resource culture="es-es" name="Cantidad" value="Cantidad"></resource>
+  <resource culture="es-es" name="Cantidad_fraccion" value="Cantidad fracción"></resource>
+  <resource culture="es-es" name="Unidad" value="Unidad"></resource>
+  <resource culture="es-es" name="Ingrediente" value="Ingrediente"></resource>
+  <resource culture="es-es" name="Caracteristica" value="Característica"></resource>
+  <resource culture="es-es" name="Unidad_SMAE" value="Unidad SMAE"></resource>
+  <resource culture="es-es" name="Equivalente_Unidad_SMAE" value="Equivalente Unidad SMAE:"></resource>
+  <resource culture="es-es" name="Porciones" value="Porciones"></resource>
+  <resource culture="es-es" name="Detalle" value="Detalle"></resource>
+  <resource culture="es-es" name="Detalle_Super" value="Detalle Super"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

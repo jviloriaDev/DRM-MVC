@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Detalle_Contratos_Empresa" value="Detalle Contratos Empresa"></resource>
+  <resource culture="es-es" name="Folio" value="Folio"></resource>
+  <resource culture="es-es" name="Suscripcion" value="Suscripción"></resource>
+  <resource culture="es-es" name="Tipo_de_Contrato" value="Tipo de Contrato"></resource>
+  <resource culture="es-es" name="Documento" value="Documento"></resource>
+  <resource culture="es-es" name="Fecha_de_Firma_de_Contrato" value="Fecha de Firma de Contrato"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

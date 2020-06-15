@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Spartan_BR_Scope" value="Business Rule Scope"></resource>
+  <resource culture="es-es" name="ScopeId" value="Id"></resource>
+  <resource culture="es-es" name="Description" value="Description"></resource>
+  <resource name="Description.1" control="Description" value="Campo" culture="es-es" />
+  <resource name="Description.2" control="Description" value="Proceso" culture="es-es" />
+  <resource name="Description.3" control="Description" value="WebApi" culture="es-es" />
+
+</resources>

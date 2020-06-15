@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Dashboard_Status" value="Spartan Dashboard Status"></resource>
+  <resource culture="en-US" name="Status_Id" value="Status Id"></resource>
+  <resource culture="en-US" name="Description" value="Description"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

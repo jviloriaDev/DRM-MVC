@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Spartan_BR_History" value="Spartan BR History"></resource>
+  <resource culture="es-es" name="Key_History" value="Key History"></resource>
+  <resource culture="es-es" name="User_logged" value="User logged"></resource>
+  <resource culture="es-es" name="Status" value="Status"></resource>
+  <resource culture="es-es" name="Change_Date" value="Change Date"></resource>
+  <resource culture="es-es" name="Hour_Date" value="Hour Date"></resource>
+  <resource culture="es-es" name="Time_elapsed" value="Time elapsed"></resource>
+  <resource culture="es-es" name="Change_Type" value="Change Type"></resource>
+  <resource culture="es-es" name="Conditions" value="Conditions"></resource>
+  <resource culture="es-es" name="Actions_True" value="Actions True"></resource>
+  <resource culture="es-es" name="Actions_False" value="Actions False"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

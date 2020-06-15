@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Tiempos_de_Comida" value="Tiempos de Comida"></resource>
+  <resource culture="es-es" name="Clave" value="Clave"></resource>
+  <resource culture="es-es" name="Comida" value="Comida"></resource>
+  <resource culture="es-es" name="Hora_min" value="Hora min"></resource>
+  <resource culture="es-es" name="Hora_max" value="Hora max"></resource>
+  <resource culture="es-es" name="Pais" value="Pais"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

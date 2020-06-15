@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Ejercicios" value="Ejercicios"></resource>
+  <resource culture="en-US" name="Clave" value="Clave"></resource>
+  <resource culture="en-US" name="Fecha_de_Registro" value="Fecha de Registro"></resource>
+  <resource culture="en-US" name="Hora_de_Registro" value="Hora de Registro"></resource>
+  <resource culture="en-US" name="Usuario_que_Registra" value="Usuario que Registra"></resource>
+  <resource culture="en-US" name="Nombre_del_Ejercicio" value="Nombre del Ejercicio"></resource>
+  <resource culture="en-US" name="Descripcion_del_Ejercicio" value="Descripción del Ejercicio"></resource>
+  <resource culture="en-US" name="Tipo_de_Ejercicio" value="Tipo de Ejercicio"></resource>
+  <resource culture="en-US" name="Nivel_de_dificultad" value="Nivel de dificultad"></resource>
+  <resource culture="en-US" name="Sexo" value="Sexo"></resource>
+  <resource culture="en-US" name="Musculos_trabajados" value="Músculos trabajados"></resource>
+  <resource culture="en-US" name="Equipamento" value="Equipamento"></resource>
+  <resource culture="en-US" name="Imagen" value="Imagen"></resource>
+  <resource culture="en-US" name="Video" value="Vídeo"></resource>
+  <resource culture="en-US" name="Estatus" value="Estatus"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

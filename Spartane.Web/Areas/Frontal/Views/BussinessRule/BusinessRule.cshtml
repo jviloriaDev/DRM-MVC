@@ -1,0 +1,103 @@
+﻿@model Spartane.Web.Areas.Frontal.Models.BusinessRuleModel
+@{
+    ViewBag.Title = "BusinessRule";
+}
+<script type="text/javascript">
+    //$('.multiselectcombo').multiselect();
+    $('.scroll_content').slimscroll({
+        height: '500px',
+        alwaysVisible: true
+    });
+	$('.chkActive').change(function () {
+        if ($(this).is(":checked")) {
+        }
+        $.ajax({
+            url: "@Url.Content("~/Frontal/BussinessRule/ChangeActiveBusinessRule")?BussinessRuleId=" + $(this).data('ruleid') + "&Change=" + $(this).is(":checked"),
+        type: 'GET',
+        dataType: "json",
+        async: false,
+        success: function (result) {
+            
+        },
+        error: function (result) {
+            showNotification("@Resources.Resources.ErrorContactingServer", "error");
+        }
+    });
+    });
+</script>
+<div class="modal-dialog large-popup">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">
+                Business Rules
+                <button class="close" type="button" onclick="$(this).parent().parent().parent().parent().parent().modal('hide');"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            </h4>
+        </div>
+        <div class="modal-body scroll_content">
+            <div class="row">
+                <input type="button" class="btn btn-info" value="New Business Rule" data-toggle="modal" data-target="#@(Model.Screen)AddBusinessRule-form" onclick="@(Model.Screen)GetAddBusinessRule(0)" />
+            </div>
+            <div class="row">
+                <table class="dataTable table">
+                    <thead>
+                        <tr>
+                            <th>
+                                ID
+                            </th>
+                            <th>
+                                <label>Business Rule</label>
+                            </th>
+                            <th>
+                                <label>Active</label>
+                            </th>
+                            <th>
+                                <label>Debug Mode</label>
+                            </th>
+                            <th>
+                                <label>Actions</label>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var businessRule in Model.BusinessRules)
+                        {
+                            <tr>
+                                <td>
+                                    <label for="PropertyLabel">@businessRule.BusinessRuleId</label>
+                                </td>
+                                <td>
+                                    <label for="PropertyLabel">@businessRule.Description</label>
+                                </td>
+                                <td>
+                                    @if (businessRule.StatusId == 2)
+                                    {
+                                        <input type="checkbox" checked="checked" data-ruleid="@businessRule.BusinessRuleId" class="checkbox checkbox-primary chkActive" />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" data-ruleid="@businessRule.BusinessRuleId" class="checkbox checkbox-primary chkActive" />
+                                    }                                    
+                                </td>
+                                <td>
+                                    <input type="checkbox" class="checkbox checkbox-primary" />
+                                    <a>View Log</a>
+                                </td>
+                                <td>
+                                    <a class="editor_edit" data-toggle="modal" data-target="#@(Model.Screen)AddBusinessRule-form" onclick="@(Model.Screen)GetAddBusinessRule(@businessRule.BusinessRuleId, '@Model.FieldId', '@Model.FieldName', @businessRule.Attribute, @Model.ObjectId)"><i class="fa fa-edit"></i></a>
+                                    <a class="editor_remove" onclick="RemoveBusinessRule(@businessRule.BusinessRuleId, '@Model.FieldId', '@Model.FieldName', @businessRule.Attribute, @Model.ObjectId);"><i class="fa fa-times"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <a title="@Resources.Resources.Cancelar" class="btn btn-danger m-b" data-dismiss="modal">@Resources.Resources.Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    
+</script>

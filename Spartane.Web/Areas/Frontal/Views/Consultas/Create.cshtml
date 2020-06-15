@@ -1,0 +1,1907 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Globalization
+@using Spartane.Core.Domain.Permission
+@using Spartane.Core.Domain.Spartane_File
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.ConsultasModel
+@{
+
+/*
+    string Fecha_de_Registo = "";
+    if (Model.Fecha_de_Registo == "")
+    { Model.Fecha_de_Registo = DateTime.Now.ToString(ConfigurationProperty.DateFormat); }
+    string Fecha_Programada = "";
+    if (Model.Fecha_Programada == "")
+    { Model.Fecha_Programada = DateTime.Now.ToString(ConfigurationProperty.DateFormat); }
+    string Fecha_siguiente_Consulta = "";
+    if (Model.Fecha_siguiente_Consulta == "")
+    { Model.Fecha_siguiente_Consulta = DateTime.Now.ToString(ConfigurationProperty.DateFormat); }
+
+*/
+    List<SelectListItem> varSpartan_User_Usuario_que_Registra = null;
+    if (ViewBag.Spartan_Users_Usuario_que_Registra != null)
+    { varSpartan_User_Usuario_que_Registra = (List<SelectListItem>)ViewBag.Spartan_Users_Usuario_que_Registra; }
+ List<SelectListItem> varPacientes_Paciente = null;
+    if (ViewBag.Pacientess_Paciente != null)
+    { varPacientes_Paciente = (List<SelectListItem>)ViewBag.Pacientess_Paciente; }
+    List<SelectListItem> varSexo_Sexo = null;
+    if (ViewBag.Sexos_Sexo != null)
+    { varSexo_Sexo = (List<SelectListItem>)ViewBag.Sexos_Sexo; }
+    List<SelectListItem> varObjetivos_Objetivo = null;
+    if (ViewBag.Objetivoss_Objetivo != null)
+    { varObjetivos_Objetivo = (List<SelectListItem>)ViewBag.Objetivoss_Objetivo; }
+    List<SelectListItem> varInterpretacion_IMC_IMC_Pediatria = null;
+    if (ViewBag.Interpretacion_IMCs_IMC_Pediatria != null)
+    { varInterpretacion_IMC_IMC_Pediatria = (List<SelectListItem>)ViewBag.Interpretacion_IMCs_IMC_Pediatria; }
+    List<SelectListItem> varInterpretacion_IMC_Interpretacion_IMC = null;
+    if (ViewBag.Interpretacion_IMCs_Interpretacion_IMC != null)
+    { varInterpretacion_IMC_Interpretacion_IMC = (List<SelectListItem>)ViewBag.Interpretacion_IMCs_Interpretacion_IMC; }
+    List<SelectListItem> varInterpretacion_consumo_de_agua_Interpretacion_agua = null;
+    if (ViewBag.Interpretacion_consumo_de_aguas_Interpretacion_agua != null)
+    { varInterpretacion_consumo_de_agua_Interpretacion_agua = (List<SelectListItem>)ViewBag.Interpretacion_consumo_de_aguas_Interpretacion_agua; }
+    List<SelectListItem> varInterpretacion_Frecuencia_cardiaca_en_Esfuerzo_Interpretacion_frecuencia = null;
+    if (ViewBag.Interpretacion_Frecuencia_cardiaca_en_Esfuerzos_Interpretacion_frecuencia != null)
+    { varInterpretacion_Frecuencia_cardiaca_en_Esfuerzo_Interpretacion_frecuencia = (List<SelectListItem>)ViewBag.Interpretacion_Frecuencia_cardiaca_en_Esfuerzos_Interpretacion_frecuencia; }
+    List<SelectListItem> varInterpretacion_indice_cintura__cadera_Interpretacion_indice = null;
+    if (ViewBag.Interpretacion_indice_cintura__caderas_Interpretacion_indice != null)
+    { varInterpretacion_indice_cintura__cadera_Interpretacion_indice = (List<SelectListItem>)ViewBag.Interpretacion_indice_cintura__caderas_Interpretacion_indice; }
+    List<SelectListItem> varInterpretacion_Dificultad_de_Rutina_de_Ejercicios_Interpretacion_dificultad = null;
+    if (ViewBag.Interpretacion_Dificultad_de_Rutina_de_Ejercicioss_Interpretacion_dificultad != null)
+    { varInterpretacion_Dificultad_de_Rutina_de_Ejercicios_Interpretacion_dificultad = (List<SelectListItem>)ViewBag.Interpretacion_Dificultad_de_Rutina_de_Ejercicioss_Interpretacion_dificultad; }
+    List<SelectListItem> varInterpretacion_Calorias_Interpretacion_calorias = null;
+    if (ViewBag.Interpretacion_Caloriass_Interpretacion_calorias != null)
+    { varInterpretacion_Calorias_Interpretacion_calorias = (List<SelectListItem>)ViewBag.Interpretacion_Caloriass_Interpretacion_calorias; }
+
+    Permission permissionDetalle_Resultados_Consultas = ViewBag.PermissionDetalle_Resultados_Consultas;
+
+    Permission permission = ViewBag.Permission;
+	
+	if (ViewBag.IsPartial)
+   { 
+       Layout = "~/Areas/Frontal/Views/Shared/_LayoutPopup.cshtml";
+   }
+}
+<div class="loading style-2"><div class="loading-wheel"></div></div>
+<div class="modal fade in" id="dvAttributeValue" style="background-color:rgba(0, 0, 0, 0.7);">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" id="lblAttributeType">@Resources.Resources.Value</label>
+                    <div class="col-sm-7">
+                        <input type="text" title="Value" class="form-control" id="txtAttributeValue" />
+                    </div>
+                    <div class="col-sm-2">
+                        <a class="btn btn-primary" onclick="SaveValue()">@Resources.Resources.Submit</a>
+                    </div>
+                    <input type="hidden" id="hdnAttributType" />
+                    <input type="hidden" id="hdnAttributElement" />
+                    <input type="hidden" id="hdnAttributNumber" />
+                    <input type="hidden" id="hdnElementType" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row wrapper border-bottom white-bg page-heading">
+
+    <div class="row">
+        <div class="col-lg-10">
+            <h2>
+                @Resources.ConsultasResources.Consultas
+                <button onclick="ConsultasGetBusinessRule('', 'Al Abrir Pantalla', '0')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#ConsultasBusinessRule-form">
+                    <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+                        <i class="fa fa-cogs fa-spin"></i>
+                    </a>
+                </button>
+            </h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">@Resources.Resources.Home</a>
+                </li>
+                <li class="active">
+                @if (Session["PhaseName"] != null)
+                {
+                    <strong>@Session["PhaseName"].ToString()</strong>
+                }
+                else
+                {
+                    <strong>@Resources.ConsultasResources.Consultas</strong>
+                }
+                
+            </li>
+                <li class="active">
+                    <strong>@Resources.Resources.Create</strong>
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-2">
+
+            @{
+                if (Convert.ToInt32(Spartane.Web.SessionHelper.Role) == (int)Spartane.Core.Enums.SpartanRoleEnum.Admin)
+                {
+                    <h2>&nbsp;</h2>
+                    <button onclick="ConsultasDisplayBusinessRule()" type="button" class="btn btn-info btn-lg displayBusinessProperyButton">
+                        <i class="fa fa-cogs fa-spin"></i>
+                    </button>
+
+                    <div aria-hidden="true" class="modal fade in ConsultasPropertyBusinessModal" id="ConsultasPropertyBusinessModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">
+                                          @Resources.Resources.titleBussinesRules
+                                        <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">@Resources.Resources.Close</span></button>
+                                    </h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <a class="btn btn-primary full-width" data-dismiss="modal" data-toggle="modal" data-target="#PropertyModal-form" onclick="GetPropertyBag()">@Resources.Resources.Property</a>
+                                        </div>
+                                        <div class="clearfix col-sm-12">&nbsp;</div>
+                                        <div class="col-sm-12">
+                                            <a class="btn btn-primary full-width" data-dismiss="modal" data-toggle="modal" data-target="#ConsultasBusinessRule-form" onclick="ConsultasGetBusinessRule()">Business Rule</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     <div aria-hidden="true" data-backdrop="static" class="modal fade in PropertyModal" id="PropertyModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+					</div>
+					<div aria-hidden="true" data-backdrop="static" class="modal fade in ConsultasBusinessRuleModal" id="ConsultasBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+					</div>
+
+
+                }
+            }
+                    <div aria-hidden="true" class="modal fade in AddDetalle_Resultados_ConsultasModal" id="AddDetalle_Resultados_Consultas-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                    </div>
+
+
+        </div>
+    </div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            @using (Html.BeginForm("Post", "Consultas", FormMethod.Post, new { id = "CreateConsultas", @readonly = "true", @class = "form-horizontal", enctype = "multipart/form-data" }))
+            {
+                                <input type="hidden" id="hdnIsNew" name="hdnIsNew" value="@ViewBag.IsNew.ToString()" />
+                <span id="popupNotification"></span>
+                <div class="container-fluid ConsultasCreateForm" id="viewmodeledit">
+				 <div class="alert alert-warning" id="controlsRequerid" style="display:none">
+                        <a href="#" class="close" onclick="$('#controlsRequerid').hide();">&times;</a>
+                        <span id="textRequired"></span>
+                 </div>
+			<div class="tabs-container">
+                        	<ul class="nav nav-tabs">
+<li class="active"><a data-toggle="tab" href="#tabDatos_Generales"> @Resources.ConsultasResources.TabDatos_Generales</a></li>
+<li class=""><a data-toggle="tab" href="#tabMediciones"> @Resources.ConsultasResources.TabMediciones</a></li>
+<li class=""><a data-toggle="tab" href="#tabResultados"> @Resources.ConsultasResources.TabResultados</a></li>
+
+                        	</ul>
+	                	<div class="tab-content">
+                            <div id="tabDatos_Generales" class="tab-pane active">
+                                <div class="panel-body">
+                            <div class="form-group" id="divFolio">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Folio</label>
+                                <div class="col-sm-8" data-field-id="Folio" data-attribute="257897" data-field-name="@Resources.ConsultasResources.Folio">
+                                    <label class="form-control" for="Folio" id="lblFolio">
+                                    @if (Model.Folio== 0)
+                                        {
+                                            <text>@Resources.Resources.ClaveDefault</text>
+                                        }
+                                        else
+                                        { 
+                                            <text>@Model.Folio</text>
+                                        }
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divFecha_de_Registo">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Fecha_de_Registo</label>
+                                <div class="col-sm-8" data-field-id="Fecha_de_Registo" data-attribute="257898" data-field-name="@Resources.ConsultasResources.Fecha_de_Registo">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input class="form-control col-md-12 Datos_Generales" id="Fecha_de_Registo"  name="Fecha_de_Registo" type="text" value="@Model.Fecha_de_Registo">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divHora_de_Registro">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Hora_de_Registro</label>
+                                <div class="col-sm-8" data-field-id="Hora_de_Registro" data-attribute="257899" data-field-name="@Resources.ConsultasResources.Hora_de_Registro">
+                                    <div class='input-group date' id='timePicker'>
+                                        <input class="form-control col-md-12 Datos_Generales" id="Hora_de_Registro"  name="Hora_de_Registro" type="text" data-autoclose="true" value="@Model.Hora_de_Registro">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-time"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divUsuario_que_Registra">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Usuario_que_Registra</label>
+                                <div class="col-sm-8" data-field-id="Usuario_que_Registra" data-attribute="257900" data-field-name="@Resources.ConsultasResources.Usuario_que_Registra">
+                                    <select class="form-control Datos_Generales" data-val="true" data-val-number="The field Usuario que Registra must be a number." data-val-required="The Usuario que Registra field is required." id="Usuario_que_Registra" name="Usuario_que_Registra">
+                                        <option value=""></option>
+                                        @if (varSpartan_User_Usuario_que_Registra != null){ 
+                                            foreach (var itemUsuario_que_Registra in varSpartan_User_Usuario_que_Registra)
+                                            {
+                                                if (itemUsuario_que_Registra.Value == Convert.ToString(Model.Usuario_que_Registra))
+                                                {
+                                                    <option value="@itemUsuario_que_Registra.Value" selected>@itemUsuario_que_Registra.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemUsuario_que_Registra.Value">@itemUsuario_que_Registra.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Usuario_que_Registra" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 257900).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Spartan_User', 'Usuario_que_Registra');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divFecha_Programada">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Fecha_Programada</label>
+                                <div class="col-sm-8" data-field-id="Fecha_Programada" data-attribute="257923" data-field-name="@Resources.ConsultasResources.Fecha_Programada">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input class="form-control col-md-12 Datos_Generales" id="Fecha_Programada"  name="Fecha_Programada" type="text" value="@Model.Fecha_Programada">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+				<div class="form-group" id="divPaciente">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Paciente</label>
+                                <div class="col-sm-8" data-field-id="Paciente" data-attribute="257901" data-field-name="@Resources.ConsultasResources.Paciente">
+                                    <select class='fullWidth AutoComplete AutoCompleteConsultas_Paciente form-control select2-dropdown Datos_Generales' data-val="true" id="Paciente" name="Paciente">
+                                        <option value="@Model.Paciente">@(Model.PacienteNombre_Completo??Model.PacienteNombre_Completo)</option>
+                                    </select>
+                                </div>
+				@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 257901).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Pacientes', 'Paciente');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divEdad">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Edad</label>
+                                <div class="col-sm-8" data-field-id="Edad" data-attribute="257902" data-field-name="@Resources.ConsultasResources.Edad">
+                                    <input class="form-control inputNumber Datos_Generales" id="Edad" name="Edad" type="text" value="@Model.Edad">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Edad" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divNombre_del_padre">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Nombre_del_padre</label>
+                                <div class="col-sm-8" data-field-id="Nombre_del_padre" data-attribute="257903" data-field-name="@Resources.ConsultasResources.Nombre_del_padre">
+                                    <input class="form-control Datos_Generales" id="Nombre_del_padre" name="Nombre_del_padre" type="text" value="@Model.Nombre_del_padre">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Nombre_del_padre" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divSexo">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Sexo</label>
+                                <div class="col-sm-8" data-field-id="Sexo" data-attribute="257904" data-field-name="@Resources.ConsultasResources.Sexo">
+                                    <select class="form-control Datos_Generales" data-val="true" data-val-number="The field Sexo must be a number." data-val-required="The Sexo field is required." id="Sexo" name="Sexo">
+                                        <option value=""></option>
+                                        @if (varSexo_Sexo != null){ 
+                                            foreach (var itemSexo in varSexo_Sexo)
+                                            {
+                                                if (itemSexo.Value == Convert.ToString(Model.Sexo))
+                                                {
+                                                    <option value="@itemSexo.Value" selected>@itemSexo.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemSexo.Value">@itemSexo.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Sexo" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 257904).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Sexo', 'Sexo');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divEmail">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Email</label>
+                                <div class="col-sm-8" data-field-id="Email" data-attribute="257905" data-field-name="@Resources.ConsultasResources.Email">
+                                    <input class="form-control Datos_Generales" id="Email" name="Email" type="text" value="@Model.Email">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Email" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divObjetivo">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Objetivo</label>
+                                <div class="col-sm-8" data-field-id="Objetivo" data-attribute="257906" data-field-name="@Resources.ConsultasResources.Objetivo">
+                                    <select class="form-control Datos_Generales" data-val="true" data-val-number="The field Objetivo must be a number." data-val-required="The Objetivo field is required." id="Objetivo" name="Objetivo">
+                                        <option value=""></option>
+                                        @if (varObjetivos_Objetivo != null){ 
+                                            foreach (var itemObjetivo in varObjetivos_Objetivo)
+                                            {
+                                                if (itemObjetivo.Value == Convert.ToString(Model.Objetivo))
+                                                {
+                                                    <option value="@itemObjetivo.Value" selected>@itemObjetivo.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemObjetivo.Value">@itemObjetivo.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Objetivo" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 257906).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Objetivos', 'Objetivo');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            </div>
+                                </div>
+
+
+                            <div id="tabMediciones" class="tab-pane">
+                                <div class="panel-body">
+                            <div class="form-group" id="divFrecuencia_Cardiaca">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Frecuencia_Cardiaca</label>
+                                <div class="col-sm-8" data-field-id="Frecuencia_Cardiaca" data-attribute="257907" data-field-name="@Resources.ConsultasResources.Frecuencia_Cardiaca">
+                                    <input class="form-control inputNumber Mediciones" id="Frecuencia_Cardiaca" name="Frecuencia_Cardiaca" type="text" value="@Model.Frecuencia_Cardiaca">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Frecuencia_Cardiaca" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divPresion_sistolica">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Presion_sistolica</label>
+                                <div class="col-sm-8" data-field-id="Presion_sistolica" data-attribute="257908" data-field-name="@Resources.ConsultasResources.Presion_sistolica">
+                                    <input class="form-control inputNumber Mediciones" id="Presion_sistolica" name="Presion_sistolica" type="text" value="@Model.Presion_sistolica">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Presion_sistolica" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divPresion_diastolica">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Presion_diastolica</label>
+                                <div class="col-sm-8" data-field-id="Presion_diastolica" data-attribute="257909" data-field-name="@Resources.ConsultasResources.Presion_diastolica">
+                                    <input class="form-control inputNumber Mediciones" id="Presion_diastolica" name="Presion_diastolica" type="text" value="@Model.Presion_diastolica">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Presion_diastolica" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divPeso_actual">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Peso_actual</label>
+                                <div class="col-sm-8" data-field-id="Peso_actual" data-attribute="257910" data-field-name="@Resources.ConsultasResources.Peso_actual">
+									@if(Model.Peso_actual.HasValue)
+									{
+										<input class="form-control col-md-12 inputNumber Mediciones" id="Peso_actual" name="Peso_actual" type="text" min="0.00" max="999999.99" value="@Model.Peso_actual.Value.ToString(new CultureInfo("en-US"))">
+									}
+									else
+									{
+										<input class="form-control col-md-12 inputNumber Mediciones" id="Peso_actual" name="Peso_actual" type="text" min="0.00" max="999999.99" value="">
+									}                                    
+                                </div>
+                            </div>
+                            <div class="form-group" id="divEstatura">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Estatura</label>
+                                <div class="col-sm-8" data-field-id="Estatura" data-attribute="257911" data-field-name="@Resources.ConsultasResources.Estatura">
+									@if(Model.Estatura.HasValue)
+									{
+										<input class="form-control col-md-12 inputNumber Mediciones" id="Estatura" name="Estatura" type="text" min="0.00" max="999999.99" value="@Model.Estatura.Value.ToString(new CultureInfo("en-US"))">
+									}
+									else
+									{
+										<input class="form-control col-md-12 inputNumber Mediciones" id="Estatura" name="Estatura" type="text" min="0.00" max="999999.99" value="">
+									}                                    
+                                </div>
+                            </div>
+                            <div class="form-group" id="divCircunferencia_de_cintura_cm">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Circunferencia_de_cintura_cm</label>
+                                <div class="col-sm-8" data-field-id="Circunferencia_de_cintura_cm" data-attribute="257912" data-field-name="@Resources.ConsultasResources.Circunferencia_de_cintura_cm">
+                                    <input class="form-control inputNumber Mediciones" id="Circunferencia_de_cintura_cm" name="Circunferencia_de_cintura_cm" type="text" value="@Model.Circunferencia_de_cintura_cm">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Circunferencia_de_cintura_cm" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divCircunferencia_de_cadera_cm">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Circunferencia_de_cadera_cm</label>
+                                <div class="col-sm-8" data-field-id="Circunferencia_de_cadera_cm" data-attribute="257914" data-field-name="@Resources.ConsultasResources.Circunferencia_de_cadera_cm">
+                                    <input class="form-control inputNumber Mediciones" id="Circunferencia_de_cadera_cm" name="Circunferencia_de_cadera_cm" type="text" value="@Model.Circunferencia_de_cadera_cm">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Circunferencia_de_cadera_cm" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divEdad_Metabolica">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Edad_Metabolica</label>
+                                <div class="col-sm-8" data-field-id="Edad_Metabolica" data-attribute="257915" data-field-name="@Resources.ConsultasResources.Edad_Metabolica">
+                                    <input class="form-control inputNumber Mediciones" id="Edad_Metabolica" name="Edad_Metabolica" type="text" value="@Model.Edad_Metabolica">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Edad_Metabolica" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divAgua_corporal">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Agua_corporal</label>
+                                <div class="col-sm-8" data-field-id="Agua_corporal" data-attribute="257916" data-field-name="@Resources.ConsultasResources.Agua_corporal">
+                                    <input class="form-control inputNumber Mediciones" id="Agua_corporal" name="Agua_corporal" type="text" value="@Model.Agua_corporal">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Agua_corporal" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divGrasa_Visceral">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Grasa_Visceral</label>
+                                <div class="col-sm-8" data-field-id="Grasa_Visceral" data-attribute="257917" data-field-name="@Resources.ConsultasResources.Grasa_Visceral">
+                                    <input class="form-control inputNumber Mediciones" id="Grasa_Visceral" name="Grasa_Visceral" type="text" value="@Model.Grasa_Visceral">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Grasa_Visceral" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divGrasa_Corporal">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Grasa_Corporal</label>
+                                <div class="col-sm-8" data-field-id="Grasa_Corporal" data-attribute="257918" data-field-name="@Resources.ConsultasResources.Grasa_Corporal">
+                                    <input class="form-control inputNumber Mediciones" id="Grasa_Corporal" name="Grasa_Corporal" type="text" value="@Model.Grasa_Corporal">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Grasa_Corporal" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divGrasa_Corporal_kg">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Grasa_Corporal_kg</label>
+                                <div class="col-sm-8" data-field-id="Grasa_Corporal_kg" data-attribute="257919" data-field-name="@Resources.ConsultasResources.Grasa_Corporal_kg">
+                                    <input class="form-control inputNumber Mediciones" id="Grasa_Corporal_kg" name="Grasa_Corporal_kg" type="text" value="@Model.Grasa_Corporal_kg">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Grasa_Corporal_kg" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divMasa_Muscular_kg">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Masa_Muscular_kg</label>
+                                <div class="col-sm-8" data-field-id="Masa_Muscular_kg" data-attribute="257920" data-field-name="@Resources.ConsultasResources.Masa_Muscular_kg">
+                                    <input class="form-control inputNumber Mediciones" id="Masa_Muscular_kg" name="Masa_Muscular_kg" type="text" value="@Model.Masa_Muscular_kg">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Masa_Muscular_kg" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divSemana_de_gestacion">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Semana_de_gestacion</label>
+                                <div class="col-sm-8" data-field-id="Semana_de_gestacion" data-attribute="257925" data-field-name="@Resources.ConsultasResources.Semana_de_gestacion">
+                                    <input class="form-control inputNumber Mediciones" id="Semana_de_gestacion" name="Semana_de_gestacion" type="text" value="@Model.Semana_de_gestacion">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Semana_de_gestacion" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            </div>
+                                </div>
+
+
+                            <div id="tabResultados" class="tab-pane">
+                                <div class="panel-body">
+                            <div class="form-group" id="divIMC">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.IMC</label>
+                                <div class="col-sm-8" data-field-id="IMC" data-attribute="257926" data-field-name="@Resources.ConsultasResources.IMC">
+                                    <input class="form-control inputNumber Resultados" id="IMC" name="IMC" type="text" value="@Model.IMC">
+                                    @*<span class="field-validation-valid" data-valmsg-for="IMC" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divIMC_Pediatria">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.IMC_Pediatria</label>
+                                <div class="col-sm-8" data-field-id="IMC_Pediatria" data-attribute="259678" data-field-name="@Resources.ConsultasResources.IMC_Pediatria">
+                                    <select class="form-control Resultados" data-val="true" data-val-number="The field IMC Pediatría must be a number." data-val-required="The IMC Pediatría field is required." id="IMC_Pediatria" name="IMC_Pediatria">
+                                        <option value=""></option>
+                                        @if (varInterpretacion_IMC_IMC_Pediatria != null){ 
+                                            foreach (var itemIMC_Pediatria in varInterpretacion_IMC_IMC_Pediatria)
+                                            {
+                                                if (itemIMC_Pediatria.Value == Convert.ToString(Model.IMC_Pediatria))
+                                                {
+                                                    <option value="@itemIMC_Pediatria.Value" selected>@itemIMC_Pediatria.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemIMC_Pediatria.Value">@itemIMC_Pediatria.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="IMC_Pediatria" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 259678).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Interpretacion_IMC', 'IMC_Pediatria');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divInterpretacion_IMC">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Interpretacion_IMC</label>
+                                <div class="col-sm-8" data-field-id="Interpretacion_IMC" data-attribute="258523" data-field-name="@Resources.ConsultasResources.Interpretacion_IMC">
+                                    <select class="form-control Resultados" data-val="true" data-val-number="The field Interpretación must be a number." data-val-required="The Interpretación field is required." id="Interpretacion_IMC" name="Interpretacion_IMC">
+                                        <option value=""></option>
+                                        @if (varInterpretacion_IMC_Interpretacion_IMC != null){ 
+                                            foreach (var itemInterpretacion_IMC in varInterpretacion_IMC_Interpretacion_IMC)
+                                            {
+                                                if (itemInterpretacion_IMC.Value == Convert.ToString(Model.Interpretacion_IMC))
+                                                {
+                                                    <option value="@itemInterpretacion_IMC.Value" selected>@itemInterpretacion_IMC.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemInterpretacion_IMC.Value">@itemInterpretacion_IMC.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Interpretacion_IMC" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 258523).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Interpretacion_IMC', 'Interpretacion_IMC');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divConsumo_de_agua_resultado">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Consumo_de_agua_resultado</label>
+                                <div class="col-sm-8" data-field-id="Consumo_de_agua_resultado" data-attribute="257927" data-field-name="@Resources.ConsultasResources.Consumo_de_agua_resultado">
+                                    <input class="form-control inputNumber Resultados" id="Consumo_de_agua_resultado" name="Consumo_de_agua_resultado" type="text" value="@Model.Consumo_de_agua_resultado">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Consumo_de_agua_resultado" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divInterpretacion_agua">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Interpretacion_agua</label>
+                                <div class="col-sm-8" data-field-id="Interpretacion_agua" data-attribute="258524" data-field-name="@Resources.ConsultasResources.Interpretacion_agua">
+                                    <select class="form-control Resultados" data-val="true" data-val-number="The field Interpretación must be a number." data-val-required="The Interpretación field is required." id="Interpretacion_agua" name="Interpretacion_agua">
+                                        <option value=""></option>
+                                        @if (varInterpretacion_consumo_de_agua_Interpretacion_agua != null){ 
+                                            foreach (var itemInterpretacion_agua in varInterpretacion_consumo_de_agua_Interpretacion_agua)
+                                            {
+                                                if (itemInterpretacion_agua.Value == Convert.ToString(Model.Interpretacion_agua))
+                                                {
+                                                    <option value="@itemInterpretacion_agua.Value" selected>@itemInterpretacion_agua.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemInterpretacion_agua.Value">@itemInterpretacion_agua.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Interpretacion_agua" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 258524).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Interpretacion_consumo_de_agua', 'Interpretacion_agua');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divFrecuencia_cardiaca_en_Esfuerzo">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Frecuencia_cardiaca_en_Esfuerzo</label>
+                                <div class="col-sm-8" data-field-id="Frecuencia_cardiaca_en_Esfuerzo" data-attribute="257928" data-field-name="@Resources.ConsultasResources.Frecuencia_cardiaca_en_Esfuerzo">
+                                    <input class="form-control inputNumber Resultados" id="Frecuencia_cardiaca_en_Esfuerzo" name="Frecuencia_cardiaca_en_Esfuerzo" type="text" value="@Model.Frecuencia_cardiaca_en_Esfuerzo">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Frecuencia_cardiaca_en_Esfuerzo" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divInterpretacion_frecuencia">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Interpretacion_frecuencia</label>
+                                <div class="col-sm-8" data-field-id="Interpretacion_frecuencia" data-attribute="258525" data-field-name="@Resources.ConsultasResources.Interpretacion_frecuencia">
+                                    <select class="form-control Resultados" data-val="true" data-val-number="The field Interpretación must be a number." data-val-required="The Interpretación field is required." id="Interpretacion_frecuencia" name="Interpretacion_frecuencia">
+                                        <option value=""></option>
+                                        @if (varInterpretacion_Frecuencia_cardiaca_en_Esfuerzo_Interpretacion_frecuencia != null){ 
+                                            foreach (var itemInterpretacion_frecuencia in varInterpretacion_Frecuencia_cardiaca_en_Esfuerzo_Interpretacion_frecuencia)
+                                            {
+                                                if (itemInterpretacion_frecuencia.Value == Convert.ToString(Model.Interpretacion_frecuencia))
+                                                {
+                                                    <option value="@itemInterpretacion_frecuencia.Value" selected>@itemInterpretacion_frecuencia.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemInterpretacion_frecuencia.Value">@itemInterpretacion_frecuencia.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Interpretacion_frecuencia" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 258525).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Interpretacion_Frecuencia_cardiaca_en_Esfuerzo', 'Interpretacion_frecuencia');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divIndice_cintura_cadera">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Indice_cintura_cadera</label>
+                                <div class="col-sm-8" data-field-id="Indice_cintura_cadera" data-attribute="258230" data-field-name="@Resources.ConsultasResources.Indice_cintura_cadera">
+                                    <input class="form-control inputNumber Resultados" id="Indice_cintura_cadera" name="Indice_cintura_cadera" type="text" value="@Model.Indice_cintura_cadera">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Indice_cintura_cadera" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divInterpretacion_indice">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Interpretacion_indice</label>
+                                <div class="col-sm-8" data-field-id="Interpretacion_indice" data-attribute="258526" data-field-name="@Resources.ConsultasResources.Interpretacion_indice">
+                                    <select class="form-control Resultados" data-val="true" data-val-number="The field Interpretación must be a number." data-val-required="The Interpretación field is required." id="Interpretacion_indice" name="Interpretacion_indice">
+                                        <option value=""></option>
+                                        @if (varInterpretacion_indice_cintura__cadera_Interpretacion_indice != null){ 
+                                            foreach (var itemInterpretacion_indice in varInterpretacion_indice_cintura__cadera_Interpretacion_indice)
+                                            {
+                                                if (itemInterpretacion_indice.Value == Convert.ToString(Model.Interpretacion_indice))
+                                                {
+                                                    <option value="@itemInterpretacion_indice.Value" selected>@itemInterpretacion_indice.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemInterpretacion_indice.Value">@itemInterpretacion_indice.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Interpretacion_indice" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 258526).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Interpretacion_indice_cintura__cadera', 'Interpretacion_indice');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divDificultad_de_Rutina_de_Ejercicios">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Dificultad_de_Rutina_de_Ejercicios</label>
+                                <div class="col-sm-8" data-field-id="Dificultad_de_Rutina_de_Ejercicios" data-attribute="257929" data-field-name="@Resources.ConsultasResources.Dificultad_de_Rutina_de_Ejercicios">
+                                    <input class="form-control inputNumber Resultados" id="Dificultad_de_Rutina_de_Ejercicios" name="Dificultad_de_Rutina_de_Ejercicios" type="text" value="@Model.Dificultad_de_Rutina_de_Ejercicios">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Dificultad_de_Rutina_de_Ejercicios" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divInterpretacion_dificultad">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Interpretacion_dificultad</label>
+                                <div class="col-sm-8" data-field-id="Interpretacion_dificultad" data-attribute="258527" data-field-name="@Resources.ConsultasResources.Interpretacion_dificultad">
+                                    <select class="form-control Resultados" data-val="true" data-val-number="The field Interpretación must be a number." data-val-required="The Interpretación field is required." id="Interpretacion_dificultad" name="Interpretacion_dificultad">
+                                        <option value=""></option>
+                                        @if (varInterpretacion_Dificultad_de_Rutina_de_Ejercicios_Interpretacion_dificultad != null){ 
+                                            foreach (var itemInterpretacion_dificultad in varInterpretacion_Dificultad_de_Rutina_de_Ejercicios_Interpretacion_dificultad)
+                                            {
+                                                if (itemInterpretacion_dificultad.Value == Convert.ToString(Model.Interpretacion_dificultad))
+                                                {
+                                                    <option value="@itemInterpretacion_dificultad.Value" selected>@itemInterpretacion_dificultad.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemInterpretacion_dificultad.Value">@itemInterpretacion_dificultad.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Interpretacion_dificultad" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 258527).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Interpretacion_Dificultad_de_Rutina_de_Ejercicios', 'Interpretacion_dificultad');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divCalorias">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Calorias</label>
+                                <div class="col-sm-8" data-field-id="Calorias" data-attribute="257930" data-field-name="@Resources.ConsultasResources.Calorias">
+                                    <input class="form-control inputNumber Resultados" id="Calorias" name="Calorias" type="text" value="@Model.Calorias">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Calorias" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divInterpretacion_calorias">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Interpretacion_calorias</label>
+                                <div class="col-sm-8" data-field-id="Interpretacion_calorias" data-attribute="258528" data-field-name="@Resources.ConsultasResources.Interpretacion_calorias">
+                                    <select class="form-control Resultados" data-val="true" data-val-number="The field Interpretación must be a number." data-val-required="The Interpretación field is required." id="Interpretacion_calorias" name="Interpretacion_calorias">
+                                        <option value=""></option>
+                                        @if (varInterpretacion_Calorias_Interpretacion_calorias != null){ 
+                                            foreach (var itemInterpretacion_calorias in varInterpretacion_Calorias_Interpretacion_calorias)
+                                            {
+                                                if (itemInterpretacion_calorias.Value == Convert.ToString(Model.Interpretacion_calorias))
+                                                {
+                                                    <option value="@itemInterpretacion_calorias.Value" selected>@itemInterpretacion_calorias.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemInterpretacion_calorias.Value">@itemInterpretacion_calorias.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Interpretacion_calorias" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 258528).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Interpretacion_Calorias', 'Interpretacion_calorias');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divObservaciones">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Observaciones</label>
+                                <div class="col-sm-8" data-field-id="Observaciones" data-attribute="257931" data-field-name="@Resources.ConsultasResources.Observaciones">
+                                    <textarea id="Observaciones" name="Observaciones" class="form-control Resultados" rows="4" cols="50">@Model.Observaciones</textarea>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Observaciones" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divFecha_siguiente_Consulta">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Fecha_siguiente_Consulta</label>
+                                <div class="col-sm-8" data-field-id="Fecha_siguiente_Consulta" data-attribute="257924" data-field-name="@Resources.ConsultasResources.Fecha_siguiente_Consulta">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input class="form-control col-md-12 Resultados" id="Fecha_siguiente_Consulta"  name="Fecha_siguiente_Consulta" type="text" value="@Model.Fecha_siguiente_Consulta">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="divResultados">
+                            <div class="ibox-title">
+                                <h5>@Resources.ConsultasResources.Resultados</h5>
+                                <div class="ibox-tools">
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="">
+									@if (permissionDetalle_Resultados_Consultas.New && !ViewBag.Consult)
+                                    {
+                                        <a onclick="Detalle_Resultados_ConsultasfnClickAddRow();" href="javascript:void(0);" title="@Resources.Resources.AddNewRow" class="Detalle_Resultados_ConsultasAddRow btn btn-primary">
+                                            <i class="glyphicon glyphicon-plus"></i>
+                                        </a>
+                                    }
+                                    <button onclick="ConsultasGetBusinessRule('', 'Al Guardar o al Eliminar una Row', '258452')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#ConsultasBusinessRule-form">
+                                        <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToCreateGrid">
+                                            <i class="fa fa-cogs fa-spin"></i>
+                                        </a>
+                                    </button>
+									@if (permissionDetalle_Resultados_Consultas.New && !ViewBag.Consult)
+                                    {
+                                        <a onclick="Detalle_Resultados_ConsultasfnOpenAddRowPopUp();" data-toggle="modal" title="@Resources.Resources.AddNewRow" data-target="#AddDetalle_Resultados_Consultas-form" data-backdrop="static" data-keyboard="false" class="btn_mrpopup btn btn-primary">
+                                            <i class="glyphicon glyphicon-new-window"></i>
+                                        </a>
+                                    }  
+                                </div>
+
+                                <br />
+
+                                <div style='overflow-x: auto;'>
+                                    <table class="table table-striped table-bordered table-hover childValidateTable" id="Detalle_Resultados_ConsultasGrid">
+                                        <thead>
+                                            <tr>
+                                                <th class="ActionHeader"><span>@Resources.Resources.Actions</span></th>
+
+
+                                                <th class="Folio_PacientesHeader"><span>
+<button type="button" data-attribute="258453" data-field-id="Detalle_Resultados_ConsultasFolio_Pacientes" data-field-name="@Resources.Detalle_Resultados_ConsultasResources.Folio_Pacientes" data-toggle="modal" data-target="#ConsultasBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Resultados_ConsultasResources.Folio_Pacientes">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Resultados_ConsultasResources.Folio_Pacientes</span></th>
+                                                <th class="Fecha_de_ConsultaHeader"><span>
+<button type="button" data-attribute="258451" data-field-id="Detalle_Resultados_ConsultasFecha_de_Consulta" data-field-name="@Resources.Detalle_Resultados_ConsultasResources.Fecha_de_Consulta" data-toggle="modal" data-target="#ConsultasBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Resultados_ConsultasResources.Fecha_de_Consulta">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Resultados_ConsultasResources.Fecha_de_Consulta</span></th>
+                                                <th class="IndicadorHeader"><span>
+<button type="button" data-attribute="258448" data-field-id="Detalle_Resultados_ConsultasIndicador" data-field-name="@Resources.Detalle_Resultados_ConsultasResources.Indicador" data-toggle="modal" data-target="#ConsultasBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Resultados_ConsultasResources.Indicador">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Resultados_ConsultasResources.Indicador</span></th>
+                                                <th class="ResultadoHeader"><span>
+<button type="button" data-attribute="258449" data-field-id="Detalle_Resultados_ConsultasResultado" data-field-name="@Resources.Detalle_Resultados_ConsultasResources.Resultado" data-toggle="modal" data-target="#ConsultasBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Resultados_ConsultasResources.Resultado">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>
+@Resources.Detalle_Resultados_ConsultasResources.Resultado</span></th>
+                                                <th class="InterpretacionHeader"><span>
+<button type="button" data-attribute="258450" data-field-id="Detalle_Resultados_ConsultasInterpretacion" data-field-name="@Resources.Detalle_Resultados_ConsultasResources.Interpretacion" data-toggle="modal" data-target="#ConsultasBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Resultados_ConsultasResources.Interpretacion">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Resultados_ConsultasResources.Interpretacion</span></th>
+                                                <th class="IMCHeader"><span>
+<button type="button" data-attribute="259679" data-field-id="Detalle_Resultados_ConsultasIMC" data-field-name="@Resources.Detalle_Resultados_ConsultasResources.IMC" data-toggle="modal" data-target="#ConsultasBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Resultados_ConsultasResources.IMC">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>
+@Resources.Detalle_Resultados_ConsultasResources.IMC</span></th>
+                                                <th class="IMC_PediatriaHeader"><span>
+<button type="button" data-attribute="259680" data-field-id="Detalle_Resultados_ConsultasIMC_Pediatria" data-field-name="@Resources.Detalle_Resultados_ConsultasResources.IMC_Pediatria" data-toggle="modal" data-target="#ConsultasBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Resultados_ConsultasResources.IMC_Pediatria">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>
+@Resources.Detalle_Resultados_ConsultasResources.IMC_Pediatria</span></th>
+
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                                </div>
+
+				</div>	
+                    <br />
+                            <div class="form-actions fluid">
+                                <input type="hidden" value="@Model.Folio" id="ReferenceFolio" />
+                                <input type="hidden" value="@Model.Folio" name="Folio" id="FolioId" />
+                                <input type="hidden" value="@ViewBag.Operation" name="Operation" id="Operation" />
+                                @if (!ViewBag.Consult)
+                                {
+                                    <input type="button" value="@Resources.Resources.Guardar" id="ConsultasGuardar" class="btn btn-w-m btn-primary btn_save" onclick="return checkClientValidate('ConsultasCreateForm');"  />
+									<button onclick="ConsultasGetBusinessRule('', 'Al Guardar o al Cerrar la Pantalla', '2')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#ConsultasBusinessRule-form">
+                                        <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleBeforeSave">
+                                            <i class="fa fa-cogs fa-spin"></i>
+                                        </a>
+                                    </button>                                    
+
+                                    <input type="button" value="@Resources.Resources.GuardarNuevo" id="ConsultasGuardarYNuevo" onclick="return checkClientValidate('ConsultasCreateForm');" data-bind="    click: saveAndNew" class="btn btn-w-m btn-success btn_saveandnew"  />
+                                    <input type="button" value="@Resources.Resources.GuardarCopia" id="ConsultasGuardarYCopia" onclick="return checkClientValidate('ConsultasCreateForm');" data-bind="    click: saveAndNew" class="btn btn-w-m btn-success btn_saveandcopy"  />
+                                    if (permission.Configure)
+                                    {
+                                        <a title="@Resources.Resources.Configure" id="ConfigureSave" name="ConfigureSave" onclick="SaveElementAttributes()" class="btn btn-success btn-configure">@Resources.Resources.Configure</a>
+                                    }
+                                }
+
+                                <input type="hidden" id="hdnConfigureType" />
+								<input type="hidden" id="hdnConsultasBusinessRuleFieldId" />
+                                <input type="hidden" id="hdnConsultasBusinessRuleFieldName" />
+                                <input type="hidden" id="hdnConsultasBusinessRuleAttribute" />
+
+                                <input type="button" value="@Resources.Resources.Cancelar" id="ConsultasCancelar" name="ConsultasCancelar" class="btn btn-danger noConsult btn_cancelar" data-bind="click: cancel" tabindex="16" />
+
+                                <button onclick="ConsultasGetBusinessRule('', 'Al Cancelar', '4')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#ConsultasBusinessRule-form">
+                                    <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+                                        <i class="fa fa-cogs fa-spin"></i>
+                                    </a>
+                                </button>
+                            </div>
+						</div>
+					</div>
+                }
+        </div>
+    </div>
+</div>
+<input id="hdnApplicationDirectory" type="hidden" value="@Url.Content("~/")" />
+
+@section Styles {
+<link href="@Url.Content("~/Content/BootstrapDatePicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+    @Styles.Render("~/plugins/awesomeCheckboxStyles")
+    @Styles.Render("~/plugins/select2Styles")
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+    .select2-results{background-color:#fff;}
+    .select2-container .select2-dropdown{height:auto !important;}
+
+    div.dataTables_info {
+        display: inline-block;
+        float: right;
+    }
+        /*i {
+        font-size: 25px !important;
+        display: block;
+        color: #676a6c;
+        margin-left: 6px;
+        margin-right: 6px;
+    }*/
+
+    .fullWidth {
+        width: 100%;
+    }
+</style>
+}
+
+<script type="text/javascript" src="~/Uploads/Scripts/Consultas.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Scripts/Custom/ConsultasGeneral.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/ConsultasCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
+
+@section Scripts {
+
+
+    <script type="text/javascript">
+        
+
+
+	function GetTraduction(text) {
+         switch (text.toLowerCase()) {
+            case 'edit':
+                return "@Resources.Resources.Edit";          
+            case 'delete':
+                return "@Resources.Resources.Delete";               
+            case 'required':
+                return "@Resources.Resources.Required";              
+            case 'notrequired':
+                return "@Resources.Resources.NotRequired";           
+            case 'enabled':
+                return "@Resources.Resources.Enabled";         
+            case 'disabled':
+                return "@Resources.Resources.Disabled";           
+            case 'visible':
+                return "@Resources.Resources.Visible";            
+            case 'botvisible':
+                return "@Resources.Resources.InVisible";
+            case 'messagednoinvisible':
+                return "@Resources.Resources.messagedNoInVisible";
+            case 'messagednoreadonly':
+                return "@Resources.Resources.messagedNoReadOnly";
+            case 'defaultvalue':
+                return "@Resources.Resources.DefaultValue";
+            case 'helptext':
+                return "@Resources.Resources.HelpText";                     
+            default:
+                return "";
+        }
+    }
+	
+	    var isPartial = ('@ViewBag.IsPartial' == 'True');
+        var isMR = ('@ViewBag.isMR' == 'True');
+        var nameMR = '@ViewBag.nameMR';
+		var nameAttribute = '@ViewBag.nameAttribute';
+		var Tab_Datos_Generales = true;
+
+		var Tab_Mediciones = true;
+
+		var Tab_Resultados = true;
+
+
+        $(document).ready(function () {
+            $('#ObjectId').val('44352');
+		                 
+            GetDetalle_Resultados_Consultas_PacientesItem();
+
+            GetDetalle_Resultados_Consultas_Indicadores_ConsultasItem();
+
+
+
+
+           
+              showDetalle_Resultados_ConsultasGrid(null);
+
+		   
+			
+             @if(ViewBag.IsNew)
+            { 
+                <text>$('input:checkbox').prop('checked', false);</text>
+            }
+			else
+            {
+                <text>
+				if (Tab_Datos_Generales)
+					Fill_Datos_Generales();
+
+				if (Tab_Mediciones)
+					Fill_Mediciones();
+
+				if (Tab_Resultados)
+					Fill_Resultados();
+
+
+                </text>
+             }
+             EjecutarValidacionesAlComienzo();
+                         $('#Fecha_de_Registo').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            $('#Hora_de_Registro').clockpicker();
+            $('#Fecha_Programada').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            $('#Fecha_siguiente_Consulta').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+
+
+            initiateUIControls();
+			$('a').tooltip();
+			$('.loading').css('display', 'none');
+			       var AutoCompletePacienteData =[];
+       $(".AutoCompleteConsultas_Paciente").select2({
+            dropdownCssClass: 'fullWidth form-control',
+            ajax: {
+                url: "@Url.Content("~/Frontal/Consultas/GetConsultas_Paciente_Pacientes")",
+		cache: false,
+                dataType: 'json',
+                async: true,
+                global: false,
+                data: function (params) {
+                    return {
+                        query: params.term, 
+                    };
+                },
+                processResults: function (data, params) {
+                    params.page = params.page || 1;
+
+                    return {
+                        results: GetAutoCompleteConsultas_Paciente_PacientesData(data),
+                        pagination: {
+                            more: false 
+                        }
+                    };
+                }
+            },
+            escapeMarkup: function (markup) { return markup; }, 
+            minimumInputLength: 1,
+        });
+        var $eventExternal = $(".AutoCompleteConsultas_Paciente");
+        $eventExternal.on("select2:open", function (e) {
+            $('.select2-search__field').val('');
+            $('.select2-search__field').keyup();
+        });
+
+
+        });
+
+        var Detalle_Resultados_ConsultasinsertRowCurrentIndex = -1;
+        var Detalle_Resultados_ConsultasDataDataTable;
+        function getDetalle_Resultados_ConsultasData() {
+            $.ajax({
+                url: "@Url.Content("~/Frontal/Consultas/GetDetalle_Resultados_Consultas")" + "?draw=1&start=1&length=2147483647" + ($("#ReferenceFolio").val() != "" ? "&RelationId=" + $("#ReferenceFolio").val() : ""),
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    Detalle_Resultados_ConsultasDataDataTable = result.data;
+                    showDetalle_Resultados_ConsultasGrid(result.data);
+                    $('#Detalle_Resultados_ConsultasGrid .inputMoney').inputmask("currency", { prefix: "$", rightAlign: false });
+                    $('#Detalle_Resultados_ConsultasGrid .gridDatePicker').attr("readonly", "");
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+        function Detalle_Resultados_ConsultasGetUpdateRowControls(data, nameOfTable, rowIndex) {
+
+            var columnData = [];
+            var counter = 0;
+            var inputData = "<input type='text' class='fullWidth form-control' />";
+
+           columnData[counter++] = $($(GetDetalle_Resultados_Consultas_PacientesDropDown()).val(data.Folio_Pacientes)).addClass('Folio_Pacientes inputNumber').attr('id', nameOfTable + 'Folio_Pacientes' + rowIndex).attr('data-field', 'Folio_Pacientes').after($.parseHTML(addNew('Detalle_Resultados_Consultas', 'Pacientes','Folio_Pacientes', 258453)));
+            columnData[counter++] = $($($.parseHTML(GetGridDatePicker())).val(data.Fecha_de_Consulta)).addClass('Fecha_de_Consulta').attr('id', nameOfTable + 'Fecha_de_Consulta' + rowIndex).attr('data-field', 'Fecha_de_Consulta');
+           columnData[counter++] = $($(GetDetalle_Resultados_Consultas_Indicadores_ConsultasDropDown()).val(data.Indicador)).addClass('Indicador inputNumber').attr('id', nameOfTable + 'Indicador' + rowIndex).attr('data-field', 'Indicador').after($.parseHTML(addNew('Detalle_Resultados_Consultas', 'Indicadores_Consultas','Indicador', 258448)));
+            columnData[counter++] = $($($.parseHTML(inputData)).val(data.Resultado)).addClass('Resultado inputNumber').attr('id', nameOfTable + 'Resultado' + rowIndex).attr('data-field', 'Resultado');
+            columnData[counter++] = $($($.parseHTML(inputData)).val(data.Interpretacion)).addClass('Interpretacion').attr('id', nameOfTable + 'Interpretacion' + rowIndex).attr('data-field', 'Interpretacion');
+            columnData[counter++] = $($($.parseHTML(inputData)).val(data.IMC)).addClass('IMC inputNumber').attr('id', nameOfTable + 'IMC' + rowIndex).attr('data-field', 'IMC');
+            columnData[counter++] = $($($.parseHTML(inputData)).val(data.IMC_Pediatria)).addClass('IMC_Pediatria inputNumber').attr('id', nameOfTable + 'IMC_Pediatria' + rowIndex).attr('data-field', 'IMC_Pediatria');
+
+            return columnData;
+        }
+
+
+
+        function GetFileInfo(fileData, fileUploadData) {
+
+            var $div = $("<div>");
+            if (fileUploadData != null && fileUploadData.files.length > 0) {
+
+                $div.append("<label>" + fileUploadData.files[0].name + "</label>");
+                //<i class="fa fa-times-circle" id='removeFileAttachment'>
+                $div.append($("<i class='fa fa-times-circle' id='removeFileAttachment'>").click(function () {
+                    if (confirm(htmlDecode("@Resources.Resources.DeleteConfirm"))) {
+                        var parent = $(this).parent().parent();
+                        parent.empty();
+                        parent.append("<input type='file'>");
+                    }
+                }));
+                return $div;
+
+            } else if (fileUploadData != null) {
+                return $.parseHTML(GetFileUploader());
+            } else {
+                $div.append("<label>" + fileData.FileName + "</label>");
+                $div.append($("<i class='fa fa-times-circle' id='removeFileAttachment'>").click(function () {
+                    if (confirm(htmlDecode("@Resources.Resources.DeleteConfirm"))) {
+                        var parent = $(this).parent().parent();
+                        parent.empty();
+                        parent.append("<input type='file'>");
+                    }
+                }));
+                return $div;
+            }
+        }
+
+        var removedDetalle_Resultados_ConsultasData = [];
+        function Detalle_Resultados_ConsultasDeleteRow(rowIndex, row) {
+            var rowIndexTable = Detalle_Resultados_ConsultasTable.fnGetPosition($(row).parent().parent()[0]);
+            var permission = {            
+                 Delete: '@permissionDetalle_Resultados_Consultas.Delete' == 'True'
+            };
+            if (!permission.Delete || isConsultMode)
+                return;            
+            if (confirm(htmlDecode("@Resources.Resources.DeleteConfirm"))) {
+              if (EjecutarValidacionesAlEliminarMRDetalle_Resultados_Consultas('Detalle_Resultados_Consultas_', '_' + rowIndex)) {
+                var prevData = Detalle_Resultados_ConsultasTable.fnGetData(rowIndexTable );
+                removedDetalle_Resultados_ConsultasData.push(prevData);
+                Detalle_Resultados_ConsultasTable.fnDeleteRow(rowIndexTable );
+				showDetalle_Resultados_ConsultasGrid(Detalle_Resultados_ConsultasTable.fnGetData());
+              }
+            }
+			initiateUIControls();
+        }
+
+        function Detalle_Resultados_ConsultasrowCreationGrid(row, data, index) {
+            var permission =  {            
+                 Edit: '@permissionDetalle_Resultados_Consultas.Edit' == 'True',
+                 Delete: '@permissionDetalle_Resultados_Consultas.Delete' == 'True'
+            };
+            setDetalle_Resultados_ConsultasValidation();
+            var Detalle_Resultados_ConsultasRowElement = "Detalle_Resultados_Consultas_" + index.toString();
+            $(row).addClass(Detalle_Resultados_ConsultasRowElement);
+            var nameOfTable='Detalle_Resultados_Consultas_';
+            var rowIndex = '_' + index;
+            Detalle_Resultados_ConsultasinsertRowCurrentIndex = index;
+
+            row.innerHTML = "";
+
+            if (data.IsInsertRow) {
+
+                if (row.childNodes.length != 0) {
+                    for (var i = 0; i < row.childNodes.length; i++) {
+                        row.childNodes[i].remove();
+                    }
+                }
+                var controls = GetInsertDetalle_Resultados_ConsultasRowControls(index);
+                var actionColInsert = $('<td>');
+
+                var abc = "if(dynamicFieldValidation('" + Detalle_Resultados_ConsultasRowElement + "')){ Detalle_Resultados_ConsultasInsertRow(" + index + "); }";
+                var insertRowHTML = '<a  data-toggle="tooltip" title="Confirmar Registro" onclick="' + abc + '">';
+                $('<i class="fa fa-check">').appendTo($(insertRowHTML).appendTo(actionColInsert));
+				$('<i class="fa fa-times">').appendTo($("<a data-toggle='tooltip' title='Cancelar Registro' onclick='Detalle_Resultados_ConsultasCancelRow(" + index + ")'>").appendTo(actionColInsert));
+                actionColInsert.appendTo(row);
+
+                for (i = 0; i < controls.length; i++) {
+					var idHeader = $(controls[i]).data('field') + 'Header';
+					if($(controls[i]).length > 1){
+						idHeader = $($(controls[i])[1]).data('field') + 'Header';
+					}					
+
+					var classe = ($('#Detalle_Resultados_ConsultasGrid .' + idHeader).hasClass('dt-right') ? "dt-right" : "") + $('#Detalle_Resultados_ConsultasGrid .' + idHeader ).css('display') == 'none' ? " hide" : "";
+				   
+					if ($(controls[i]).next().length > 0) {
+					    var div = $(controls[i]).next();
+					    $('<td class="' + classe + '">').append($(controls[i])).append(div).appendTo(row);
+					}else
+					    $(controls[i]).appendTo($('<td class="' + classe + '">').appendTo(row));
+					
+                }
+                $('#Detalle_Resultados_ConsultasGrid .inputMoney').inputmask("currency", { prefix: "$", rightAlign: false });
+                $('#Detalle_Resultados_ConsultasGrid .gridDatePicker').attr("readonly", "");
+                return;
+            }
+
+            var actionCol = $('<td>');
+			var edit = "<a title='@Resources.Resources.Edit' class='edit-MR' onclick='Detalle_Resultados_ConsultasEditRow(" + index + ", this)'>";
+            if (!permission.Edit || isConsultMode)
+                edit = "";
+            var editPopUp = "<a title='@Resources.Resources.Edit' class='edit-popup-MR' data-toggle='modal' data-target='#AddDetalle_Resultados_Consultas-form' onclick='Detalle_Resultados_ConsultasEditRowPopup(" + index + ", this)'>";
+            if (!permission.Edit || isConsultMode)
+                editPopUp = "";
+            var eliminar = "<a title='@Resources.Resources.Delete' class='eliminar-MR' onclick='Detalle_Resultados_ConsultasDeleteRow(" + index + ", this)'>";
+            if (!permission.Delete || isConsultMode)
+                eliminar = "";
+            $('<i class="fa fa-pencil">').appendTo($(edit).appendTo(actionCol));
+            //$('<i class="fa fa-edit">').appendTo($(editPopUp).appendTo(actionCol));
+            $('<i class="fa fa-trash-o">').appendTo($(eliminar).appendTo(actionCol));
+			if ($('.Action' + 'Header').css('display') != 'none')
+				actionCol.appendTo(row);
+
+            if ($('.Folio_Pacientes' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Folio_Pacientes'+rowIndex+'">').text(GetDetalle_Resultados_Consultas_PacientesName(data.Folio_Pacientes)).appendTo(row);
+	    else 
+		$('<td style="display:none;" id="'+nameOfTable+'Folio_Pacientes'+rowIndex+'">').text(GetDetalle_Resultados_Consultas_PacientesName(data.Folio_Pacientes)).appendTo(row);
+            if ($('.Fecha_de_Consulta' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Fecha_de_Consulta'+rowIndex+'">').text(data.Fecha_de_Consulta).appendTo(row);
+            else
+                $('<td style="display:none;" id="'+nameOfTable+'Fecha_de_Consulta'+rowIndex+'">').text(data.Fecha_de_Consulta).appendTo(row);
+            if ($('.Indicador' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Indicador'+rowIndex+'">').text(GetDetalle_Resultados_Consultas_Indicadores_ConsultasName(data.Indicador)).appendTo(row);
+	    else 
+		$('<td style="display:none;" id="'+nameOfTable+'Indicador'+rowIndex+'">').text(GetDetalle_Resultados_Consultas_Indicadores_ConsultasName(data.Indicador)).appendTo(row);
+            if ($('.Resultado' + 'Header').css('display') != 'none')
+                $('<td class="dt-right"  id="'+nameOfTable+'Resultado'+rowIndex+'">').text(data.Resultado).appendTo(row);
+            else 
+                 $('<td class="dt-right" style="display:none;"  id="'+nameOfTable+'Resultado'+rowIndex+'">').text(data.Resultado).appendTo(row);
+            if ($('.Interpretacion' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Interpretacion'+rowIndex+'">').text(data.Interpretacion).appendTo(row);
+            else 
+                $('<td style="display:none;" id="'+nameOfTable+'Interpretacion'+rowIndex+'">').text(data.Interpretacion).appendTo(row);
+            if ($('.IMC' + 'Header').css('display') != 'none')
+                $('<td class="dt-right"  id="'+nameOfTable+'IMC'+rowIndex+'">').text(data.IMC).appendTo(row);
+            else 
+                 $('<td class="dt-right" style="display:none;"  id="'+nameOfTable+'IMC'+rowIndex+'">').text(data.IMC).appendTo(row);
+            if ($('.IMC_Pediatria' + 'Header').css('display') != 'none')
+                $('<td class="dt-right"  id="'+nameOfTable+'IMC_Pediatria'+rowIndex+'">').text(data.IMC_Pediatria).appendTo(row);
+            else 
+                 $('<td class="dt-right" style="display:none;"  id="'+nameOfTable+'IMC_Pediatria'+rowIndex+'">').text(data.IMC_Pediatria).appendTo(row);
+
+        }
+
+        var Detalle_Resultados_ConsultasTable;
+        function showDetalle_Resultados_ConsultasGrid(dataSet) {
+            //removedDetalle_Resultados_ConsultasData = [];
+            Detalle_Resultados_ConsultasTable = $('#Detalle_Resultados_ConsultasGrid').dataTable({
+                dom: '<"html5buttons"B>lTgitp',
+                buttons: [
+                ],
+                "createdRow": Detalle_Resultados_ConsultasrowCreationGrid,
+                "lengthMenu": [[5, 10, 20, 50, -1], [5, 10, 20, 50, "All"]],
+                data: dataSet,
+                "columns": [
+                    { "data": null, 'visible': true, "orderable": false },
+
+                    { "data": "Folio_Pacientes", "orderable": false },
+                    { "data": "Fecha_de_Consulta", "orderable": false },
+                    { "data": "Indicador", "orderable": false },
+                    { "data": "Resultado", "className": "dt-right", "orderable": false },
+                    { "data": "Interpretacion", "orderable": false },
+                    { "data": "IMC", "className": "dt-right", "orderable": false },
+                    { "data": "IMC_Pediatria", "className": "dt-right", "orderable": false },
+
+                ],
+                "order": [[0, "asc"]],
+                "language": {
+                    "lengthMenu": "@Resources.Resources.Display" + " _MENU_ " + "@Resources.Resources.RecordsPerPage",
+                    "zeroRecords": "@Resources.Resources.NothingFound",
+                    "info": "@Resources.Resources.ShowingPages" + " _PAGE_ " + "@Resources.Resources.of" + " _PAGES_",
+                    "infoEmpty": "@Resources.Resources.NoRecords",
+                    "infoFiltered": "(" + "@Resources.Resources.FilteredFrom" + " _MAX_ " + "@Resources.Resources.TotalRecords" + ")",
+                    "sSearch": "@Resources.Resources.Search",
+                    "paginate": {
+                        "previous": "@Resources.Resources.Previous",
+                        "next": "@Resources.Resources.Next"
+                    }
+                },
+				"bDestroy": true,
+                "fnDrawCallback": function (settings) {
+                    setDetalle_Resultados_ConsultasValidation();
+                }
+            }).on('init.dt', function (e, data) {
+                $('a').tooltip();
+            }).on('draw.dt', function () {
+                $('#Detalle_Resultados_ConsultasGrid .inputMoney').inputmask("currency", { prefix: "$", rightAlign: false });
+                $('.gridDatePicker').inputmask("99-99-9999", { "placeholder": "dd-mm-yyyy" });
+            });
+        }
+
+
+    var Detalle_Resultados_Consultas_PacientesItems;
+        function GetDetalle_Resultados_Consultas_PacientesItem() {
+            Detalle_Resultados_Consultas_PacientesItems = null;
+            var ajaxUrl = "@Url.Content("~/Frontal/Consultas/GetDetalle_Resultados_Consultas_PacientesAll")";
+            $.ajax({
+                url: ajaxUrl,
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                global: false,
+                success: function (result) {
+                    Detalle_Resultados_Consultas_PacientesItems = result;
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+
+    var Detalle_Resultados_Consultas_Indicadores_ConsultasItems;
+        function GetDetalle_Resultados_Consultas_Indicadores_ConsultasItem() {
+            Detalle_Resultados_Consultas_Indicadores_ConsultasItems = null;
+            var ajaxUrl = "@Url.Content("~/Frontal/Consultas/GetDetalle_Resultados_Consultas_Indicadores_ConsultasAll")";
+            $.ajax({
+                url: ajaxUrl,
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                global: false,
+                success: function (result) {
+                    Detalle_Resultados_Consultas_Indicadores_ConsultasItems = result;
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+
+
+
+
+
+        var Detalle_Resultados_ConsultasData = [];
+        var Detalle_Resultados_ConsultasdeletedItem = [];
+        var Detalle_Resultados_ConsultasDataMain = [];
+        var Detalle_Resultados_ConsultasDataMainPages = [];
+        var Detalle_Resultados_ConsultasnewItemCount = 0;
+        var Detalle_Resultados_ConsultasmaxItemIndex = 0;
+        var Detalle_Resultados_ConsultasDataMainInitialized = false;
+
+        function SendDetalle_Resultados_Consultas(callBack, FolioId) {
+            Detalle_Resultados_ConsultasData = GetDetalle_Resultados_ConsultasFromDataTable();
+
+            if (Detalle_Resultados_ConsultasData.length > 0 || $("#ReferenceFolio").val() != FolioId) {
+                if ($("#ReferenceFolio").val() != "0" && FolioId ==null)
+                    FolioId = $("#ReferenceFolio").val();                
+                if ($("#ReferenceFolio").val() == '')
+                    $("#ReferenceFolio").val('0');
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Consultas/PostDetalle_Resultados_Consultas?MasterId=")' + FolioId + "&referenceId=" + $("#ReferenceFolio").val(),
+                    type: 'POST',
+                    data: GetDetalle_Resultados_Consultas(),
+                    async: true,
+                    success: function (result) {
+
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            } else {
+                //showNotification("@Resources.Resources.SaveSuccess", "success");
+                //callBack(FolioId);
+            }
+            return true;
+        }
+
+        function GetAddDetalle_Resultados_ConsultasPopup(currentRowIndex, mode, id) {
+
+            $.ajax({
+                url: "@Url.Action("AddDetalle_Resultados_Consultas", "Detalle_Resultados_Consultas")",
+                type: "GET",
+                async: false,
+                data: { rowIndex: currentRowIndex, functionMode: mode, id: id },
+                success: function (data) {
+                    $(".AddDetalle_Resultados_ConsultasModal").html(data);
+                },
+                error: function () {
+
+                }
+            });
+
+            @*$.get('@Url.Action("AddDetalle_Resultados_Consultas", "Detalle_Resultados_Consultas")', { rowIndex: currentRowIndex }, function (data) {
+                $(".AddDetalle_Resultados_ConsultasModal").html(data);
+            });*@
+        }
+
+        function ShowMessagePendingRowDetalle_Resultados_Consultas()
+        {
+            //alert('@Html.Raw(string.Format(Resources.Resources.PendingRow, "Resultados"))')
+	    showNotification('@Html.Raw(string.Format(Resources.Resources.PendingRow, "Resultados"))', "warning");
+        }
+
+
+        function initiateUIControls() {
+             $('.gridDatePicker').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            //Time Picker
+            $('.gridTimePicker').clockpicker();
+            $('.inputMoney').inputmask("currency", { greedy: false, prefix: "", rightAlign: false });
+			$('td.inputMoney').inputmask("currency", { greedy: false, prefix: "$ ", rightAlign: false });
+			$('td input.inputMoney').inputmask("currency", { greedy: false, prefix: "$ ", rightAlign: false });
+
+
+
+
+
+
+
+
+
+
+        }
+
+    </script>
+
+<script type="text/javascript">
+
+
+   function GetCatalogPopup(catalog, nameAttribute, isMR, nameMR) {
+        if (!isMR)
+            var url = "@Url.Action("Create", "Catalog", new { Module_Id = "1", isPartial = true, nameAttribute = "AttributoNombre" })";
+        else
+            var url = "@Url.Action("Create", "Catalog", new { Module_Id = "1", isPartial = true, isMR = true, nameMR = "Multirenglon",nameAttribute= "AttributoNombre" })";
+
+        url = url.replace("Catalog", catalog).replace("Multirenglon", nameMR).replace("AttributoNombre", nameAttribute);
+
+        window.open(htmlDecode(url), '_blank', 'left=200,top=100,width=850,height=550,toolbar=0,resizable=0');
+    }
+
+    function RefreshCatalog(catalog, control) {
+
+	 if ($('#' + control).hasClass('AutoComplete'))   {
+		   if ($('#' + control).attr("data-isfilter") == "true") {
+				eval(GetReglaFilter(control, $('#ObjectId').val()));
+				return;
+			}
+		}
+			
+			var url = '@Url.Content("~/Frontal/Consultas/GetCatalogAll")';
+			url = url.replace(/Catalog/g, catalog);
+
+			$.ajax({
+				url: url,
+				async: true,
+				success:function(result)
+				{
+					addItemsToSelect($('#' + control), result);
+				},
+				error: function (result)
+				{
+					showNotification("@Resources.Resources.ErrorContactingServer", "error");
+				}
+			});
+		
+    }
+
+
+        function SendConsultasData(callBack) {
+			
+					
+		 var arr = []; 
+		 $("form#CreateConsultas").find(':input').each(function( index ) {		 
+			if ($(this).prop('disabled')==true|| $(this).prop('disabled')=="disabled")
+			{		
+				arr.push($(this).attr('id')); 
+				$(this).prop('disabled', false);  	
+			}
+	    });
+		
+             var formData = new FormData($("form#CreateConsultas")[0]);
+			$.each( arr, function( key, value ) {
+			  $('#' +value).prop('disabled', true);
+			});
+			var id = $("#ReferenceFolio").val();
+            var isNew = $('#hdnIsNew').val();
+           
+			if (Tab_Datos_Generales && !checkClientValidate('ConsultasCreateForm', 'Datos_Generales')) {
+				return false;
+			}						
+
+			if (Tab_Mediciones && !checkClientValidate('ConsultasCreateForm', 'Mediciones')) {
+				return false;
+			}						
+
+			if (Tab_Resultados && !checkClientValidate('ConsultasCreateForm', 'Resultados')) {
+				return false;
+			}						
+
+
+			
+			if (isNew == "True")
+            {
+                id = CreateID();
+            }
+			
+			
+			if (Tab_Datos_Generales)
+				Save_Datos_Generales(id);
+
+			if (Tab_Mediciones)
+				Save_Mediciones(id);
+
+			if (Tab_Resultados)
+				Save_Resultados(id);
+
+
+			showNotification("@Resources.Resources.SaveSuccess", "success");
+			callBack(id);
+            return true;
+        };
+		function CreateID()
+		{
+			var newId = 0;
+			$.ajax({
+				url: '@Url.Content("~/Frontal/Consultas/CreateID")',
+				type: 'GET',
+				async: false,
+				success: function (result) {
+					if (result < 0) {
+						showNotification("@Resources.Resources.ErrorSave", "error");
+					} else {
+						newId = result;
+					}
+				},
+				error: function (result) {
+					showNotification("@Resources.Resources.ErrorContactingServer", "error");
+				},
+				cache: false,
+				contentType: false,
+				processData: false
+			});
+			return newId;
+		}
+		
+		function OpenRules()
+		{
+			$.get('@Url.Action("Index", "Business_Rule_Creation")', {}, function (data) {
+				$(".ConsultasBusinessRuleModal").html(data);
+			});
+		}
+                function ConsultasGetBusinessRule(FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null)
+			{
+			        $('#FieldId').val(FieldId);
+				$('#FieldName').val(FieldName);
+				$('#Attribute').val(Attribute);
+			}
+			$('#ObjectId').val('44352');
+			$('#Screen').val('Consultas');
+			OpenRules();
+               }
+
+    var permission = {
+        Consult: '@permission.Consult' == 'True',
+        New: '@permission.New' == 'True',
+        Edit: '@permission.Edit' == 'True',
+        Delete: '@permission.Delete' == 'True',
+        Export: '@permission.Export' == 'True',
+        Print: '@permission.Print' == 'True',
+        Configure: '@permission.Configure' == 'True',
+    };
+
+    
+    //MR-var statusItems;
+    //MR-var stateItems;
+    //MR-var cityItems = [];
+    var isConsultMode = "@ViewBag.Consult" == "True";
+    Consult(isConsultMode);
+        function Consult(val) {
+            if (val) {
+                $(':input').attr('readonly', 'readonly');
+                $(':input').attr('disabled', 'true');
+                $('.noConsult').removeAttr('readonly');
+                $('.noConsult').removeAttr('disabled');
+            }
+        }
+
+    function ConsultasBackToGrid() {
+        		if (isPartial)
+			window.close('', '_parent', '');
+        else
+			location.href = "@Url.Content("~/Frontal/Consultas/")";
+    }
+	
+	function ReadScriptSettings(callback)
+    {
+        $.post("@Url.Content("~/Frontal/Consultas/ReadScriptSettings")", function (data) {
+            mainElementObject = JSON.parse(data.MainElement);
+			if (data.ChildElement != null) {
+                childElementObject = JSON.parse(data.ChildElement);
+            }
+            callback();
+        });
+    }
+
+    function SaveSettingsWithoutReload() {
+        $.post("@Url.Content("~/Frontal/Consultas/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+            //$('#hdnConfigureType').val("0");
+        }, "json");
+    }
+	
+        function SaveElementAttributes() {
+            if ($('#hdnConfigureType').val() == "1") {
+                $.post("@Url.Content("~/Frontal/Consultas/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+                    $('#hdnConfigureType').val("0");
+                    location.reload(true);
+                }, "json");
+            } else {
+                $.post("@Url.Content("~/Frontal/Consultas/ReadScriptSettings")", function (data) {
+                    mainElementObject = JSON.parse(data.MainElement);
+                    childElementObject = JSON.parse(data.ChildElement);
+
+                    for (var i = 0; i < mainElementObject.length; i++) {
+							var mainElementAttributes = '<div class="col-sm-2">';
+							mainElementAttributes += '<div class="displayAttributes requiredAttribute"><a class="requiredClick" title="' + (mainElementObject[i].IsRequired == true ? "@Resources.Resources.Required" : "@Resources.Resources.NotRequired") + '" onclick="setRequired(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsRequired == true ? "@Url.Content("~/Images/Required.png")" : "@Url.Content("~/Images/Not-Required.png")") + '" alt="" /></a></div>';
+							mainElementAttributes += '<div class="displayAttributes visibleAttribute"><a class="visibleClick" title="' + (mainElementObject[i].IsVisible == true ? "@Resources.Resources.Visible" : "@Resources.Resources.InVisible") + '" onclick="setVisible(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsVisible == true ? "@Url.Content("~/Images/Visible.png")" : "@Url.Content("~/Images/InVisible.png")") + '" alt="" /></a></div>';
+							mainElementAttributes += '<div class="displayAttributes readOnlyAttribute"><a class="readOnlyClick" title="' + (mainElementObject[i].IsReadOnly == true ? "@Resources.Resources.Disabled" : "@Resources.Resources.Enabled") + '" onclick="setReadOnly(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsReadOnly == true ? "@Url.Content("~/Images/Disabled.png")" : "@Url.Content("~/Images/Enabled.png")") + '" alt="" /></a></div>';
+							mainElementAttributes += '<div class="displayAttributes defaultValueAttribute"><a id="hlDefaultValue_' + i.toString() + '" class="defaultValueClick" title="' + (mainElementObject[i].DefaultValue) + '" onclick="setDefaultValue(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].DefaultValue != '' && mainElementObject[i].DefaultValue != null ? "@Url.Content("~/Images/default-value.png")" : "@Url.Content("~/Images/Not-Default-Value.png")") + '" alt="" /></a></div>';
+							mainElementAttributes += '<div class="displayAttributes helpTextAttribute"><a id="hlHelpText_' + i.toString() + '" class="helpTextClick" title="' + (mainElementObject[i].HelpText) + '" onclick="setHelpText(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].HelpText != '' && mainElementObject[i].HelpText != null ? "@Url.Content("~/Images/green-help.png")" : "@Url.Content("~/Images/red-help.jpg")") + '" alt="" /></a></div>';
+							mainElementAttributes += '</div>';
+							$('#' + mainElementObject[i].inputId).parent().closest('.form-group').show();
+
+							$('#' + mainElementObject[i].inputId).closest('.col-sm-8').after(mainElementAttributes);
+                  }
+					 if (childElementObject != null) {
+                        for (var j = 0; j < childElementObject.length; j++) {
+                            var table = childElementObject[j].table.trim();
+                            var grid = '#' + table + 'Grid';
+                            $(grid).find("thead").find("tr").find("th").each(function () {
+                                for (var i = 0; i < childElementObject[j].elements.length; i++) {
+                                    if ($(this).hasClass(childElementObject[j].elements[i].inputId + 'Header')) {
+                                        $(this).show();
+                                        $(this).parent().show();
+                                        $(this).append(returnAttributeHTML(childElementObject[j].elements[i], table, i));
+                                    }
+                                }
+                            });
+                        }
+
+                    }
+                     $('#ConfigureSave').text('@Html.Raw(Resources.Resources.Save  +" "+ Resources.Resources.Settings)');
+                    $('#hdnConfigureType').val("1");
+                });
+            }
+        }
+		$('#CreateConsultas').on('click', '.btnPopupBusinessRules', function () {
+			var fieldId = $(this).data('field-id');
+			var fieldName = $(this).data('field-name');
+			var attribute = $(this).data('attribute');
+			$('#FieldId').val(fieldId);
+			$('#FieldName').val(fieldName);
+			$('#Attribute').val(attribute);
+                        ConsultasGetBusinessRule();
+		});
+		//Initialize HTML Editors            
+  var filebrowserBrowseUrl = '../../ckfinder/ckfinder.html';
+  var filebrowserImageBrowseUrl = '../../ckfinder/ckfinder.html?type=Images';
+  var filebrowserUploadUrl = '../../ckfinder/connector?command=QuickUpload&type=Files';
+  var filebrowserImageUploadUrl = '../../ckfinder/connector?command=QuickUpload&type=Images';
+		
+		
+		function Fill_Datos_Generales()
+        {
+            $.ajax({
+                url: "@Url.Content("~/Frontal/Consultas/Get_Datos_Generales")?Id=" + $("#ReferenceFolio").val(),
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                                        $('#Folio').val(result.data.Folio);
+                    $('#Fecha_de_Registo').val(result.data.Fecha_de_Registo);
+                    $('#Hora_de_Registro').val(result.data.Hora_de_Registro);
+                    $('#Usuario_que_Registra').val(result.data.Usuario_que_Registra);
+                    $('#Fecha_Programada').val(result.data.Fecha_Programada);
+                    var control = $('#Paciente');
+                    control.select2('open');
+                    $('.select2-search__field').val(result.data.Paciente).trigger('keyup');
+                    control.select2('close');
+                    setTimeout(function () {
+	                    var data = eval('AutoComplete' + control.selector.replace('#', '') + 'Data');
+	                    control.select2({ data: data });
+	                    control.val(result.data.Paciente).trigger('change');
+                    }, 3000);
+                    $('#Edad').val(result.data.Edad);
+                    $('#Nombre_del_padre').val(result.data.Nombre_del_padre);
+                    $('#Sexo').val(result.data.Sexo);
+                    $('#Email').val(result.data.Email);
+                    $('#Objetivo').val(result.data.Objetivo);
+
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+		
+		function Save_Datos_Generales(newId) {
+			var data = new FormData();
+			data.append('Folio', newId);
+			                data.append('Fecha_de_Registo', $('#Fecha_de_Registo').val());
+                data.append('Hora_de_Registro', $('#Hora_de_Registro').val());
+                data.append('Usuario_que_Registra', $('#Usuario_que_Registra').val());
+                data.append('Fecha_Programada', $('#Fecha_Programada').val());
+                data.append('Paciente', $('#Paciente').val());
+                data.append('Edad', $('#Edad').val());
+                data.append('Nombre_del_padre', $('#Nombre_del_padre').val());
+                data.append('Sexo', $('#Sexo').val());
+                data.append('Email', $('#Email').val());
+                data.append('Objetivo', $('#Objetivo').val());
+
+			$.ajax({
+				url: '@Url.Content("~/Frontal/Consultas/Post_Datos_Generales")',
+				type: 'POST',
+				data: data,
+				async: false,
+				dataType: "json",
+				contentType: false,
+				processData: false,
+				success: function (result) {
+					if (result < 0) {
+						showNotification("@Resources.Resources.ErrorSave", "Error al guardar Datos_Generales");
+					} else {
+						newId = result;
+                    
+					}
+				},
+				error: function (result) {
+					showNotification("@Resources.Resources.ErrorContactingServer", "Error al guardar Datos_Generales");
+				},
+				cache: false
+			});
+		}
+
+		function Fill_Mediciones()
+        {
+            $.ajax({
+                url: "@Url.Content("~/Frontal/Consultas/Get_Mediciones")?Id=" + $("#ReferenceFolio").val(),
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                                        $('#Folio').val(result.data.Folio);
+                    $('#Frecuencia_Cardiaca').val(result.data.Frecuencia_Cardiaca);
+                    $('#Presion_sistolica').val(result.data.Presion_sistolica);
+                    $('#Presion_diastolica').val(result.data.Presion_diastolica);
+                    $('#Peso_actual').val(result.data.Peso_actual);
+                    $('#Estatura').val(result.data.Estatura);
+                    $('#Circunferencia_de_cintura_cm').val(result.data.Circunferencia_de_cintura_cm);
+                    $('#Circunferencia_de_cadera_cm').val(result.data.Circunferencia_de_cadera_cm);
+                    $('#Edad_Metabolica').val(result.data.Edad_Metabolica);
+                    $('#Agua_corporal').val(result.data.Agua_corporal);
+                    $('#Grasa_Visceral').val(result.data.Grasa_Visceral);
+                    $('#Grasa_Corporal').val(result.data.Grasa_Corporal);
+                    $('#Grasa_Corporal_kg').val(result.data.Grasa_Corporal_kg);
+                    $('#Masa_Muscular_kg').val(result.data.Masa_Muscular_kg);
+                    $('#Semana_de_gestacion').val(result.data.Semana_de_gestacion);
+
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+		
+		function Save_Mediciones(newId) {
+			var data = new FormData();
+			data.append('Folio', newId);
+			                data.append('Frecuencia_Cardiaca', $('#Frecuencia_Cardiaca').val());
+                data.append('Presion_sistolica', $('#Presion_sistolica').val());
+                data.append('Presion_diastolica', $('#Presion_diastolica').val());
+                data.append('Peso_actual', $('#Peso_actual').val());
+                data.append('Estatura', $('#Estatura').val());
+                data.append('Circunferencia_de_cintura_cm', $('#Circunferencia_de_cintura_cm').val());
+                data.append('Circunferencia_de_cadera_cm', $('#Circunferencia_de_cadera_cm').val());
+                data.append('Edad_Metabolica', $('#Edad_Metabolica').val());
+                data.append('Agua_corporal', $('#Agua_corporal').val());
+                data.append('Grasa_Visceral', $('#Grasa_Visceral').val());
+                data.append('Grasa_Corporal', $('#Grasa_Corporal').val());
+                data.append('Grasa_Corporal_kg', $('#Grasa_Corporal_kg').val());
+                data.append('Masa_Muscular_kg', $('#Masa_Muscular_kg').val());
+                data.append('Semana_de_gestacion', $('#Semana_de_gestacion').val());
+
+			$.ajax({
+				url: '@Url.Content("~/Frontal/Consultas/Post_Mediciones")',
+				type: 'POST',
+				data: data,
+				async: false,
+				dataType: "json",
+				contentType: false,
+				processData: false,
+				success: function (result) {
+					if (result < 0) {
+						showNotification("@Resources.Resources.ErrorSave", "Error al guardar Mediciones");
+					} else {
+						newId = result;
+                    
+					}
+				},
+				error: function (result) {
+					showNotification("@Resources.Resources.ErrorContactingServer", "Error al guardar Mediciones");
+				},
+				cache: false
+			});
+		}
+
+		function Fill_Resultados()
+        {
+            $.ajax({
+                url: "@Url.Content("~/Frontal/Consultas/Get_Resultados")?Id=" + $("#ReferenceFolio").val(),
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                                        $('#Folio').val(result.data.Folio);
+                    $('#IMC').val(result.data.IMC);
+                    $('#IMC_Pediatria').val(result.data.IMC_Pediatria);
+                    $('#Interpretacion_IMC').val(result.data.Interpretacion_IMC);
+                    $('#Consumo_de_agua_resultado').val(result.data.Consumo_de_agua_resultado);
+                    $('#Interpretacion_agua').val(result.data.Interpretacion_agua);
+                    $('#Frecuencia_cardiaca_en_Esfuerzo').val(result.data.Frecuencia_cardiaca_en_Esfuerzo);
+                    $('#Interpretacion_frecuencia').val(result.data.Interpretacion_frecuencia);
+                    $('#Indice_cintura_cadera').val(result.data.Indice_cintura_cadera);
+                    $('#Interpretacion_indice').val(result.data.Interpretacion_indice);
+                    $('#Dificultad_de_Rutina_de_Ejercicios').val(result.data.Dificultad_de_Rutina_de_Ejercicios);
+                    $('#Interpretacion_dificultad').val(result.data.Interpretacion_dificultad);
+                    $('#Calorias').val(result.data.Calorias);
+                    $('#Interpretacion_calorias').val(result.data.Interpretacion_calorias);
+                    $('#Observaciones').val(result.data.Observaciones);
+                    $('#Fecha_siguiente_Consulta').val(result.data.Fecha_siguiente_Consulta);
+                    Detalle_Resultados_ConsultasDataDataTable = result.Resultados;
+                    showDetalle_Resultados_ConsultasGrid(result.Resultados);
+                    $('#Detalle_Resultados_ConsultasGrid .inputMoney').inputmask("currency", { prefix: "$", rightAlign: false });
+                    $('#Detalle_Resultados_ConsultasGrid .gridDatePicker').attr("readonly", "");
+
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+		
+		function Save_Resultados(newId) {
+			var data = new FormData();
+			data.append('Folio', newId);
+			                data.append('IMC', $('#IMC').val());
+                data.append('IMC_Pediatria', $('#IMC_Pediatria').val());
+                data.append('Interpretacion_IMC', $('#Interpretacion_IMC').val());
+                data.append('Consumo_de_agua_resultado', $('#Consumo_de_agua_resultado').val());
+                data.append('Interpretacion_agua', $('#Interpretacion_agua').val());
+                data.append('Frecuencia_cardiaca_en_Esfuerzo', $('#Frecuencia_cardiaca_en_Esfuerzo').val());
+                data.append('Interpretacion_frecuencia', $('#Interpretacion_frecuencia').val());
+                data.append('Indice_cintura_cadera', $('#Indice_cintura_cadera').val());
+                data.append('Interpretacion_indice', $('#Interpretacion_indice').val());
+                data.append('Dificultad_de_Rutina_de_Ejercicios', $('#Dificultad_de_Rutina_de_Ejercicios').val());
+                data.append('Interpretacion_dificultad', $('#Interpretacion_dificultad').val());
+                data.append('Calorias', $('#Calorias').val());
+                data.append('Interpretacion_calorias', $('#Interpretacion_calorias').val());
+                data.append('Observaciones', $('#Observaciones').val());
+                data.append('Fecha_siguiente_Consulta', $('#Fecha_siguiente_Consulta').val());
+
+			$.ajax({
+				url: '@Url.Content("~/Frontal/Consultas/Post_Resultados")',
+				type: 'POST',
+				data: data,
+				async: false,
+				dataType: "json",
+				contentType: false,
+				processData: false,
+				success: function (result) {
+					if (result < 0) {
+						showNotification("@Resources.Resources.ErrorSave", "Error al guardar Resultados");
+					} else {
+						newId = result;
+                    					    SendDetalle_Resultados_Consultas(null, newId);
+
+					}
+				},
+				error: function (result) {
+					showNotification("@Resources.Resources.ErrorContactingServer", "Error al guardar Resultados");
+				},
+				cache: false
+			});
+		}
+
+
+    </script>
+}
+    <input type="hidden" id="FieldId" name="FieldId" value="" />
+    <input type="hidden" id="FieldName" name="FieldName" value="" />
+    <input type="hidden" id="ObjectId" name="ObjectId" value="" />
+    <input type="hidden" id="Attribute" name="Attribute" value="" />
+    <input type="hidden" id="Screen" name="Screen" value="" />
+     <input type="hidden" id="Consultas_cmbLabelSelect" name="Consultas_cmbLabelSelect" value="@Resources.Resources.CmbSelect" />
+

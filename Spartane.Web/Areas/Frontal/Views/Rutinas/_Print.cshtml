@@ -1,0 +1,176 @@
+﻿@model IList<Spartane.Web.Areas.Frontal.Models.RutinasGridModel>
+
+@{
+    var rowCounter = 0;
+}
+
+<style>
+    .table {
+        width: 100%;
+        border: 1px solid #cccccc;
+        font-family: "open sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+        /*border-collapse: separate !important;*/
+        font-size: 13px;
+    }
+
+        .table td {
+            padding: 2px;
+            border:1px solid #cccccc;
+        }
+
+    .table tr:nth-of-type(2n+1) {
+        background-color: #f9f9f9;
+    }
+
+        .table tr:nth-of-type(2n) {
+            background-color: #8da0c2;
+        }
+
+    .table-row-1 td, .table-row-1 th {
+    }
+
+    .table-row-2 td, .table-row-2 th, thead {
+    }
+
+    .tableHeaderRow {
+        font-weight: bold;
+        border: 1px solid #ff6a00;
+    }
+
+    .column1 {
+        width: 15%;
+    }
+
+    .column2 {
+        width: 15%;
+    }
+</style>
+<br />
+<body onbeforeprint="ocultarcolumnas();">
+ <span id="columnsVisible"></span>
+<table class="table" cellspacing="0" cellpadding="0" border="0">
+    <thead>
+        <tr>
+            <td class="column1">
+                @Resources.RutinasResources.Folio
+            </td>
+                        <td class="column1">
+                @Resources.RutinasResources.Folio
+            </td>
+            <td class="column1">
+                @Resources.RutinasResources.Fecha_de_Registro
+            </td>
+            <td class="column1">
+                @Resources.RutinasResources.Hora_de_Registro
+            </td>
+            <td class="column1">
+                @Resources.RutinasResources.Usuario_que_Registra
+            </td>
+            <td class="column1">
+                @Resources.RutinasResources.Nombre_de_la_Rutina
+            </td>
+            <td class="column1">
+                @Resources.RutinasResources.Descripcion
+            </td>
+            <td class="column1">
+                @Resources.RutinasResources.Equipamento
+            </td>
+            <td class="column1">
+                @Resources.RutinasResources.Equipamento_alterno
+            </td>
+            <td class="column1">
+                @Resources.RutinasResources.Nivel_de_dificultad
+            </td>
+            <td class="column1">
+                @Resources.RutinasResources.Intensidad
+            </td>
+            <td class="column1">
+                @Resources.RutinasResources.Duracion_aproximada_minutos
+            </td>
+            <td class="column1">
+                @Resources.RutinasResources.Genero
+            </td>
+            <td class="column1">
+                @Resources.RutinasResources.Estatus
+            </td>
+
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var item in Model)
+            {                
+                <tr>
+                    <td>
+                        @item.Folio
+                    </td>
+					                    <td>
+                        @item.Folio
+                    </td>
+                    <td>
+                        @item.Fecha_de_Registro
+                    </td>
+                    <td>
+                        @item.Hora_de_Registro
+                    </td>
+                    <td>
+                        @item.Usuario_que_RegistraName
+                    </td>
+                    <td>
+                        @item.Nombre_de_la_Rutina
+                    </td>
+                    <td>
+                        @item.Descripcion
+                    </td>
+                    <td>
+                        @item.Equipamento
+                    </td>
+                    <td>
+                        @item.Equipamento_alterno
+                    </td>
+                    <td>
+                        @item.Nivel_de_dificultad
+                    </td>
+                    <td>
+                        @item.Intensidad
+                    </td>
+                    <td>
+                        @item.Duracion_aproximada_minutos
+                    </td>
+                    <td>
+                        @item.GeneroDescripcion
+                    </td>
+                    <td>
+                        @item.EstatusDescripcion
+                    </td>
+
+                </tr>
+                rowCounter++;
+            }
+        }
+    </tbody>
+</table>
+</body>
+
+<script>
+    function ocultarcolumnas() {        
+        var arr = document.getElementById('columnsVisible').text.split(',');
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i] == "false") {
+                show_hide_column(i-1, false);
+            }
+        }    
+    };
+
+    function show_hide_column(col_no, do_show) {
+        var rows = document.getElementsByClassName('table')[0].rows;
+        for (var row = 0; row < rows.length; row++) {
+            var cols = rows[row].cells;
+            if (col_no >= 0 && col_no < cols.length) {
+                console.log(col_no);
+                cols[col_no].style.display = do_show ? '' : 'none';
+            }
+        }
+    }
+</script>
+

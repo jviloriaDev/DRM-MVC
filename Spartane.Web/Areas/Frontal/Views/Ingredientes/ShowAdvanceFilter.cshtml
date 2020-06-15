@@ -1,0 +1,360 @@
+﻿@using System.Collections.Generic
+@using Spartane.Web.Areas.Frontal.Models
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.IngredientesAdvanceSearchModel
+@{
+ List<SelectListItem> varClasificacion_Ingredientes_Clasificacion = null;
+    if (ViewBag.Clasificacion_Ingredientess_Clasificacion != null)
+    { varClasificacion_Ingredientes_Clasificacion = (List<SelectListItem>)ViewBag.Clasificacion_Ingredientess_Clasificacion; }
+
+    var filters = (List<SelectListItem>)ViewBag.Filter;
+}
+<style>
+    .input-validation-error {
+        background: rgb(251, 227, 228);
+        border: 1px solid #fbc2c4;
+        color: #8a1f11;
+    }
+
+    .MarginBottom {
+        margin-bottom: 1%;
+    }
+
+    #divAdvanceSearch input {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch button {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch select {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch h3 {
+        margin-top: 2%;
+    }
+
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins" id="divAdvanceSearch">
+        <div class="ibox-content">
+            @using (Html.BeginForm("ShowAdvanceFilter", "Ingredientes", FormMethod.Post, new { @id = "frmAdvanceSearch", @role = "form" }))
+            {
+				<input type="hidden" value="-1" name="idFilter" id="idFilter" />
+                <div class="MarginBottom ">
+                    <h3>@Resources.IngredientesResources.Clave</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromClave, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromClave" })
+                    @Html.ValidationMessageFor(m => m.FromClave)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToClave, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToClave", @data_min = "txtAdvanceFromClave" })
+                    @Html.ValidationMessageFor(m => m.ToClave)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.IngredientesResources.Nombre_Ingrediente</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Nombre_IngredienteFilter, filters, new { @class = "form-control", @id = "ddlNombre_IngredienteFilter" })
+                    @Html.TextBoxFor(m => m.Nombre_Ingrediente, new { @class = "form-control", @type = "text", @id = "txtNombre_Ingrediente" })
+                </div>
+ List<SelectListItem> varClasificacion_Ingredientes_Clasificacion = null;
+    if (ViewBag.Clasificacion_Ingredientess_Clasificacion != null)
+    { varClasificacion_Ingredientes_Clasificacion = (List<SelectListItem>)ViewBag.Clasificacion_Ingredientess_Clasificacion; }
+                <div class="MarginBottom">
+                    <h3>@Resources.IngredientesResources.Subgrupo</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.SubgrupoFilter, filters, new { @class = "form-control", @id = "ddlSubgrupoFilter" })
+                    @Html.TextBoxFor(m => m.Subgrupo, new { @class = "form-control", @type = "text", @id = "txtSubgrupo" })
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.IngredientesResources.Cantidad_sugerida</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromCantidad_sugerida, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isDecimalKey(this, event);", @id = "txtAdvanceFromCantidad_sugerida" })
+                    @Html.ValidationMessageFor(m => m.FromCantidad_sugerida)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToCantidad_sugerida, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isDecimalKey(this, event);", @id = "txtAdvanceToCantidad_sugerida", @data_min = "txtAdvanceFromCantidad_sugerida" })
+                    @Html.ValidationMessageFor(m => m.ToCantidad_sugerida)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.IngredientesResources.Unidad</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.UnidadFilter, filters, new { @class = "form-control", @id = "ddlUnidadFilter" })
+                    @Html.TextBoxFor(m => m.Unidad, new { @class = "form-control", @type = "text", @id = "txtUnidad" })
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.IngredientesResources.Peso_bruto_redondeado_g</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromPeso_bruto_redondeado_g, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isDecimalKey(this, event);", @id = "txtAdvanceFromPeso_bruto_redondeado_g" })
+                    @Html.ValidationMessageFor(m => m.FromPeso_bruto_redondeado_g)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToPeso_bruto_redondeado_g, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isDecimalKey(this, event);", @id = "txtAdvanceToPeso_bruto_redondeado_g", @data_min = "txtAdvanceFromPeso_bruto_redondeado_g" })
+                    @Html.ValidationMessageFor(m => m.ToPeso_bruto_redondeado_g)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.IngredientesResources.Peso_neto_g</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromPeso_neto_g, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isDecimalKey(this, event);", @id = "txtAdvanceFromPeso_neto_g" })
+                    @Html.ValidationMessageFor(m => m.FromPeso_neto_g)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToPeso_neto_g, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isDecimalKey(this, event);", @id = "txtAdvanceToPeso_neto_g", @data_min = "txtAdvanceFromPeso_neto_g" })
+                    @Html.ValidationMessageFor(m => m.ToPeso_neto_g)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.IngredientesResources.Nombre_sistema_anterior</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Nombre_sistema_anteriorFilter, filters, new { @class = "form-control", @id = "ddlNombre_sistema_anteriorFilter" })
+                    @Html.TextBoxFor(m => m.Nombre_sistema_anterior, new { @class = "form-control", @type = "text", @id = "txtNombre_sistema_anterior" })
+                </div>
+
+                <div class="MarginBottom form-inline">
+                    <input type="submit" class="btn btn-primary" value="@Resources.Resources.Search"><a class="btn btn-primary" href="@Url.Content("~/Frontal/Ingredientes/")" value=" ">@Resources.Resources.Cancelar</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function InitiateAdvanceSearch() {
+        var advanceSearch = {}, hasParameter = false;
+        if ($("#txtAdvanceFromClave").val() != "" || $("#txtAdvanceToClave").val() != "") {
+            hasParameter = true;
+            advanceSearch.IngredientesClaveFrom = $("#txtAdvanceFromClave").val();
+            advanceSearch.IngredientesClaveTo = $("#txtAdvanceToClave").val();
+        }
+        if ($("#txtAdvanceNombre_Ingrediente").val() != "") {
+            hasParameter = true;
+            advanceSearch.IngredientesNombre_Ingrediente = $("#txtAdvanceNombre_Ingrediente").val();
+            advanceSearch.IngredientesNombre_IngredienteSearchType = $("#ddlAdvanceNombre_IngredienteFilter").val();
+        }
+        advanceSearch.ClasificacionSearchType = 0;
+        if ($('#ddlAdvanceClasificacion').val().length > 0 || $("#txtAdvanceClasificacion").val() == "") {
+
+
+            if (isIngredientesTextSearch) {
+                advanceSearch.ClasificacionName = $("#txtAdvanceClasificacion").val();
+                advanceSearch.ClasificacionNameSearchType = $("#ddlAdvanceClasificacion").val();
+                advanceSearch.ClasificacionSearchType = 1;
+            }
+            else {
+
+                advanceSearch.ClasificacionToSearch = $("#ddlAdvanceClasificacion").val();
+                advanceSearch.ClasificacionSearchType = 2;
+            }
+        }
+        advanceSearch.ImagenSearchType = 0;
+        if ($('#ddlAdvanceImagen').val().length > 0 || $("#txtAdvanceImagen").val() == "") {
+
+
+            if (isIngredientesTextSearch) {
+                advanceSearch.ImagenName = $("#txtAdvanceImagen").val();
+                advanceSearch.ImagenNameSearchType = $("#ddlAdvanceImagen").val();
+                advanceSearch.ImagenSearchType = 1;
+            }
+            else {
+
+                advanceSearch.ImagenToSearch = $("#ddlAdvanceImagen").val();
+                advanceSearch.ImagenSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceSubgrupo").val() != "") {
+            hasParameter = true;
+            advanceSearch.IngredientesSubgrupo = $("#txtAdvanceSubgrupo").val();
+            advanceSearch.IngredientesSubgrupoSearchType = $("#ddlAdvanceSubgrupoFilter").val();
+        }
+        if ($("#txtAdvanceFromCantidad_sugerida").val() != "" || $("#txtAdvanceToCantidad_sugerida").val() != "") {
+            hasParameter = true;
+            advanceSearch.IngredientesCantidad_sugeridaFrom = $("#txtAdvanceFromCantidad_sugerida").val();
+            advanceSearch.IngredientesCantidad_sugeridaTo = $("#txtAdvanceToCantidad_sugerida").val();
+        }
+        if ($("#txtAdvanceUnidad").val() != "") {
+            hasParameter = true;
+            advanceSearch.IngredientesUnidad = $("#txtAdvanceUnidad").val();
+            advanceSearch.IngredientesUnidadSearchType = $("#ddlAdvanceUnidadFilter").val();
+        }
+        if ($("#txtAdvanceFromPeso_bruto_redondeado_g").val() != "" || $("#txtAdvanceToPeso_bruto_redondeado_g").val() != "") {
+            hasParameter = true;
+            advanceSearch.IngredientesPeso_bruto_redondeado_gFrom = $("#txtAdvanceFromPeso_bruto_redondeado_g").val();
+            advanceSearch.IngredientesPeso_bruto_redondeado_gTo = $("#txtAdvanceToPeso_bruto_redondeado_g").val();
+        }
+        if ($("#txtAdvanceFromPeso_neto_g").val() != "" || $("#txtAdvanceToPeso_neto_g").val() != "") {
+            hasParameter = true;
+            advanceSearch.IngredientesPeso_neto_gFrom = $("#txtAdvanceFromPeso_neto_g").val();
+            advanceSearch.IngredientesPeso_neto_gTo = $("#txtAdvanceToPeso_neto_g").val();
+        }
+        if ($("#txtAdvanceNombre_sistema_anterior").val() != "") {
+            hasParameter = true;
+            advanceSearch.IngredientesNombre_sistema_anterior = $("#txtAdvanceNombre_sistema_anterior").val();
+            advanceSearch.IngredientesNombre_sistema_anteriorSearchType = $("#ddlAdvanceNombre_sistema_anteriorFilter").val();
+        }
+
+        advanceSearchQuery = hasParameter ? JSON.stringify(advanceSearch) : "";
+        $('#tblIngredientes').DataTable().draw();
+        return false;
+    }
+
+    var advanceSearchQuery = "", isIngredientesTextSearch = true;
+
+    $(document).ready(function () {
+        $('.clock').clockpicker();
+		$('.date').datepicker({
+			todayBtn: "linked",
+			keyboardNavigation: false,
+			forceParse: false,
+			calendarWeeks: true,
+			autoclose: true,
+			format: "@ConfigurationProperty.DateFormatDatePicker"
+		});
+        $("#txtAdvanceClasificacion").keypress(function () {
+            isIngredientesTextSearch = true;
+            $("#ddlAdvanceClasificacion").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceClasificacion").change(function () {
+            isIngredientesTextSearch = false;
+            $("#txtAdvanceClasificacion").val('');
+        });
+
+    });
+</script>
+
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/chosen")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/clockpicker")
+
+
+    <script>
+        //Adding Rules
+        jQuery.validator.unobtrusive
+      .adapters.addSingleVal("isnumberafter", "propertyname");
+        jQuery.validator.unobtrusive
+    .adapters.addSingleVal("isdateafter", "propertyname");
+
+        //Number after method
+        jQuery.validator.addMethod("isnumberafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+                //if (Date.parse(val) <= Date.parse(otherVal)) {
+                if (Number(val) < Number(otherVal)) {
+                    return false;
+                }
+                        }
+            return true;
+        });
+
+        //Date after after method
+        jQuery.validator.addMethod("isdateafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+
+                if (GetDateObject(val) < GetDateObject(otherVal)) {
+
+                    return false;
+                    }
+                }
+            return true;
+            });
+
+
+        function GetDateObject(value) {
+            var delimiter = GetDelimiter(dateFormat);
+            var dateCollection = value.split(delimiter);
+            var formatCollection = dateFormat.split(delimiter);
+            var dateModel = GetDateModel(dateCollection, formatCollection);
+            return new Date(dateModel.Year, dateModel.Month - 1, dateModel.Day);
+        }
+        //Used to get the date model by parsing the date and the format
+        function GetDateModel(dateCollection,formatCollection) {
+            var day, month, year;
+            for (var i = 0; i < formatCollection.length; i++) {
+                switch (formatCollection[i][0].toUpperCase()) {
+                
+                    case "D":
+                        day = dateCollection[i];
+                        break;
+
+                    case "Y":
+                        year = dateCollection[i];
+                        break;
+
+                    case "M":
+                        month = dateCollection[i];
+                        break;
+                }
+            }
+
+            return {
+                Day:day,
+                Month:month,
+                Year:year
+            };
+        }
+
+        function GetDelimiter(format) {
+
+            for (var i = 0; i < format.length; i++) {
+                if (/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(format[i])) {
+                    return format[i];
+                }
+            }
+            return null;
+        }
+
+        var dateFormat = "@ConfigurationProperty.DateFormatDatePicker";
+
+        $(document).ready(function () {
+            $('.input-daterange').datepicker({
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                format: dateFormat,
+                message: 'The date is not a valid'
+            });
+
+            $(".chosen-select").chosen({ width: "22%", no_results_text: "Oops, nothing found!" });
+			if ($('#IsFilterModal').val() == 'true') {
+                $('.ShowAdvanceFilter #right-sidebar').css('display', 'none');
+                $('.ShowAdvanceFilter .navbar-default').css('display', 'none');
+                $('.ShowAdvanceFilter .border-bottom').css('display', 'none');
+                $('.ShowAdvanceFilter #page-wrapper').css('margin', '0 auto');
+                $('.ShowAdvanceFilter .btn-save').val('@Resources.Resources.Filter');
+                $('.ShowAdvanceFilter .btn-cancelar').attr('data-dismiss', 'modal');
+                $('.ShowAdvanceFilter .btn-cancelar').removeAttr('href');
+                $('#idFilter').val($('#IdReport').val());
+            }
+        });
+
+    </script>
+}
+

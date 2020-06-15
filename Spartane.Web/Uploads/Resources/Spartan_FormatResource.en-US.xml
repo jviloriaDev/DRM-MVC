@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_Format" value="Spartan Format"></resource>
+  <resource culture="en-US" name="FormatId" value="Id"></resource>
+  <resource culture="en-US" name="Registration_Date" value="Registration Date"></resource>
+  <resource culture="en-US" name="Registration_Hour" value="Registration Hour"></resource>
+  <resource culture="en-US" name="Registration_User" value="Registration User"></resource>
+  <resource culture="en-US" name="Format_Name" value="Format Name"></resource>
+  <resource culture="en-US" name="Format_Type" value="Format Type"></resource>
+  <resource culture="en-US" name="Search" value="Search"></resource>
+  <resource culture="en-US" name="Object" value="Object"></resource>
+  <resource culture="en-US" name="Header" value="Header"></resource>
+  <resource culture="en-US" name="Body" value="Body"></resource>
+  <resource culture="en-US" name="Footer" value="Footer"></resource>
+
+  <resource culture="en-US" name="Format" value="Format"></resource>
+  <resource culture="en-US" name="DefaultValueifEmpty" value="Default Value if Empty"></resource>
+  <resource culture="en-US" name="PropertyBags" value= "Property Bags"></resource>
+  <resource culture="en-US" name="GeneralData" value= "General Data"></resource>
+  <resource culture="en-US" name="Filters" value= "Filters"></resource>
+  <resource culture="en-US" name="FormatDesign" value="Format Design"></resource>
+  <resource culture="en-US" name="RelatedFormats" value="RelatedFormats"></resource>
+  <resource culture="en-US" name="SelectRelatedFormats" value="Select Related Formats"></resource>
+  <resource culture="en-US" name="Order" value="Order"></resource>
+  <resource culture="en-US" name="Preview" value="Preview"></resource>
+
+</resources>

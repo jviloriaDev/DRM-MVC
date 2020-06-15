@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Detalle_Redes_Sociales_Especialista" value="Detalle Redes Sociales Especialista"></resource>
+  <resource culture="es-es" name="Folio" value="Folio"></resource>
+  <resource culture="es-es" name="Red_Social" value="Red Social"></resource>
+  <resource culture="es-es" name="URL" value="URL"></resource>
+  <resource culture="es-es" name="Principal" value="Principal"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

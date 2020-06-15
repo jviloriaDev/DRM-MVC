@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Detalle_Antecedentes_Familiares" value="Detalle Antecedentes Familiares"></resource>
+  <resource culture="es-es" name="Folio" value="Folio"></resource>
+  <resource culture="es-es" name="Enfermedad" value="Enfermedad"></resource>
+  <resource culture="es-es" name="Parentesco" value="Parentesco"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

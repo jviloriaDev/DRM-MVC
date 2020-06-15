@@ -1,0 +1,649 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Globalization
+@using Spartane.Core.Domain.Permission
+@using Spartane.Core.Domain.Spartane_File
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Detalle_Actividades_EventoModel
+@{
+
+    string Dia = "";
+    if (Model.Dia == "")
+    { Model.Dia = DateTime.Now.ToString(ConfigurationProperty.DateFormat); }
+
+    List<SelectListItem> varTipos_de_Actividades_Tipo_de_Actividad = null;
+    if (ViewBag.Tipos_de_Actividadess_Tipo_de_Actividad != null)
+    { varTipos_de_Actividades_Tipo_de_Actividad = (List<SelectListItem>)ViewBag.Tipos_de_Actividadess_Tipo_de_Actividad; }
+    List<SelectListItem> varEspecialidades_Especialidad = null;
+    if (ViewBag.Especialidadess_Especialidad != null)
+    { varEspecialidades_Especialidad = (List<SelectListItem>)ViewBag.Especialidadess_Especialidad; }
+    List<SelectListItem> varSpartan_User_Quien_imparte = null;
+    if (ViewBag.Spartan_Users_Quien_imparte != null)
+    { varSpartan_User_Quien_imparte = (List<SelectListItem>)ViewBag.Spartan_Users_Quien_imparte; }
+    List<SelectListItem> varUbicaciones_Eventos_Empresa_Ubicacion = null;
+    if (ViewBag.Ubicaciones_Eventos_Empresas_Ubicacion != null)
+    { varUbicaciones_Eventos_Empresa_Ubicacion = (List<SelectListItem>)ViewBag.Ubicaciones_Eventos_Empresas_Ubicacion; }
+    List<SelectListItem> varEstatus_Actividades_Evento_Estatus_de_la_Actividad = null;
+    if (ViewBag.Estatus_Actividades_Eventos_Estatus_de_la_Actividad != null)
+    { varEstatus_Actividades_Evento_Estatus_de_la_Actividad = (List<SelectListItem>)ViewBag.Estatus_Actividades_Eventos_Estatus_de_la_Actividad; }
+
+
+    Permission permission = ViewBag.Permission;
+}
+<div class="modal-dialog" style="width:95%;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">
+                Add Detalle Actividades Evento
+                <button data-dismiss="modal" class="close" type="button" onclick="@(ViewBag.functionMode == 0 ? "Detalle_Actividades_EventoRemoveAddRow("+ ViewBag.currentRowIndex +")" : "")"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            </h4>
+        </div>
+        <div class="modal-body scroll_content">
+            <div class="form-horizontal Detalle_Actividades_EventoPop_@ViewBag.currentRowIndex">
+				<div class="modal fade in" id="dvAttributeValue" style="background-color:rgba(0, 0, 0, 0.7);">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-body">
+								<div class="form-group">
+									<label class="col-sm-3 control-label" id="lblAttributeType">Value</label>
+									<div class="col-sm-7">
+										<input type="text" title="Value" class="form-control" id="txtAttributeValue" />
+									</div>
+									<div class="col-sm-2">
+										<a class="btn btn-primary" onclick="SaveValue()">Submit</a>
+									</div>
+									<input type="hidden" id="hdnAttributType" />
+									<input type="hidden" id="hdnAttributElement" />
+									<input type="hidden" id="hdnAttributNumber" />
+									<input type="hidden" id="hdnElementType" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row wrapper border-bottom white-bg page-heading">
+
+					<div class="row">
+						<div class="col-lg-10">
+							<h2>
+								Detalle Actividades Evento
+								<button onclick="Detalle_Actividades_EventoGetBusinessRule('', 'Abrir Pantalla', '0')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Detalle_Actividades_EventoBusinessRule-form">
+									<a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+										<i class="fa fa-cogs fa-spin"></i>
+									</a>
+								</button>
+							</h2>
+							<ol class="breadcrumb">
+								<li>
+									<a href="@Url.Action("Index", "Home")">@Resources.Resources.Home</a>
+								</li>
+								<li class="">
+									<label>@Resources.Detalle_Actividades_EventoResources.Detalle_Actividades_Evento</label>
+								</li>
+								<li class="active">
+									<strong>@Resources.Resources.Create</strong>
+								</li>
+							</ol>
+						</div>
+						<div class="col-lg-2">
+
+							@{
+								if (Convert.ToInt32(Spartane.Web.SessionHelper.Role) == (int)Spartane.Core.Enums.SpartanRoleEnum.Admin)
+								{
+									<h2>&nbsp;</h2>
+									<button onclick="Detalle_Actividades_EventoDisplayBusinessRule()" type="button" class="btn btn-info btn-lg displayBusinessProperyButton">
+										<i class="fa fa-cogs fa-spin"></i>
+									</button>
+
+									<div aria-hidden="true" class="modal fade in Detalle_Actividades_EventoPropertyBusinessModal" id="Detalle_Actividades_EventoPropertyBusinessModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h4 class="modal-title">
+														Property & Business Rules
+														<button class="close" type="button" onclick="$(this).parent().parent().parent().parent().parent().modal('hide');"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+													</h4>
+												</div>
+												<div class="modal-body">
+													<div class="row">
+														<div class="col-sm-12">
+															<a class="btn btn-primary full-width" data-toggle="modal" data-target="#PropertyModal-form" onclick="GetPropertyBag()">Properties</a>
+														</div>
+														<div class="clearfix col-sm-12">&nbsp;</div>
+														<div class="col-sm-12">
+															<a class="btn btn-primary full-width" data-toggle="modal" data-target="#Detalle_Actividades_EventoBusinessRule-form" onclick="Detalle_Actividades_EventoGetBusinessRule()">Business Rule</a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									 <div aria-hidden="true" data-backdrop="static" class="modal fade in Detalle_Actividades_EventoPropertyModal" id="Detalle_Actividades_EventoPropertyModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+									</div>
+									<div aria-hidden="true" data-backdrop="static" class="modal fade in Detalle_Actividades_EventoBusinessRuleModal" id="Detalle_Actividades_EventoBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+									</div>
+                                    <div aria-hidden="true" data-backdrop="static" class="modal fade in Detalle_Actividades_EventoAddBusinessRuleModal" id="Detalle_Actividades_EventoAddBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                                    </div>
+
+				
+								}
+							}
+						</div>
+					</div>
+
+				<div class="wrapper wrapper-content animated fadeInRight">
+					<div class="ibox float-e-margins">
+						<div class="ibox-content">
+							@using (Html.BeginForm("Post", "Detalle_Actividades_Evento", FormMethod.Post, new { id = "CreateDetalle_Actividades_Evento", @readonly = "true", @class = "form-horizontal", enctype = "multipart/form-data" }))
+							{
+								<span id="popupNotification"></span>
+								<div class="container-fluid Detalle_Actividades_EventoCreateForm" id="viewmodeledit">
+							<div class="tabs-container">
+											<ul class="nav nav-tabs">
+				@@groupers@@
+											</ul>
+										<div class="tab-content">
+				<div class="form-group" id="divFolio">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Actividades_EventoResources.Folio</label>
+                                <div class="col-sm-8" data-field-id="Folio" data-attribute="258705" data-field-name="@Resources.Detalle_Actividades_EventoResources.Folio">
+                                    <label class="form-control" for="Detalle_Actividades_EventoFolio" id="Detalle_Actividades_EventoFolio">@Model.Folio</label>
+                                </div>
+                            </div>
+<div class="form-group" id="divTipo_de_Actividad">
+	<label class="col-sm-2 control-label">@Resources.Detalle_Actividades_EventoResources.Tipo_de_Actividad</label>
+	<div class="col-sm-8" data-field-id="Tipo_de_Actividad" data-attribute="258707" data-field-name="@Resources.Detalle_Actividades_EventoResources.Tipo_de_Actividad">
+		<select class="form-control" data-val="true" data-val-number="The field Tipo de Actividad must be a number." data-val-required="The Tipo de Actividad field is required." id="Detalle_Actividades_EventoTipo_de_Actividad" name="Detalle_Actividades_EventoTipo_de_Actividad">
+			<option value=""></option>
+			@if (varTipos_de_Actividades_Tipo_de_Actividad != null){ 
+				foreach (var itemTipo_de_Actividad in varTipos_de_Actividades_Tipo_de_Actividad)
+				{
+					if (itemTipo_de_Actividad.Value == Convert.ToString(Model.Tipo_de_Actividad))
+					{
+						<option value="@itemTipo_de_Actividad.Value" selected>@itemTipo_de_Actividad.Text</option>
+					}
+					else
+					{
+						<option value="@itemTipo_de_Actividad.Value">@itemTipo_de_Actividad.Text</option>
+					}
+				}
+			}
+		</select>
+	</div>
+</div>
+<div class="form-group" id="divEspecialidad">
+	<label class="col-sm-2 control-label">@Resources.Detalle_Actividades_EventoResources.Especialidad</label>
+	<div class="col-sm-8" data-field-id="Especialidad" data-attribute="258708" data-field-name="@Resources.Detalle_Actividades_EventoResources.Especialidad">
+		<select class="form-control" data-val="true" data-val-number="The field Especialidad must be a number." data-val-required="The Especialidad field is required." id="Detalle_Actividades_EventoEspecialidad" name="Detalle_Actividades_EventoEspecialidad">
+			<option value=""></option>
+			@if (varEspecialidades_Especialidad != null){ 
+				foreach (var itemEspecialidad in varEspecialidades_Especialidad)
+				{
+					if (itemEspecialidad.Value == Convert.ToString(Model.Especialidad))
+					{
+						<option value="@itemEspecialidad.Value" selected>@itemEspecialidad.Text</option>
+					}
+					else
+					{
+						<option value="@itemEspecialidad.Value">@itemEspecialidad.Text</option>
+					}
+				}
+			}
+		</select>
+	</div>
+</div>
+<div class="form-group" id="divNombre_de_la_Actividad">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Actividades_EventoResources.Nombre_de_la_Actividad</label>
+                                <div class="col-sm-8" data-field-id="Nombre_de_la_Actividad" data-attribute="258709" data-field-name="@Resources.Detalle_Actividades_EventoResources.Nombre_de_la_Actividad">
+                                    <input class="form-control" id="Detalle_Actividades_EventoNombre_de_la_Actividad" name="Detalle_Actividades_EventoNombre_de_la_Actividad" type="text" value="@Model.Nombre_de_la_Actividad">
+                                </div>
+                            </div>
+<div class="form-group" id="divDescripcion">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Actividades_EventoResources.Descripcion</label>
+                                <div class="col-sm-8" data-field-id="Descripcion" data-attribute="258710" data-field-name="@Resources.Detalle_Actividades_EventoResources.Descripcion">
+                                    <input class="form-control" id="Detalle_Actividades_EventoDescripcion" name="Detalle_Actividades_EventoDescripcion" type="text" value="@Model.Descripcion">
+                                </div>
+                            </div>
+<div class="form-group" id="divQuien_imparte">
+	<label class="col-sm-2 control-label">@Resources.Detalle_Actividades_EventoResources.Quien_imparte</label>
+	<div class="col-sm-8" data-field-id="Quien_imparte" data-attribute="258711" data-field-name="@Resources.Detalle_Actividades_EventoResources.Quien_imparte">
+		<select class="form-control" data-val="true" data-val-number="The field ¿Quién imparte? must be a number." data-val-required="The ¿Quién imparte? field is required." id="Detalle_Actividades_EventoQuien_imparte" name="Detalle_Actividades_EventoQuien_imparte">
+			<option value=""></option>
+			@if (varSpartan_User_Quien_imparte != null){ 
+				foreach (var itemQuien_imparte in varSpartan_User_Quien_imparte)
+				{
+					if (itemQuien_imparte.Value == Convert.ToString(Model.Quien_imparte))
+					{
+						<option value="@itemQuien_imparte.Value" selected>@itemQuien_imparte.Text</option>
+					}
+					else
+					{
+						<option value="@itemQuien_imparte.Value">@itemQuien_imparte.Text</option>
+					}
+				}
+			}
+		</select>
+	</div>
+</div>
+<div class="form-group" id="divDia">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Actividades_EventoResources.Dia</label>
+                                <div class="col-sm-8" data-field-id="Dia" data-attribute="258712" data-field-name="@Resources.Detalle_Actividades_EventoResources.Dia">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input class="form-control col-md-12" id="Detalle_Actividades_EventoDia" readonly="readonly" name="Detalle_Actividades_EventoDia" type="text" value="@Model.Dia">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+<div class="form-group" id="divHora_inicio">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Actividades_EventoResources.Hora_inicio</label>
+                                <div class="col-sm-8" data-field-id="Hora_inicio" data-attribute="258713" data-field-name="@Resources.Detalle_Actividades_EventoResources.Hora_inicio">
+                                    <div class='input-group date' id='timePicker'>
+                                        <input class="form-control col-md-12" id="Detalle_Actividades_EventoHora_inicio" readonly="readonly" name="Detalle_Actividades_EventoHora_inicio" type="text" data-autoclose="true" value="@Model.Hora_inicio">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-time"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+<div class="form-group" id="divHora_fin">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Actividades_EventoResources.Hora_fin</label>
+                                <div class="col-sm-8" data-field-id="Hora_fin" data-attribute="258714" data-field-name="@Resources.Detalle_Actividades_EventoResources.Hora_fin">
+                                    <div class='input-group date' id='timePicker'>
+                                        <input class="form-control col-md-12" id="Detalle_Actividades_EventoHora_fin" readonly="readonly" name="Detalle_Actividades_EventoHora_fin" type="text" data-autoclose="true" value="@Model.Hora_fin">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-time"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+<div class="form-group" id="divTiene_receso">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Actividades_EventoResources.Tiene_receso</label>
+                                <div class="col-sm-8" data-field-id="Tiene_receso" data-attribute="258715" data-field-name="@Resources.Detalle_Actividades_EventoResources.Tiene_receso">
+                                    @Html.CheckBoxFor(m => m.Tiene_receso, new { @class = "i-checks" })
+                                </div>
+                            </div>
+<div class="form-group" id="divHora_inicio_receso">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Actividades_EventoResources.Hora_inicio_receso</label>
+                                <div class="col-sm-8" data-field-id="Hora_inicio_receso" data-attribute="258716" data-field-name="@Resources.Detalle_Actividades_EventoResources.Hora_inicio_receso">
+                                    <div class='input-group date' id='timePicker'>
+                                        <input class="form-control col-md-12" id="Detalle_Actividades_EventoHora_inicio_receso" readonly="readonly" name="Detalle_Actividades_EventoHora_inicio_receso" type="text" data-autoclose="true" value="@Model.Hora_inicio_receso">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-time"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+<div class="form-group" id="divHora_fin_receso">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Actividades_EventoResources.Hora_fin_receso</label>
+                                <div class="col-sm-8" data-field-id="Hora_fin_receso" data-attribute="258717" data-field-name="@Resources.Detalle_Actividades_EventoResources.Hora_fin_receso">
+                                    <div class='input-group date' id='timePicker'>
+                                        <input class="form-control col-md-12" id="Detalle_Actividades_EventoHora_fin_receso" readonly="readonly" name="Detalle_Actividades_EventoHora_fin_receso" type="text" data-autoclose="true" value="@Model.Hora_fin_receso">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-time"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+<div class="form-group" id="divDuracion_maxima_por_paciente_mins">
+	<label class="col-sm-2 control-label">@Resources.Detalle_Actividades_EventoResources.Duracion_maxima_por_paciente_mins</label>
+	<div class="col-sm-8" data-field-id="Duracion_maxima_por_paciente_mins" data-attribute="258721" data-field-name="@Resources.Detalle_Actividades_EventoResources.Duracion_maxima_por_paciente_mins">
+		<input class="form-control inputNumber" id="Detalle_Actividades_EventoDuracion_maxima_por_paciente_mins" name="Detalle_Actividades_EventoDuracion_maxima_por_paciente_mins" type="text" value="@Model.Duracion_maxima_por_paciente_mins">
+	</div>
+</div>
+<div class="form-group" id="divCupo_limitado">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Actividades_EventoResources.Cupo_limitado</label>
+                                <div class="col-sm-8" data-field-id="Cupo_limitado" data-attribute="258719" data-field-name="@Resources.Detalle_Actividades_EventoResources.Cupo_limitado">
+                                    @Html.CheckBoxFor(m => m.Cupo_limitado, new { @class = "i-checks" })
+                                </div>
+                            </div>
+<div class="form-group" id="divCupo_maximo">
+	<label class="col-sm-2 control-label">@Resources.Detalle_Actividades_EventoResources.Cupo_maximo</label>
+	<div class="col-sm-8" data-field-id="Cupo_maximo" data-attribute="258720" data-field-name="@Resources.Detalle_Actividades_EventoResources.Cupo_maximo">
+		<input class="form-control inputNumber" id="Detalle_Actividades_EventoCupo_maximo" name="Detalle_Actividades_EventoCupo_maximo" type="text" value="@Model.Cupo_maximo">
+	</div>
+</div>
+<div class="form-group" id="divUbicacion">
+	<label class="col-sm-2 control-label">@Resources.Detalle_Actividades_EventoResources.Ubicacion</label>
+	<div class="col-sm-8" data-field-id="Ubicacion" data-attribute="258718" data-field-name="@Resources.Detalle_Actividades_EventoResources.Ubicacion">
+		<select class="form-control" data-val="true" data-val-number="The field Ubicación must be a number." data-val-required="The Ubicación field is required." id="Detalle_Actividades_EventoUbicacion" name="Detalle_Actividades_EventoUbicacion">
+			<option value=""></option>
+			@if (varUbicaciones_Eventos_Empresa_Ubicacion != null){ 
+				foreach (var itemUbicacion in varUbicaciones_Eventos_Empresa_Ubicacion)
+				{
+					if (itemUbicacion.Value == Convert.ToString(Model.Ubicacion))
+					{
+						<option value="@itemUbicacion.Value" selected>@itemUbicacion.Text</option>
+					}
+					else
+					{
+						<option value="@itemUbicacion.Value">@itemUbicacion.Text</option>
+					}
+				}
+			}
+		</select>
+	</div>
+</div>
+<div class="form-group" id="divEstatus_de_la_Actividad">
+	<label class="col-sm-2 control-label">@Resources.Detalle_Actividades_EventoResources.Estatus_de_la_Actividad</label>
+	<div class="col-sm-8" data-field-id="Estatus_de_la_Actividad" data-attribute="258722" data-field-name="@Resources.Detalle_Actividades_EventoResources.Estatus_de_la_Actividad">
+		<select class="form-control" data-val="true" data-val-number="The field Estatus de la Actividad must be a number." data-val-required="The Estatus de la Actividad field is required." id="Detalle_Actividades_EventoEstatus_de_la_Actividad" name="Detalle_Actividades_EventoEstatus_de_la_Actividad">
+			<option value=""></option>
+			@if (varEstatus_Actividades_Evento_Estatus_de_la_Actividad != null){ 
+				foreach (var itemEstatus_de_la_Actividad in varEstatus_Actividades_Evento_Estatus_de_la_Actividad)
+				{
+					if (itemEstatus_de_la_Actividad.Value == Convert.ToString(Model.Estatus_de_la_Actividad))
+					{
+						<option value="@itemEstatus_de_la_Actividad.Value" selected>@itemEstatus_de_la_Actividad.Text</option>
+					}
+					else
+					{
+						<option value="@itemEstatus_de_la_Actividad.Value">@itemEstatus_de_la_Actividad.Text</option>
+					}
+				}
+			}
+		</select>
+	</div>
+</div>
+
+								</div>	
+							</div>
+									<br />
+											<div class="form-actions fluid">
+												<input type="hidden" value="@Model.Folio" id="ReferenceFolio" />
+												<input type="hidden" value="@Model.Folio" name="Folio" id="FolioId" />
+												@if (!ViewBag.Consult)
+												{
+													<div id="dvSaveJob" style="display:inline-block"></div>
+
+													<button type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton">
+														<i class="fa fa-cogs fa-spin"></i>
+													</button>
+													<a title="@Resources.Resources.Configure" id="Detalle_Actividades_EventoConfigureSave" name="Detalle_Actividades_EventoConfigureSave" onclick="SaveElementAttributes()" class="btn btn-success">@Resources.Resources.Configure</a>
+												}
+
+												<input type="hidden" id="hdnDetalle_Actividades_EventoConfigureType" />
+												<input type="hidden" id="hdnDetalle_Actividades_EventoBusinessRuleFieldId" />
+												<input type="hidden" id="hdnDetalle_Actividades_EventoBusinessRuleFieldName" />
+												<input type="hidden" id="hdnDetalle_Actividades_EventoBusinessRuleAttribute" />
+
+												<input data-dismiss="modal" type="button" value="@Resources.Resources.Cancelar" class="btn btn-danger noConsult" data-bind="click: cancel" tabindex="16" />
+
+												<button onclick="Detalle_Actividades_EventoGetBusinessRule('', 'Al Cancelar', '3')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Detalle_Actividades_EventoBusinessRule-form">
+													<a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+														<i class="fa fa-cogs fa-spin"></i>
+													</a>
+												</button>
+											</div>
+										</div>
+								}
+
+							</div>
+						</div>
+					</div>
+				</div>
+					<input id="hdnApplicationDirectory" type="hidden" value="@Url.Content("~/")" />
+				</div>
+			</div>
+		</div>
+</div>
+@section Styles {
+<link href="@Url.Content("~/Content/BootstrapDatePicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+    @Styles.Render("~/plugins/awesomeCheckboxStyles")
+    @Styles.Render("~/plugins/select2Styles")
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+    .select2-results{background-color:#fff;}
+    .select2-container .select2-dropdown{height:auto !important;}
+
+    div.dataTables_info {
+        display: inline-block;
+        float: right;
+    }
+        i {
+        font-size: 25px !important;
+        display: block;
+        color: #676a6c;
+        margin-left: 6px;
+        margin-right: 6px;
+    }
+
+    .fullWidth {
+        width: 100%;
+    }
+</style>
+}
+
+<script type="text/javascript" src="~/Uploads/Scripts/Detalle_Actividades_Evento.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Scripts/Custom/Detalle_Actividades_EventoGeneral.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/Detalle_Actividades_EventoCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/EventosCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
+
+    <script type="text/javascript">
+        
+
+
+
+        $(document).ready(function () {
+			var currentIndex = @ViewBag.currentRowIndex
+
+            var Detalle_Actividades_EventoRowElement = "Detalle_Actividades_EventoPop_" + currentIndex.toString();
+            var abc = "if(dynamicFieldValidation('" + Detalle_Actividades_EventoRowElement + "')){ Detalle_Actividades_EventoInsertRowFromPopup(" + currentIndex + "); }";
+            var insertRowHTML = '<a class="btn btn-primary m-b" onclick="' + abc + '">Save</a>';
+            $('#dvSaveJob').html(insertRowHTML);
+			
+            $('#Detalle_Actividades_EventoDia').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            $('#Detalle_Actividades_EventoHora_inicio').clockpicker();
+            $('#Detalle_Actividades_EventoHora_fin').clockpicker();
+            $('#Detalle_Actividades_EventoHora_inicio_receso').clockpicker();
+            $('#Detalle_Actividades_EventoHora_fin_receso').clockpicker();
+
+
+            initiateUIControls();
+            EjecutarValidacionesAlComienzo();
+			$('a').tooltip();
+        });
+
+
+
+        function initiateUIControls() {
+            $('.gridDatePicker').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            //Time Picker
+            $('.gridTimePicker').clockpicker();
+
+        }
+		
+		function SendDetalle_Actividades_EventoData(callBack) {
+			
+					
+		 var arr = []; 
+		 $("form#CreateDetalle_Actividades_Evento").find(':input').each(function( index ) {		 
+			if ($(this).prop('disabled')==true|| $(this).prop('disabled')=="disabled")
+			{		
+				arr.push($(this).attr('id')); 
+				$(this).prop('disabled', false);  	
+			}
+	    });
+		
+             var formData = new FormData($("form#CreateDetalle_Actividades_Evento")[0]);
+			$.each( arr, function( key, value ) {
+			  $('#' +value).prop('disabled', true);
+			});
+
+            var isNew = $('#hdnIsNew').val();
+           
+            if (checkClientValidate('Detalle_Actividades_EventoCreateForm')) {
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Detalle_Actividades_Evento/Post?IsNew=")' + isNew,
+                    type: 'POST',
+                    data: formData,
+                    async: true,
+                    success: function (result) {
+                        if (result < 0) {
+                            showNotification("@Resources.Resources.ErrorSave", "error");
+                        } else {
+
+                            showNotification("@Resources.Resources.SaveSuccess", "success");
+                            callBack(result);
+                        }
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            }
+            return false;
+        };
+		
+        function GetPropertyBag() {
+            $.get('@Url.Action("Detalle_Actividades_EventoPropertyBag", "Detalle_Actividades_Evento")', function (data) {
+                $(".PropertyModal").html(data);
+            });
+        }
+        function Detalle_Actividades_EventoGetBusinessRule(FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null)
+			{
+				$('#hdnDetalle_Actividades_EventoBusinessRuleFieldId').val(FieldId);
+				$('#hdnDetalle_Actividades_EventoBusinessRuleFieldName').val(FieldName);
+				$('#hdnDetalle_Actividades_EventoBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("BusinessRule", "BussinessRule")', { FieldId: $('#hdnDetalle_Actividades_EventoBusinessRuleFieldId').val(), FieldName: $('#hdnDetalle_Actividades_EventoBusinessRuleFieldName').val(), ObjectId: '44431', Attribute: $('#hdnDetalle_Actividades_EventoBusinessRuleAttribute').val(), Screen: 'Detalle_Actividades_Evento' }, function (data) {
+                $(".Detalle_Actividades_EventoBusinessRuleModal").html(data);
+            });
+        }
+        function Detalle_Actividades_EventoGetAddBusinessRule(RuleId, FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null) {
+				$('#hdnDetalle_Actividades_EventoBusinessRuleFieldId').val(FieldId);
+				$('#hdnDetalle_Actividades_EventoBusinessRuleFieldName').val(FieldName);
+				$('#hdnDetalle_Actividades_EventoBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("AddBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnDetalle_Actividades_EventoBusinessRuleFieldId').val(), FieldName: $('#hdnDetalle_Actividades_EventoBusinessRuleFieldName').val(), ObjectId: '44431', Attribute: $('#hdnDetalle_Actividades_EventoBusinessRuleAttribute').val(), Screen: 'Detalle_Actividades_Evento' }, function (data) {
+                $(".Detalle_Actividades_EventoAddBusinessRuleModal").html(data);
+                $(".datatable").DataTable();
+            });
+        }
+		function RemoveBusinessRule(RuleId) {
+			$.get('@Url.Action("RemoveBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnDetalle_Actividades_EventoBusinessRuleFieldId').val(), FieldName: $('#hdnDetalle_Actividades_EventoBusinessRuleFieldName').val(), ObjectId: '44431', Attribute: $('#hdnDetalle_Actividades_EventoBusinessRuleAttribute').val(), Screen: 'Detalle_Actividades_Evento' }, function (data) {
+				$(".Detalle_Actividades_EventoBusinessRuleModal").html(data);
+			});
+		}
+
+    var permission = {
+        Consult: '@permission.Consult' == 'True',
+        New: '@permission.New' == 'True',
+        Edit: '@permission.Edit' == 'True',
+        Delete: '@permission.Delete' == 'True',
+        Export: '@permission.Export' == 'True',
+        Print: '@permission.Print' == 'True',
+        Configure: '@permission.Configure' == 'True',
+    };
+
+    
+    //MR-var statusItems;
+    //MR-var stateItems;
+    //MR-var cityItems = [];
+    var isConsultMode = "@ViewBag.Consult" == "True";
+    Consult(isConsultMode);
+        function Consult(val) {
+            if (val) {
+                $(':input').attr('readonly', 'readonly');
+                $(':input').attr('disabled', 'true');
+                $('.noConsult').removeAttr('readonly');
+                $('.noConsult').removeAttr('disabled');
+            }
+        }
+
+    function BackToGrid() {
+        location.href = "@Url.Content("~/Frontal/Detalle_Actividades_Evento/")";
+    }
+	
+	function ReadScriptSettings(callback)
+    {
+        $.post("@Url.Content("~/Frontal/Detalle_Actividades_Evento/ReadScriptSettings")", function (data) {
+            mainElementObject = JSON.parse(data.MainElement);
+			if (data.ChildElement != null) {
+                childElementObject = JSON.parse(data.ChildElement);
+            }
+            callback();
+        });
+    }
+
+    function SaveSettingsWithoutReload() {
+        $.post("@Url.Content("~/Frontal/Detalle_Actividades_Evento/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+            //$('#hdnDetalle_Actividades_EventoConfigureType').val("0");
+        }, "json");
+    }
+	
+        function SaveElementAttributes() {
+            if ($('#hdnDetalle_Actividades_EventoConfigureType').val() == "1") {
+                $.post("@Url.Content("~/Frontal/Detalle_Actividades_Evento/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+                    $('#hdnDetalle_Actividades_EventoConfigureType').val("0");
+                    location.reload(true);
+                }, "json");
+            } else {
+                $.post("@Url.Content("~/Frontal/Detalle_Actividades_Evento/ReadScriptSettings")", function (data) {
+                    mainElementObject = JSON.parse(data.MainElement);
+                    childElementObject = JSON.parse(data.ChildElement);
+
+                    for (var i = 0; i < mainElementObject.length; i++) {
+                        var mainElementAttributes = '<div class="col-sm-2">';
+                        mainElementAttributes += '<div class="displayAttributes requiredAttribute"><a class="requiredClick" title="' + (mainElementObject[i].IsRequired == true ? "Required" : "Not Required") + '" onclick="setRequired(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsRequired == true ? "@Url.Content("~/Images/Required.png")" : "@Url.Content("~/Images/Not-Required.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes visibleAttribute"><a class="visibleClick" title="' + (mainElementObject[i].IsVisible == true ? "Visible" : "In Visible") + '" onclick="setVisible(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsVisible == true ? "@Url.Content("~/Images/Visible.png")" : "@Url.Content("~/Images/InVisible.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes readOnlyAttribute"><a class="readOnlyClick" title="' + (mainElementObject[i].IsReadOnly == true ? "Disabled" : "Enabled") + '" onclick="setReadOnly(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsReadOnly == true ? "@Url.Content("~/Images/Disabled.png")" : "@Url.Content("~/Images/Enabled.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes defaultValueAttribute"><a id="hlDefaultValue_' + i.toString() + '" class="defaultValueClick" title="' + (mainElementObject[i].DefaultValue) + '" onclick="setDefaultValue(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].DefaultValue != '' && mainElementObject[i].DefaultValue != null ? "@Url.Content("~/Images/default-value.png")" : "@Url.Content("~/Images/Not-Default-Value.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes helpTextAttribute"><a id="hlHelpText_' + i.toString() + '" class="helpTextClick" title="' + (mainElementObject[i].HelpText) + '" onclick="setHelpText(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].HelpText != '' && mainElementObject[i].HelpText != null ? "@Url.Content("~/Images/green-help.png")" : "@Url.Content("~/Images/red-help.jpg")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '</div>';
+                        $('#Detalle_Actividades_Evento' + mainElementObject[i].inputId).parent().closest('.form-group').show();
+
+                        $('#Detalle_Actividades_Evento' + mainElementObject[i].inputId).closest('.col-sm-8').after(mainElementAttributes);
+                    }
+					if (childElementObject != null) {
+						for (var i = 0; i < childElementObject.length; i++) {
+							$('.' + childElementObject[i].inputId + 'Header').show();
+							$('.' + childElementObject[i].inputId).parent().show();
+							$('.' + childElementObject[i].inputId + 'Header').append(returnAttributeHTML(i));
+						}
+					}
+                    $('#Detalle_Actividades_EventoConfigureSave').text('Save Settings');
+                    $('#hdnDetalle_Actividades_EventoConfigureType').val("1");
+                });
+            }
+        }
+		$('#CreateDetalle_Actividades_Evento').on('click', '.btnPopupBusinessRules', function () {
+			var fieldId = $(this).data('field-id');
+			var fieldName = $(this).data('field-name');
+			var attribute = $(this).data('attribute');
+			$('#hdnDetalle_Actividades_EventoBusinessRuleFieldId').val(fieldId);
+			$('#hdnDetalle_Actividades_EventoBusinessRuleFieldName').val(fieldName);
+			$('#hdnDetalle_Actividades_EventoBusinessRuleAttribute').val(attribute);
+		});
+		//Initialize HTML Editors
+		
+    </script>

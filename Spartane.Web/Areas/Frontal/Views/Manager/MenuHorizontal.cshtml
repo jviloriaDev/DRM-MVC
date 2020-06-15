@@ -1,0 +1,87 @@
+@model ICollection<Spartane.Web.Areas.Frontal.Models.SideBar>
+
+@{
+    Layout = null;
+}
+
+<ul class="nav navbar-nav" id="ulmenu">
+    <li class="classic-menu-dropdown active">
+        <a href="index.html">
+            Inicio <span class="selected"></span>
+        </a>
+    </li>
+    @foreach (var opcion in Model.Where(o => o.Tabs != ""))
+    {
+        <li class="classic-menu-dropdown">
+            <a data-hover="dropdown" data-close-others="true" data-toggle="dropdown" href="javascript:;">
+                @opcion.Label <i class="fa fa-angle-down"></i>
+            </a>
+            @if (opcion.Opciones.Count > 0)
+            {
+                <ul class="dropdown-menu pull-left">
+                    @foreach (var subopciones in opcion.Opciones)
+                    {
+                        var def = "false";
+                        <li><a data-toggle="menu" data-default="@def" data-title="@subopciones.Titulo" data-description="@subopciones.Descripcion" data-url="@Url.Action("default", subopciones.Controller)" data-tabs="@subopciones.Tabs" href="@Url.Action("default", @subopciones.Controller)"><i class="icon-user"></i> @subopciones.Label</a> </li>
+                    }
+                </ul>
+            }
+        </li>
+    }
+    <li class="classic-menu-dropdown open">
+        <a aria-expanded="true" href="javascript:;" data-toggle="dropdown">
+            Demo <i class="fa fa-angle-down"></i>
+        </a>
+        <ul class="dropdown-menu pull-left">
+            <li>
+                <a href="#">
+                    <i class="fa fa-bookmark-o"></i> Opcion 1
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa fa-user"></i> Opcion 2
+                </a>
+            </li>
+            <li class="dropdown-submenu">
+                <a href="javascript:;">
+                    <i class="fa fa-envelope-o"></i> Mas opciones
+                </a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="#">
+                            Segundo nivel
+                        </a>
+                    </li>
+                    <li class="dropdown-submenu">
+                        <a href="javascript:;">
+                           Mas...
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="index.html">
+                                   Tercer nivel 1
+                                </a>
+                            </li>
+                            <li>
+                                <a href="index.html">
+                                    Tercer nivel 2
+                                </a>
+                            </li>
+                            <li>
+                                <a href="index.html">
+                                    TErcer nivel 3
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="index.html">
+                            Segundo Nivel
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+</ul>

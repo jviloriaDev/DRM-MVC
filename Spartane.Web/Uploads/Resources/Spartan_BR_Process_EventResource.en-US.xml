@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_BR_Process_Event" value="Business Rule Process Event"></resource>
+  <resource culture="en-US" name="ProcessEventId" value="Id"></resource>
+  <resource culture="en-US" name="Description" value="Description"></resource>
+</resources>

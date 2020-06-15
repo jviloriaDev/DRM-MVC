@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Pacientes" value="Pacientes"></resource>
+  <resource culture="es-es" name="Folio" value="Folio"></resource>
+  <resource culture="es-es" name="Fecha_de_Registro" value="Fecha de Registro"></resource>
+  <resource culture="es-es" name="Hora_de_Registro" value="Hora de Registro"></resource>
+  <resource culture="es-es" name="Usuario_que_Registra" value="Usuario que Registra"></resource>
+  <resource culture="es-es" name="Tipo_de_Registro" value="Tipo de Registro"></resource>
+  <resource culture="es-es" name="Tipo_de_Paciente" value="Tipo de Paciente"></resource>
+  <resource culture="es-es" name="Usuario_Registrado" value="Usuario Registrado"></resource>
+  <resource culture="es-es" name="Empresa" value="Empresa"></resource>
+  <resource culture="es-es" name="Numero_de_Empleado" value="Número de Empleado"></resource>
+  <resource culture="es-es" name="Nombres" value="Nombre(s)"></resource>
+  <resource culture="es-es" name="Apellido_Paterno" value="Apellido Paterno"></resource>
+  <resource culture="es-es" name="Apellido_Materno" value="Apellido Materno"></resource>
+  <resource culture="es-es" name="Nombre_Completo" value="Nombre Completo"></resource>
+  <resource culture="es-es" name="Celular" value="Celular"></resource>
+  <resource culture="es-es" name="Email" value="Email"></resource>
+  <resource culture="es-es" name="Fecha_de_nacimiento" value="Fecha de nacimiento"></resource>
+  <resource culture="es-es" name="Nombre_del_Padre_o_Tutor" value="Nombre del Padre o Tutor"></resource>
+  <resource culture="es-es" name="Pais_de_nacimiento" value="País de nacimiento"></resource>
+  <resource culture="es-es" name="Lugar_de_nacimiento" value="Lugar de nacimiento"></resource>
+  <resource culture="es-es" name="Sexo" value="Sexo"></resource>
+  <resource culture="es-es" name="Estado_Civil" value="Estado Civil"></resource>
+  <resource culture="es-es" name="Calle" value="Calle"></resource>
+  <resource culture="es-es" name="Numero_exterior" value="Número exterior"></resource>
+  <resource culture="es-es" name="Numero_interior" value="Número interior"></resource>
+  <resource culture="es-es" name="Colonia" value="Colonia"></resource>
+  <resource culture="es-es" name="CP" value="C.P."></resource>
+  <resource culture="es-es" name="Ciudad" value="Ciudad"></resource>
+  <resource culture="es-es" name="Pais" value="País"></resource>
+  <resource culture="es-es" name="Estado" value="Estado"></resource>
+  <resource culture="es-es" name="Ocupacion" value="Ocupación"></resource>
+  <resource culture="es-es" name="Cantidad_hijos" value="¿Cuántos hijos tienes?"></resource>
+  <resource culture="es-es" name="Objetivo" value="Objetivo"></resource>
+  <resource culture="es-es" name="Estatus_Paciente" value="Estatus Paciente"></resource>
+  <resource culture="es-es" name="Cuenta_con_padecimientos" value="¿Cuenta con alguna enfermedad o padecimiento diagnosticado?"></resource>
+  <resource culture="es-es" name="Detalle_del_padecimiento" value="Detalle del padecimiento"></resource>
+  <resource culture="es-es" name="Antecedentes_Familiares" value="Antecedentes Familiares"></resource>
+  <resource culture="es-es" name="Antecedentes_personales_no_patologicos" value="Antecedentes personales no patológicos"></resource>
+  <resource culture="es-es" name="Frecuencia_Cardiaca" value="Frecuencia Cardiaca (ppm)"></resource>
+  <resource culture="es-es" name="Frecuencia_Respiratoria" value="Frecuencia Respiratoria (rpm)"></resource>
+  <resource culture="es-es" name="Presion_sistolica" value="Presión sistólica (mm Hg)"></resource>
+  <resource culture="es-es" name="Presion_diastolica" value="Presión diastólica (mm Hg)"></resource>
+  <resource culture="es-es" name="Peso_actual" value="Peso actual (kg)"></resource>
+  <resource culture="es-es" name="Estatura" value="Estatura (m)"></resource>
+  <resource culture="es-es" name="Peso_habitual" value="Peso habitual (kg)"></resource>
+  <resource culture="es-es" name="Circunferencia_de_cintura_cm" value="Circunferencia de cintura (cm)"></resource>
+  <resource culture="es-es" name="Circunferencia_de_cadera_cm" value="Circunferencia de cadera (cm)"></resource>
+  <resource culture="es-es" name="Anchura_de_muneca_mm" value="Anchura de muñeca (mm)"></resource>
+  <resource culture="es-es" name="Circunferencia_de_brazo_cm" value="Circunferencia de brazo (cm)"></resource>
+  <resource culture="es-es" name="Pliegue_cutaneo_tricipital_mm" value="Pliegue cutáneo tricipital (mm)"></resource>
+  <resource culture="es-es" name="Pliegue_cutaneo_bicipital_mm" value="Pliegue cutáneo bicipital (mm)"></resource>
+  <resource culture="es-es" name="Pliegue_cutaneo_subescapular_mm" value="Pliegue cutáneo subescapular (mm)"></resource>
+  <resource culture="es-es" name="Pliegue_cutaneo_supraespinal_mm" value="Pliegue cutáneo supraespinal (mm)"></resource>
+  <resource culture="es-es" name="Edad_Metabolica" value="Edad Metabólica"></resource>
+  <resource culture="es-es" name="Agua_corporal" value="% Agua corporal"></resource>
+  <resource culture="es-es" name="Grasa_Visceral" value="Grasa Visceral"></resource>
+  <resource culture="es-es" name="Grasa_Corporal" value="% Grasa Corporal"></resource>
+  <resource culture="es-es" name="Grasa_Corporal_kg" value="Grasa Corporal kg"></resource>
+  <resource culture="es-es" name="Masa_Muscular_kg" value="Masa Muscular kg"></resource>
+  <resource culture="es-es" name="Masa_Muscular_" value="Masa Muscular %"></resource>
+  <resource culture="es-es" name="Examenes_de_Laboratorio" value="Exámenes de Laboratorio"></resource>
+  <resource culture="es-es" name="Esta_embarazada" value="¿Está embarazada?"></resource>
+  <resource culture="es-es" name="Semana_de_gestacion" value="Semana de gestación"></resource>
+  <resource culture="es-es" name="Peso_pregestacional" value="Peso pregestacional"></resource>
+  <resource culture="es-es" name="Toma_anticonceptivos" value="Toma anticonceptivos"></resource>
+  <resource culture="es-es" name="Nombre_del_Anticonceptivo" value="Nombre del Anticonceptivo"></resource>
+  <resource culture="es-es" name="Dosis" value="Dosis "></resource>
+  <resource culture="es-es" name="Climaterio" value="Climaterio"></resource>
+  <resource culture="es-es" name="Fecha_Climaterio" value="Fecha Climaterio"></resource>
+  <resource culture="es-es" name="Terapia_reemplazo_hormonal" value="¿Se encuentra en terapia de reemplazo hormonal?"></resource>
+  <resource culture="es-es" name="Detalle_de_Terapia_Hormonal" value="Detalle de Terapia Hormonal"></resource>
+  <resource culture="es-es" name="Tipo_Dieta" value="Mi tipo de dieta actual es"></resource>
+  <resource culture="es-es" name="Alergias" value="Soy alérgico o intolerante a"></resource>
+  <resource culture="es-es" name="Detalle_Bebidas_Paciente" value="Bebidas que consumo al día"></resource>
+  <resource culture="es-es" name="Suplementos" value="Suplementos que consumo al día"></resource>
+  <resource culture="es-es" name="Consumo_de_sal" value="Consumo de sal"></resource>
+  <resource culture="es-es" name="Grasas_Preferencias" value="Qué grasa utilizas para preparar tu comida"></resource>
+  <resource culture="es-es" name="Comidas_cantidad" value="Cuántas comidas haces al día"></resource>
+  <resource culture="es-es" name="Preparacion_Preferencias" value="Quién prepara tus alimentos"></resource>
+  <resource culture="es-es" name="Entre_comidas" value="Comes entre comidas"></resource>
+  <resource culture="es-es" name="Apetito" value="Considero que mi apetito es"></resource>
+  <resource culture="es-es" name="Habitos_Modificacion" value="He modificado mi alimentación en los últimos 6 meses"></resource>
+  <resource culture="es-es" name="Horario_hambre" value="¿A qué hora tienes más hambre?"></resource>
+  <resource culture="es-es" name="Cuando_cambia_mi_estado_de_animo" value="Cuando cambia mi estado de ánimo"></resource>
+  <resource culture="es-es" name="Medicamentos_bajar_peso" value="Has utilizado medicamentos para bajar de peso"></resource>
+  <resource culture="es-es" name="Cual_medicamento" value="¿Cuál medicamento?"></resource>
+  <resource culture="es-es" name="Frecuencia_Ejercicio" value="¿Con qué frecuencia realizas ejercicio?"></resource>
+  <resource culture="es-es" name="Duracion_Ejercicio" value="¿Cuántas horas te ejercitas al día?"></resource>
+  <resource culture="es-es" name="Tipo_Ejercicio" value="¿Que tipo de ejercicio realizas? "></resource>
+  <resource culture="es-es" name="Antiguedad_Ejercicio" value="¿Desde hace cuánto tiempo realizas ejercicio?"></resource>
+  <resource culture="es-es" name="IMC" value="IMC"></resource>
+  <resource culture="es-es" name="Interpretacion_IMC" value="Interpretación"></resource>
+  <resource culture="es-es" name="IMC_Pediatria" value="IMC Pediatría"></resource>
+  <resource culture="es-es" name="Complexion_corporal" value="Complexión corporal mediante talla y perímetro de muñeca"></resource>
+  <resource culture="es-es" name="Interpretacion_complexion_corporal" value="Interpretación"></resource>
+  <resource culture="es-es" name="Distribucion_de_grasa_corporal" value="Distribución de grasa corporal"></resource>
+  <resource culture="es-es" name="Interpretacion_grasa_corporal" value="Interpretación"></resource>
+  <resource culture="es-es" name="Indice_cintura_cadera" value="Índice cintura - cadera"></resource>
+  <resource culture="es-es" name="Interpretacion_indice" value="Interpretación"></resource>
+  <resource culture="es-es" name="Consumo_de_agua_resultado" value="Consumo de agua"></resource>
+  <resource culture="es-es" name="Interpretacion_agua" value="Interpretación"></resource>
+  <resource culture="es-es" name="Frecuencia_cardiaca_en_Esfuerzo" value="Frecuencia cardíaca en Esfuerzo"></resource>
+  <resource culture="es-es" name="Interpretacion_frecuencia" value="Interpretación"></resource>
+  <resource culture="es-es" name="Dificultad_de_Rutina_de_Ejercicios" value="Dificultad de Rutina de Ejercicios"></resource>
+  <resource culture="es-es" name="Interpretacion_dificultad" value="Interpretación"></resource>
+  <resource culture="es-es" name="Calorias" value="Calorías"></resource>
+  <resource culture="es-es" name="Interpretacion_calorias" value="Interpretación"></resource>
+  <resource culture="es-es" name="Observaciones" value="Observaciones"></resource>
+  <resource culture="es-es" name="Pagos" value="Pagos"></resource>
+  <resource culture="es-es" name="Suscripciones" value="Suscripciones"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+<resource culture="es-es" name="TabPadecimientos" value="Padecimientos"></resource>
+<resource culture="es-es" name="TabAntecedentes" value="Antecedentes"></resource>
+<resource culture="es-es" name="TabMediciones_Iniciales" value="Mediciones Iniciales"></resource>
+<resource culture="es-es" name="TabDatos_Ginecologicos" value="Datos Ginecológicos"></resource>
+<resource culture="es-es" name="TabHistoria_Nutricional" value="Historia Nutricional"></resource>
+<resource culture="es-es" name="TabEstilo_de_Vida" value="Estilo de Vida"></resource>
+<resource culture="es-es" name="TabResultados" value="Resultados"></resource>
+<resource culture="es-es" name="TabSuscripcion" value="Suscripción"></resource>
+
+</resources>

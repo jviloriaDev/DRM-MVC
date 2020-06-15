@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Spartan_BR_Type_History" value="Spartan BR Type History"></resource>
+  <resource culture="es-es" name="Key_Type_History" value="Key Type History"></resource>
+  <resource culture="es-es" name="Description" value="Description"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

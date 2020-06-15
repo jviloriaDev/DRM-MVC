@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_Report_Field_Type" value="Report Field Type"></resource>
+  <resource culture="en-US" name="FieldTypeId" value="FieldTypeId"></resource>
+  <resource culture="en-US" name="Description" value="Description"></resource>
+
+</resources>

@@ -1,0 +1,150 @@
+﻿@model Spartane.Web.Models.LoginViewModel
+
+@{
+    Layout = null;
+    //ViewBag.Title = "SPARTANE - TOTALTECH - Log in";
+    ViewBag.Title = Resources.LoginResources.SpartanLogin;
+}
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet">
+    <link href="~/fonts/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="~/Content/animate.css" rel="stylesheet">
+    <link href="~/Content/style-red.css" rel="stylesheet">
+</head>
+<body class="gray-bg" >
+<div class="login-box-custom" >
+    <center>
+        <div >
+            @if (ViewBag.VersionError != null && ViewBag.VersionError != "")
+            {
+                <div class="alert alert-danger" role="alert">@Html.Raw(ViewBag.VersionError)</div>
+            }   
+            <img src="~/Images/Logo-white.png" alt="" width="400" height="190" />
+        </div>
+    </center>
+    <div class="middle-box text-center loginscreen animated fadeInDown">
+        <div>
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { id = "myform",  @class = "form-horizontal ", role = "form" }))
+            {
+            @Html.AntiForgeryToken()
+            <p>@ViewBag.Title</p>
+            @*<hr />*@
+            @Html.ValidationSummary(true)
+                if (Model.FailedAttempts > 1)
+                { 
+                <span>Le restan @(Model.MaxFailedAttempts + 1 - Model.FailedAttempts) intentos para acceder</span>
+                }
+    <input id="FailedAttempts" name="FailedAttempts" type="hidden" value="@Model.FailedAttempts" />
+    <input id="MaxFailedAttempts" name="MaxFailedAttempts" type="hidden" value="@Model.MaxFailedAttempts" />
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.UserName, new { id = "username", @class = "form-control ", @placeholder = @Resources.LoginResources.UserName })
+                @Html.ValidationMessageFor(m => m.UserName)
+            </div>
+            <div class="form-group">
+                @Html.PasswordFor(m => m.Password, new { id = "password", @class = "form-control ", @placeholder = @Resources.LoginResources.Password })
+                @Html.ValidationMessageFor(m => m.Password)
+            </div>
+
+            <div class="form-group text-default" style="color:#000;" >
+                @{
+                //int defaultSelectedLanguageId = (Model.LanguageList.Where(x => x.Initial == true).Count() > 0 ? Model.LanguageList.Where(x => x.Initial == true).FirstOrDefault().System_Language_Id : 0);
+                // change below line code once we get culture from api
+                int defaultSelectedLanguageId = (UICulture.ToLowerInvariant() == "es-es" ? 2 : 1);
+                //Model.SelectedLanguage = defaultSelectedLanguageId;
+                }
+                @Html.DropDownListFor(m => m.SelectedLanguage, new SelectList(Model.LanguageList, "System_Language_Id", "Language", defaultSelectedLanguageId), new { @class = "Select form-control", @onchange = "changeLanguage(this)" })
+            </div>
+            <div class="form-group">
+                @Html.CheckBoxFor(m => m.RememberMe)
+                @Html.LabelFor(m => m.RememberMe)
+            </div>
+            <input type="button" id="btnLogin" value="@Resources.LoginResources.Login" class="btn btn-default block full-width m-b  " style="color:#000;" />
+            <a onclick="ShowForgotPassword()" class="text-white"><small>@Resources.LoginResources.ForgotPassword</small></a>
+                if (System.Configuration.ConfigurationManager.AppSettings["VersionApp"] != null)
+                {
+                    <br />
+                    <span class="version">Version @System.Configuration.ConfigurationManager.AppSettings["VersionApp"].ToString()</span>
+                }
+
+            }
+
+
+        </div>
+    </div>
+
+</div>
+
+    <!-- Mainly scripts -->
+    <script src="~/Scripts/jquery-2.1.1.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js" type="text/javascript"></script>
+
+    <div aria-hidden="true" class="modal fade in DisplayLogin" id="modal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+        @Html.Partial("ForgotPassword", new Spartane.Web.Models.ForgotPasswordViewModel())
+    </div>
+
+    <div aria-hidden="true" class="modal fade in" id="modal-form-changepwd" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+        
+    </div>
+
+    <script type="text/javascript">
+        $('.DisplayLogin').hide();
+        $('#modal-form-changepwd').hide();
+
+        $(document).ready(function () {
+            $('#btnLogin').click(function () {
+            $.ajax({
+                url: '@Url.Action("ValidateLogin", "Account")',
+                type: 'POST',
+                data: {
+                    username: $('#username').val(),
+                    password: $('#password').val()
+                },
+                cache: false,
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    if (result.valor == 2) {
+                        $('form').submit();
+                    }
+                    else {
+                        if (result.valor == 1) {
+                            $('#modal-form-changepwd').load('@Url.Action("ChangePassword", "Account")');
+                            $('#modal-form-changepwd').show();
+                        }
+                        else {
+                            $('#myform').submit();
+                        }
+                    }
+                },
+                error: function (result) {
+                    showNotification("Error desconocido", "error");
+                }
+            });
+            });
+        });
+
+        function changeLanguage(element) {
+            $.post('@Url.Action("ChangeLanguage", "Account")', { culture: $(element).val() }, function (data) {
+                window.location.href = '@Url.Action("Login", "Account")';
+            });
+        }
+        function ShowForgotPassword() {
+            $('.DisplayLogin').show();
+        }
+        
+        
+    </script>
+    @if (Session["BlockUser"] != null && Convert.ToBoolean(Session["BlockUser"]))
+    {
+        <script>
+            alert('Su usuario ha sido bloqueado, por favor contactese con el Administrador');
+        </script>
+    }
+</body>
+</html>

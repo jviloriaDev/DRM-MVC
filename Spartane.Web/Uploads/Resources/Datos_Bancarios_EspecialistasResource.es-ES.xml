@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Datos_Bancarios_Especialistas" value="Detalle Datos Bancarios Especialistas"></resource>
+  <resource culture="es-es" name="Folio" value="Folio"></resource>
+  <resource culture="es-es" name="Banco" value="Banco"></resource>
+  <resource culture="es-es" name="CLABE_Interbancaria" value="CLABE Interbancaria"></resource>
+  <resource culture="es-es" name="Num_Cuenta" value="Num Cuenta"></resource>
+  <resource culture="es-es" name="Nombre_del_Titular" value="Nombre del Titular"></resource>
+  <resource culture="es-es" name="Principal" value="Principal"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

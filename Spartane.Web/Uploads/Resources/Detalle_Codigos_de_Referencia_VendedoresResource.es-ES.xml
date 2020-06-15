@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Detalle_Codigos_de_Referencia_Vendedores" value="Detalle Códigos de Referencia Vendedores"></resource>
+  <resource culture="es-es" name="Folio" value="Folio"></resource>
+  <resource culture="es-es" name="Porcentaje_de_descuento" value="Porcentaje de descuento"></resource>
+  <resource culture="es-es" name="Fecha_inicio_vigencia" value="Fecha inicio vigencia"></resource>
+  <resource culture="es-es" name="Fecha_fin_vigencia" value="Fecha fin vigencia"></resource>
+  <resource culture="es-es" name="Cantidad_maxima_de_referenciados" value="Cantidad máxima de referenciados"></resource>
+  <resource culture="es-es" name="Codigo_para_referenciados" value="Código para referenciados"></resource>
+  <resource culture="es-es" name="Autorizado" value="Autorizado"></resource>
+  <resource culture="es-es" name="Usuario_que_autoriza" value="Usuario que autoriza"></resource>
+  <resource culture="es-es" name="Fecha_de_autorizacion" value="Fecha de autorización"></resource>
+  <resource culture="es-es" name="Hora_de_autorizacion" value="Hora de autorización"></resource>
+  <resource culture="es-es" name="Estatus" value="Estatus"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Detalle_de_Padecimientos" value="Detalle de Padecimientos"></resource>
+  <resource culture="es-es" name="Folio" value="Folio"></resource>
+  <resource culture="es-es" name="Padecimiento" value="Padecimiento"></resource>
+  <resource culture="es-es" name="Tiempo_con_el_diagnostico" value="Tiempo con el diagnóstico"></resource>
+  <resource culture="es-es" name="Intervencion_quirurgica" value="¿Has sido intervenido quirúrgicamente a causa de este padecimiento?"></resource>
+  <resource culture="es-es" name="Tratamiento" value="¿Qué medicamentos forman parte de tu tratamiento?"></resource>
+  <resource culture="es-es" name="Estado_actual" value="Estado actual"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

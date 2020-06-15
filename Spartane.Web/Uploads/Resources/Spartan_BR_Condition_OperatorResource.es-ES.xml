@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Spartan_BR_Condition_Operator" value="Business Rule Condition Operator"></resource>
+  <resource culture="es-es" name="ConditionOperatorId" value="Id"></resource>
+  <resource culture="es-es" name="Description" value="Description"></resource>
+  <resource culture="es-es" name="Implementation_Code" value="Implementation Code"></resource>
+  <resource name="Description.1" control="Description" value="Nuevo" culture="es-es" />
+  <resource name="Description.2" control="Description" value="Y" culture="es-es" />
+  <resource name="Description.3" control="Description" value="O" culture="es-es" />
+
+</resources>

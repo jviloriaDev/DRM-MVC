@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_Format_Configuration" value="Spartan Format Configuration"></resource>
+  <resource culture="en-US" name="Format" value="Format"></resource>
+  <resource culture="en-US" name="Query_To_Fill_Fields" value="Query To Fill Fields"></resource>
+  <resource culture="en-US" name="Filter_to_Show" value="Filter to Show"></resource>
+
+</resources>

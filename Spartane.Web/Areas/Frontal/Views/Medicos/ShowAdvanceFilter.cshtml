@@ -1,0 +1,1677 @@
+﻿@using System.Collections.Generic
+@using Spartane.Web.Areas.Frontal.Models
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.MedicosAdvanceSearchModel
+@{
+    List<SelectListItem> varSpartan_User_Usuario_que_Registra = null;
+    if (ViewBag.Spartan_Users_Usuario_que_Registra != null)
+    { varSpartan_User_Usuario_que_Registra = (List<SelectListItem>)ViewBag.Spartan_Users_Usuario_que_Registra; }
+ List<SelectListItem> varTitulos_Personales_Titulo_Personal = null;
+    if (ViewBag.Titulos_Personaless_Titulo_Personal != null)
+    { varTitulos_Personales_Titulo_Personal = (List<SelectListItem>)ViewBag.Titulos_Personaless_Titulo_Personal; }
+    List<SelectListItem> varTipos_de_Especialistas_Tipo_de_Especialista = null;
+    if (ViewBag.Tipos_de_Especialistass_Tipo_de_Especialista != null)
+    { varTipos_de_Especialistas_Tipo_de_Especialista = (List<SelectListItem>)ViewBag.Tipos_de_Especialistass_Tipo_de_Especialista; }
+    List<SelectListItem> varSpartan_User_Usuario_Registrado = null;
+    if (ViewBag.Spartan_Users_Usuario_Registrado != null)
+    { varSpartan_User_Usuario_Registrado = (List<SelectListItem>)ViewBag.Spartan_Users_Usuario_Registrado; }
+    List<SelectListItem> varPais_Pais_de_nacimiento = null;
+    if (ViewBag.Paiss_Pais_de_nacimiento != null)
+    { varPais_Pais_de_nacimiento = (List<SelectListItem>)ViewBag.Paiss_Pais_de_nacimiento; }
+    List<SelectListItem> varEstado_Entidad_de_nacimiento = null;
+    if (ViewBag.Estados_Entidad_de_nacimiento != null)
+    { varEstado_Entidad_de_nacimiento = (List<SelectListItem>)ViewBag.Estados_Entidad_de_nacimiento; }
+    List<SelectListItem> varSexo_Sexo = null;
+    if (ViewBag.Sexos_Sexo != null)
+    { varSexo_Sexo = (List<SelectListItem>)ViewBag.Sexos_Sexo; }
+    List<SelectListItem> varEstatus_Estatus = null;
+    if (ViewBag.Estatuss_Estatus != null)
+    { varEstatus_Estatus = (List<SelectListItem>)ViewBag.Estatuss_Estatus; }
+    List<SelectListItem> varRespuesta_Logica_Email_ppal_publico = null;
+    if (ViewBag.Respuesta_Logicas_Email_ppal_publico != null)
+    { varRespuesta_Logica_Email_ppal_publico = (List<SelectListItem>)ViewBag.Respuesta_Logicas_Email_ppal_publico; }
+    List<SelectListItem> varEstado_Estado = null;
+    if (ViewBag.Estados_Estado != null)
+    { varEstado_Estado = (List<SelectListItem>)ViewBag.Estados_Estado; }
+    List<SelectListItem> varPais_Pais = null;
+    if (ViewBag.Paiss_Pais != null)
+    { varPais_Pais = (List<SelectListItem>)ViewBag.Paiss_Pais; }
+    List<SelectListItem> varRespuesta_Logica_En_Hospital = null;
+    if (ViewBag.Respuesta_Logicas_En_Hospital != null)
+    { varRespuesta_Logica_En_Hospital = (List<SelectListItem>)ViewBag.Respuesta_Logicas_En_Hospital; }
+    List<SelectListItem> varRespuesta_Logica_Se_ajusta_tabulador = null;
+    if (ViewBag.Respuesta_Logicas_Se_ajusta_tabulador != null)
+    { varRespuesta_Logica_Se_ajusta_tabulador = (List<SelectListItem>)ViewBag.Respuesta_Logicas_Se_ajusta_tabulador; }
+    List<SelectListItem> varProfesiones_Profesion = null;
+    if (ViewBag.Profesioness_Profesion != null)
+    { varProfesiones_Profesion = (List<SelectListItem>)ViewBag.Profesioness_Profesion; }
+    List<SelectListItem> varEspecialidades_Especialidad = null;
+    if (ViewBag.Especialidadess_Especialidad != null)
+    { varEspecialidades_Especialidad = (List<SelectListItem>)ViewBag.Especialidadess_Especialidad; }
+    List<SelectListItem> varRegimenes_Fiscales_Regimen_Fiscal = null;
+    if (ViewBag.Regimenes_Fiscaless_Regimen_Fiscal != null)
+    { varRegimenes_Fiscales_Regimen_Fiscal = (List<SelectListItem>)ViewBag.Regimenes_Fiscaless_Regimen_Fiscal; }
+    List<SelectListItem> varEstado_Estado_Fiscal = null;
+    if (ViewBag.Estados_Estado_Fiscal != null)
+    { varEstado_Estado_Fiscal = (List<SelectListItem>)ViewBag.Estados_Estado_Fiscal; }
+    List<SelectListItem> varPais_Pais_Fiscal = null;
+    if (ViewBag.Paiss_Pais_Fiscal != null)
+    { varPais_Pais_Fiscal = (List<SelectListItem>)ViewBag.Paiss_Pais_Fiscal; }
+    List<SelectListItem> varBancos_Banco = null;
+    if (ViewBag.Bancoss_Banco != null)
+    { varBancos_Banco = (List<SelectListItem>)ViewBag.Bancoss_Banco; }
+
+    var filters = (List<SelectListItem>)ViewBag.Filter;
+}
+<style>
+    .input-validation-error {
+        background: rgb(251, 227, 228);
+        border: 1px solid #fbc2c4;
+        color: #8a1f11;
+    }
+
+    .MarginBottom {
+        margin-bottom: 1%;
+    }
+
+    #divAdvanceSearch input {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch button {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch select {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch h3 {
+        margin-top: 2%;
+    }
+
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins" id="divAdvanceSearch">
+        <div class="ibox-content">
+            @using (Html.BeginForm("ShowAdvanceFilter", "Medicos", FormMethod.Post, new { @id = "frmAdvanceSearch", @role = "form" }))
+            {
+				<input type="hidden" value="-1" name="idFilter" id="idFilter" />
+                <div class="MarginBottom ">
+                    <h3>@Resources.MedicosResources.Folio</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromFolio, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromFolio" })
+                    @Html.ValidationMessageFor(m => m.FromFolio)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToFolio, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToFolio", @data_min = "txtAdvanceFromFolio" })
+                    @Html.ValidationMessageFor(m => m.ToFolio)
+                </div>
+        <div class="MarginBottom ">
+            <h3>@Resources.MedicosResources.Fecha_de_Registro</h3>
+        </div>
+        <div class="MarginBottom form-inline">
+            <label class="">@Resources.Resources.From:</label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceFromFecha_de_Registro" name="FromFecha_de_Registro" type="text" value="@Model.FromFecha_de_Registro" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+            <label class="">@Resources.Resources.To: </label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceToFecha_de_Registro" name="ToFecha_de_Registro" type="text" value="@Model.ToFecha_de_Registro" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+        <div class="MarginBottom ">
+            <h3>@Resources.MedicosResources.Hora_de_Registro</h3>
+        </div>
+        <div class="MarginBottom form-inline">
+            <label class="">@Resources.Resources.From:</label>
+            <div class="input-group clock" data-autoclose="true">
+                <input class="form-control" id="txtAdvanceFromHora_de_Registro" name="FromHora_de_Registro" type="text" value="@Model.FromHora_de_Registro" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-time"></span>
+                </span>
+            </div>
+            <label class="">@Resources.Resources.To: </label>
+            <div class="input-group clock" data-autoclose="true">
+                <input class="form-control" id="txtAdvanceToHora_de_Registro" name="ToHora_de_Registro" type="text" value="@Model.ToHora_de_Registro" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-time"></span>
+                </span>
+            </div>
+        </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Usuario_que_Registra</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Usuario_que_RegistraFilter, filters, new { @class = "form-control", @id = "ddlUsuario_que_RegistraFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceUsuario_que_Registra, new { @class = "form-control", @type = "text", @id = "txtAdvanceUsuario_que_Registra" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSpartan_User_Usuario_que_Registra!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceUsuario_que_RegistraMultiple, varSpartan_User_Usuario_que_Registra,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceUsuario_que_Registra"
+                        });
+                    }
+                </div>
+ List<SelectListItem> varTitulos_Personales_Titulo_Personal = null;
+    if (ViewBag.Titulos_Personaless_Titulo_Personal != null)
+    { varTitulos_Personales_Titulo_Personal = (List<SelectListItem>)ViewBag.Titulos_Personaless_Titulo_Personal; }
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Nombres</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.NombresFilter, filters, new { @class = "form-control", @id = "ddlNombresFilter" })
+                    @Html.TextBoxFor(m => m.Nombres, new { @class = "form-control", @type = "text", @id = "txtNombres" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Apellido_Paterno</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Apellido_PaternoFilter, filters, new { @class = "form-control", @id = "ddlApellido_PaternoFilter" })
+                    @Html.TextBoxFor(m => m.Apellido_Paterno, new { @class = "form-control", @type = "text", @id = "txtApellido_Paterno" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Apellido_Materno</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Apellido_MaternoFilter, filters, new { @class = "form-control", @id = "ddlApellido_MaternoFilter" })
+                    @Html.TextBoxFor(m => m.Apellido_Materno, new { @class = "form-control", @type = "text", @id = "txtApellido_Materno" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Nombre_Completo</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Nombre_CompletoFilter, filters, new { @class = "form-control", @id = "ddlNombre_CompletoFilter" })
+                    @Html.TextBoxFor(m => m.Nombre_Completo, new { @class = "form-control", @type = "text", @id = "txtNombre_Completo" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Tipo_de_Especialista</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Tipo_de_EspecialistaFilter, filters, new { @class = "form-control", @id = "ddlTipo_de_EspecialistaFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceTipo_de_Especialista, new { @class = "form-control", @type = "text", @id = "txtAdvanceTipo_de_Especialista" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varTipos_de_Especialistas_Tipo_de_Especialista!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceTipo_de_EspecialistaMultiple, varTipos_de_Especialistas_Tipo_de_Especialista,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceTipo_de_Especialista"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Nombre_de_usuario</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Nombre_de_usuarioFilter, filters, new { @class = "form-control", @id = "ddlNombre_de_usuarioFilter" })
+                    @Html.TextBoxFor(m => m.Nombre_de_usuario, new { @class = "form-control", @type = "text", @id = "txtNombre_de_usuario" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Usuario_Registrado</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Usuario_RegistradoFilter, filters, new { @class = "form-control", @id = "ddlUsuario_RegistradoFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceUsuario_Registrado, new { @class = "form-control", @type = "text", @id = "txtAdvanceUsuario_Registrado" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSpartan_User_Usuario_Registrado!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceUsuario_RegistradoMultiple, varSpartan_User_Usuario_Registrado,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceUsuario_Registrado"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Email</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.EmailFilter, filters, new { @class = "form-control", @id = "ddlEmailFilter" })
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @type = "text", @id = "txtEmail" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Celular</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.CelularFilter, filters, new { @class = "form-control", @id = "ddlCelularFilter" })
+                    @Html.TextBoxFor(m => m.Celular, new { @class = "form-control", @type = "text", @id = "txtCelular" })
+                </div>
+        <div class="MarginBottom ">
+            <h3>@Resources.MedicosResources.Fecha_de_nacimiento</h3>
+        </div>
+        <div class="MarginBottom form-inline">
+            <label class="">@Resources.Resources.From:</label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceFromFecha_de_nacimiento" name="FromFecha_de_nacimiento" type="text" value="@Model.FromFecha_de_nacimiento" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+            <label class="">@Resources.Resources.To: </label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceToFecha_de_nacimiento" name="ToFecha_de_nacimiento" type="text" value="@Model.ToFecha_de_nacimiento" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Pais_de_nacimiento</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Pais_de_nacimientoFilter, filters, new { @class = "form-control", @id = "ddlPais_de_nacimientoFilter" })
+                    @Html.TextBoxFor(m => m.AdvancePais_de_nacimiento, new { @class = "form-control", @type = "text", @id = "txtAdvancePais_de_nacimiento" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varPais_Pais_de_nacimiento!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvancePais_de_nacimientoMultiple, varPais_Pais_de_nacimiento,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvancePais_de_nacimiento"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Entidad_de_nacimiento</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Entidad_de_nacimientoFilter, filters, new { @class = "form-control", @id = "ddlEntidad_de_nacimientoFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceEntidad_de_nacimiento, new { @class = "form-control", @type = "text", @id = "txtAdvanceEntidad_de_nacimiento" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varEstado_Entidad_de_nacimiento!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceEntidad_de_nacimientoMultiple, varEstado_Entidad_de_nacimiento,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceEntidad_de_nacimiento"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Sexo</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.SexoFilter, filters, new { @class = "form-control", @id = "ddlSexoFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceSexo, new { @class = "form-control", @type = "text", @id = "txtAdvanceSexo" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSexo_Sexo!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceSexoMultiple, varSexo_Sexo,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceSexo"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Email_institucional</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Email_institucionalFilter, filters, new { @class = "form-control", @id = "ddlEmail_institucionalFilter" })
+                    @Html.TextBoxFor(m => m.Email_institucional, new { @class = "form-control", @type = "text", @id = "txtEmail_institucional" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Estatus</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.EstatusFilter, filters, new { @class = "form-control", @id = "ddlEstatusFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceEstatus, new { @class = "form-control", @type = "text", @id = "txtAdvanceEstatus" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varEstatus_Estatus!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceEstatusMultiple, varEstatus_Estatus,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceEstatus"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Email_ppal_publico</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Email_ppal_publicoFilter, filters, new { @class = "form-control", @id = "ddlEmail_ppal_publicoFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceEmail_ppal_publico, new { @class = "form-control", @type = "text", @id = "txtAdvanceEmail_ppal_publico" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varRespuesta_Logica_Email_ppal_publico!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceEmail_ppal_publicoMultiple, varRespuesta_Logica_Email_ppal_publico,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceEmail_ppal_publico"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Email_de_contacto</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Email_de_contactoFilter, filters, new { @class = "form-control", @id = "ddlEmail_de_contactoFilter" })
+                    @Html.TextBoxFor(m => m.Email_de_contacto, new { @class = "form-control", @type = "text", @id = "txtEmail_de_contacto" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Calle</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.CalleFilter, filters, new { @class = "form-control", @id = "ddlCalleFilter" })
+                    @Html.TextBoxFor(m => m.Calle, new { @class = "form-control", @type = "text", @id = "txtCalle" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Numero_exterior</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Numero_exteriorFilter, filters, new { @class = "form-control", @id = "ddlNumero_exteriorFilter" })
+                    @Html.TextBoxFor(m => m.Numero_exterior, new { @class = "form-control", @type = "text", @id = "txtNumero_exterior" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Numero_interior</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Numero_interiorFilter, filters, new { @class = "form-control", @id = "ddlNumero_interiorFilter" })
+                    @Html.TextBoxFor(m => m.Numero_interior, new { @class = "form-control", @type = "text", @id = "txtNumero_interior" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Colonia</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.ColoniaFilter, filters, new { @class = "form-control", @id = "ddlColoniaFilter" })
+                    @Html.TextBoxFor(m => m.Colonia, new { @class = "form-control", @type = "text", @id = "txtColonia" })
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.MedicosResources.CP</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromCP, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromCP" })
+                    @Html.ValidationMessageFor(m => m.FromCP)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToCP, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToCP", @data_min = "txtAdvanceFromCP" })
+                    @Html.ValidationMessageFor(m => m.ToCP)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Ciudad</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.CiudadFilter, filters, new { @class = "form-control", @id = "ddlCiudadFilter" })
+                    @Html.TextBoxFor(m => m.Ciudad, new { @class = "form-control", @type = "text", @id = "txtCiudad" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Estado</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.EstadoFilter, filters, new { @class = "form-control", @id = "ddlEstadoFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceEstado, new { @class = "form-control", @type = "text", @id = "txtAdvanceEstado" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varEstado_Estado!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceEstadoMultiple, varEstado_Estado,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceEstado"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Pais</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.PaisFilter, filters, new { @class = "form-control", @id = "ddlPaisFilter" })
+                    @Html.TextBoxFor(m => m.AdvancePais, new { @class = "form-control", @type = "text", @id = "txtAdvancePais" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varPais_Pais!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvancePaisMultiple, varPais_Pais,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvancePais"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Telefonos</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.TelefonosFilter, filters, new { @class = "form-control", @id = "ddlTelefonosFilter" })
+                    @Html.TextBoxFor(m => m.Telefonos, new { @class = "form-control", @type = "text", @id = "txtTelefonos" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.En_Hospital</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.En_HospitalFilter, filters, new { @class = "form-control", @id = "ddlEn_HospitalFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceEn_Hospital, new { @class = "form-control", @type = "text", @id = "txtAdvanceEn_Hospital" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varRespuesta_Logica_En_Hospital!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceEn_HospitalMultiple, varRespuesta_Logica_En_Hospital,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceEn_Hospital"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Nombre_del_Hospital</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Nombre_del_HospitalFilter, filters, new { @class = "form-control", @id = "ddlNombre_del_HospitalFilter" })
+                    @Html.TextBoxFor(m => m.Nombre_del_Hospital, new { @class = "form-control", @type = "text", @id = "txtNombre_del_Hospital" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Piso_hospital</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Piso_hospitalFilter, filters, new { @class = "form-control", @id = "ddlPiso_hospitalFilter" })
+                    @Html.TextBoxFor(m => m.Piso_hospital, new { @class = "form-control", @type = "text", @id = "txtPiso_hospital" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Numero_de_consultorio</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Numero_de_consultorioFilter, filters, new { @class = "form-control", @id = "ddlNumero_de_consultorioFilter" })
+                    @Html.TextBoxFor(m => m.Numero_de_consultorio, new { @class = "form-control", @type = "text", @id = "txtNumero_de_consultorio" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Se_ajusta_tabulador</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Se_ajusta_tabuladorFilter, filters, new { @class = "form-control", @id = "ddlSe_ajusta_tabuladorFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceSe_ajusta_tabulador, new { @class = "form-control", @type = "text", @id = "txtAdvanceSe_ajusta_tabulador" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varRespuesta_Logica_Se_ajusta_tabulador!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceSe_ajusta_tabuladorMultiple, varRespuesta_Logica_Se_ajusta_tabulador,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceSe_ajusta_tabulador"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Profesion</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.ProfesionFilter, filters, new { @class = "form-control", @id = "ddlProfesionFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceProfesion, new { @class = "form-control", @type = "text", @id = "txtAdvanceProfesion" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varProfesiones_Profesion!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceProfesionMultiple, varProfesiones_Profesion,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceProfesion"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Especialidad</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.EspecialidadFilter, filters, new { @class = "form-control", @id = "ddlEspecialidadFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceEspecialidad, new { @class = "form-control", @type = "text", @id = "txtAdvanceEspecialidad" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varEspecialidades_Especialidad!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceEspecialidadMultiple, varEspecialidades_Especialidad,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceEspecialidad"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Resumen_Profesional</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Resumen_ProfesionalFilter, filters, new { @class = "form-control", @id = "ddlResumen_ProfesionalFilter" })
+                    @Html.TextBoxFor(m => m.Resumen_Profesional, new { @class = "form-control", @type = "text", @id = "txtResumen_Profesional" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Regimen_Fiscal</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Regimen_FiscalFilter, filters, new { @class = "form-control", @id = "ddlRegimen_FiscalFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceRegimen_Fiscal, new { @class = "form-control", @type = "text", @id = "txtAdvanceRegimen_Fiscal" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varRegimenes_Fiscales_Regimen_Fiscal!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceRegimen_FiscalMultiple, varRegimenes_Fiscales_Regimen_Fiscal,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceRegimen_Fiscal"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Nombre_o_Razon_Social</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Nombre_o_Razon_SocialFilter, filters, new { @class = "form-control", @id = "ddlNombre_o_Razon_SocialFilter" })
+                    @Html.TextBoxFor(m => m.Nombre_o_Razon_Social, new { @class = "form-control", @type = "text", @id = "txtNombre_o_Razon_Social" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.RFC</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.RFCFilter, filters, new { @class = "form-control", @id = "ddlRFCFilter" })
+                    @Html.TextBoxFor(m => m.RFC, new { @class = "form-control", @type = "text", @id = "txtRFC" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Calle_Fiscal</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Calle_FiscalFilter, filters, new { @class = "form-control", @id = "ddlCalle_FiscalFilter" })
+                    @Html.TextBoxFor(m => m.Calle_Fiscal, new { @class = "form-control", @type = "text", @id = "txtCalle_Fiscal" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Numero_exterior_Fiscal</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Numero_exterior_FiscalFilter, filters, new { @class = "form-control", @id = "ddlNumero_exterior_FiscalFilter" })
+                    @Html.TextBoxFor(m => m.Numero_exterior_Fiscal, new { @class = "form-control", @type = "text", @id = "txtNumero_exterior_Fiscal" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Numero_interior_Fiscal</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Numero_interior_FiscalFilter, filters, new { @class = "form-control", @id = "ddlNumero_interior_FiscalFilter" })
+                    @Html.TextBoxFor(m => m.Numero_interior_Fiscal, new { @class = "form-control", @type = "text", @id = "txtNumero_interior_Fiscal" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Colonia_Fiscal</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Colonia_FiscalFilter, filters, new { @class = "form-control", @id = "ddlColonia_FiscalFilter" })
+                    @Html.TextBoxFor(m => m.Colonia_Fiscal, new { @class = "form-control", @type = "text", @id = "txtColonia_Fiscal" })
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.MedicosResources.CP_Fiscal</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromCP_Fiscal, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromCP_Fiscal" })
+                    @Html.ValidationMessageFor(m => m.FromCP_Fiscal)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToCP_Fiscal, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToCP_Fiscal", @data_min = "txtAdvanceFromCP_Fiscal" })
+                    @Html.ValidationMessageFor(m => m.ToCP_Fiscal)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Ciudad_Fiscal</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Ciudad_FiscalFilter, filters, new { @class = "form-control", @id = "ddlCiudad_FiscalFilter" })
+                    @Html.TextBoxFor(m => m.Ciudad_Fiscal, new { @class = "form-control", @type = "text", @id = "txtCiudad_Fiscal" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Estado_Fiscal</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Estado_FiscalFilter, filters, new { @class = "form-control", @id = "ddlEstado_FiscalFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceEstado_Fiscal, new { @class = "form-control", @type = "text", @id = "txtAdvanceEstado_Fiscal" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varEstado_Estado_Fiscal!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceEstado_FiscalMultiple, varEstado_Estado_Fiscal,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceEstado_Fiscal"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Pais_Fiscal</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Pais_FiscalFilter, filters, new { @class = "form-control", @id = "ddlPais_FiscalFilter" })
+                    @Html.TextBoxFor(m => m.AdvancePais_Fiscal, new { @class = "form-control", @type = "text", @id = "txtAdvancePais_Fiscal" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varPais_Pais_Fiscal!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvancePais_FiscalMultiple, varPais_Pais_Fiscal,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvancePais_Fiscal"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Telefono</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.TelefonoFilter, filters, new { @class = "form-control", @id = "ddlTelefonoFilter" })
+                    @Html.TextBoxFor(m => m.Telefono, new { @class = "form-control", @type = "text", @id = "txtTelefono" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Fax</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.FaxFilter, filters, new { @class = "form-control", @id = "ddlFaxFilter" })
+                    @Html.TextBoxFor(m => m.Fax, new { @class = "form-control", @type = "text", @id = "txtFax" })
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.MedicosResources.Calificacion_Red_de_Medicos</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromCalificacion_Red_de_Medicos, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromCalificacion_Red_de_Medicos" })
+                    @Html.ValidationMessageFor(m => m.FromCalificacion_Red_de_Medicos)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToCalificacion_Red_de_Medicos, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToCalificacion_Red_de_Medicos", @data_min = "txtAdvanceFromCalificacion_Red_de_Medicos" })
+                    @Html.ValidationMessageFor(m => m.ToCalificacion_Red_de_Medicos)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Banco</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.BancoFilter, filters, new { @class = "form-control", @id = "ddlBancoFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceBanco, new { @class = "form-control", @type = "text", @id = "txtAdvanceBanco" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varBancos_Banco!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceBancoMultiple, varBancos_Banco,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceBanco"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.CLABE_Interbancaria</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.CLABE_InterbancariaFilter, filters, new { @class = "form-control", @id = "ddlCLABE_InterbancariaFilter" })
+                    @Html.TextBoxFor(m => m.CLABE_Interbancaria, new { @class = "form-control", @type = "text", @id = "txtCLABE_Interbancaria" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Numero_de_Cuenta</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Numero_de_CuentaFilter, filters, new { @class = "form-control", @id = "ddlNumero_de_CuentaFilter" })
+                    @Html.TextBoxFor(m => m.Numero_de_Cuenta, new { @class = "form-control", @type = "text", @id = "txtNumero_de_Cuenta" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.MedicosResources.Nombre_del_Titular</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Nombre_del_TitularFilter, filters, new { @class = "form-control", @id = "ddlNombre_del_TitularFilter" })
+                    @Html.TextBoxFor(m => m.Nombre_del_Titular, new { @class = "form-control", @type = "text", @id = "txtNombre_del_Titular" })
+                </div>
+
+                <div class="MarginBottom form-inline">
+                    <input type="submit" class="btn btn-primary" value="@Resources.Resources.Search"><a class="btn btn-primary" href="@Url.Content("~/Frontal/Medicos/")" value=" ">@Resources.Resources.Cancelar</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function InitiateAdvanceSearch() {
+        var advanceSearch = {}, hasParameter = false;
+        if ($("#txtAdvanceFromFolio").val() != "" || $("#txtAdvanceToFolio").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosFolioFrom = $("#txtAdvanceFromFolio").val();
+            advanceSearch.MedicosFolioTo = $("#txtAdvanceToFolio").val();
+        }
+        if ($("#txtAdvanceFromFecha_de_Registro").val() != "" || $("#txtAdvanceToFecha_de_Registro").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosFecha_de_RegistroFrom = $("#txtAdvanceFromFecha_de_Registro").val();
+            advanceSearch.MedicosFecha_de_RegistroTo = $("#txtAdvanceToFecha_de_Registro").val();
+        }
+        if ($("#txtAdvanceHora_de_Registro").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosHora_de_Registro = $("#txtAdvanceHora_de_Registro").val();
+            advanceSearch.MedicosHora_de_RegistroSearchType = $("#ddlAdvanceHora_de_RegistroFilter").val();
+        }
+        advanceSearch.Usuario_que_RegistraSearchType = 0;
+        if ($('#ddlAdvanceUsuario_que_Registra').val().length > 0 || $("#txtAdvanceUsuario_que_Registra").val() == "") {
+
+
+            if (isMedicosTextSearch) {
+                advanceSearch.Usuario_que_RegistraName = $("#txtAdvanceUsuario_que_Registra").val();
+                advanceSearch.Usuario_que_RegistraNameSearchType = $("#ddlAdvanceUsuario_que_Registra").val();
+                advanceSearch.Usuario_que_RegistraSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Usuario_que_RegistraToSearch = $("#ddlAdvanceUsuario_que_Registra").val();
+                advanceSearch.Usuario_que_RegistraSearchType = 2;
+            }
+        }
+        advanceSearch.Titulo_PersonalSearchType = 0;
+        if ($('#ddlAdvanceTitulo_Personal').val().length > 0 || $("#txtAdvanceTitulo_Personal").val() == "") {
+
+
+            if (isMedicosTextSearch) {
+                advanceSearch.Titulo_PersonalName = $("#txtAdvanceTitulo_Personal").val();
+                advanceSearch.Titulo_PersonalNameSearchType = $("#ddlAdvanceTitulo_Personal").val();
+                advanceSearch.Titulo_PersonalSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Titulo_PersonalToSearch = $("#ddlAdvanceTitulo_Personal").val();
+                advanceSearch.Titulo_PersonalSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceNombres").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosNombres = $("#txtAdvanceNombres").val();
+            advanceSearch.MedicosNombresSearchType = $("#ddlAdvanceNombresFilter").val();
+        }
+        if ($("#txtAdvanceApellido_Paterno").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosApellido_Paterno = $("#txtAdvanceApellido_Paterno").val();
+            advanceSearch.MedicosApellido_PaternoSearchType = $("#ddlAdvanceApellido_PaternoFilter").val();
+        }
+        if ($("#txtAdvanceApellido_Materno").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosApellido_Materno = $("#txtAdvanceApellido_Materno").val();
+            advanceSearch.MedicosApellido_MaternoSearchType = $("#ddlAdvanceApellido_MaternoFilter").val();
+        }
+        if ($("#txtAdvanceNombre_Completo").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosNombre_Completo = $("#txtAdvanceNombre_Completo").val();
+            advanceSearch.MedicosNombre_CompletoSearchType = $("#ddlAdvanceNombre_CompletoFilter").val();
+        }
+        advanceSearch.Tipo_de_EspecialistaSearchType = 0;
+        if ($('#ddlAdvanceTipo_de_Especialista').val().length > 0 || $("#txtAdvanceTipo_de_Especialista").val() == "") {
+
+
+            if (isMedicosTextSearch) {
+                advanceSearch.Tipo_de_EspecialistaName = $("#txtAdvanceTipo_de_Especialista").val();
+                advanceSearch.Tipo_de_EspecialistaNameSearchType = $("#ddlAdvanceTipo_de_Especialista").val();
+                advanceSearch.Tipo_de_EspecialistaSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Tipo_de_EspecialistaToSearch = $("#ddlAdvanceTipo_de_Especialista").val();
+                advanceSearch.Tipo_de_EspecialistaSearchType = 2;
+            }
+        }
+        advanceSearch.FotoSearchType = 0;
+        if ($('#ddlAdvanceFoto').val().length > 0 || $("#txtAdvanceFoto").val() == "") {
+
+
+            if (isMedicosTextSearch) {
+                advanceSearch.FotoName = $("#txtAdvanceFoto").val();
+                advanceSearch.FotoNameSearchType = $("#ddlAdvanceFoto").val();
+                advanceSearch.FotoSearchType = 1;
+            }
+            else {
+
+                advanceSearch.FotoToSearch = $("#ddlAdvanceFoto").val();
+                advanceSearch.FotoSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceNombre_de_usuario").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosNombre_de_usuario = $("#txtAdvanceNombre_de_usuario").val();
+            advanceSearch.MedicosNombre_de_usuarioSearchType = $("#ddlAdvanceNombre_de_usuarioFilter").val();
+        }
+        advanceSearch.Usuario_RegistradoSearchType = 0;
+        if ($('#ddlAdvanceUsuario_Registrado').val().length > 0 || $("#txtAdvanceUsuario_Registrado").val() == "") {
+
+
+            if (isMedicosTextSearch) {
+                advanceSearch.Usuario_RegistradoName = $("#txtAdvanceUsuario_Registrado").val();
+                advanceSearch.Usuario_RegistradoNameSearchType = $("#ddlAdvanceUsuario_Registrado").val();
+                advanceSearch.Usuario_RegistradoSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Usuario_RegistradoToSearch = $("#ddlAdvanceUsuario_Registrado").val();
+                advanceSearch.Usuario_RegistradoSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceEmail").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosEmail = $("#txtAdvanceEmail").val();
+            advanceSearch.MedicosEmailSearchType = $("#ddlAdvanceEmailFilter").val();
+        }
+        if ($("#txtAdvanceCelular").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosCelular = $("#txtAdvanceCelular").val();
+            advanceSearch.MedicosCelularSearchType = $("#ddlAdvanceCelularFilter").val();
+        }
+        if ($("#txtAdvanceFromFecha_de_nacimiento").val() != "" || $("#txtAdvanceToFecha_de_nacimiento").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosFecha_de_nacimientoFrom = $("#txtAdvanceFromFecha_de_nacimiento").val();
+            advanceSearch.MedicosFecha_de_nacimientoTo = $("#txtAdvanceToFecha_de_nacimiento").val();
+        }
+        advanceSearch.Pais_de_nacimientoSearchType = 0;
+        if ($('#ddlAdvancePais_de_nacimiento').val().length > 0 || $("#txtAdvancePais_de_nacimiento").val() == "") {
+
+
+            if (isMedicosTextSearch) {
+                advanceSearch.Pais_de_nacimientoName = $("#txtAdvancePais_de_nacimiento").val();
+                advanceSearch.Pais_de_nacimientoNameSearchType = $("#ddlAdvancePais_de_nacimiento").val();
+                advanceSearch.Pais_de_nacimientoSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Pais_de_nacimientoToSearch = $("#ddlAdvancePais_de_nacimiento").val();
+                advanceSearch.Pais_de_nacimientoSearchType = 2;
+            }
+        }
+        advanceSearch.Entidad_de_nacimientoSearchType = 0;
+        if ($('#ddlAdvanceEntidad_de_nacimiento').val().length > 0 || $("#txtAdvanceEntidad_de_nacimiento").val() == "") {
+
+
+            if (isMedicosTextSearch) {
+                advanceSearch.Entidad_de_nacimientoName = $("#txtAdvanceEntidad_de_nacimiento").val();
+                advanceSearch.Entidad_de_nacimientoNameSearchType = $("#ddlAdvanceEntidad_de_nacimiento").val();
+                advanceSearch.Entidad_de_nacimientoSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Entidad_de_nacimientoToSearch = $("#ddlAdvanceEntidad_de_nacimiento").val();
+                advanceSearch.Entidad_de_nacimientoSearchType = 2;
+            }
+        }
+        advanceSearch.SexoSearchType = 0;
+        if ($('#ddlAdvanceSexo').val().length > 0 || $("#txtAdvanceSexo").val() == "") {
+
+
+            if (isMedicosTextSearch) {
+                advanceSearch.SexoName = $("#txtAdvanceSexo").val();
+                advanceSearch.SexoNameSearchType = $("#ddlAdvanceSexo").val();
+                advanceSearch.SexoSearchType = 1;
+            }
+            else {
+
+                advanceSearch.SexoToSearch = $("#ddlAdvanceSexo").val();
+                advanceSearch.SexoSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceEmail_institucional").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosEmail_institucional = $("#txtAdvanceEmail_institucional").val();
+            advanceSearch.MedicosEmail_institucionalSearchType = $("#ddlAdvanceEmail_institucionalFilter").val();
+        }
+        advanceSearch.EstatusSearchType = 0;
+        if ($('#ddlAdvanceEstatus').val().length > 0 || $("#txtAdvanceEstatus").val() == "") {
+
+
+            if (isMedicosTextSearch) {
+                advanceSearch.EstatusName = $("#txtAdvanceEstatus").val();
+                advanceSearch.EstatusNameSearchType = $("#ddlAdvanceEstatus").val();
+                advanceSearch.EstatusSearchType = 1;
+            }
+            else {
+
+                advanceSearch.EstatusToSearch = $("#ddlAdvanceEstatus").val();
+                advanceSearch.EstatusSearchType = 2;
+            }
+        }
+        advanceSearch.Email_ppal_publicoSearchType = 0;
+        if ($('#ddlAdvanceEmail_ppal_publico').val().length > 0 || $("#txtAdvanceEmail_ppal_publico").val() == "") {
+
+
+            if (isMedicosTextSearch) {
+                advanceSearch.Email_ppal_publicoName = $("#txtAdvanceEmail_ppal_publico").val();
+                advanceSearch.Email_ppal_publicoNameSearchType = $("#ddlAdvanceEmail_ppal_publico").val();
+                advanceSearch.Email_ppal_publicoSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Email_ppal_publicoToSearch = $("#ddlAdvanceEmail_ppal_publico").val();
+                advanceSearch.Email_ppal_publicoSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceEmail_de_contacto").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosEmail_de_contacto = $("#txtAdvanceEmail_de_contacto").val();
+            advanceSearch.MedicosEmail_de_contactoSearchType = $("#ddlAdvanceEmail_de_contactoFilter").val();
+        }
+        if ($("#txtAdvanceCalle").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosCalle = $("#txtAdvanceCalle").val();
+            advanceSearch.MedicosCalleSearchType = $("#ddlAdvanceCalleFilter").val();
+        }
+        if ($("#txtAdvanceNumero_exterior").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosNumero_exterior = $("#txtAdvanceNumero_exterior").val();
+            advanceSearch.MedicosNumero_exteriorSearchType = $("#ddlAdvanceNumero_exteriorFilter").val();
+        }
+        if ($("#txtAdvanceNumero_interior").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosNumero_interior = $("#txtAdvanceNumero_interior").val();
+            advanceSearch.MedicosNumero_interiorSearchType = $("#ddlAdvanceNumero_interiorFilter").val();
+        }
+        if ($("#txtAdvanceColonia").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosColonia = $("#txtAdvanceColonia").val();
+            advanceSearch.MedicosColoniaSearchType = $("#ddlAdvanceColoniaFilter").val();
+        }
+        if ($("#txtAdvanceFromCP").val() != "" || $("#txtAdvanceToCP").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosCPFrom = $("#txtAdvanceFromCP").val();
+            advanceSearch.MedicosCPTo = $("#txtAdvanceToCP").val();
+        }
+        if ($("#txtAdvanceCiudad").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosCiudad = $("#txtAdvanceCiudad").val();
+            advanceSearch.MedicosCiudadSearchType = $("#ddlAdvanceCiudadFilter").val();
+        }
+        advanceSearch.EstadoSearchType = 0;
+        if ($('#ddlAdvanceEstado').val().length > 0 || $("#txtAdvanceEstado").val() == "") {
+
+
+            if (isMedicosTextSearch) {
+                advanceSearch.EstadoName = $("#txtAdvanceEstado").val();
+                advanceSearch.EstadoNameSearchType = $("#ddlAdvanceEstado").val();
+                advanceSearch.EstadoSearchType = 1;
+            }
+            else {
+
+                advanceSearch.EstadoToSearch = $("#ddlAdvanceEstado").val();
+                advanceSearch.EstadoSearchType = 2;
+            }
+        }
+        advanceSearch.PaisSearchType = 0;
+        if ($('#ddlAdvancePais').val().length > 0 || $("#txtAdvancePais").val() == "") {
+
+
+            if (isMedicosTextSearch) {
+                advanceSearch.PaisName = $("#txtAdvancePais").val();
+                advanceSearch.PaisNameSearchType = $("#ddlAdvancePais").val();
+                advanceSearch.PaisSearchType = 1;
+            }
+            else {
+
+                advanceSearch.PaisToSearch = $("#ddlAdvancePais").val();
+                advanceSearch.PaisSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceTelefonos").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosTelefonos = $("#txtAdvanceTelefonos").val();
+            advanceSearch.MedicosTelefonosSearchType = $("#ddlAdvanceTelefonosFilter").val();
+        }
+        advanceSearch.En_HospitalSearchType = 0;
+        if ($('#ddlAdvanceEn_Hospital').val().length > 0 || $("#txtAdvanceEn_Hospital").val() == "") {
+
+
+            if (isMedicosTextSearch) {
+                advanceSearch.En_HospitalName = $("#txtAdvanceEn_Hospital").val();
+                advanceSearch.En_HospitalNameSearchType = $("#ddlAdvanceEn_Hospital").val();
+                advanceSearch.En_HospitalSearchType = 1;
+            }
+            else {
+
+                advanceSearch.En_HospitalToSearch = $("#ddlAdvanceEn_Hospital").val();
+                advanceSearch.En_HospitalSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceNombre_del_Hospital").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosNombre_del_Hospital = $("#txtAdvanceNombre_del_Hospital").val();
+            advanceSearch.MedicosNombre_del_HospitalSearchType = $("#ddlAdvanceNombre_del_HospitalFilter").val();
+        }
+        if ($("#txtAdvancePiso_hospital").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosPiso_hospital = $("#txtAdvancePiso_hospital").val();
+            advanceSearch.MedicosPiso_hospitalSearchType = $("#ddlAdvancePiso_hospitalFilter").val();
+        }
+        if ($("#txtAdvanceNumero_de_consultorio").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosNumero_de_consultorio = $("#txtAdvanceNumero_de_consultorio").val();
+            advanceSearch.MedicosNumero_de_consultorioSearchType = $("#ddlAdvanceNumero_de_consultorioFilter").val();
+        }
+        advanceSearch.Se_ajusta_tabuladorSearchType = 0;
+        if ($('#ddlAdvanceSe_ajusta_tabulador').val().length > 0 || $("#txtAdvanceSe_ajusta_tabulador").val() == "") {
+
+
+            if (isMedicosTextSearch) {
+                advanceSearch.Se_ajusta_tabuladorName = $("#txtAdvanceSe_ajusta_tabulador").val();
+                advanceSearch.Se_ajusta_tabuladorNameSearchType = $("#ddlAdvanceSe_ajusta_tabulador").val();
+                advanceSearch.Se_ajusta_tabuladorSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Se_ajusta_tabuladorToSearch = $("#ddlAdvanceSe_ajusta_tabulador").val();
+                advanceSearch.Se_ajusta_tabuladorSearchType = 2;
+            }
+        }
+        advanceSearch.ProfesionSearchType = 0;
+        if ($('#ddlAdvanceProfesion').val().length > 0 || $("#txtAdvanceProfesion").val() == "") {
+
+
+            if (isMedicosTextSearch) {
+                advanceSearch.ProfesionName = $("#txtAdvanceProfesion").val();
+                advanceSearch.ProfesionNameSearchType = $("#ddlAdvanceProfesion").val();
+                advanceSearch.ProfesionSearchType = 1;
+            }
+            else {
+
+                advanceSearch.ProfesionToSearch = $("#ddlAdvanceProfesion").val();
+                advanceSearch.ProfesionSearchType = 2;
+            }
+        }
+        advanceSearch.EspecialidadSearchType = 0;
+        if ($('#ddlAdvanceEspecialidad').val().length > 0 || $("#txtAdvanceEspecialidad").val() == "") {
+
+
+            if (isMedicosTextSearch) {
+                advanceSearch.EspecialidadName = $("#txtAdvanceEspecialidad").val();
+                advanceSearch.EspecialidadNameSearchType = $("#ddlAdvanceEspecialidad").val();
+                advanceSearch.EspecialidadSearchType = 1;
+            }
+            else {
+
+                advanceSearch.EspecialidadToSearch = $("#ddlAdvanceEspecialidad").val();
+                advanceSearch.EspecialidadSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceResumen_Profesional").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosResumen_Profesional = $("#txtAdvanceResumen_Profesional").val();
+            advanceSearch.MedicosResumen_ProfesionalSearchType = $("#ddlAdvanceResumen_ProfesionalFilter").val();
+        }
+        advanceSearch.Regimen_FiscalSearchType = 0;
+        if ($('#ddlAdvanceRegimen_Fiscal').val().length > 0 || $("#txtAdvanceRegimen_Fiscal").val() == "") {
+
+
+            if (isMedicosTextSearch) {
+                advanceSearch.Regimen_FiscalName = $("#txtAdvanceRegimen_Fiscal").val();
+                advanceSearch.Regimen_FiscalNameSearchType = $("#ddlAdvanceRegimen_Fiscal").val();
+                advanceSearch.Regimen_FiscalSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Regimen_FiscalToSearch = $("#ddlAdvanceRegimen_Fiscal").val();
+                advanceSearch.Regimen_FiscalSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceNombre_o_Razon_Social").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosNombre_o_Razon_Social = $("#txtAdvanceNombre_o_Razon_Social").val();
+            advanceSearch.MedicosNombre_o_Razon_SocialSearchType = $("#ddlAdvanceNombre_o_Razon_SocialFilter").val();
+        }
+        if ($("#txtAdvanceRFC").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosRFC = $("#txtAdvanceRFC").val();
+            advanceSearch.MedicosRFCSearchType = $("#ddlAdvanceRFCFilter").val();
+        }
+        if ($("#txtAdvanceCalle_Fiscal").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosCalle_Fiscal = $("#txtAdvanceCalle_Fiscal").val();
+            advanceSearch.MedicosCalle_FiscalSearchType = $("#ddlAdvanceCalle_FiscalFilter").val();
+        }
+        if ($("#txtAdvanceNumero_exterior_Fiscal").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosNumero_exterior_Fiscal = $("#txtAdvanceNumero_exterior_Fiscal").val();
+            advanceSearch.MedicosNumero_exterior_FiscalSearchType = $("#ddlAdvanceNumero_exterior_FiscalFilter").val();
+        }
+        if ($("#txtAdvanceNumero_interior_Fiscal").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosNumero_interior_Fiscal = $("#txtAdvanceNumero_interior_Fiscal").val();
+            advanceSearch.MedicosNumero_interior_FiscalSearchType = $("#ddlAdvanceNumero_interior_FiscalFilter").val();
+        }
+        if ($("#txtAdvanceColonia_Fiscal").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosColonia_Fiscal = $("#txtAdvanceColonia_Fiscal").val();
+            advanceSearch.MedicosColonia_FiscalSearchType = $("#ddlAdvanceColonia_FiscalFilter").val();
+        }
+        if ($("#txtAdvanceFromCP_Fiscal").val() != "" || $("#txtAdvanceToCP_Fiscal").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosCP_FiscalFrom = $("#txtAdvanceFromCP_Fiscal").val();
+            advanceSearch.MedicosCP_FiscalTo = $("#txtAdvanceToCP_Fiscal").val();
+        }
+        if ($("#txtAdvanceCiudad_Fiscal").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosCiudad_Fiscal = $("#txtAdvanceCiudad_Fiscal").val();
+            advanceSearch.MedicosCiudad_FiscalSearchType = $("#ddlAdvanceCiudad_FiscalFilter").val();
+        }
+        advanceSearch.Estado_FiscalSearchType = 0;
+        if ($('#ddlAdvanceEstado_Fiscal').val().length > 0 || $("#txtAdvanceEstado_Fiscal").val() == "") {
+
+
+            if (isMedicosTextSearch) {
+                advanceSearch.Estado_FiscalName = $("#txtAdvanceEstado_Fiscal").val();
+                advanceSearch.Estado_FiscalNameSearchType = $("#ddlAdvanceEstado_Fiscal").val();
+                advanceSearch.Estado_FiscalSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Estado_FiscalToSearch = $("#ddlAdvanceEstado_Fiscal").val();
+                advanceSearch.Estado_FiscalSearchType = 2;
+            }
+        }
+        advanceSearch.Pais_FiscalSearchType = 0;
+        if ($('#ddlAdvancePais_Fiscal').val().length > 0 || $("#txtAdvancePais_Fiscal").val() == "") {
+
+
+            if (isMedicosTextSearch) {
+                advanceSearch.Pais_FiscalName = $("#txtAdvancePais_Fiscal").val();
+                advanceSearch.Pais_FiscalNameSearchType = $("#ddlAdvancePais_Fiscal").val();
+                advanceSearch.Pais_FiscalSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Pais_FiscalToSearch = $("#ddlAdvancePais_Fiscal").val();
+                advanceSearch.Pais_FiscalSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceTelefono").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosTelefono = $("#txtAdvanceTelefono").val();
+            advanceSearch.MedicosTelefonoSearchType = $("#ddlAdvanceTelefonoFilter").val();
+        }
+        if ($("#txtAdvanceFax").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosFax = $("#txtAdvanceFax").val();
+            advanceSearch.MedicosFaxSearchType = $("#ddlAdvanceFaxFilter").val();
+        }
+        advanceSearch.Cedula_Fiscal_DocumentoSearchType = 0;
+        if ($('#ddlAdvanceCedula_Fiscal_Documento').val().length > 0 || $("#txtAdvanceCedula_Fiscal_Documento").val() == "") {
+
+
+            if (isMedicosTextSearch) {
+                advanceSearch.Cedula_Fiscal_DocumentoName = $("#txtAdvanceCedula_Fiscal_Documento").val();
+                advanceSearch.Cedula_Fiscal_DocumentoNameSearchType = $("#ddlAdvanceCedula_Fiscal_Documento").val();
+                advanceSearch.Cedula_Fiscal_DocumentoSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Cedula_Fiscal_DocumentoToSearch = $("#ddlAdvanceCedula_Fiscal_Documento").val();
+                advanceSearch.Cedula_Fiscal_DocumentoSearchType = 2;
+            }
+        }
+        advanceSearch.Comprobante_de_DomicilioSearchType = 0;
+        if ($('#ddlAdvanceComprobante_de_Domicilio').val().length > 0 || $("#txtAdvanceComprobante_de_Domicilio").val() == "") {
+
+
+            if (isMedicosTextSearch) {
+                advanceSearch.Comprobante_de_DomicilioName = $("#txtAdvanceComprobante_de_Domicilio").val();
+                advanceSearch.Comprobante_de_DomicilioNameSearchType = $("#ddlAdvanceComprobante_de_Domicilio").val();
+                advanceSearch.Comprobante_de_DomicilioSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Comprobante_de_DomicilioToSearch = $("#ddlAdvanceComprobante_de_Domicilio").val();
+                advanceSearch.Comprobante_de_DomicilioSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceFromCalificacion_Red_de_Medicos").val() != "" || $("#txtAdvanceToCalificacion_Red_de_Medicos").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosCalificacion_Red_de_MedicosFrom = $("#txtAdvanceFromCalificacion_Red_de_Medicos").val();
+            advanceSearch.MedicosCalificacion_Red_de_MedicosTo = $("#txtAdvanceToCalificacion_Red_de_Medicos").val();
+        }
+        advanceSearch.BancoSearchType = 0;
+        if ($('#ddlAdvanceBanco').val().length > 0 || $("#txtAdvanceBanco").val() == "") {
+
+
+            if (isMedicosTextSearch) {
+                advanceSearch.BancoName = $("#txtAdvanceBanco").val();
+                advanceSearch.BancoNameSearchType = $("#ddlAdvanceBanco").val();
+                advanceSearch.BancoSearchType = 1;
+            }
+            else {
+
+                advanceSearch.BancoToSearch = $("#ddlAdvanceBanco").val();
+                advanceSearch.BancoSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceCLABE_Interbancaria").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosCLABE_Interbancaria = $("#txtAdvanceCLABE_Interbancaria").val();
+            advanceSearch.MedicosCLABE_InterbancariaSearchType = $("#ddlAdvanceCLABE_InterbancariaFilter").val();
+        }
+        if ($("#txtAdvanceNumero_de_Cuenta").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosNumero_de_Cuenta = $("#txtAdvanceNumero_de_Cuenta").val();
+            advanceSearch.MedicosNumero_de_CuentaSearchType = $("#ddlAdvanceNumero_de_CuentaFilter").val();
+        }
+        if ($("#txtAdvanceNombre_del_Titular").val() != "") {
+            hasParameter = true;
+            advanceSearch.MedicosNombre_del_Titular = $("#txtAdvanceNombre_del_Titular").val();
+            advanceSearch.MedicosNombre_del_TitularSearchType = $("#ddlAdvanceNombre_del_TitularFilter").val();
+        }
+
+        advanceSearchQuery = hasParameter ? JSON.stringify(advanceSearch) : "";
+        $('#tblMedicos').DataTable().draw();
+        return false;
+    }
+
+    var advanceSearchQuery = "", isMedicosTextSearch = true;
+
+    $(document).ready(function () {
+        $('.clock').clockpicker();
+		$('.date').datepicker({
+			todayBtn: "linked",
+			keyboardNavigation: false,
+			forceParse: false,
+			calendarWeeks: true,
+			autoclose: true,
+			format: "@ConfigurationProperty.DateFormatDatePicker"
+		});
+        $("#txtAdvanceUsuario_que_Registra").keypress(function () {
+            isMedicosTextSearch = true;
+            $("#ddlAdvanceUsuario_que_Registra").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceUsuario_que_Registra").change(function () {
+            isMedicosTextSearch = false;
+            $("#txtAdvanceUsuario_que_Registra").val('');
+        });
+        $("#txtAdvanceTitulo_Personal").keypress(function () {
+            isMedicosTextSearch = true;
+            $("#ddlAdvanceTitulo_Personal").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceTitulo_Personal").change(function () {
+            isMedicosTextSearch = false;
+            $("#txtAdvanceTitulo_Personal").val('');
+        });
+        $("#txtAdvanceTipo_de_Especialista").keypress(function () {
+            isMedicosTextSearch = true;
+            $("#ddlAdvanceTipo_de_Especialista").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceTipo_de_Especialista").change(function () {
+            isMedicosTextSearch = false;
+            $("#txtAdvanceTipo_de_Especialista").val('');
+        });
+        $("#txtAdvanceUsuario_Registrado").keypress(function () {
+            isMedicosTextSearch = true;
+            $("#ddlAdvanceUsuario_Registrado").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceUsuario_Registrado").change(function () {
+            isMedicosTextSearch = false;
+            $("#txtAdvanceUsuario_Registrado").val('');
+        });
+        $("#txtAdvancePais_de_nacimiento").keypress(function () {
+            isMedicosTextSearch = true;
+            $("#ddlAdvancePais_de_nacimiento").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvancePais_de_nacimiento").change(function () {
+            isMedicosTextSearch = false;
+            $("#txtAdvancePais_de_nacimiento").val('');
+        });
+        $("#txtAdvanceEntidad_de_nacimiento").keypress(function () {
+            isMedicosTextSearch = true;
+            $("#ddlAdvanceEntidad_de_nacimiento").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceEntidad_de_nacimiento").change(function () {
+            isMedicosTextSearch = false;
+            $("#txtAdvanceEntidad_de_nacimiento").val('');
+        });
+        $("#txtAdvanceSexo").keypress(function () {
+            isMedicosTextSearch = true;
+            $("#ddlAdvanceSexo").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceSexo").change(function () {
+            isMedicosTextSearch = false;
+            $("#txtAdvanceSexo").val('');
+        });
+        $("#txtAdvanceEstatus").keypress(function () {
+            isMedicosTextSearch = true;
+            $("#ddlAdvanceEstatus").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceEstatus").change(function () {
+            isMedicosTextSearch = false;
+            $("#txtAdvanceEstatus").val('');
+        });
+        $("#txtAdvanceEmail_ppal_publico").keypress(function () {
+            isMedicosTextSearch = true;
+            $("#ddlAdvanceEmail_ppal_publico").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceEmail_ppal_publico").change(function () {
+            isMedicosTextSearch = false;
+            $("#txtAdvanceEmail_ppal_publico").val('');
+        });
+        $("#txtAdvanceEstado").keypress(function () {
+            isMedicosTextSearch = true;
+            $("#ddlAdvanceEstado").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceEstado").change(function () {
+            isMedicosTextSearch = false;
+            $("#txtAdvanceEstado").val('');
+        });
+        $("#txtAdvancePais").keypress(function () {
+            isMedicosTextSearch = true;
+            $("#ddlAdvancePais").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvancePais").change(function () {
+            isMedicosTextSearch = false;
+            $("#txtAdvancePais").val('');
+        });
+        $("#txtAdvanceEn_Hospital").keypress(function () {
+            isMedicosTextSearch = true;
+            $("#ddlAdvanceEn_Hospital").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceEn_Hospital").change(function () {
+            isMedicosTextSearch = false;
+            $("#txtAdvanceEn_Hospital").val('');
+        });
+        $("#txtAdvanceSe_ajusta_tabulador").keypress(function () {
+            isMedicosTextSearch = true;
+            $("#ddlAdvanceSe_ajusta_tabulador").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceSe_ajusta_tabulador").change(function () {
+            isMedicosTextSearch = false;
+            $("#txtAdvanceSe_ajusta_tabulador").val('');
+        });
+        $("#txtAdvanceProfesion").keypress(function () {
+            isMedicosTextSearch = true;
+            $("#ddlAdvanceProfesion").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceProfesion").change(function () {
+            isMedicosTextSearch = false;
+            $("#txtAdvanceProfesion").val('');
+        });
+        $("#txtAdvanceEspecialidad").keypress(function () {
+            isMedicosTextSearch = true;
+            $("#ddlAdvanceEspecialidad").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceEspecialidad").change(function () {
+            isMedicosTextSearch = false;
+            $("#txtAdvanceEspecialidad").val('');
+        });
+        $("#txtAdvanceRegimen_Fiscal").keypress(function () {
+            isMedicosTextSearch = true;
+            $("#ddlAdvanceRegimen_Fiscal").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceRegimen_Fiscal").change(function () {
+            isMedicosTextSearch = false;
+            $("#txtAdvanceRegimen_Fiscal").val('');
+        });
+        $("#txtAdvanceEstado_Fiscal").keypress(function () {
+            isMedicosTextSearch = true;
+            $("#ddlAdvanceEstado_Fiscal").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceEstado_Fiscal").change(function () {
+            isMedicosTextSearch = false;
+            $("#txtAdvanceEstado_Fiscal").val('');
+        });
+        $("#txtAdvancePais_Fiscal").keypress(function () {
+            isMedicosTextSearch = true;
+            $("#ddlAdvancePais_Fiscal").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvancePais_Fiscal").change(function () {
+            isMedicosTextSearch = false;
+            $("#txtAdvancePais_Fiscal").val('');
+        });
+        $("#txtAdvanceBanco").keypress(function () {
+            isMedicosTextSearch = true;
+            $("#ddlAdvanceBanco").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceBanco").change(function () {
+            isMedicosTextSearch = false;
+            $("#txtAdvanceBanco").val('');
+        });
+
+    });
+</script>
+
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/chosen")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/clockpicker")
+
+
+    <script>
+        //Adding Rules
+        jQuery.validator.unobtrusive
+      .adapters.addSingleVal("isnumberafter", "propertyname");
+        jQuery.validator.unobtrusive
+    .adapters.addSingleVal("isdateafter", "propertyname");
+
+        //Number after method
+        jQuery.validator.addMethod("isnumberafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+                //if (Date.parse(val) <= Date.parse(otherVal)) {
+                if (Number(val) < Number(otherVal)) {
+                    return false;
+                }
+                        }
+            return true;
+        });
+
+        //Date after after method
+        jQuery.validator.addMethod("isdateafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+
+                if (GetDateObject(val) < GetDateObject(otherVal)) {
+
+                    return false;
+                    }
+                }
+            return true;
+            });
+
+
+        function GetDateObject(value) {
+            var delimiter = GetDelimiter(dateFormat);
+            var dateCollection = value.split(delimiter);
+            var formatCollection = dateFormat.split(delimiter);
+            var dateModel = GetDateModel(dateCollection, formatCollection);
+            return new Date(dateModel.Year, dateModel.Month - 1, dateModel.Day);
+        }
+        //Used to get the date model by parsing the date and the format
+        function GetDateModel(dateCollection,formatCollection) {
+            var day, month, year;
+            for (var i = 0; i < formatCollection.length; i++) {
+                switch (formatCollection[i][0].toUpperCase()) {
+                
+                    case "D":
+                        day = dateCollection[i];
+                        break;
+
+                    case "Y":
+                        year = dateCollection[i];
+                        break;
+
+                    case "M":
+                        month = dateCollection[i];
+                        break;
+                }
+            }
+
+            return {
+                Day:day,
+                Month:month,
+                Year:year
+            };
+        }
+
+        function GetDelimiter(format) {
+
+            for (var i = 0; i < format.length; i++) {
+                if (/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(format[i])) {
+                    return format[i];
+                }
+            }
+            return null;
+        }
+
+        var dateFormat = "@ConfigurationProperty.DateFormatDatePicker";
+
+        $(document).ready(function () {
+            $('.input-daterange').datepicker({
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                format: dateFormat,
+                message: 'The date is not a valid'
+            });
+
+            $(".chosen-select").chosen({ width: "22%", no_results_text: "Oops, nothing found!" });
+			if ($('#IsFilterModal').val() == 'true') {
+                $('.ShowAdvanceFilter #right-sidebar').css('display', 'none');
+                $('.ShowAdvanceFilter .navbar-default').css('display', 'none');
+                $('.ShowAdvanceFilter .border-bottom').css('display', 'none');
+                $('.ShowAdvanceFilter #page-wrapper').css('margin', '0 auto');
+                $('.ShowAdvanceFilter .btn-save').val('@Resources.Resources.Filter');
+                $('.ShowAdvanceFilter .btn-cancelar').attr('data-dismiss', 'modal');
+                $('.ShowAdvanceFilter .btn-cancelar').removeAttr('href');
+                $('#idFilter').val($('#IdReport').val());
+            }
+        });
+
+    </script>
+}
+

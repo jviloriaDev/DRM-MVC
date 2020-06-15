@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Medicos" value="Especialistas"></resource>
+  <resource culture="en-US" name="Folio" value="Folio"></resource>
+  <resource culture="en-US" name="Fecha_de_Registro" value="Fecha de Registro"></resource>
+  <resource culture="en-US" name="Hora_de_Registro" value="Hora de Registro"></resource>
+  <resource culture="en-US" name="Usuario_que_Registra" value="Usuario que Registra"></resource>
+  <resource culture="en-US" name="Titulo_Personal" value="Título Personal"></resource>
+  <resource culture="en-US" name="Nombres" value="Nombre(s)"></resource>
+  <resource culture="en-US" name="Apellido_Paterno" value="Apellido Paterno"></resource>
+  <resource culture="en-US" name="Apellido_Materno" value="Apellido Materno"></resource>
+  <resource culture="en-US" name="Nombre_Completo" value="Nombre Completo"></resource>
+  <resource culture="en-US" name="Tipo_de_Especialista" value="Tipo de Especialista"></resource>
+  <resource culture="en-US" name="Foto" value="Foto"></resource>
+  <resource culture="en-US" name="Nombre_de_usuario" value="Nombre de usuario"></resource>
+  <resource culture="en-US" name="Usuario_Registrado" value="Usuario Registrado"></resource>
+  <resource culture="en-US" name="Email" value="Email"></resource>
+  <resource culture="en-US" name="Celular" value="Celular"></resource>
+  <resource culture="en-US" name="Fecha_de_nacimiento" value="Fecha de nacimiento"></resource>
+  <resource culture="en-US" name="Pais_de_nacimiento" value="País de nacimiento"></resource>
+  <resource culture="en-US" name="Entidad_de_nacimiento" value="Entidad de nacimiento"></resource>
+  <resource culture="en-US" name="Sexo" value="Sexo"></resource>
+  <resource culture="en-US" name="Email_institucional" value="Email institucional"></resource>
+  <resource culture="en-US" name="Estatus" value="Estatus"></resource>
+  <resource culture="en-US" name="Email_ppal_publico" value="¿Deseas que tu email principal sea visible al público?"></resource>
+  <resource culture="en-US" name="Email_de_contacto" value="Email de contacto"></resource>
+  <resource culture="en-US" name="Calle" value="Calle"></resource>
+  <resource culture="en-US" name="Numero_exterior" value="Número exterior"></resource>
+  <resource culture="en-US" name="Numero_interior" value="Número interior"></resource>
+  <resource culture="en-US" name="Colonia" value="Colonia"></resource>
+  <resource culture="en-US" name="CP" value="C.P."></resource>
+  <resource culture="en-US" name="Ciudad" value="Ciudad"></resource>
+  <resource culture="en-US" name="Estado" value="Estado"></resource>
+  <resource culture="en-US" name="Pais" value="País"></resource>
+  <resource culture="en-US" name="Telefonos" value="Teléfono(s)"></resource>
+  <resource culture="en-US" name="En_Hospital" value="El consultorio se encuentra dentro de un Hospital"></resource>
+  <resource culture="en-US" name="Nombre_del_Hospital" value="Nombre del Hospital"></resource>
+  <resource culture="en-US" name="Piso_hospital" value="Piso"></resource>
+  <resource culture="en-US" name="Numero_de_consultorio" value="Número de consultorio"></resource>
+  <resource culture="en-US" name="Redes_sociales" value="Redes sociales"></resource>
+  <resource culture="en-US" name="Aseguradoras_con_convenio" value="Aseguradoras con convenio"></resource>
+  <resource culture="en-US" name="Se_ajusta_tabulador" value="¿Se ajusta a tabulador de Aseguradora sin convenio?"></resource>
+  <resource culture="en-US" name="Profesion" value="Profesión"></resource>
+  <resource culture="en-US" name="Especialidad" value="Especialidad"></resource>
+  <resource culture="en-US" name="Titulos" value="Títulos"></resource>
+  <resource culture="en-US" name="Resumen_Profesional" value="Resumen Profesional"></resource>
+  <resource culture="en-US" name="Regimen_Fiscal" value="Régimen Fiscal"></resource>
+  <resource culture="en-US" name="Nombre_o_Razon_Social" value="Nombre o Razón Social"></resource>
+  <resource culture="en-US" name="RFC" value="RFC"></resource>
+  <resource culture="en-US" name="Calle_Fiscal" value="Calle Fiscal"></resource>
+  <resource culture="en-US" name="Numero_exterior_Fiscal" value="Número exterior Fiscal"></resource>
+  <resource culture="en-US" name="Numero_interior_Fiscal" value="Número interior Fiscal"></resource>
+  <resource culture="en-US" name="Colonia_Fiscal" value="Colonia Fiscal"></resource>
+  <resource culture="en-US" name="CP_Fiscal" value="C.P. Fiscal"></resource>
+  <resource culture="en-US" name="Ciudad_Fiscal" value="Ciudad Fiscal"></resource>
+  <resource culture="en-US" name="Estado_Fiscal" value="Estado Fiscal"></resource>
+  <resource culture="en-US" name="Pais_Fiscal" value="Pais Fiscal"></resource>
+  <resource culture="en-US" name="Telefono" value="Teléfono"></resource>
+  <resource culture="en-US" name="Fax" value="Fax"></resource>
+  <resource culture="en-US" name="Identificacion_Oficial" value="Identificación Oficial"></resource>
+  <resource culture="en-US" name="Cedula_Fiscal_Documento" value="Cédula Fiscal"></resource>
+  <resource culture="en-US" name="Comprobante_de_Domicilio" value="Comprobante de Domicilio"></resource>
+  <resource culture="en-US" name="Codigos_para_Referenciar_Pacientes" value="Códigos para Referenciar Pacientes"></resource>
+  <resource culture="en-US" name="Suscripcion_Red_de_Especialistas" value="Suscripción Red de Especialistas"></resource>
+  <resource culture="en-US" name="Calificacion_Red_de_Medicos" value="Calificación Red de Médicos"></resource>
+  <resource culture="en-US" name="Banco" value="Banco"></resource>
+  <resource culture="en-US" name="CLABE_Interbancaria" value="CLABE Interbancaria"></resource>
+  <resource culture="en-US" name="Numero_de_Cuenta" value="Número de Cuenta"></resource>
+  <resource culture="en-US" name="Nombre_del_Titular" value="Nombre del Titular"></resource>
+  <resource culture="en-US" name="Facturas" value="Facturas"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+<resource culture="en-US" name="TabDatos_de_Contacto" value="Datos de Contacto"></resource>
+<resource culture="en-US" name="TabDatos_Profesionales" value="Datos Profesionales"></resource>
+<resource culture="en-US" name="TabDatos_Fiscales" value="Datos Fiscales"></resource>
+<resource culture="en-US" name="TabDocumentacion" value="Documentación"></resource>
+<resource culture="en-US" name="TabCodigos_de_Referencia" value="Códigos de Referencia"></resource>
+<resource culture="en-US" name="TabSuscripcion_Red_de_Especialistas" value="Suscripción Red de Especialistas"></resource>
+<resource culture="en-US" name="TabDatos_Bancarios" value="Datos Bancarios"></resource>
+<resource culture="en-US" name="TabFacturacion" value="Facturación"></resource>
+
+</resources>

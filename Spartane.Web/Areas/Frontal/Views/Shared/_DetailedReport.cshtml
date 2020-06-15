@@ -1,0 +1,478 @@
+﻿@using System.Collections.Generic
+@using System.Web.UI.WebControls
+
+
+@using Spartane.Core.Domain.Permission
+@using Spartane.Web.Areas.WebApiConsumer
+@using Spartane.Web.Helpers
+@{
+    ViewBag.Title = "Spartan - Detailed Report";
+    Layout = null;
+    string dataReport = Uri.UnescapeDataString((string)ViewBag.dataReport);
+}
+
+<style>
+    .MarginBottom {
+        margin-bottom: 1%;
+    }
+
+    #divAdvanceSearch input {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch button {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch select {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch h3 {
+        margin-top: 2%;
+    }
+</style>
+
+<input type="hidden" value="list" name="Operation" id="Operation" />
+<input type="hidden" value="true" name="IsFilterModal" id="IsFilterModal" />
+<div class="white-bg">
+    <h2 class="title-h2">@ViewBag.ReportName</h2>
+</div>
+
+
+<div class="animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    
+
+                    <div>
+                        <input data-target="#advance-modal" data-toggle="modal" type="button" value="@Resources.Resources.AdvanceFilter" id="AdvanceFilter_@ViewBag.IdReport" class="btn btn-w-m btn-success btn-filter" />
+                        <a id="ClearFilter_@ViewBag.IdReport" class=" btn btn-primary">@Resources.Resources.ClearFilter</a>
+                    </div>
+                    @if (ViewBag.Filters != "")
+                    {
+                        <div id="filters_@ViewBag.IdReport">
+                            @Html.Raw(ViewBag.Filters)
+                            <input type="hidden" value="@ViewBag.IdReport" name="IdReport" id="IdReport" />
+                        </div>
+                    }
+
+                    @* Model Print Start*@
+                    <div class="table-responsive">
+                        <table id="tblReport_@ViewBag.IdReport" class="table table-striped table-bordered table-hover dataTables-example scroll_content" style="overflow-x:scroll;" cellspacing="0"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .select2-results {
+        background-color: #fff;
+    }
+
+    .select2-container .select2-dropdown {
+        height: auto !important;
+    }
+
+    .dataTables_filter {
+        display: none;
+    }
+
+    div.dataTables_info {
+        display: inline-block;
+        float: left;
+    }
+
+    .fullWidth {
+        width: 100%;
+    }
+
+    .select2-dropdown {
+        z-index: 9001;
+    }
+
+    .total {
+        text-align: right;
+        background-color: #4068aa !important;
+        color: #fff;
+        font-weight: bold;
+    }
+</style>
+<script type="text/javascript">
+    var totalByColumns = [];
+    var table;
+    $(document).ready(function () {
+        $('.control-select2').select2();
+        var autocompletes = $('.AutoComplete');
+        for (var i = 0; i < autocompletes.length; i++) {
+            var url = $(autocompletes[i]).data('url');
+            url = url_content + url;
+            var id = $(autocompletes[i]).data('idfield');
+            var desc = $(autocompletes[i]).data('descfield');
+            $(".AutoComplete").select2({
+                dropdownCssClass: 'fullWidth form-control',
+                allowClear: true,
+                placeholder: "Select Value...",
+                ajax: {
+                    url: url,
+                    cache: false,
+                    dataType: 'json',
+                    async: true,
+                    global: false,
+                    data: function (params) {
+                        return {
+                            query: params.term,
+                        };
+                    },
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
+
+                        return {
+                            results: GetAutoCompleteData(data, id, desc),
+                            pagination: {
+                                more: false
+                            }
+                        };
+                    }
+                },
+                escapeMarkup: function (markup) { return markup; },
+                minimumInputLength: 1,
+            });
+            var $eventExternal = $(".AutoComplete");
+            $eventExternal.on("select2:open", function (e) {
+                $('.select2-search__field').val(' ');
+                $('.select2-search__field').keyup();
+            });
+            $('.select2-container').css('width', '100%');
+            $('.select2-selection').css('border', 'none');
+            $('.select2-selection').css('height', '34px');
+
+        }
+
+        $('.datepicker').datepicker({
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            calendarWeeks: true,
+            autoclose: true,
+            format: "@ConfigurationProperty.DateFormatDatePicker"
+        });
+        $('.clockpicker').clockpicker();
+
+        $("#frmAdvanceSearch").submit(function (e) {
+            e.preventDefault();
+            InitiateAdvanceSearch();
+        });
+
+        var strData = '@Html.Raw(dataReport)';
+        var jsonData = JSON.parse(strData);
+        var model = generateModel(jsonData);
+        table = $("#tblReport_@ViewBag.IdReport").DataTable(model)
+
+        @if (ViewBag.TotalColumns != null)
+        {
+            <text>AddTotalsByColumns();</text>
+        }
+
+        $('.buttons-pdf').unbind().off();
+        $('.buttons-excel').unbind().off();
+        $('.buttons-csv').unbind().off();
+        $('.buttons-print').unbind().off();
+
+        function AddTotalsByColumns() {
+            var data = '';
+            totalByColumns.forEach(function (d, index) {
+                if (d == null)
+                    data += '<td></td>';
+                else
+                    data += '<td>' + d.toFixed(2) + '</td>';
+            });
+            $("#tblReport_@ViewBag.IdReport").append($('<tfoot/>').append('<tr class="total">' + data + '</tr>'));
+            $('.buttons-pdf').unbind().off();
+            $('.buttons-excel').unbind().off();
+            $('.buttons-csv').unbind().off();
+            $('.buttons-print').unbind().off();
+        }
+
+        $('#filters_@ViewBag.IdReport').on('click', '#quickFilter', function () {
+            var idReport = $(this).parent().parent().parent().find('#IdReport').val();
+            var data = {
+                id: idReport,
+                filters: GetQuickFilters()
+            };
+            var data = JSON.stringify({ 'data': data });
+            //var url = url_content + "Frontal/Report/DetailedReport?id=" + idReport + "&filters=" + filters;
+            //window.location.href = url;
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: url_content + "Frontal/Report/DetailedReport",
+                data: data,
+                success: function (strData) {
+                    var jsonData = JSON.parse(strData);
+                    var model = generateModel(jsonData);
+                    if ($.fn.DataTable.isDataTable('#tblReport_@ViewBag.IdReport')) {
+                        $("#tblReport_@ViewBag.IdReport").empty();
+                        $("#tblReport_@ViewBag.IdReport").DataTable().destroy();
+                    }
+                    if (jsonData != '') {
+                        table = $("#tblReport_@ViewBag.IdReport").DataTable(model);
+                        @if (ViewBag.TotalColumns != null)
+                        {
+                            <text>AddTotalsByColumns();</text>
+                        }
+                    }
+
+                },
+                failure: function (response) {
+
+                }
+            });
+        });
+    });
+
+    $(document).on("click", ".buttons-pdf", function (e, data) {
+        Export(1, false);
+    });
+    $(document).on("click", ".buttons-excel", function (e, data) {
+        Export(2, false);
+    });
+    $(document).on("click", ".buttons-csv", function (e, data) {
+        Export(4, false);
+    });
+    $(document).on("click", ".buttons-print", function (e, data) {
+        Export(1, true);
+    });
+    function Export(format, print) {
+        var sortColumn = table.settings()[0].aoColumns[table.settings()[0].aLastSort[0].col].title;
+        var sortDir = table.settings()[0].aLastSort[0].dir;
+        var id = $('#IdReport').val();
+        var url = "@Url.Content("~/Frontal/Report/Export?id=")" + id + "&format=" + format + "&iSortCol=" + sortColumn + "&sSortDir=" + sortDir;
+
+        if (print)
+            var url = "@Url.Content("~/Frontal/Report/Print?id=")" + id + "&iSortCol=" + sortColumn + "&sSortDir=" + sortDir;
+
+        var myWindow = window.open(url, '_blank');
+        myWindow.document.print();
+
+    }
+    function GetAutoCompleteData(data, nameId, nameDesc) {
+        var AutoCompleteData = [];
+        var idT = 'data[i].' + nameId;
+        var descT = 'data[i].' + nameDesc;
+        for (var i = 0; i < data.length; i++) {
+            AutoCompleteData.push({
+                id: eval(idT),
+                text: eval(descT)
+            });
+        }
+        return AutoCompleteData;
+    }
+
+    function GetQuickFilters() {
+        var result = [];
+        var obj = {};
+        var items = $('.filter-item');
+        for (var i = 0; i < items.length; i++) {
+            var physicalName = $(items[i]).data('physicalname');
+            var values = $(items[i]).find('.control-value');
+            var val = '';
+            if (values.length == 1)
+                val = $($(items[i]).find('.control-value')).val();
+            else {
+                for (var j = 0; j < values.length; j++) {
+                    val += ($(values[j]).val() == '') ? '-1;' : $(values[j]).val() + ';';
+                }
+            }
+            obj = {
+                PhysicalName: physicalName,
+                Valor: val
+            };
+            result.push(obj);
+            //result += physicalName + '%' + val + '|';
+        }
+        return result;
+    }
+
+    function generateModel(gridData, modelId) {
+        totalByColumns = [];
+        var model = {},
+            dateFields = [];
+        //model[modelId] = modelId;
+        var columns = [];
+        var targetsRight = [];
+        var targetsCenter = [];
+        var indice = 0;
+        for (var property in gridData[0]) {
+            var propType = typeof gridData[0][property];
+            var value = gridData[0][property];
+            if (isDate(value)) propType = "date";
+            if (propType == "number" && isInt(propType)) {
+                columns.push({
+                    //type: "number",
+                    title: property,
+                    render: $.fn.dataTable.render.number(',', '.', 2)
+                });
+
+                var floatReg = /^[0-9]+(.[0-9]{1,2})?$/;
+                if (floatReg.test(value)) targetsRight.push(indice);
+            } else if (propType == "boolean") {
+                columns.push({
+                    //type: "boolean",
+                    title: property
+                });
+            } else if (propType == "string") {
+                columns.push({
+                    title: property
+                });
+            } else if (propType == "date") {
+                columns.push({
+                    title: property,
+                    render: function (data, type, row) {
+                        // If display or filter data is requested, format the date
+                        if (type === 'display' || type === 'filter') {
+                            //var rowvalue = row["EventDate"];
+                            //var rowvalueallday = row["AllDayEvent"];
+                            //if (rowvalueallday == 0) {
+                            //    return (moment(data).format("ddd DD/MM/YYYY (HH:mm)"));
+                            //} else {
+                            return (moment(data).format("DD/MM/YYYY"));
+                            //}
+                        }
+                        // Otherwise the data type requested (`type`) is type detection or
+                        // sorting data, for which we want to use the raw date value, so just return
+                        // that, unaltered
+                        return data;
+                    }
+                });
+                targetsCenter.push(indice);
+            } else {
+                columns.push({
+                    title: property
+                });
+            }
+
+            indice++;
+        }
+        @if (ViewBag.TotalRows != null)
+        {
+            <text>columns.push({ title: 'Total', className: "total" })</text>
+        }
+
+        var dataSet = [];
+        gridData.forEach(function (item, index) {
+
+            var row = [];
+            var total = 0;
+            var countAux = 0;
+            for (var field in item) {
+
+                row.push(item[field]);
+                if (typeof item[field] == 'number' && isInt(item[field]))
+                    total += parseFloat(item[field]);
+
+                //For Total Columns
+                var v = null;
+                if (typeof item[field] == 'number' && isInt(item[field])) {
+                    v = parseFloat(item[field]);
+                    if (totalByColumns[countAux] == null)
+                        totalByColumns[countAux] = 0;
+                    if (v != null)
+                        totalByColumns[countAux] += v;
+                }
+                else {
+                    if (!parseFloat(totalByColumns[countAux]))
+                        totalByColumns[countAux] = null;
+                }
+                countAux++;
+            }
+            @if (ViewBag.TotalRows != null)
+            {
+                <text>
+            row.push(total);
+            //FOR TOTAL COLUMNS
+            var v = 0;
+            if (typeof total == 'number' && isInt(total))
+                v = parseFloat(total);
+            if (totalByColumns[countAux] == null)
+                totalByColumns[countAux] = 0;
+            totalByColumns[countAux] += v;
+            </text>
+            }
+            dataSet.push(row);
+        });
+
+        model.data = dataSet;
+        model.columns = columns;
+        model.columnDefs = [
+            { className: "text-right", targets: targetsRight },
+            { className: "text-center", targets: targetsCenter }
+        ];
+        model.searching = false;
+        model.dom = 'Bfrtip';
+        model.buttons = [
+                    'excel',
+                    'csv',
+                    'pdf',
+                    {
+                        extend: 'print',
+                        autoPrint: true,
+                        orientation: 'landscape',
+                        customize: function (win) {
+                            $.ajax({
+                                url: url_content + "Frontal/Report/GetHeaderFooter?id=" + $('#IdReport').val(),
+                                type: 'GET',
+                                cache: false,
+                                dataType: "json",
+                                async: false,
+                                success: function (result) {
+                                    $(win.document.body).prepend(result.header);
+                                    $(win.document.body).append(result.footer);
+                                },
+                                error: function (result) {
+                                    showNotification("Error obteniendo Header y Footer", "error");
+                                }
+                            });
+
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        }
+                    }
+        ]
+
+        return model;
+    }
+
+    function isDate(str) {
+        var dateReg = /^\d{4}[./-]\d{2}[./-]\d{2}T\d{2}:\d{2}:\d{2}$/;
+        return dateReg.test(str);
+    }
+
+    $('#AdvanceFilter_@ViewBag.IdReport').click(function () {
+        ajaxindicatorstart('Loading data.. please wait..');
+        GetFiltersPopup('@ViewBag.IdReport', '@ViewBag.ObjectId', '@ViewBag.ObjectId');
+    });
+
+    $('#ClearFilter_@ViewBag.IdReport').click(function () {
+        AdvanceFilters = [];
+        FilterAdvancePost('@ViewBag.IdReport');
+    });
+
+
+
+
+</script>
+
+@section Styles {
+    
+}
+
+@section Scripts {
+   
+}

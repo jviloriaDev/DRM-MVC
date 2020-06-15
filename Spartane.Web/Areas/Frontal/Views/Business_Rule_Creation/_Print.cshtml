@@ -1,0 +1,133 @@
+﻿@model IList<Spartane.Web.Areas.Frontal.Models.Business_Rule_CreationGridModel>
+
+@{
+    var rowCounter = 0;
+}
+
+<style>
+    .table {
+        width: 100%;
+        border: 1px solid #cccccc;
+        font-family: "open sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+        /*border-collapse: separate !important;*/
+        font-size: 13px;
+    }
+
+        .table td {
+            padding: 2px;
+            border:1px solid #cccccc;
+        }
+
+    .table tr:nth-of-type(2n+1) {
+        background-color: #f9f9f9;
+    }
+
+        .table tr:nth-of-type(2n) {
+            background-color: #8da0c2;
+        }
+
+    .table-row-1 td, .table-row-1 th {
+    }
+
+    .table-row-2 td, .table-row-2 th, thead {
+    }
+
+    .tableHeaderRow {
+        font-weight: bold;
+        border: 1px solid #ff6a00;
+    }
+
+    .column1 {
+        width: 15%;
+    }
+
+    .column2 {
+        width: 15%;
+    }
+</style>
+<br />
+<table class="table" cellspacing="0" cellpadding="0" border="0">
+    <thead>
+        <tr>
+            <td class="column1">
+                @Resources.Business_Rule_CreationResources.Key_Business_Rule_Creation
+            </td>
+                        <td class="column1">
+                @Resources.Business_Rule_CreationResources.User
+            </td>
+            <td class="column1">
+                @Resources.Business_Rule_CreationResources.Creation_Date
+            </td>
+            <td class="column1">
+                @Resources.Business_Rule_CreationResources.Creation_Hour
+            </td>
+            <td class="column1">
+                @Resources.Business_Rule_CreationResources.Last_Updated_Date
+            </td>
+            <td class="column1">
+                @Resources.Business_Rule_CreationResources.Last_Updated_Hour
+            </td>
+            <td class="column1">
+                @Resources.Business_Rule_CreationResources.Time_that_took
+            </td>
+            <td class="column1">
+                @Resources.Business_Rule_CreationResources.Name
+            </td>
+            <td class="column1">
+                @Resources.Business_Rule_CreationResources.Documentation
+            </td>
+            <td class="column1">
+                @Resources.Business_Rule_CreationResources.Status
+            </td>
+            <td class="column1">
+                @Resources.Business_Rule_CreationResources.Complexity
+            </td>
+
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var item in Model)
+            {                
+                <tr>
+                    <td>
+                        @item.Key_Business_Rule_Creation
+                    </td>
+					                    <td>
+                        @item.UserName
+                    </td>
+                    <td>
+                        @item.Creation_Date
+                    </td>
+                    <td>
+                        @item.Creation_Hour
+                    </td>
+                    <td>
+                        @item.Last_Updated_Date
+                    </td>
+                    <td>
+                        @item.Last_Updated_Hour
+                    </td>
+                    <td>
+                        @item.Time_that_took
+                    </td>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.Documentation
+                    </td>
+                    <td>
+                        @item.StatusDescription
+                    </td>
+                    <td>
+                        @item.ComplexityDescription
+                    </td>
+
+                </tr>
+                rowCounter++;
+            }
+        }
+    </tbody>
+</table>
+

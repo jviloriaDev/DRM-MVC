@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Dashboard_Editor" value="Spartan Dashboard Editor"></resource>
+  <resource culture="es-es" name="Dashboard_Id" value="Dashboard Id"></resource>
+  <resource culture="es-es" name="Registration_Date" value="Registration Date"></resource>
+  <resource culture="es-es" name="Registration_User" value="Registration User"></resource>
+  <resource culture="es-es" name="Name" value="Name"></resource>
+  <resource culture="es-es" name="Dashboard_Template" value="Dashboard Template"></resource>
+  <resource culture="es-es" name="Show_in_Home" value="Show in Home"></resource>
+  <resource culture="es-es" name="Status" value="Status"></resource>
+  <resource culture="es-es" name="Spartan_Object" value="Spartan Object"></resource>
+  <resource culture="es-es" name="Detail" value="Detail"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+<resource culture="es-es" name="TabConfiguracion" value="Configuración"></resource>
+
+</resources>

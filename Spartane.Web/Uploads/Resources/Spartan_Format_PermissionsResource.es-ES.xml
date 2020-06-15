@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Spartan_Format_Permissions" value="Spartan Format Permissions"></resource>
+  <resource culture="es-es" name="PermissionId" value="PermissionId"></resource>
+  <resource culture="es-es" name="Format" value="Format"></resource>
+  <resource culture="es-es" name="Permission_Type" value="Permission Type"></resource>
+  <resource culture="es-es" name="Apply" value="Apply"></resource>
+  <resource culture="es-es" name="Spartan_User_Role" value="Spartan User Role"></resource>
+
+</resources>

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Spartan_BR_Attribute_Restrictions_Detail" value="Business Rule Action Attribute Restrictions Detail"></resource>
+  <resource culture="es-es" name="RestrictionId" value="Id"></resource>
+  <resource culture="es-es" name="Attribute_Type" value="Attribute Type"></resource>
+  <resource culture="es-es" name="Control_Type" value="Control Type"></resource>
+
+</resources>

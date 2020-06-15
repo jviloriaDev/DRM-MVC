@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Spartan_BR_Complexity" value="Complejidad"></resource>
+  <resource culture="es-es" name="Key_Complexity" value="Clave"></resource>
+  <resource culture="es-es" name="Description" value="Descripción"></resource>
+  <resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+  <resource name="Description.1" control="Description" value="Baja" culture="es-ES" />
+  <resource name="Description.2" control="Description" value="Media" culture="es-ES" />
+  <resource name="Description.3" control="Description" value="Alta" culture="es-ES" />
+</resources>

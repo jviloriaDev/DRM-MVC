@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Duracion_de_Planes_de_Suscripcion" value="Duración de Planes de Suscripción"></resource>
+  <resource culture="en-US" name="Clave" value="Clave"></resource>
+  <resource culture="en-US" name="Nombre" value="Nombre"></resource>
+  <resource culture="en-US" name="Cantidad_en_Meses" value="Cantidad en Meses"></resource>
+  <resource culture="en-US" name="Cantidad_en_Dias" value="Cantidad en Días"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

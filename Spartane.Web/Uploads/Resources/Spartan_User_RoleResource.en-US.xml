@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_User_Role" value="Spartan_User_Role"></resource>
+  <resource culture="en-US" name="User_Role_Id" value="User_Role_Id"></resource>
+  <resource culture="en-US" name="Description" value="Description"></resource>
+  <resource culture="en-US" name="Status" value="Status"></resource>
+
+</resources>

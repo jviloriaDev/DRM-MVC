@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Spartan_Traduction_Concept_Type" value="Spartan Traduction Concept Type"></resource>
+  <resource culture="es-es" name="IdConcept" value="IdConcept"></resource>
+  <resource culture="es-es" name="Concept_Description" value="Concept Description"></resource>
+  <resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+</resources>

@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_Attribute_Control_Type" value="Attribute Control Type"></resource>
+  <resource culture="en-US" name="ControlTypeId" value="Id"></resource>
+  <resource culture="en-US" name="Description" value="Description"></resource>
+
+</resources>

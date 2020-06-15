@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_User" value="Spartan_User"></resource>
+  <resource culture="en-US" name="Id_User" value="Id_User"></resource>
+  <resource culture="en-US" name="Name" value="Name"></resource>
+  <resource culture="en-US" name="Role" value="Role"></resource>
+  <resource culture="en-US" name="Image" value="Image"></resource>
+  <resource culture="en-US" name="Email" value="Email"></resource>
+  <resource culture="en-US" name="Status" value="Status"></resource>
+  <resource culture="en-US" name="Username" value="Username"></resource>
+  <resource culture="en-US" name="Password" value="Password"></resource>
+
+</resources>

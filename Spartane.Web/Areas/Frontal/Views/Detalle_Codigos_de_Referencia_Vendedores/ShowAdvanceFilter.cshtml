@@ -1,0 +1,456 @@
+﻿@using System.Collections.Generic
+@using Spartane.Web.Areas.Frontal.Models
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Detalle_Codigos_de_Referencia_VendedoresAdvanceSearchModel
+@{
+    List<SelectListItem> varSpartan_User_Usuario_que_autoriza = null;
+    if (ViewBag.Spartan_Users_Usuario_que_autoriza != null)
+    { varSpartan_User_Usuario_que_autoriza = (List<SelectListItem>)ViewBag.Spartan_Users_Usuario_que_autoriza; }
+    List<SelectListItem> varEstatus_Estatus = null;
+    if (ViewBag.Estatuss_Estatus != null)
+    { varEstatus_Estatus = (List<SelectListItem>)ViewBag.Estatuss_Estatus; }
+
+    var filters = (List<SelectListItem>)ViewBag.Filter;
+}
+<style>
+    .input-validation-error {
+        background: rgb(251, 227, 228);
+        border: 1px solid #fbc2c4;
+        color: #8a1f11;
+    }
+
+    .MarginBottom {
+        margin-bottom: 1%;
+    }
+
+    #divAdvanceSearch input {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch button {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch select {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch h3 {
+        margin-top: 2%;
+    }
+
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins" id="divAdvanceSearch">
+        <div class="ibox-content">
+            @using (Html.BeginForm("ShowAdvanceFilter", "Detalle_Codigos_de_Referencia_Vendedores", FormMethod.Post, new { @id = "frmAdvanceSearch", @role = "form" }))
+            {
+				<input type="hidden" value="-1" name="idFilter" id="idFilter" />
+                <div class="MarginBottom ">
+                    <h3>@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Folio</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromFolio, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromFolio" })
+                    @Html.ValidationMessageFor(m => m.FromFolio)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToFolio, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToFolio", @data_min = "txtAdvanceFromFolio" })
+                    @Html.ValidationMessageFor(m => m.ToFolio)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Porcentaje_de_descuento</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromPorcentaje_de_descuento, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromPorcentaje_de_descuento" })
+                    @Html.ValidationMessageFor(m => m.FromPorcentaje_de_descuento)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToPorcentaje_de_descuento, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToPorcentaje_de_descuento", @data_min = "txtAdvanceFromPorcentaje_de_descuento" })
+                    @Html.ValidationMessageFor(m => m.ToPorcentaje_de_descuento)
+                </div>
+        <div class="MarginBottom ">
+            <h3>@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Fecha_inicio_vigencia</h3>
+        </div>
+        <div class="MarginBottom form-inline">
+            <label class="">@Resources.Resources.From:</label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceFromFecha_inicio_vigencia" name="FromFecha_inicio_vigencia" type="text" value="@Model.FromFecha_inicio_vigencia" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+            <label class="">@Resources.Resources.To: </label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceToFecha_inicio_vigencia" name="ToFecha_inicio_vigencia" type="text" value="@Model.ToFecha_inicio_vigencia" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+        <div class="MarginBottom ">
+            <h3>@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Fecha_fin_vigencia</h3>
+        </div>
+        <div class="MarginBottom form-inline">
+            <label class="">@Resources.Resources.From:</label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceFromFecha_fin_vigencia" name="FromFecha_fin_vigencia" type="text" value="@Model.FromFecha_fin_vigencia" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+            <label class="">@Resources.Resources.To: </label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceToFecha_fin_vigencia" name="ToFecha_fin_vigencia" type="text" value="@Model.ToFecha_fin_vigencia" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Cantidad_maxima_de_referenciados</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromCantidad_maxima_de_referenciados, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromCantidad_maxima_de_referenciados" })
+                    @Html.ValidationMessageFor(m => m.FromCantidad_maxima_de_referenciados)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToCantidad_maxima_de_referenciados, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToCantidad_maxima_de_referenciados", @data_min = "txtAdvanceFromCantidad_maxima_de_referenciados" })
+                    @Html.ValidationMessageFor(m => m.ToCantidad_maxima_de_referenciados)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Codigo_para_referenciados</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Codigo_para_referenciadosFilter, filters, new { @class = "form-control", @id = "ddlCodigo_para_referenciadosFilter" })
+                    @Html.TextBoxFor(m => m.Codigo_para_referenciados, new { @class = "form-control", @type = "text", @id = "txtCodigo_para_referenciados" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Usuario_que_autoriza</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Usuario_que_autorizaFilter, filters, new { @class = "form-control", @id = "ddlUsuario_que_autorizaFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceUsuario_que_autoriza, new { @class = "form-control", @type = "text", @id = "txtAdvanceUsuario_que_autoriza" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSpartan_User_Usuario_que_autoriza!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceUsuario_que_autorizaMultiple, varSpartan_User_Usuario_que_autoriza,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceUsuario_que_autoriza"
+                        });
+                    }
+                </div>
+        <div class="MarginBottom ">
+            <h3>@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Fecha_de_autorizacion</h3>
+        </div>
+        <div class="MarginBottom form-inline">
+            <label class="">@Resources.Resources.From:</label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceFromFecha_de_autorizacion" name="FromFecha_de_autorizacion" type="text" value="@Model.FromFecha_de_autorizacion" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+            <label class="">@Resources.Resources.To: </label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceToFecha_de_autorizacion" name="ToFecha_de_autorizacion" type="text" value="@Model.ToFecha_de_autorizacion" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+        <div class="MarginBottom ">
+            <h3>@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Hora_de_autorizacion</h3>
+        </div>
+        <div class="MarginBottom form-inline">
+            <label class="">@Resources.Resources.From:</label>
+            <div class="input-group clock" data-autoclose="true">
+                <input class="form-control" id="txtAdvanceFromHora_de_autorizacion" name="FromHora_de_autorizacion" type="text" value="@Model.FromHora_de_autorizacion" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-time"></span>
+                </span>
+            </div>
+            <label class="">@Resources.Resources.To: </label>
+            <div class="input-group clock" data-autoclose="true">
+                <input class="form-control" id="txtAdvanceToHora_de_autorizacion" name="ToHora_de_autorizacion" type="text" value="@Model.ToHora_de_autorizacion" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-time"></span>
+                </span>
+            </div>
+        </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Estatus</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.EstatusFilter, filters, new { @class = "form-control", @id = "ddlEstatusFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceEstatus, new { @class = "form-control", @type = "text", @id = "txtAdvanceEstatus" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varEstatus_Estatus!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceEstatusMultiple, varEstatus_Estatus,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceEstatus"
+                        });
+                    }
+                </div>
+
+                <div class="MarginBottom form-inline">
+                    <input type="submit" class="btn btn-primary" value="@Resources.Resources.Search"><a class="btn btn-primary" href="@Url.Content("~/Frontal/Detalle_Codigos_de_Referencia_Vendedores/")" value=" ">@Resources.Resources.Cancelar</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function InitiateAdvanceSearch() {
+        var advanceSearch = {}, hasParameter = false;
+        if ($("#txtAdvanceFromFolio").val() != "" || $("#txtAdvanceToFolio").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Codigos_de_Referencia_VendedoresFolioFrom = $("#txtAdvanceFromFolio").val();
+            advanceSearch.Detalle_Codigos_de_Referencia_VendedoresFolioTo = $("#txtAdvanceToFolio").val();
+        }
+        if ($("#txtAdvanceFromPorcentaje_de_descuento").val() != "" || $("#txtAdvanceToPorcentaje_de_descuento").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Codigos_de_Referencia_VendedoresPorcentaje_de_descuentoFrom = $("#txtAdvanceFromPorcentaje_de_descuento").val();
+            advanceSearch.Detalle_Codigos_de_Referencia_VendedoresPorcentaje_de_descuentoTo = $("#txtAdvanceToPorcentaje_de_descuento").val();
+        }
+        if ($("#txtAdvanceFromFecha_inicio_vigencia").val() != "" || $("#txtAdvanceToFecha_inicio_vigencia").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Codigos_de_Referencia_VendedoresFecha_inicio_vigenciaFrom = $("#txtAdvanceFromFecha_inicio_vigencia").val();
+            advanceSearch.Detalle_Codigos_de_Referencia_VendedoresFecha_inicio_vigenciaTo = $("#txtAdvanceToFecha_inicio_vigencia").val();
+        }
+        if ($("#txtAdvanceFromFecha_fin_vigencia").val() != "" || $("#txtAdvanceToFecha_fin_vigencia").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Codigos_de_Referencia_VendedoresFecha_fin_vigenciaFrom = $("#txtAdvanceFromFecha_fin_vigencia").val();
+            advanceSearch.Detalle_Codigos_de_Referencia_VendedoresFecha_fin_vigenciaTo = $("#txtAdvanceToFecha_fin_vigencia").val();
+        }
+        if ($("#txtAdvanceFromCantidad_maxima_de_referenciados").val() != "" || $("#txtAdvanceToCantidad_maxima_de_referenciados").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Codigos_de_Referencia_VendedoresCantidad_maxima_de_referenciadosFrom = $("#txtAdvanceFromCantidad_maxima_de_referenciados").val();
+            advanceSearch.Detalle_Codigos_de_Referencia_VendedoresCantidad_maxima_de_referenciadosTo = $("#txtAdvanceToCantidad_maxima_de_referenciados").val();
+        }
+        if ($("#txtAdvanceCodigo_para_referenciados").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Codigos_de_Referencia_VendedoresCodigo_para_referenciados = $("#txtAdvanceCodigo_para_referenciados").val();
+            advanceSearch.Detalle_Codigos_de_Referencia_VendedoresCodigo_para_referenciadosSearchType = $("#ddlAdvanceCodigo_para_referenciadosFilter").val();
+        }
+        if ($("#ddlAdvanceAutorizado").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Codigos_de_Referencia_VendedoresAutorizado = $("#ddlAdvanceAutorizado").val();
+        }
+        advanceSearch.Usuario_que_autorizaSearchType = 0;
+        if ($('#ddlAdvanceUsuario_que_autoriza').val().length > 0 || $("#txtAdvanceUsuario_que_autoriza").val() == "") {
+
+
+            if (isDetalle_Codigos_de_Referencia_VendedoresTextSearch) {
+                advanceSearch.Usuario_que_autorizaName = $("#txtAdvanceUsuario_que_autoriza").val();
+                advanceSearch.Usuario_que_autorizaNameSearchType = $("#ddlAdvanceUsuario_que_autoriza").val();
+                advanceSearch.Usuario_que_autorizaSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Usuario_que_autorizaToSearch = $("#ddlAdvanceUsuario_que_autoriza").val();
+                advanceSearch.Usuario_que_autorizaSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceFromFecha_de_autorizacion").val() != "" || $("#txtAdvanceToFecha_de_autorizacion").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Codigos_de_Referencia_VendedoresFecha_de_autorizacionFrom = $("#txtAdvanceFromFecha_de_autorizacion").val();
+            advanceSearch.Detalle_Codigos_de_Referencia_VendedoresFecha_de_autorizacionTo = $("#txtAdvanceToFecha_de_autorizacion").val();
+        }
+        if ($("#txtAdvanceHora_de_autorizacion").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Codigos_de_Referencia_VendedoresHora_de_autorizacion = $("#txtAdvanceHora_de_autorizacion").val();
+            advanceSearch.Detalle_Codigos_de_Referencia_VendedoresHora_de_autorizacionSearchType = $("#ddlAdvanceHora_de_autorizacionFilter").val();
+        }
+        advanceSearch.EstatusSearchType = 0;
+        if ($('#ddlAdvanceEstatus').val().length > 0 || $("#txtAdvanceEstatus").val() == "") {
+
+
+            if (isDetalle_Codigos_de_Referencia_VendedoresTextSearch) {
+                advanceSearch.EstatusName = $("#txtAdvanceEstatus").val();
+                advanceSearch.EstatusNameSearchType = $("#ddlAdvanceEstatus").val();
+                advanceSearch.EstatusSearchType = 1;
+            }
+            else {
+
+                advanceSearch.EstatusToSearch = $("#ddlAdvanceEstatus").val();
+                advanceSearch.EstatusSearchType = 2;
+            }
+        }
+
+        advanceSearchQuery = hasParameter ? JSON.stringify(advanceSearch) : "";
+        $('#tblDetalle_Codigos_de_Referencia_Vendedores').DataTable().draw();
+        return false;
+    }
+
+    var advanceSearchQuery = "", isDetalle_Codigos_de_Referencia_VendedoresTextSearch = true;
+
+    $(document).ready(function () {
+        $('.clock').clockpicker();
+		$('.date').datepicker({
+			todayBtn: "linked",
+			keyboardNavigation: false,
+			forceParse: false,
+			calendarWeeks: true,
+			autoclose: true,
+			format: "@ConfigurationProperty.DateFormatDatePicker"
+		});
+        $("#txtAdvanceUsuario_que_autoriza").keypress(function () {
+            isDetalle_Codigos_de_Referencia_VendedoresTextSearch = true;
+            $("#ddlAdvanceUsuario_que_autoriza").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceUsuario_que_autoriza").change(function () {
+            isDetalle_Codigos_de_Referencia_VendedoresTextSearch = false;
+            $("#txtAdvanceUsuario_que_autoriza").val('');
+        });
+        $("#txtAdvanceEstatus").keypress(function () {
+            isDetalle_Codigos_de_Referencia_VendedoresTextSearch = true;
+            $("#ddlAdvanceEstatus").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceEstatus").change(function () {
+            isDetalle_Codigos_de_Referencia_VendedoresTextSearch = false;
+            $("#txtAdvanceEstatus").val('');
+        });
+
+    });
+</script>
+
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/chosen")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/clockpicker")
+
+
+    <script>
+        //Adding Rules
+        jQuery.validator.unobtrusive
+      .adapters.addSingleVal("isnumberafter", "propertyname");
+        jQuery.validator.unobtrusive
+    .adapters.addSingleVal("isdateafter", "propertyname");
+
+        //Number after method
+        jQuery.validator.addMethod("isnumberafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+                //if (Date.parse(val) <= Date.parse(otherVal)) {
+                if (Number(val) < Number(otherVal)) {
+                    return false;
+                }
+                        }
+            return true;
+        });
+
+        //Date after after method
+        jQuery.validator.addMethod("isdateafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+
+                if (GetDateObject(val) < GetDateObject(otherVal)) {
+
+                    return false;
+                    }
+                }
+            return true;
+            });
+
+
+        function GetDateObject(value) {
+            var delimiter = GetDelimiter(dateFormat);
+            var dateCollection = value.split(delimiter);
+            var formatCollection = dateFormat.split(delimiter);
+            var dateModel = GetDateModel(dateCollection, formatCollection);
+            return new Date(dateModel.Year, dateModel.Month - 1, dateModel.Day);
+        }
+        //Used to get the date model by parsing the date and the format
+        function GetDateModel(dateCollection,formatCollection) {
+            var day, month, year;
+            for (var i = 0; i < formatCollection.length; i++) {
+                switch (formatCollection[i][0].toUpperCase()) {
+                
+                    case "D":
+                        day = dateCollection[i];
+                        break;
+
+                    case "Y":
+                        year = dateCollection[i];
+                        break;
+
+                    case "M":
+                        month = dateCollection[i];
+                        break;
+                }
+            }
+
+            return {
+                Day:day,
+                Month:month,
+                Year:year
+            };
+        }
+
+        function GetDelimiter(format) {
+
+            for (var i = 0; i < format.length; i++) {
+                if (/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(format[i])) {
+                    return format[i];
+                }
+            }
+            return null;
+        }
+
+        var dateFormat = "@ConfigurationProperty.DateFormatDatePicker";
+
+        $(document).ready(function () {
+            $('.input-daterange').datepicker({
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                format: dateFormat,
+                message: 'The date is not a valid'
+            });
+
+            $(".chosen-select").chosen({ width: "22%", no_results_text: "Oops, nothing found!" });
+			if ($('#IsFilterModal').val() == 'true') {
+                $('.ShowAdvanceFilter #right-sidebar').css('display', 'none');
+                $('.ShowAdvanceFilter .navbar-default').css('display', 'none');
+                $('.ShowAdvanceFilter .border-bottom').css('display', 'none');
+                $('.ShowAdvanceFilter #page-wrapper').css('margin', '0 auto');
+                $('.ShowAdvanceFilter .btn-save').val('@Resources.Resources.Filter');
+                $('.ShowAdvanceFilter .btn-cancelar').attr('data-dismiss', 'modal');
+                $('.ShowAdvanceFilter .btn-cancelar').removeAttr('href');
+                $('#idFilter').val($('#IdReport').val());
+            }
+        });
+
+    </script>
+}
+

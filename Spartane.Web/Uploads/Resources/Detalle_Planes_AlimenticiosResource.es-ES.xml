@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Detalle_Planes_Alimenticios" value="Detalle Planes Alimenticios"></resource>
+  <resource culture="es-es" name="Folio" value="Folio"></resource>
+  <resource culture="es-es" name="Tiempo_de_Comida" value="Tiempo de Comida"></resource>
+  <resource culture="es-es" name="Numero_de_Dia" value="Número de Día"></resource>
+  <resource culture="es-es" name="Fecha" value="Fecha"></resource>
+  <resource culture="es-es" name="Platillo" value="Platillo"></resource>
+  <resource culture="es-es" name="Modificado" value="Modificado"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_Report_Advance_Filter" value="Spartan Report Advance Filter"></resource>
+  <resource culture="en-US" name="Clave" value="Clave"></resource>
+  <resource culture="en-US" name="Report" value="Report"></resource>
+  <resource culture="en-US" name="AttributeId" value="AttributeId"></resource>
+  <resource culture="en-US" name="Defect_Value_From" value="Defect Value From"></resource>
+  <resource culture="en-US" name="Defect_Value_To" value="Defect Value To"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

@@ -1,0 +1,512 @@
+﻿@using System.Collections.Generic
+@using Spartane.Web.Areas.Frontal.Models
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Spartan_ReportAdvanceSearchModel
+@{
+    List<SelectListItem> varSpartan_User_Registration_User = null;
+    if (ViewBag.Spartan_Users_Registration_User != null)
+    { varSpartan_User_Registration_User = (List<SelectListItem>)ViewBag.Spartan_Users_Registration_User; }
+    List<SelectListItem> varSpartan_Object_Object = null;
+    if (ViewBag.Spartan_Objects_Object != null)
+    { varSpartan_Object_Object = (List<SelectListItem>)ViewBag.Spartan_Objects_Object; }
+    List<SelectListItem> varSpartan_Report_Presentation_Type_Presentation_Type = null;
+    if (ViewBag.Spartan_Report_Presentation_Types_Presentation_Type != null)
+    { varSpartan_Report_Presentation_Type_Presentation_Type = (List<SelectListItem>)ViewBag.Spartan_Report_Presentation_Types_Presentation_Type; }
+    List<SelectListItem> varSpartan_Report_Presentation_View_Presentation_View = null;
+    if (ViewBag.Spartan_Report_Presentation_Views_Presentation_View != null)
+    { varSpartan_Report_Presentation_View_Presentation_View = (List<SelectListItem>)ViewBag.Spartan_Report_Presentation_Views_Presentation_View; }
+    List<SelectListItem> varSpartan_Report_Status_Status = null;
+    if (ViewBag.Spartan_Report_Statuss_Status != null)
+    { varSpartan_Report_Status_Status = (List<SelectListItem>)ViewBag.Spartan_Report_Statuss_Status; }
+
+    var filters = (List<SelectListItem>)ViewBag.Filter;
+}
+<style>
+    .input-validation-error {
+        background: rgb(251, 227, 228);
+        border: 1px solid #fbc2c4;
+        color: #8a1f11;
+    }
+
+    .MarginBottom {
+        margin-bottom: 1%;
+    }
+
+    #divAdvanceSearch input {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch button {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch select {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch h3 {
+        margin-top: 2%;
+    }
+
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins" id="divAdvanceSearch">
+        <div class="ibox-content">
+            @using (Html.BeginForm("ShowAdvanceFilter", "Spartan_Report", FormMethod.Post, new { @id = "frmAdvanceSearch", @role = "form" }))
+            {
+				<input type="hidden" value="-1" name="idFilter" id="idFilter" />
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_ReportResources.ReportId</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromReportId, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromReportId" })
+                    @Html.ValidationMessageFor(m => m.FromReportId)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToReportId, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToReportId", @data_min = "txtAdvanceFromReportId" })
+                    @Html.ValidationMessageFor(m => m.ToReportId)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_ReportResources.Report_Name</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Report_NameFilter, filters, new { @class = "form-control", @id = "ddlReport_NameFilter" })
+                    @Html.TextBoxFor(m => m.Report_Name, new { @class = "form-control", @type = "text", @id = "txtReport_Name" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_ReportResources.Registration_User</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Registration_UserFilter, filters, new { @class = "form-control", @id = "ddlRegistration_UserFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceRegistration_User, new { @class = "form-control", @type = "text", @id = "txtAdvanceRegistration_User" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSpartan_User_Registration_User!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceRegistration_UserMultiple, varSpartan_User_Registration_User,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceRegistration_User"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_ReportResources.Object</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.ObjectFilter, filters, new { @class = "form-control", @id = "ddlObjectFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceObject, new { @class = "form-control", @type = "text", @id = "txtAdvanceObject" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSpartan_Object_Object!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceObjectMultiple, varSpartan_Object_Object,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceObject"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_ReportResources.Presentation_Type</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Presentation_TypeFilter, filters, new { @class = "form-control", @id = "ddlPresentation_TypeFilter" })
+                    @Html.TextBoxFor(m => m.AdvancePresentation_Type, new { @class = "form-control", @type = "text", @id = "txtAdvancePresentation_Type" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSpartan_Report_Presentation_Type_Presentation_Type!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvancePresentation_TypeMultiple, varSpartan_Report_Presentation_Type_Presentation_Type,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvancePresentation_Type"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_ReportResources.Presentation_View</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Presentation_ViewFilter, filters, new { @class = "form-control", @id = "ddlPresentation_ViewFilter" })
+                    @Html.TextBoxFor(m => m.AdvancePresentation_View, new { @class = "form-control", @type = "text", @id = "txtAdvancePresentation_View" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSpartan_Report_Presentation_View_Presentation_View!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvancePresentation_ViewMultiple, varSpartan_Report_Presentation_View_Presentation_View,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvancePresentation_View"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_ReportResources.Status</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.StatusFilter, filters, new { @class = "form-control", @id = "ddlStatusFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceStatus, new { @class = "form-control", @type = "text", @id = "txtAdvanceStatus" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSpartan_Report_Status_Status!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceStatusMultiple, varSpartan_Report_Status_Status,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceStatus"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_ReportResources.Query</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.QueryFilter, filters, new { @class = "form-control", @id = "ddlQueryFilter" })
+                    @Html.TextBoxFor(m => m.Query, new { @class = "form-control", @type = "text", @id = "txtQuery" })
+                </div>
+ <div class="MarginBottom">
+                    <h3>@Resources.Spartan_ReportResources.Header</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.HeaderFilter, filters, new { @class = "form-control", @id = "ddlHeaderFilter" })
+                    @Html.TextAreaFor(m => m.Header, new { @class = "form-control", @type = "text", @id = "txtHeader" })
+                </div>
+ <div class="MarginBottom">
+                    <h3>@Resources.Spartan_ReportResources.Footer</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.FooterFilter, filters, new { @class = "form-control", @id = "ddlFooterFilter" })
+                    @Html.TextAreaFor(m => m.Footer, new { @class = "form-control", @type = "text", @id = "txtFooter" })
+                </div>
+
+                <div class="MarginBottom form-inline">
+                    <input type="submit" class="btn btn-primary" value="@Resources.Resources.Search"><a class="btn btn-primary" href="@Url.Content("~/Frontal/Spartan_Report/")" value=" ">@Resources.Resources.Cancelar</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function InitiateAdvanceSearch() {
+        var advanceSearch = {}, hasParameter = false;
+        if ($("#txtAdvanceFromReportId").val() != "" || $("#txtAdvanceToReportId").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_ReportReportIdFrom = $("#txtAdvanceFromReportId").val();
+            advanceSearch.Spartan_ReportReportIdTo = $("#txtAdvanceToReportId").val();
+        }
+        if ($("#txtAdvanceReport_Name").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_ReportReport_Name = $("#txtAdvanceReport_Name").val();
+            advanceSearch.Spartan_ReportReport_NameSearchType = $("#ddlAdvanceReport_NameFilter").val();
+        }
+        if ($("#txtAdvanceFromRegistration_Date").val() != "" || $("#txtAdvanceToRegistration_Date").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_ReportRegistration_DateFrom = $("#txtAdvanceFromRegistration_Date").val();
+            advanceSearch.Spartan_ReportRegistration_DateTo = $("#txtAdvanceToRegistration_Date").val();
+        }
+        if ($("#txtAdvanceRegistration_Hour").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_ReportRegistration_Hour = $("#txtAdvanceRegistration_Hour").val();
+            advanceSearch.Spartan_ReportRegistration_HourSearchType = $("#ddlAdvanceRegistration_HourFilter").val();
+        }
+        advanceSearch.Registration_UserSearchType = 0;
+        if ($('#ddlAdvanceRegistration_User').val().length > 0 || $("#txtAdvanceRegistration_User").val() == "") {
+
+
+            if (isSpartan_ReportTextSearch) {
+                advanceSearch.Registration_UserName = $("#txtAdvanceRegistration_User").val();
+                advanceSearch.Registration_UserNameSearchType = $("#ddlAdvanceRegistration_User").val();
+                advanceSearch.Registration_UserSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Registration_UserToSearch = $("#ddlAdvanceRegistration_User").val();
+                advanceSearch.Registration_UserSearchType = 2;
+            }
+        }
+        advanceSearch.ObjectSearchType = 0;
+        if ($('#ddlAdvanceObject').val().length > 0 || $("#txtAdvanceObject").val() == "") {
+
+
+            if (isSpartan_ReportTextSearch) {
+                advanceSearch.ObjectName = $("#txtAdvanceObject").val();
+                advanceSearch.ObjectNameSearchType = $("#ddlAdvanceObject").val();
+                advanceSearch.ObjectSearchType = 1;
+            }
+            else {
+
+                advanceSearch.ObjectToSearch = $("#ddlAdvanceObject").val();
+                advanceSearch.ObjectSearchType = 2;
+            }
+        }
+        advanceSearch.Presentation_TypeSearchType = 0;
+        if ($('#ddlAdvancePresentation_Type').val().length > 0 || $("#txtAdvancePresentation_Type").val() == "") {
+
+
+            if (isSpartan_ReportTextSearch) {
+                advanceSearch.Presentation_TypeName = $("#txtAdvancePresentation_Type").val();
+                advanceSearch.Presentation_TypeNameSearchType = $("#ddlAdvancePresentation_Type").val();
+                advanceSearch.Presentation_TypeSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Presentation_TypeToSearch = $("#ddlAdvancePresentation_Type").val();
+                advanceSearch.Presentation_TypeSearchType = 2;
+            }
+        }
+        advanceSearch.Presentation_ViewSearchType = 0;
+        if ($('#ddlAdvancePresentation_View').val().length > 0 || $("#txtAdvancePresentation_View").val() == "") {
+
+
+            if (isSpartan_ReportTextSearch) {
+                advanceSearch.Presentation_ViewName = $("#txtAdvancePresentation_View").val();
+                advanceSearch.Presentation_ViewNameSearchType = $("#ddlAdvancePresentation_View").val();
+                advanceSearch.Presentation_ViewSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Presentation_ViewToSearch = $("#ddlAdvancePresentation_View").val();
+                advanceSearch.Presentation_ViewSearchType = 2;
+            }
+        }
+        advanceSearch.StatusSearchType = 0;
+        if ($('#ddlAdvanceStatus').val().length > 0 || $("#txtAdvanceStatus").val() == "") {
+
+
+            if (isSpartan_ReportTextSearch) {
+                advanceSearch.StatusName = $("#txtAdvanceStatus").val();
+                advanceSearch.StatusNameSearchType = $("#ddlAdvanceStatus").val();
+                advanceSearch.StatusSearchType = 1;
+            }
+            else {
+
+                advanceSearch.StatusToSearch = $("#ddlAdvanceStatus").val();
+                advanceSearch.StatusSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceQuery").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_ReportQuery = $("#txtAdvanceQuery").val();
+            advanceSearch.Spartan_ReportQuerySearchType = $("#ddlAdvanceQueryFilter").val();
+        }
+        if ($("#txtAdvanceHeader").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_ReportHeader = $("#txtAdvanceHeader").val();
+            advanceSearch.Spartan_ReportHeaderSearchType = $("#ddlAdvanceHeaderFilter").val();
+        }
+        if ($("#txtAdvanceFooter").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_ReportFooter = $("#txtAdvanceFooter").val();
+            advanceSearch.Spartan_ReportFooterSearchType = $("#ddlAdvanceFooterFilter").val();
+        }
+
+        advanceSearchQuery = hasParameter ? JSON.stringify(advanceSearch) : "";
+        $('#tblSpartan_Report').DataTable().draw();
+        return false;
+    }
+
+    var advanceSearchQuery = "", isSpartan_ReportTextSearch = true;
+
+    $(document).ready(function () {
+        $('.clockpicker').clockpicker();
+        $("#txtAdvanceRegistration_User").keypress(function () {
+            isSpartan_ReportTextSearch = true;
+            $("#ddlAdvanceRegistration_User").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceRegistration_User").change(function () {
+            isSpartan_ReportTextSearch = false;
+            $("#txtAdvanceRegistration_User").val('');
+        });
+        $("#txtAdvanceObject").keypress(function () {
+            isSpartan_ReportTextSearch = true;
+            $("#ddlAdvanceObject").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceObject").change(function () {
+            isSpartan_ReportTextSearch = false;
+            $("#txtAdvanceObject").val('');
+        });
+        $("#txtAdvancePresentation_Type").keypress(function () {
+            isSpartan_ReportTextSearch = true;
+            $("#ddlAdvancePresentation_Type").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvancePresentation_Type").change(function () {
+            isSpartan_ReportTextSearch = false;
+            $("#txtAdvancePresentation_Type").val('');
+        });
+        $("#txtAdvancePresentation_View").keypress(function () {
+            isSpartan_ReportTextSearch = true;
+            $("#ddlAdvancePresentation_View").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvancePresentation_View").change(function () {
+            isSpartan_ReportTextSearch = false;
+            $("#txtAdvancePresentation_View").val('');
+        });
+        $("#txtAdvanceStatus").keypress(function () {
+            isSpartan_ReportTextSearch = true;
+            $("#ddlAdvanceStatus").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceStatus").change(function () {
+            isSpartan_ReportTextSearch = false;
+            $("#txtAdvanceStatus").val('');
+        });
+
+    });
+</script>
+
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/chosen")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/clockpicker")
+
+
+    <script>
+        //Adding Rules
+        jQuery.validator.unobtrusive
+      .adapters.addSingleVal("isnumberafter", "propertyname");
+        jQuery.validator.unobtrusive
+    .adapters.addSingleVal("isdateafter", "propertyname");
+
+        //Number after method
+        jQuery.validator.addMethod("isnumberafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+                //if (Date.parse(val) <= Date.parse(otherVal)) {
+                if (Number(val) < Number(otherVal)) {
+                    return false;
+                }
+                        }
+            return true;
+        });
+
+        //Date after after method
+        jQuery.validator.addMethod("isdateafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+
+                if (GetDateObject(val) < GetDateObject(otherVal)) {
+
+                    return false;
+                    }
+                }
+            return true;
+            });
+
+
+        function GetDateObject(value) {
+            var delimiter = GetDelimiter(dateFormat);
+            var dateCollection = value.split(delimiter);
+            var formatCollection = dateFormat.split(delimiter);
+            var dateModel = GetDateModel(dateCollection, formatCollection);
+            return new Date(dateModel.Year, dateModel.Month - 1, dateModel.Day);
+        }
+        //Used to get the date model by parsing the date and the format
+        function GetDateModel(dateCollection,formatCollection) {
+            var day, month, year;
+            for (var i = 0; i < formatCollection.length; i++) {
+                switch (formatCollection[i][0].toUpperCase()) {
+                
+                    case "D":
+                        day = dateCollection[i];
+                        break;
+
+                    case "Y":
+                        year = dateCollection[i];
+                        break;
+
+                    case "M":
+                        month = dateCollection[i];
+                        break;
+                }
+            }
+
+            return {
+                Day:day,
+                Month:month,
+                Year:year
+            };
+        }
+
+        function GetDelimiter(format) {
+
+            for (var i = 0; i < format.length; i++) {
+                if (/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(format[i])) {
+                    return format[i];
+                }
+            }
+            return null;
+        }
+
+        var dateFormat = "@ConfigurationProperty.DateFormatDatePicker";
+
+        $(document).ready(function () {
+
+
+
+            $('.input-daterange').datepicker({
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                format: dateFormat,
+                message: 'The date is not a valid'
+            });
+
+            $(".chosen-select").chosen({ width: "22%", no_results_text: "Oops, nothing found!" });
+			if ($('#IsFilterModal').val() == 'true') {
+                $('.ShowAdvanceFilter #right-sidebar').css('display', 'none');
+                $('.ShowAdvanceFilter .navbar-default').css('display', 'none');
+                $('.ShowAdvanceFilter .border-bottom').css('display', 'none');
+                $('.ShowAdvanceFilter #page-wrapper').css('margin', '0 auto');
+                $('.ShowAdvanceFilter .btn-save').val('@Resources.Resources.Filter');
+                $('.ShowAdvanceFilter .btn-cancelar').attr('data-dismiss', 'modal');
+                $('.ShowAdvanceFilter .btn-cancelar').removeAttr('href');
+                $('#idFilter').val($('#IdReport').val());
+            }
+        });
+
+    </script>
+}
+

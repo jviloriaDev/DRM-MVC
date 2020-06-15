@@ -1,0 +1,482 @@
+﻿@using System.Collections.Generic
+@using System.Web.UI.WebControls
+
+
+@using Spartane.Core.Domain.Permission
+@using Spartane.Web.Areas.WebApiConsumer
+@using Spartane.Web.Helpers
+@{
+    ViewBag.Title = "Spartan - Pie Graphic";
+    string dataReport = Uri.UnescapeDataString((string)ViewBag.dataReport);
+}
+<link href="@Url.Content("~/Content/BootstrapDatePicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+@Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+@Styles.Render("~/plugins/dateRangeStyles")
+@Styles.Render("~/plugins/dataPickerStyles")
+@Styles.Render("~/plugins/clockpickerStyles")
+@Styles.Render("~/plugins/awesomeCheckboxStyles")
+@Styles.Render("~/plugins/select2Styles")
+@Styles.Render("~/Content/plugins/chosen/chosenStyles")
+<script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
+<style>
+    .MarginBottom {
+        margin-bottom: 1%;
+    }
+
+    #divAdvanceSearch input {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch button {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch select {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch h3 {
+        margin-top: 2%;
+    }
+</style>
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Pie Graphic</h2>
+
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Index", "Home")">@Resources.Resources.Home</a>
+
+            </li>
+            <li class="active">
+                <strong>Pie Graphic</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+
+<input type="hidden" value="list" name="Operation" id="Operation" />
+<input type="hidden" value="true" name="IsFilterModal" id="IsFilterModal" />
+
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,600,400' rel='stylesheet' type='text/css'>
+
+<span id="popupNotification"></span>
+<div aria-hidden="true" data-backdrop="static" class="modal" id="AddEditFiltersModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+    <div class="modal-dialog" style="width:80%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    @Resources.Resources.AdvanceFilter
+                    <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                </h4>
+            </div>
+            <div class="modal-body AddEditFiltersModal">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <input type="hidden" value="@ViewBag.IdReport" name="IdReport" id="IdReport" />
+                    <div>
+                        <input data-target="#advance-modal" data-toggle="modal" type="button" value="@Resources.Resources.AdvanceFilter" id="AdvanceFilter" class="btn btn-w-m btn-success btn-filter" />
+                        <a href="../ClearFilter?id=@ViewBag.IdReport" class=" btn btn-primary">@Resources.Resources.ClearFilter</a>
+                    </div>
+                    <div id="filters">
+                        @Html.Raw(ViewBag.Filters)
+                    </div>
+                    @* Model Start Here *@
+                    @using (Ajax.BeginForm("", "", new AjaxOptions { OnSuccess = "" }))
+                    {
+
+                    }
+                    <div class="table-responsive">
+                        <div id="flot-chart" style="width:100%; height:100%;"></div>
+                        <div style="width:100%;">
+                            <button class="btn btn-primary float-right" id="printGraph"><i class="fa fa-print"></i>&nbsp;Imprimir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .select2-results{background-color:#fff;}
+    .select2-container .select2-dropdown{height:auto !important; }
+    .dataTables_filter {
+        display: none;
+    }
+
+    div.dataTables_info {
+        display: inline-block;
+        float: left;
+    }
+
+    .fullWidth {
+        width: 100%;
+    }
+    .highcharts-credits {
+        display: none;
+    }
+</style>
+
+<script type="text/javascript">
+
+    var chart;
+
+    $(document).ready(function () {
+        var autocompletes = $('.AutoComplete');
+        for (var i = 0; i < autocompletes.length; i++) {
+            var url = $(autocompletes[i]).data('url');
+            url = url_content + url;
+            var id = $(autocompletes[i]).data('idfield');
+            var desc = $(autocompletes[i]).data('descfield');
+            $(".AutoComplete").select2({
+                dropdownCssClass: 'fullWidth form-control',
+                allowClear: true,
+                placeholder: "Select Value...",
+                ajax: {
+                    url: url,
+                    cache: false,
+                    dataType: 'json',
+                    async: true,
+                    global: false,
+                    data: function (params) {
+                        return {
+                            query: params.term,
+                        };
+                    },
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
+
+                        return {
+                            results: GetAutoCompleteData(data, id, desc),
+                            pagination: {
+                                more: false
+                            }
+                        };
+                    }
+                },
+                escapeMarkup: function (markup) { return markup; },
+                minimumInputLength: 1,
+            });
+            var $eventExternal = $(".AutoComplete");
+            $eventExternal.on("select2:open", function (e) {
+                $('.select2-search__field').val(' ');
+                $('.select2-search__field').keyup();
+            });
+            $('.select2-container').css('width', '100%');
+            $('.select2-selection').css('border', 'none');
+            $('.select2-selection').css('height', '34px');
+
+        }
+
+        $('.datepicker').datepicker({
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            calendarWeeks: true,
+            autoclose: true,
+            format: "@ConfigurationProperty.DateFormatDatePicker"
+        });
+        $('.clockpicker').clockpicker();
+
+        $("#frmAdvanceSearch").submit(function (e) {
+            e.preventDefault();
+            InitiateAdvanceSearch();
+        });
+        var strData = '@Html.Raw(dataReport)';
+        var jsonData = JSON.parse(strData);
+
+        var dataGraphic = {};
+
+        dataGraphic = getPieData(jsonData);
+        renderPieChart(dataGraphic, jsonData);
+
+        $("#printGraph").click(function () {
+            chart.print();
+        });
+
+        $('#filters').on('click', '#quickFilter', function () {
+            debugger;
+
+            var idReport = $('#IdReport').val();
+            var data = {
+                id: idReport,
+                filters: GetQuickFilters()
+            };
+            var data = JSON.stringify({ 'data': data });
+            //var url = url_content + "Frontal/Report/DetailedReport?id=" + idReport + "&filters=" + filters;
+            //window.location.href = url; 
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: url_content + "Frontal/Report/PieGraphic",
+                data: data,
+                success: function (strData) {
+                    debugger;
+                    var jsonData = JSON.parse(strData);
+                    var dataGraphic = {};
+
+                    dataGraphic = getPieData(jsonData);
+                    renderPieChart(dataGraphic, jsonData);
+
+                },
+                failure: function (response) {
+                    debugger;
+
+                }
+            });
+        });
+    });
+
+    function GetAutoCompleteData(data, nameId, nameDesc) {
+        var AutoCompleteData = [];
+        var idT = 'data[i].' + nameId;
+        var descT = 'data[i].' + nameDesc;
+        for (var i = 0; i < data.length; i++) {
+            AutoCompleteData.push({
+                id: eval(idT),
+                text: eval(descT)
+            });
+        }
+        return AutoCompleteData;
+    }
+
+    function GetQuickFilters() {
+        var result = [];
+        var obj = {};
+        var items = $('.filter-item');
+        for (var i = 0; i < items.length; i++) {
+            var physicalName = $(items[i]).data('physicalname');
+            var values = $(items[i]).find('.control-value');
+            var val = '';
+            if (values.length == 1)
+                val = $($(items[i]).find('.control-value')).val();
+            else {
+                for (var j = 0; j < values.length; j++) {
+                    val += ($(values[j]).val() == '') ? '-1;' : $(values[j]).val() + ';';
+                }
+            }
+            obj = {
+                PhysicalName: physicalName,
+                Valor: val
+            };
+            result.push(obj);
+            //result += physicalName + '%' + val + '|';
+        }
+        return result;
+    }
+
+    function renderPieChart(dataGraphic, jsonData) {
+        var data = dataGraphic;
+        var fieldBrand = Object.keys(jsonData[0])[0];
+
+        // Create Chart
+        chart = Highcharts.chart('flot-chart', {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Pie Graphic'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                name: fieldBrand,
+                colorByPoint: true,
+                data: data
+            }]
+        });
+    }
+
+    function getPieData(dataGraphic) {
+        var dataSet = [];
+        dataGraphic.forEach(function (item, index) {
+            var fieldCategory = Object.keys(item)[0],
+                fieldValue = Object.keys(item)[1];
+
+            var category = item[fieldCategory];
+            if(isDate(category))
+                category = moment(new Date(category)).format("DD/MM/YYYY");
+            dataSet.push({ name: category, y: item[fieldValue] });
+        });
+
+        return dataSet
+    }
+
+    function isDate(str) {
+        var dateReg = /^\d{4}[./-]\d{2}[./-]\d{2}T\d{2}:\d{2}:\d{2}$/;
+        return dateReg.test(str);
+    }
+
+    $('#AdvanceFilter').click(function () {
+        ajaxindicatorstart('Loading data.. please wait..');
+        GetFiltersPopup();
+    });
+    var objectId = '@ViewBag.ObjectId';
+    
+    function GetFiltersPopup(objId) {
+        
+        var o = (objId == null) ? objectId : objId;
+        if (o != objectId)
+            previousObjectId = currentObjectIdPopUp;
+        else
+            previousObjectId = '';
+        currentObjectIdPopUp = o;
+        
+        $.ajax({
+            url: "@Url.Action("GetSpartan_Report_AdvanceFilter")?ReportId=@ViewBag.IdReport&object_id=" + currentObjectIdPopUp,
+            type: "GET",
+        async: true,
+        success: function (result) {
+            if (result.data.length > 0) {
+                for (var i = 0; i < result.data.length; i++) {
+                    AdvanceFilters.push({
+                        checke: result.data[i].Visible,
+                        attributeId: result.data[i].AttributeId,
+                        physicalName: result.data[i].AttributeIdPhysical_Name,
+                        from: result.data[i].Defect_Value_From,
+                        to: result.data[i].Defect_Value_To,
+                        objectId: result.data[i].ObjectId,
+                        campoquery: result.data[i].CampoQuery
+                    });
+                }
+                $.ajax({
+                    url: "@Url.Action("AdvanceFilterPopUp")?reportId=@ViewBag.IdReport&objectId=" + currentObjectIdPopUp,
+                    type: "GET",
+                async: true,
+                success: function (data) {
+                    $("#AddEditFiltersModal-form").off('hidden.bs.modal').on('hidden.bs.modal', function () {
+
+                        $(this).removeData('bs.modal');
+                        $(this).data('bs.modal', null);
+                        if (previousObjectId != null && previousObjectId != '') {
+                            GetFiltersPopup(previousObjectId);
+                        }
+                        else {
+                            FilterAdvancePost();
+                        }
+                    });
+
+                    $(".AddEditFiltersModal").html(data);
+                    $('#AddEditFiltersModal-form').modal({
+                        keyboard: false,
+                        backdrop: 'static'
+                    });
+                    debugger;
+                    ajaxindicatorstop();
+                },
+                error: function () {
+                    ajaxindicatorstop();
+                }
+            });
+        }
+    else {
+		showNotification('No existen filtros avanzados', "error");
+        $('#AddEditFiltersModal-form').modal('hide');
+        ajaxindicatorstop();
+    }
+    },
+    error: function () {
+        ajaxindicatorstop();
+    }
+                
+    });
+        
+    }
+    var AdvanceFilters = [];
+    var currentObjectIdPopUp = '';
+    var previousObjectId = '';
+
+    function FilterAdvancePost() {
+        var idReport = $('#IdReport').val();
+        var data = {
+            id: idReport,
+            filters: GetAdvanceFilters(),
+            type: 'advance'
+        };
+        var data = JSON.stringify({ 'data': data });
+        $.ajax({
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            type: 'POST',
+            url: url_content + "Frontal/Report/DetailedReport",
+            data: data,
+            success: function (strData) {
+                var jsonData = JSON.parse(strData);
+                var model = generateModel(jsonData);
+                if ($.fn.DataTable.isDataTable('#tblReport')) {
+                    $("#tblReport").empty();
+                    $("#tblReport").DataTable().destroy();
+                }
+                if (jsonData != '')
+                    $("#tblReport").DataTable(model);
+
+            },
+            failure: function (response) {
+
+            }
+        });
+
+        function GetAdvanceFilters() {
+            var result = [];
+            var obj = {};
+            var items = AdvanceFilters;
+            for (var i = 0; i < items.length; i++) {
+                var physicalName = items[i].campoQuery;
+                var val = '';
+                var values1 = items[i].from;
+                var values2 = items[i].to;
+                if (values2 != null && values2 != '') {
+                    val = values1 + ';' + values2;
+                }
+                else {
+                    val = values1;
+                }
+
+                obj = {
+                    PhysicalName: physicalName,
+                    Valor: val
+                };
+                result.push(obj);
+            }
+            return result;
+        }
+    }
+</script>
+
+@section Styles {
+}
+
+@section Scripts {
+    @*@Scripts.Render("~/plugins/highcharts")*@
+@Scripts.Render("~/Scripts/BootstrapDatePicker/moment.js")
+}
+<script src="~/Scripts/plugins/highcharts/highcharts.js"></script>
+<script src="~/Scripts/plugins/highcharts/modules/data.js"></script>
+<script src="~/Scripts/plugins/highcharts/modules/exporting.js"></script>

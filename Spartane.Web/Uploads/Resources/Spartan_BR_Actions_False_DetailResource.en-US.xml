@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_BR_Actions_False_Detail" value="Business Rule Action False Detail"></resource>
+  <resource culture="en-US" name="ActionsFalseDetailId" value="Id"></resource>
+  <resource culture="en-US" name="Action_Classification" value="Action Classification"></resource>
+  <resource culture="en-US" name="Action" value="Action"></resource>
+  <resource culture="en-US" name="Action_Result" value="Action Result"></resource>
+  <resource culture="en-US" name="Parameter_1" value="Parameter 1"></resource>
+  <resource culture="en-US" name="Parameter_2" value="Parameter 2"></resource>
+  <resource culture="en-US" name="Parameter_3" value="Parameter 3"></resource>
+  <resource culture="en-US" name="Parameter_4" value="Parameter 4"></resource>
+  <resource culture="en-US" name="Parameter_5" value="Parameter 5"></resource>
+
+</resources>

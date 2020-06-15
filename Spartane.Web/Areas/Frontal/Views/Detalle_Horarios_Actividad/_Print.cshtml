@@ -1,0 +1,188 @@
+﻿@model IList<Spartane.Web.Areas.Frontal.Models.Detalle_Horarios_ActividadGridModel>
+
+@{
+    var rowCounter = 0;
+}
+
+<style>
+    .table {
+        width: 100%;
+        border: 1px solid #cccccc;
+        font-family: "open sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+        /*border-collapse: separate !important;*/
+        font-size: 13px;
+    }
+
+        .table td {
+            padding: 2px;
+            border:1px solid #cccccc;
+        }
+
+    .table tr:nth-of-type(2n+1) {
+        background-color: #f9f9f9;
+    }
+
+        .table tr:nth-of-type(2n) {
+            background-color: #8da0c2;
+        }
+
+    .table-row-1 td, .table-row-1 th {
+    }
+
+    .table-row-2 td, .table-row-2 th, thead {
+    }
+
+    .tableHeaderRow {
+        font-weight: bold;
+        border: 1px solid #ff6a00;
+    }
+
+    .column1 {
+        width: 15%;
+    }
+
+    .column2 {
+        width: 15%;
+    }
+</style>
+<br />
+<body onbeforeprint="ocultarcolumnas();">
+ <span id="columnsVisible"></span>
+<table class="table" cellspacing="0" cellpadding="0" border="0">
+    <thead>
+        <tr>
+            <td class="column1">
+                @Resources.Detalle_Horarios_ActividadResources.Folio
+            </td>
+                        <td class="column1">
+                @Resources.Detalle_Horarios_ActividadResources.Folio
+            </td>
+            <td class="column1">
+                @Resources.Detalle_Horarios_ActividadResources.Reservada
+            </td>
+            <td class="column1">
+                @Resources.Detalle_Horarios_ActividadResources.Numero_de_Cita
+            </td>
+            <td class="column1">
+                @Resources.Detalle_Horarios_ActividadResources.Hora_inicio
+            </td>
+            <td class="column1">
+                @Resources.Detalle_Horarios_ActividadResources.Hora_fin
+            </td>
+            <td class="column1">
+                @Resources.Detalle_Horarios_ActividadResources.Horario
+            </td>
+            <td class="column1">
+                @Resources.Detalle_Horarios_ActividadResources.Codigo_de_Reservacion
+            </td>
+            <td class="column1">
+                @Resources.Detalle_Horarios_ActividadResources.Numero_de_Empleado
+            </td>
+            <td class="column1">
+                @Resources.Detalle_Horarios_ActividadResources.Familiar_del_Empleado
+            </td>
+            <td class="column1">
+                @Resources.Detalle_Horarios_ActividadResources.Nombre_Completo
+            </td>
+            <td class="column1">
+                @Resources.Detalle_Horarios_ActividadResources.Parentesco_con_el_Empleado
+            </td>
+            <td class="column1">
+                @Resources.Detalle_Horarios_ActividadResources.Sexo
+            </td>
+            <td class="column1">
+                @Resources.Detalle_Horarios_ActividadResources.Edad
+            </td>
+            <td class="column1">
+                @Resources.Detalle_Horarios_ActividadResources.Estatus_de_la_Reservacion
+            </td>
+            <td class="column1">
+                @Resources.Detalle_Horarios_ActividadResources.Asistio
+            </td>
+
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var item in Model)
+            {                
+                <tr>
+                    <td>
+                        @item.Folio
+                    </td>
+					                    <td>
+                        @item.Folio
+                    </td>
+                    <td>
+                        @item.Reservada
+                    </td>
+                    <td>
+                        @item.Numero_de_Cita
+                    </td>
+                    <td>
+                        @item.Hora_inicio
+                    </td>
+                    <td>
+                        @item.Hora_fin
+                    </td>
+                    <td>
+                        @item.Horario
+                    </td>
+                    <td>
+                        @item.Codigo_de_ReservacionCodigo_Reservacion
+                    </td>
+                    <td>
+                        @item.Numero_de_Empleado
+                    </td>
+                    <td>
+                        @item.Familiar_del_Empleado
+                    </td>
+                    <td>
+                        @item.Nombre_Completo
+                    </td>
+                    <td>
+                        @item.Parentesco_con_el_EmpleadoDescripcion
+                    </td>
+                    <td>
+                        @item.SexoDescripcion
+                    </td>
+                    <td>
+                        @item.Edad
+                    </td>
+                    <td>
+                        @item.Estatus_de_la_ReservacionDescripcion
+                    </td>
+                    <td>
+                        @item.Asistio
+                    </td>
+
+                </tr>
+                rowCounter++;
+            }
+        }
+    </tbody>
+</table>
+</body>
+
+<script>
+    function ocultarcolumnas() {        
+        var arr = document.getElementById('columnsVisible').text.split(',');
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i] == "false") {
+                show_hide_column(i-1, false);
+            }
+        }    
+    };
+
+    function show_hide_column(col_no, do_show) {
+        var rows = document.getElementsByClassName('table')[0].rows;
+        for (var row = 0; row < rows.length; row++) {
+            var cols = rows[row].cells;
+            if (col_no >= 0 && col_no < cols.length) {
+                console.log(col_no);
+                cols[col_no].style.display = do_show ? '' : 'none';
+            }
+        }
+    }
+</script>
+

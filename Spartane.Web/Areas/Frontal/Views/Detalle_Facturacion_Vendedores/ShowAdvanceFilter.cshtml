@@ -1,0 +1,411 @@
+﻿@using System.Collections.Generic
+@using Spartane.Web.Areas.Frontal.Models
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Detalle_Facturacion_VendedoresAdvanceSearchModel
+@{
+    List<SelectListItem> varEstatus_Facturas_Estatus = null;
+    if (ViewBag.Estatus_Facturass_Estatus != null)
+    { varEstatus_Facturas_Estatus = (List<SelectListItem>)ViewBag.Estatus_Facturass_Estatus; }
+
+    var filters = (List<SelectListItem>)ViewBag.Filter;
+}
+<style>
+    .input-validation-error {
+        background: rgb(251, 227, 228);
+        border: 1px solid #fbc2c4;
+        color: #8a1f11;
+    }
+
+    .MarginBottom {
+        margin-bottom: 1%;
+    }
+
+    #divAdvanceSearch input {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch button {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch select {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch h3 {
+        margin-top: 2%;
+    }
+
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins" id="divAdvanceSearch">
+        <div class="ibox-content">
+            @using (Html.BeginForm("ShowAdvanceFilter", "Detalle_Facturacion_Vendedores", FormMethod.Post, new { @id = "frmAdvanceSearch", @role = "form" }))
+            {
+				<input type="hidden" value="-1" name="idFilter" id="idFilter" />
+                <div class="MarginBottom ">
+                    <h3>@Resources.Detalle_Facturacion_VendedoresResources.Folio</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromFolio, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromFolio" })
+                    @Html.ValidationMessageFor(m => m.FromFolio)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToFolio, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToFolio", @data_min = "txtAdvanceFromFolio" })
+                    @Html.ValidationMessageFor(m => m.ToFolio)
+                </div>
+        <div class="MarginBottom ">
+            <h3>@Resources.Detalle_Facturacion_VendedoresResources.Fecha_de_Registro</h3>
+        </div>
+        <div class="MarginBottom form-inline">
+            <label class="">@Resources.Resources.From:</label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceFromFecha_de_Registro" name="FromFecha_de_Registro" type="text" value="@Model.FromFecha_de_Registro" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+            <label class="">@Resources.Resources.To: </label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceToFecha_de_Registro" name="ToFecha_de_Registro" type="text" value="@Model.ToFecha_de_Registro" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Detalle_Facturacion_VendedoresResources.Folio_Factura</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Folio_FacturaFilter, filters, new { @class = "form-control", @id = "ddlFolio_FacturaFilter" })
+                    @Html.TextBoxFor(m => m.Folio_Factura, new { @class = "form-control", @type = "text", @id = "txtFolio_Factura" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Detalle_Facturacion_VendedoresResources.Periodo_Facturado</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Periodo_FacturadoFilter, filters, new { @class = "form-control", @id = "ddlPeriodo_FacturadoFilter" })
+                    @Html.TextBoxFor(m => m.Periodo_Facturado, new { @class = "form-control", @type = "text", @id = "txtPeriodo_Facturado" })
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Detalle_Facturacion_VendedoresResources.Cantidad</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromCantidad, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isDecimalKey(this, event);", @id = "txtAdvanceFromCantidad" })
+                    @Html.ValidationMessageFor(m => m.FromCantidad)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToCantidad, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isDecimalKey(this, event);", @id = "txtAdvanceToCantidad", @data_min = "txtAdvanceFromCantidad" })
+                    @Html.ValidationMessageFor(m => m.ToCantidad)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Detalle_Facturacion_VendedoresResources.Estatus</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.EstatusFilter, filters, new { @class = "form-control", @id = "ddlEstatusFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceEstatus, new { @class = "form-control", @type = "text", @id = "txtAdvanceEstatus" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varEstatus_Facturas_Estatus!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceEstatusMultiple, varEstatus_Facturas_Estatus,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceEstatus"
+                        });
+                    }
+                </div>
+        <div class="MarginBottom ">
+            <h3>@Resources.Detalle_Facturacion_VendedoresResources.Fecha_programada_de_Pago</h3>
+        </div>
+        <div class="MarginBottom form-inline">
+            <label class="">@Resources.Resources.From:</label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceFromFecha_programada_de_Pago" name="FromFecha_programada_de_Pago" type="text" value="@Model.FromFecha_programada_de_Pago" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+            <label class="">@Resources.Resources.To: </label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceToFecha_programada_de_Pago" name="ToFecha_programada_de_Pago" type="text" value="@Model.ToFecha_programada_de_Pago" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+        <div class="MarginBottom ">
+            <h3>@Resources.Detalle_Facturacion_VendedoresResources.Fecha_de_Pago</h3>
+        </div>
+        <div class="MarginBottom form-inline">
+            <label class="">@Resources.Resources.From:</label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceFromFecha_de_Pago" name="FromFecha_de_Pago" type="text" value="@Model.FromFecha_de_Pago" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+            <label class="">@Resources.Resources.To: </label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceToFecha_de_Pago" name="ToFecha_de_Pago" type="text" value="@Model.ToFecha_de_Pago" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+
+                <div class="MarginBottom form-inline">
+                    <input type="submit" class="btn btn-primary" value="@Resources.Resources.Search"><a class="btn btn-primary" href="@Url.Content("~/Frontal/Detalle_Facturacion_Vendedores/")" value=" ">@Resources.Resources.Cancelar</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function InitiateAdvanceSearch() {
+        var advanceSearch = {}, hasParameter = false;
+        if ($("#txtAdvanceFromFolio").val() != "" || $("#txtAdvanceToFolio").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Facturacion_VendedoresFolioFrom = $("#txtAdvanceFromFolio").val();
+            advanceSearch.Detalle_Facturacion_VendedoresFolioTo = $("#txtAdvanceToFolio").val();
+        }
+        if ($("#txtAdvanceFromFecha_de_Registro").val() != "" || $("#txtAdvanceToFecha_de_Registro").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Facturacion_VendedoresFecha_de_RegistroFrom = $("#txtAdvanceFromFecha_de_Registro").val();
+            advanceSearch.Detalle_Facturacion_VendedoresFecha_de_RegistroTo = $("#txtAdvanceToFecha_de_Registro").val();
+        }
+        if ($("#txtAdvanceFolio_Factura").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Facturacion_VendedoresFolio_Factura = $("#txtAdvanceFolio_Factura").val();
+            advanceSearch.Detalle_Facturacion_VendedoresFolio_FacturaSearchType = $("#ddlAdvanceFolio_FacturaFilter").val();
+        }
+        if ($("#txtAdvancePeriodo_Facturado").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Facturacion_VendedoresPeriodo_Facturado = $("#txtAdvancePeriodo_Facturado").val();
+            advanceSearch.Detalle_Facturacion_VendedoresPeriodo_FacturadoSearchType = $("#ddlAdvancePeriodo_FacturadoFilter").val();
+        }
+        if ($("#txtAdvanceFromCantidad").val() != "" || $("#txtAdvanceToCantidad").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Facturacion_VendedoresCantidadFrom = $("#txtAdvanceFromCantidad").val();
+            advanceSearch.Detalle_Facturacion_VendedoresCantidadTo = $("#txtAdvanceToCantidad").val();
+        }
+        advanceSearch.Archivo_XMLSearchType = 0;
+        if ($('#ddlAdvanceArchivo_XML').val().length > 0 || $("#txtAdvanceArchivo_XML").val() == "") {
+
+
+            if (isDetalle_Facturacion_VendedoresTextSearch) {
+                advanceSearch.Archivo_XMLName = $("#txtAdvanceArchivo_XML").val();
+                advanceSearch.Archivo_XMLNameSearchType = $("#ddlAdvanceArchivo_XML").val();
+                advanceSearch.Archivo_XMLSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Archivo_XMLToSearch = $("#ddlAdvanceArchivo_XML").val();
+                advanceSearch.Archivo_XMLSearchType = 2;
+            }
+        }
+        advanceSearch.Archivo_PDFSearchType = 0;
+        if ($('#ddlAdvanceArchivo_PDF').val().length > 0 || $("#txtAdvanceArchivo_PDF").val() == "") {
+
+
+            if (isDetalle_Facturacion_VendedoresTextSearch) {
+                advanceSearch.Archivo_PDFName = $("#txtAdvanceArchivo_PDF").val();
+                advanceSearch.Archivo_PDFNameSearchType = $("#ddlAdvanceArchivo_PDF").val();
+                advanceSearch.Archivo_PDFSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Archivo_PDFToSearch = $("#ddlAdvanceArchivo_PDF").val();
+                advanceSearch.Archivo_PDFSearchType = 2;
+            }
+        }
+        advanceSearch.EstatusSearchType = 0;
+        if ($('#ddlAdvanceEstatus').val().length > 0 || $("#txtAdvanceEstatus").val() == "") {
+
+
+            if (isDetalle_Facturacion_VendedoresTextSearch) {
+                advanceSearch.EstatusName = $("#txtAdvanceEstatus").val();
+                advanceSearch.EstatusNameSearchType = $("#ddlAdvanceEstatus").val();
+                advanceSearch.EstatusSearchType = 1;
+            }
+            else {
+
+                advanceSearch.EstatusToSearch = $("#ddlAdvanceEstatus").val();
+                advanceSearch.EstatusSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceFromFecha_programada_de_Pago").val() != "" || $("#txtAdvanceToFecha_programada_de_Pago").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Facturacion_VendedoresFecha_programada_de_PagoFrom = $("#txtAdvanceFromFecha_programada_de_Pago").val();
+            advanceSearch.Detalle_Facturacion_VendedoresFecha_programada_de_PagoTo = $("#txtAdvanceToFecha_programada_de_Pago").val();
+        }
+        if ($("#ddlAdvancePagada").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Facturacion_VendedoresPagada = $("#ddlAdvancePagada").val();
+        }
+        if ($("#txtAdvanceFromFecha_de_Pago").val() != "" || $("#txtAdvanceToFecha_de_Pago").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Facturacion_VendedoresFecha_de_PagoFrom = $("#txtAdvanceFromFecha_de_Pago").val();
+            advanceSearch.Detalle_Facturacion_VendedoresFecha_de_PagoTo = $("#txtAdvanceToFecha_de_Pago").val();
+        }
+
+        advanceSearchQuery = hasParameter ? JSON.stringify(advanceSearch) : "";
+        $('#tblDetalle_Facturacion_Vendedores').DataTable().draw();
+        return false;
+    }
+
+    var advanceSearchQuery = "", isDetalle_Facturacion_VendedoresTextSearch = true;
+
+    $(document).ready(function () {
+        $('.clock').clockpicker();
+		$('.date').datepicker({
+			todayBtn: "linked",
+			keyboardNavigation: false,
+			forceParse: false,
+			calendarWeeks: true,
+			autoclose: true,
+			format: "@ConfigurationProperty.DateFormatDatePicker"
+		});
+        $("#txtAdvanceEstatus").keypress(function () {
+            isDetalle_Facturacion_VendedoresTextSearch = true;
+            $("#ddlAdvanceEstatus").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceEstatus").change(function () {
+            isDetalle_Facturacion_VendedoresTextSearch = false;
+            $("#txtAdvanceEstatus").val('');
+        });
+
+    });
+</script>
+
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/chosen")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/clockpicker")
+
+
+    <script>
+        //Adding Rules
+        jQuery.validator.unobtrusive
+      .adapters.addSingleVal("isnumberafter", "propertyname");
+        jQuery.validator.unobtrusive
+    .adapters.addSingleVal("isdateafter", "propertyname");
+
+        //Number after method
+        jQuery.validator.addMethod("isnumberafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+                //if (Date.parse(val) <= Date.parse(otherVal)) {
+                if (Number(val) < Number(otherVal)) {
+                    return false;
+                }
+                        }
+            return true;
+        });
+
+        //Date after after method
+        jQuery.validator.addMethod("isdateafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+
+                if (GetDateObject(val) < GetDateObject(otherVal)) {
+
+                    return false;
+                    }
+                }
+            return true;
+            });
+
+
+        function GetDateObject(value) {
+            var delimiter = GetDelimiter(dateFormat);
+            var dateCollection = value.split(delimiter);
+            var formatCollection = dateFormat.split(delimiter);
+            var dateModel = GetDateModel(dateCollection, formatCollection);
+            return new Date(dateModel.Year, dateModel.Month - 1, dateModel.Day);
+        }
+        //Used to get the date model by parsing the date and the format
+        function GetDateModel(dateCollection,formatCollection) {
+            var day, month, year;
+            for (var i = 0; i < formatCollection.length; i++) {
+                switch (formatCollection[i][0].toUpperCase()) {
+                
+                    case "D":
+                        day = dateCollection[i];
+                        break;
+
+                    case "Y":
+                        year = dateCollection[i];
+                        break;
+
+                    case "M":
+                        month = dateCollection[i];
+                        break;
+                }
+            }
+
+            return {
+                Day:day,
+                Month:month,
+                Year:year
+            };
+        }
+
+        function GetDelimiter(format) {
+
+            for (var i = 0; i < format.length; i++) {
+                if (/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(format[i])) {
+                    return format[i];
+                }
+            }
+            return null;
+        }
+
+        var dateFormat = "@ConfigurationProperty.DateFormatDatePicker";
+
+        $(document).ready(function () {
+            $('.input-daterange').datepicker({
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                format: dateFormat,
+                message: 'The date is not a valid'
+            });
+
+            $(".chosen-select").chosen({ width: "22%", no_results_text: "Oops, nothing found!" });
+			if ($('#IsFilterModal').val() == 'true') {
+                $('.ShowAdvanceFilter #right-sidebar').css('display', 'none');
+                $('.ShowAdvanceFilter .navbar-default').css('display', 'none');
+                $('.ShowAdvanceFilter .border-bottom').css('display', 'none');
+                $('.ShowAdvanceFilter #page-wrapper').css('margin', '0 auto');
+                $('.ShowAdvanceFilter .btn-save').val('@Resources.Resources.Filter');
+                $('.ShowAdvanceFilter .btn-cancelar').attr('data-dismiss', 'modal');
+                $('.ShowAdvanceFilter .btn-cancelar').removeAttr('href');
+                $('#idFilter').val($('#IdReport').val());
+            }
+        });
+
+    </script>
+}
+

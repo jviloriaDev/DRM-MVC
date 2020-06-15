@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Consultas" value="Consultas"></resource>
+  <resource culture="en-US" name="Folio" value="Folio"></resource>
+  <resource culture="en-US" name="Fecha_de_Registo" value="Fecha de Registo"></resource>
+  <resource culture="en-US" name="Hora_de_Registro" value="Hora de Registro"></resource>
+  <resource culture="en-US" name="Usuario_que_Registra" value="Usuario que Registra"></resource>
+  <resource culture="en-US" name="Fecha_Programada" value="Fecha Programada"></resource>
+  <resource culture="en-US" name="Paciente" value="Paciente"></resource>
+  <resource culture="en-US" name="Edad" value="Edad"></resource>
+  <resource culture="en-US" name="Nombre_del_padre" value="Nombre del padre o tutor"></resource>
+  <resource culture="en-US" name="Sexo" value="Sexo"></resource>
+  <resource culture="en-US" name="Email" value="Email"></resource>
+  <resource culture="en-US" name="Objetivo" value="Objetivo"></resource>
+  <resource culture="en-US" name="Frecuencia_Cardiaca" value="Frecuencia Cardiaca (ppm)"></resource>
+  <resource culture="en-US" name="Presion_sistolica" value="Presión sistólica (mm Hg)"></resource>
+  <resource culture="en-US" name="Presion_diastolica" value="Presión diastólica (mm Hg)"></resource>
+  <resource culture="en-US" name="Peso_actual" value="Peso actual (kg)"></resource>
+  <resource culture="en-US" name="Estatura" value="Estatura (m)"></resource>
+  <resource culture="en-US" name="Circunferencia_de_cintura_cm" value="Circunferencia de cintura (cm)"></resource>
+  <resource culture="en-US" name="Circunferencia_de_cadera_cm" value="Circunferencia de cadera (cm)"></resource>
+  <resource culture="en-US" name="Edad_Metabolica" value="Edad Metabólica"></resource>
+  <resource culture="en-US" name="Agua_corporal" value="% Agua corporal"></resource>
+  <resource culture="en-US" name="Grasa_Visceral" value="Grasa Visceral"></resource>
+  <resource culture="en-US" name="Grasa_Corporal" value="% Grasa Corporal"></resource>
+  <resource culture="en-US" name="Grasa_Corporal_kg" value="Grasa Corporal kg"></resource>
+  <resource culture="en-US" name="Masa_Muscular_kg" value="Masa Muscular kg"></resource>
+  <resource culture="en-US" name="Semana_de_gestacion" value="Semana de gestación"></resource>
+  <resource culture="en-US" name="IMC" value="IMC"></resource>
+  <resource culture="en-US" name="IMC_Pediatria" value="IMC Pediatría"></resource>
+  <resource culture="en-US" name="Interpretacion_IMC" value="Interpretación"></resource>
+  <resource culture="en-US" name="Consumo_de_agua_resultado" value="Consumo de agua"></resource>
+  <resource culture="en-US" name="Interpretacion_agua" value="Interpretación"></resource>
+  <resource culture="en-US" name="Frecuencia_cardiaca_en_Esfuerzo" value="Frecuencia cardiaca en Esfuerzo"></resource>
+  <resource culture="en-US" name="Interpretacion_frecuencia" value="Interpretación"></resource>
+  <resource culture="en-US" name="Indice_cintura_cadera" value="Índice cintura - cadera"></resource>
+  <resource culture="en-US" name="Interpretacion_indice" value="Interpretación"></resource>
+  <resource culture="en-US" name="Dificultad_de_Rutina_de_Ejercicios" value="Dificultad de Rutina de Ejercicios"></resource>
+  <resource culture="en-US" name="Interpretacion_dificultad" value="Interpretación"></resource>
+  <resource culture="en-US" name="Calorias" value="Calorías"></resource>
+  <resource culture="en-US" name="Interpretacion_calorias" value="Interpretación"></resource>
+  <resource culture="en-US" name="Observaciones" value="Observaciones"></resource>
+  <resource culture="en-US" name="Fecha_siguiente_Consulta" value="Fecha siguiente Consulta"></resource>
+  <resource culture="en-US" name="Resultados" value="Resultados"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+<resource culture="en-US" name="TabMediciones" value="Mediciones"></resource>
+<resource culture="en-US" name="TabResultados" value="Resultados"></resource>
+
+</resources>

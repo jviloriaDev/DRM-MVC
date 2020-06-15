@@ -1,0 +1,974 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Globalization
+@using Spartane.Core.Domain.Permission
+@using Spartane.Core.Domain.Spartane_File
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Registro_de_Asistencia_TelefonicaModel
+@{
+
+/*
+    string Fecha_de_llamada = "";
+    if (Model.Fecha_de_llamada == "")
+    { Model.Fecha_de_llamada = DateTime.Now.ToString(ConfigurationProperty.DateFormat); }
+
+*/
+    List<SelectListItem> varSpartan_User_Usuario_que_llama = null;
+    if (ViewBag.Spartan_Users_Usuario_que_llama != null)
+    { varSpartan_User_Usuario_que_llama = (List<SelectListItem>)ViewBag.Spartan_Users_Usuario_que_llama; }
+    List<SelectListItem> varPacientes_Nombre_Paciente = null;
+    if (ViewBag.Pacientess_Nombre_Paciente != null)
+    { varPacientes_Nombre_Paciente = (List<SelectListItem>)ViewBag.Pacientess_Nombre_Paciente; }
+ List<SelectListItem> varPlanes_de_Suscripcion_Suscripcion = null;
+    if (ViewBag.Planes_de_Suscripcions_Suscripcion != null)
+    { varPlanes_de_Suscripcion_Suscripcion = (List<SelectListItem>)ViewBag.Planes_de_Suscripcions_Suscripcion; }
+    List<SelectListItem> varAsuntos_Asistencia_Telefonica_Asunto_de_la_Llamada = null;
+    if (ViewBag.Asuntos_Asistencia_Telefonicas_Asunto_de_la_Llamada != null)
+    { varAsuntos_Asistencia_Telefonica_Asunto_de_la_Llamada = (List<SelectListItem>)ViewBag.Asuntos_Asistencia_Telefonicas_Asunto_de_la_Llamada; }
+    List<SelectListItem> varSpartan_User_Atendio = null;
+    if (ViewBag.Spartan_Users_Atendio != null)
+    { varSpartan_User_Atendio = (List<SelectListItem>)ViewBag.Spartan_Users_Atendio; }
+    List<SelectListItem> varEstatus_Llamadas_Estatus = null;
+    if (ViewBag.Estatus_Llamadass_Estatus != null)
+    { varEstatus_Llamadas_Estatus = (List<SelectListItem>)ViewBag.Estatus_Llamadass_Estatus; }
+
+
+    Permission permission = ViewBag.Permission;
+	
+	if (ViewBag.IsPartial)
+   { 
+       Layout = "~/Areas/Frontal/Views/Shared/_LayoutPopup.cshtml";
+   }
+}
+<div class="loading style-2"><div class="loading-wheel"></div></div>
+<div class="modal fade in" id="dvAttributeValue" style="background-color:rgba(0, 0, 0, 0.7);">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" id="lblAttributeType">@Resources.Resources.Value</label>
+                    <div class="col-sm-7">
+                        <input type="text" title="Value" class="form-control" id="txtAttributeValue" />
+                    </div>
+                    <div class="col-sm-2">
+                        <a class="btn btn-primary" onclick="SaveValue()">@Resources.Resources.Submit</a>
+                    </div>
+                    <input type="hidden" id="hdnAttributType" />
+                    <input type="hidden" id="hdnAttributElement" />
+                    <input type="hidden" id="hdnAttributNumber" />
+                    <input type="hidden" id="hdnElementType" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row wrapper border-bottom white-bg page-heading">
+
+    <div class="row">
+        <div class="col-lg-10">
+            <h2>
+                @Resources.Registro_de_Asistencia_TelefonicaResources.Registro_de_Asistencia_Telefonica
+                <button onclick="Registro_de_Asistencia_TelefonicaGetBusinessRule('', 'Al Abrir Pantalla', '0')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Registro_de_Asistencia_TelefonicaBusinessRule-form">
+                    <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+                        <i class="fa fa-cogs fa-spin"></i>
+                    </a>
+                </button>
+            </h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">@Resources.Resources.Home</a>
+                </li>
+                <li class="active">
+                @if (Session["PhaseName"] != null)
+                {
+                    <strong>@Session["PhaseName"].ToString()</strong>
+                }
+                else
+                {
+                    <strong>@Resources.Registro_de_Asistencia_TelefonicaResources.Registro_de_Asistencia_Telefonica</strong>
+                }
+                
+            </li>
+                <li class="active">
+                    <strong>@Resources.Resources.Create</strong>
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-2">
+
+            @{
+                if (Convert.ToInt32(Spartane.Web.SessionHelper.Role) == (int)Spartane.Core.Enums.SpartanRoleEnum.Admin)
+                {
+                    <h2>&nbsp;</h2>
+                    <button onclick="Registro_de_Asistencia_TelefonicaDisplayBusinessRule()" type="button" class="btn btn-info btn-lg displayBusinessProperyButton">
+                        <i class="fa fa-cogs fa-spin"></i>
+                    </button>
+
+                    <div aria-hidden="true" class="modal fade in Registro_de_Asistencia_TelefonicaPropertyBusinessModal" id="Registro_de_Asistencia_TelefonicaPropertyBusinessModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">
+                                          @Resources.Resources.titleBussinesRules
+                                        <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">@Resources.Resources.Close</span></button>
+                                    </h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <a class="btn btn-primary full-width" data-dismiss="modal" data-toggle="modal" data-target="#PropertyModal-form" onclick="GetPropertyBag()">@Resources.Resources.Property</a>
+                                        </div>
+                                        <div class="clearfix col-sm-12">&nbsp;</div>
+                                        <div class="col-sm-12">
+                                            <a class="btn btn-primary full-width" data-dismiss="modal" data-toggle="modal" data-target="#Registro_de_Asistencia_TelefonicaBusinessRule-form" onclick="Registro_de_Asistencia_TelefonicaGetBusinessRule()">Business Rule</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     <div aria-hidden="true" data-backdrop="static" class="modal fade in PropertyModal" id="PropertyModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+					</div>
+					<div aria-hidden="true" data-backdrop="static" class="modal fade in Registro_de_Asistencia_TelefonicaBusinessRuleModal" id="Registro_de_Asistencia_TelefonicaBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+					</div>
+
+
+                }
+            }
+
+        </div>
+    </div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            @using (Html.BeginForm("Post", "Registro_de_Asistencia_Telefonica", FormMethod.Post, new { id = "CreateRegistro_de_Asistencia_Telefonica", @readonly = "true", @class = "form-horizontal", enctype = "multipart/form-data" }))
+            {
+                                <input type="hidden" id="hdnIsNew" name="hdnIsNew" value="@ViewBag.IsNew.ToString()" />
+                <span id="popupNotification"></span>
+                <div class="container-fluid Registro_de_Asistencia_TelefonicaCreateForm" id="viewmodeledit">
+				 <div class="alert alert-warning" id="controlsRequerid" style="display:none">
+                        <a href="#" class="close" onclick="$('#controlsRequerid').hide();">&times;</a>
+                        <span id="textRequired"></span>
+                 </div>
+			<div class="tabs-container">
+                        	<ul class="nav nav-tabs">
+<li class="active"><a data-toggle="tab" href="#tabDatos_Generales"> @Resources.Registro_de_Asistencia_TelefonicaResources.TabDatos_Generales</a></li>
+
+                        	</ul>
+	                	<div class="tab-content">
+                            <div id="tabDatos_Generales" class="tab-pane active">
+                                <div class="panel-body">
+                            <div class="form-group" id="divFolio">
+                                <label class="col-sm-2 control-label">@Resources.Registro_de_Asistencia_TelefonicaResources.Folio</label>
+                                <div class="col-sm-8" data-field-id="Folio" data-attribute="258918" data-field-name="@Resources.Registro_de_Asistencia_TelefonicaResources.Folio">
+                                    <label class="form-control" for="Folio" id="lblFolio">
+                                    @if (Model.Folio== 0)
+                                        {
+                                            <text>@Resources.Resources.ClaveDefault</text>
+                                        }
+                                        else
+                                        { 
+                                            <text>@Model.Folio</text>
+                                        }
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divFecha_de_llamada">
+                                <label class="col-sm-2 control-label">@Resources.Registro_de_Asistencia_TelefonicaResources.Fecha_de_llamada</label>
+                                <div class="col-sm-8" data-field-id="Fecha_de_llamada" data-attribute="258919" data-field-name="@Resources.Registro_de_Asistencia_TelefonicaResources.Fecha_de_llamada">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input class="form-control col-md-12 Datos_Generales" id="Fecha_de_llamada"  name="Fecha_de_llamada" type="text" value="@Model.Fecha_de_llamada">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divHora_de_llamada">
+                                <label class="col-sm-2 control-label">@Resources.Registro_de_Asistencia_TelefonicaResources.Hora_de_llamada</label>
+                                <div class="col-sm-8" data-field-id="Hora_de_llamada" data-attribute="258920" data-field-name="@Resources.Registro_de_Asistencia_TelefonicaResources.Hora_de_llamada">
+                                    <div class='input-group date' id='timePicker'>
+                                        <input class="form-control col-md-12 Datos_Generales" id="Hora_de_llamada"  name="Hora_de_llamada" type="text" data-autoclose="true" value="@Model.Hora_de_llamada">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-time"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divUsuario_que_llama">
+                                <label class="col-sm-2 control-label">@Resources.Registro_de_Asistencia_TelefonicaResources.Usuario_que_llama</label>
+                                <div class="col-sm-8" data-field-id="Usuario_que_llama" data-attribute="258921" data-field-name="@Resources.Registro_de_Asistencia_TelefonicaResources.Usuario_que_llama">
+                                    <select class="form-control Datos_Generales" data-val="true" data-val-number="The field Usuario que llama must be a number." data-val-required="The Usuario que llama field is required." id="Usuario_que_llama" name="Usuario_que_llama">
+                                        <option value=""></option>
+                                        @if (varSpartan_User_Usuario_que_llama != null){ 
+                                            foreach (var itemUsuario_que_llama in varSpartan_User_Usuario_que_llama)
+                                            {
+                                                if (itemUsuario_que_llama.Value == Convert.ToString(Model.Usuario_que_llama))
+                                                {
+                                                    <option value="@itemUsuario_que_llama.Value" selected>@itemUsuario_que_llama.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemUsuario_que_llama.Value">@itemUsuario_que_llama.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Usuario_que_llama" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 258921).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Spartan_User', 'Usuario_que_llama');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divDispositivo">
+                                <label class="col-sm-2 control-label">@Resources.Registro_de_Asistencia_TelefonicaResources.Dispositivo</label>
+                                <div class="col-sm-8" data-field-id="Dispositivo" data-attribute="258922" data-field-name="@Resources.Registro_de_Asistencia_TelefonicaResources.Dispositivo">
+                                    <input class="form-control Datos_Generales" id="Dispositivo" name="Dispositivo" type="text" value="@Model.Dispositivo">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Dispositivo" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divNombre_Paciente">
+                                <label class="col-sm-2 control-label">@Resources.Registro_de_Asistencia_TelefonicaResources.Nombre_Paciente</label>
+                                <div class="col-sm-8" data-field-id="Nombre_Paciente" data-attribute="258923" data-field-name="@Resources.Registro_de_Asistencia_TelefonicaResources.Nombre_Paciente">
+                                    <select class="form-control Datos_Generales" data-val="true" data-val-number="The field Nombre Paciente must be a number." data-val-required="The Nombre Paciente field is required." id="Nombre_Paciente" name="Nombre_Paciente">
+                                        <option value=""></option>
+                                        @if (varPacientes_Nombre_Paciente != null){ 
+                                            foreach (var itemNombre_Paciente in varPacientes_Nombre_Paciente)
+                                            {
+                                                if (itemNombre_Paciente.Value == Convert.ToString(Model.Nombre_Paciente))
+                                                {
+                                                    <option value="@itemNombre_Paciente.Value" selected>@itemNombre_Paciente.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemNombre_Paciente.Value">@itemNombre_Paciente.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Nombre_Paciente" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 258923).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Pacientes', 'Nombre_Paciente');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+				<div class="form-group" id="divSuscripcion">
+                                <label class="col-sm-2 control-label">@Resources.Registro_de_Asistencia_TelefonicaResources.Suscripcion</label>
+                                <div class="col-sm-8" data-field-id="Suscripcion" data-attribute="258924" data-field-name="@Resources.Registro_de_Asistencia_TelefonicaResources.Suscripcion">
+                                    <select class='fullWidth AutoComplete AutoCompleteRegistro_de_Asistencia_Telefonica_Suscripcion form-control select2-dropdown Datos_Generales' data-val="true" id="Suscripcion" name="Suscripcion">
+                                        <option value="@Model.Suscripcion">@(Model.SuscripcionNombre_del_Plan??Model.SuscripcionNombre_del_Plan)</option>
+                                    </select>
+                                </div>
+				@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 258924).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Planes_de_Suscripcion', 'Suscripcion');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divNumero_telefonico_del_Paciente">
+                                <label class="col-sm-2 control-label">@Resources.Registro_de_Asistencia_TelefonicaResources.Numero_telefonico_del_Paciente</label>
+                                <div class="col-sm-8" data-field-id="Numero_telefonico_del_Paciente" data-attribute="258925" data-field-name="@Resources.Registro_de_Asistencia_TelefonicaResources.Numero_telefonico_del_Paciente">
+                                    <input class="form-control Datos_Generales" id="Numero_telefonico_del_Paciente" name="Numero_telefonico_del_Paciente" type="text" value="@Model.Numero_telefonico_del_Paciente">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Numero_telefonico_del_Paciente" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divCorreo_del_Paciente">
+                                <label class="col-sm-2 control-label">@Resources.Registro_de_Asistencia_TelefonicaResources.Correo_del_Paciente</label>
+                                <div class="col-sm-8" data-field-id="Correo_del_Paciente" data-attribute="258926" data-field-name="@Resources.Registro_de_Asistencia_TelefonicaResources.Correo_del_Paciente">
+                                    <input class="form-control Datos_Generales" id="Correo_del_Paciente" name="Correo_del_Paciente" type="text" value="@Model.Correo_del_Paciente">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Correo_del_Paciente" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divTelefono_de_Asistencia_marcado">
+                                <label class="col-sm-2 control-label">@Resources.Registro_de_Asistencia_TelefonicaResources.Telefono_de_Asistencia_marcado</label>
+                                <div class="col-sm-8" data-field-id="Telefono_de_Asistencia_marcado" data-attribute="258927" data-field-name="@Resources.Registro_de_Asistencia_TelefonicaResources.Telefono_de_Asistencia_marcado">
+                                    <input class="form-control Datos_Generales" id="Telefono_de_Asistencia_marcado" name="Telefono_de_Asistencia_marcado" type="text" value="@Model.Telefono_de_Asistencia_marcado">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Telefono_de_Asistencia_marcado" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divHora_inicio_de_la_Llamada">
+                                <label class="col-sm-2 control-label">@Resources.Registro_de_Asistencia_TelefonicaResources.Hora_inicio_de_la_Llamada</label>
+                                <div class="col-sm-8" data-field-id="Hora_inicio_de_la_Llamada" data-attribute="258928" data-field-name="@Resources.Registro_de_Asistencia_TelefonicaResources.Hora_inicio_de_la_Llamada">
+                                    <div class='input-group date' id='timePicker'>
+                                        <input class="form-control col-md-12 Datos_Generales" id="Hora_inicio_de_la_Llamada"  name="Hora_inicio_de_la_Llamada" type="text" data-autoclose="true" value="@Model.Hora_inicio_de_la_Llamada">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-time"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divHora_fin_de_la_Llamada">
+                                <label class="col-sm-2 control-label">@Resources.Registro_de_Asistencia_TelefonicaResources.Hora_fin_de_la_Llamada</label>
+                                <div class="col-sm-8" data-field-id="Hora_fin_de_la_Llamada" data-attribute="258929" data-field-name="@Resources.Registro_de_Asistencia_TelefonicaResources.Hora_fin_de_la_Llamada">
+                                    <div class='input-group date' id='timePicker'>
+                                        <input class="form-control col-md-12 Datos_Generales" id="Hora_fin_de_la_Llamada"  name="Hora_fin_de_la_Llamada" type="text" data-autoclose="true" value="@Model.Hora_fin_de_la_Llamada">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-time"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divDuracion_minutos">
+                                <label class="col-sm-2 control-label">@Resources.Registro_de_Asistencia_TelefonicaResources.Duracion_minutos</label>
+                                <div class="col-sm-8" data-field-id="Duracion_minutos" data-attribute="258930" data-field-name="@Resources.Registro_de_Asistencia_TelefonicaResources.Duracion_minutos">
+									@if(Model.Duracion_minutos.HasValue)
+									{
+										<input class="form-control col-md-12 inputNumber Datos_Generales" id="Duracion_minutos" name="Duracion_minutos" type="text" min="0.00" max="999999.99" value="@Model.Duracion_minutos.Value.ToString(new CultureInfo("en-US"))">
+									}
+									else
+									{
+										<input class="form-control col-md-12 inputNumber Datos_Generales" id="Duracion_minutos" name="Duracion_minutos" type="text" min="0.00" max="999999.99" value="">
+									}                                    
+                                </div>
+                            </div>
+                            <div class="form-group" id="divAsunto_de_la_Llamada">
+                                <label class="col-sm-2 control-label">@Resources.Registro_de_Asistencia_TelefonicaResources.Asunto_de_la_Llamada</label>
+                                <div class="col-sm-8" data-field-id="Asunto_de_la_Llamada" data-attribute="258931" data-field-name="@Resources.Registro_de_Asistencia_TelefonicaResources.Asunto_de_la_Llamada">
+                                    <select class="form-control Datos_Generales" data-val="true" data-val-number="The field Asunto de la Llamada must be a number." data-val-required="The Asunto de la Llamada field is required." id="Asunto_de_la_Llamada" name="Asunto_de_la_Llamada">
+                                        <option value=""></option>
+                                        @if (varAsuntos_Asistencia_Telefonica_Asunto_de_la_Llamada != null){ 
+                                            foreach (var itemAsunto_de_la_Llamada in varAsuntos_Asistencia_Telefonica_Asunto_de_la_Llamada)
+                                            {
+                                                if (itemAsunto_de_la_Llamada.Value == Convert.ToString(Model.Asunto_de_la_Llamada))
+                                                {
+                                                    <option value="@itemAsunto_de_la_Llamada.Value" selected>@itemAsunto_de_la_Llamada.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemAsunto_de_la_Llamada.Value">@itemAsunto_de_la_Llamada.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Asunto_de_la_Llamada" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 258931).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Asuntos_Asistencia_Telefonica', 'Asunto_de_la_Llamada');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divAtendio">
+                                <label class="col-sm-2 control-label">@Resources.Registro_de_Asistencia_TelefonicaResources.Atendio</label>
+                                <div class="col-sm-8" data-field-id="Atendio" data-attribute="258932" data-field-name="@Resources.Registro_de_Asistencia_TelefonicaResources.Atendio">
+                                    <select class="form-control Datos_Generales" data-val="true" data-val-number="The field Atendió must be a number." data-val-required="The Atendió field is required." id="Atendio" name="Atendio">
+                                        <option value=""></option>
+                                        @if (varSpartan_User_Atendio != null){ 
+                                            foreach (var itemAtendio in varSpartan_User_Atendio)
+                                            {
+                                                if (itemAtendio.Value == Convert.ToString(Model.Atendio))
+                                                {
+                                                    <option value="@itemAtendio.Value" selected>@itemAtendio.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemAtendio.Value">@itemAtendio.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Atendio" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 258932).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Spartan_User', 'Atendio');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divComentarios">
+                                <label class="col-sm-2 control-label">@Resources.Registro_de_Asistencia_TelefonicaResources.Comentarios</label>
+                                <div class="col-sm-8" data-field-id="Comentarios" data-attribute="258933" data-field-name="@Resources.Registro_de_Asistencia_TelefonicaResources.Comentarios">
+                                    <textarea id="Comentarios" name="Comentarios" class="form-control Datos_Generales" rows="4" cols="50">@Model.Comentarios</textarea>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Comentarios" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divEstatus">
+                                <label class="col-sm-2 control-label">@Resources.Registro_de_Asistencia_TelefonicaResources.Estatus</label>
+                                <div class="col-sm-8" data-field-id="Estatus" data-attribute="258934" data-field-name="@Resources.Registro_de_Asistencia_TelefonicaResources.Estatus">
+                                    <select class="form-control Datos_Generales" data-val="true" data-val-number="The field Estatus must be a number." data-val-required="The Estatus field is required." id="Estatus" name="Estatus">
+                                        <option value=""></option>
+                                        @if (varEstatus_Llamadas_Estatus != null){ 
+                                            foreach (var itemEstatus in varEstatus_Llamadas_Estatus)
+                                            {
+                                                if (itemEstatus.Value == Convert.ToString(Model.Estatus))
+                                                {
+                                                    <option value="@itemEstatus.Value" selected>@itemEstatus.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemEstatus.Value">@itemEstatus.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Estatus" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 258934).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Estatus_Llamadas', 'Estatus');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            </div>
+                                </div>
+
+				</div>	
+                    <br />
+                            <div class="form-actions fluid">
+                                <input type="hidden" value="@Model.Folio" id="ReferenceFolio" />
+                                <input type="hidden" value="@Model.Folio" name="Folio" id="FolioId" />
+                                <input type="hidden" value="@ViewBag.Operation" name="Operation" id="Operation" />
+                                @if (!ViewBag.Consult)
+                                {
+                                    <input type="button" value="@Resources.Resources.Guardar" id="Registro_de_Asistencia_TelefonicaGuardar" class="btn btn-w-m btn-primary btn_save" onclick="return checkClientValidate('Registro_de_Asistencia_TelefonicaCreateForm');"  />
+									<button onclick="Registro_de_Asistencia_TelefonicaGetBusinessRule('', 'Al Guardar o al Cerrar la Pantalla', '2')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Registro_de_Asistencia_TelefonicaBusinessRule-form">
+                                        <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleBeforeSave">
+                                            <i class="fa fa-cogs fa-spin"></i>
+                                        </a>
+                                    </button>                                    
+
+                                    <input type="button" value="@Resources.Resources.GuardarNuevo" id="Registro_de_Asistencia_TelefonicaGuardarYNuevo" onclick="return checkClientValidate('Registro_de_Asistencia_TelefonicaCreateForm');" data-bind="    click: saveAndNew" class="btn btn-w-m btn-success btn_saveandnew"  />
+                                    <input type="button" value="@Resources.Resources.GuardarCopia" id="Registro_de_Asistencia_TelefonicaGuardarYCopia" onclick="return checkClientValidate('Registro_de_Asistencia_TelefonicaCreateForm');" data-bind="    click: saveAndNew" class="btn btn-w-m btn-success btn_saveandcopy"  />
+                                    if (permission.Configure)
+                                    {
+                                        <a title="@Resources.Resources.Configure" id="ConfigureSave" name="ConfigureSave" onclick="SaveElementAttributes()" class="btn btn-success btn-configure">@Resources.Resources.Configure</a>
+                                    }
+                                }
+
+                                <input type="hidden" id="hdnConfigureType" />
+								<input type="hidden" id="hdnRegistro_de_Asistencia_TelefonicaBusinessRuleFieldId" />
+                                <input type="hidden" id="hdnRegistro_de_Asistencia_TelefonicaBusinessRuleFieldName" />
+                                <input type="hidden" id="hdnRegistro_de_Asistencia_TelefonicaBusinessRuleAttribute" />
+
+                                <input type="button" value="@Resources.Resources.Cancelar" id="Registro_de_Asistencia_TelefonicaCancelar" name="Registro_de_Asistencia_TelefonicaCancelar" class="btn btn-danger noConsult btn_cancelar" data-bind="click: cancel" tabindex="16" />
+
+                                <button onclick="Registro_de_Asistencia_TelefonicaGetBusinessRule('', 'Al Cancelar', '4')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Registro_de_Asistencia_TelefonicaBusinessRule-form">
+                                    <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+                                        <i class="fa fa-cogs fa-spin"></i>
+                                    </a>
+                                </button>
+                            </div>
+						</div>
+					</div>
+                }
+        </div>
+    </div>
+</div>
+<input id="hdnApplicationDirectory" type="hidden" value="@Url.Content("~/")" />
+
+@section Styles {
+<link href="@Url.Content("~/Content/BootstrapDatePicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+    @Styles.Render("~/plugins/awesomeCheckboxStyles")
+    @Styles.Render("~/plugins/select2Styles")
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+    .select2-results{background-color:#fff;}
+    .select2-container .select2-dropdown{height:auto !important;}
+
+    div.dataTables_info {
+        display: inline-block;
+        float: right;
+    }
+        /*i {
+        font-size: 25px !important;
+        display: block;
+        color: #676a6c;
+        margin-left: 6px;
+        margin-right: 6px;
+    }*/
+
+    .fullWidth {
+        width: 100%;
+    }
+</style>
+}
+
+<script type="text/javascript" src="~/Uploads/Scripts/Registro_de_Asistencia_Telefonica.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Scripts/Custom/Registro_de_Asistencia_TelefonicaGeneral.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/Registro_de_Asistencia_TelefonicaCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
+
+@section Scripts {
+
+
+    <script type="text/javascript">
+        
+
+
+	function GetTraduction(text) {
+         switch (text.toLowerCase()) {
+            case 'edit':
+                return "@Resources.Resources.Edit";          
+            case 'delete':
+                return "@Resources.Resources.Delete";               
+            case 'required':
+                return "@Resources.Resources.Required";              
+            case 'notrequired':
+                return "@Resources.Resources.NotRequired";           
+            case 'enabled':
+                return "@Resources.Resources.Enabled";         
+            case 'disabled':
+                return "@Resources.Resources.Disabled";           
+            case 'visible':
+                return "@Resources.Resources.Visible";            
+            case 'botvisible':
+                return "@Resources.Resources.InVisible";
+            case 'messagednoinvisible':
+                return "@Resources.Resources.messagedNoInVisible";
+            case 'messagednoreadonly':
+                return "@Resources.Resources.messagedNoReadOnly";
+            case 'defaultvalue':
+                return "@Resources.Resources.DefaultValue";
+            case 'helptext':
+                return "@Resources.Resources.HelpText";                     
+            default:
+                return "";
+        }
+    }
+	
+	    var isPartial = ('@ViewBag.IsPartial' == 'True');
+        var isMR = ('@ViewBag.isMR' == 'True');
+        var nameMR = '@ViewBag.nameMR';
+		var nameAttribute = '@ViewBag.nameAttribute';
+		var Tab_Datos_Generales = true;
+
+
+        $(document).ready(function () {
+            $('#ObjectId').val('44458');
+		   
+		   
+			
+             @if(ViewBag.IsNew)
+            { 
+                <text>$('input:checkbox').prop('checked', false);</text>
+            }
+			else
+            {
+                <text>
+				if (Tab_Datos_Generales)
+					Fill_Datos_Generales();
+
+
+                </text>
+             }
+             EjecutarValidacionesAlComienzo();
+                         $('#Fecha_de_llamada').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            $('#Hora_de_llamada').clockpicker();
+            $('#Hora_inicio_de_la_Llamada').clockpicker();
+            $('#Hora_fin_de_la_Llamada').clockpicker();
+
+
+            initiateUIControls();
+			$('a').tooltip();
+			$('.loading').css('display', 'none');
+			       var AutoCompleteSuscripcionData =[];
+       $(".AutoCompleteRegistro_de_Asistencia_Telefonica_Suscripcion").select2({
+            dropdownCssClass: 'fullWidth form-control',
+            ajax: {
+                url: "@Url.Content("~/Frontal/Registro_de_Asistencia_Telefonica/GetRegistro_de_Asistencia_Telefonica_Suscripcion_Planes_de_Suscripcion")",
+		cache: false,
+                dataType: 'json',
+                async: true,
+                global: false,
+                data: function (params) {
+                    return {
+                        query: params.term, 
+                    };
+                },
+                processResults: function (data, params) {
+                    params.page = params.page || 1;
+
+                    return {
+                        results: GetAutoCompleteRegistro_de_Asistencia_Telefonica_Suscripcion_Planes_de_SuscripcionData(data),
+                        pagination: {
+                            more: false 
+                        }
+                    };
+                }
+            },
+            escapeMarkup: function (markup) { return markup; }, 
+            minimumInputLength: 1,
+        });
+        var $eventExternal = $(".AutoCompleteRegistro_de_Asistencia_Telefonica_Suscripcion");
+        $eventExternal.on("select2:open", function (e) {
+            $('.select2-search__field').val('');
+            $('.select2-search__field').keyup();
+        });
+
+
+        });
+
+
+
+        function initiateUIControls() {
+             $('.gridDatePicker').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            //Time Picker
+            $('.gridTimePicker').clockpicker();
+            $('.inputMoney').inputmask("currency", { greedy: false, prefix: "", rightAlign: false });
+			$('td.inputMoney').inputmask("currency", { greedy: false, prefix: "$ ", rightAlign: false });
+			$('td input.inputMoney').inputmask("currency", { greedy: false, prefix: "$ ", rightAlign: false });
+
+        }
+
+    </script>
+
+<script type="text/javascript">
+
+
+   function GetCatalogPopup(catalog, nameAttribute, isMR, nameMR) {
+        if (!isMR)
+            var url = "@Url.Action("Create", "Catalog", new { Module_Id = "1", isPartial = true, nameAttribute = "AttributoNombre" })";
+        else
+            var url = "@Url.Action("Create", "Catalog", new { Module_Id = "1", isPartial = true, isMR = true, nameMR = "Multirenglon",nameAttribute= "AttributoNombre" })";
+
+        url = url.replace("Catalog", catalog).replace("Multirenglon", nameMR).replace("AttributoNombre", nameAttribute);
+
+        window.open(htmlDecode(url), '_blank', 'left=200,top=100,width=850,height=550,toolbar=0,resizable=0');
+    }
+
+    function RefreshCatalog(catalog, control) {
+
+	 if ($('#' + control).hasClass('AutoComplete'))   {
+		   if ($('#' + control).attr("data-isfilter") == "true") {
+				eval(GetReglaFilter(control, $('#ObjectId').val()));
+				return;
+			}
+		}
+			
+			var url = '@Url.Content("~/Frontal/Registro_de_Asistencia_Telefonica/GetCatalogAll")';
+			url = url.replace(/Catalog/g, catalog);
+
+			$.ajax({
+				url: url,
+				async: true,
+				success:function(result)
+				{
+					addItemsToSelect($('#' + control), result);
+				},
+				error: function (result)
+				{
+					showNotification("@Resources.Resources.ErrorContactingServer", "error");
+				}
+			});
+		
+    }
+
+
+        function SendRegistro_de_Asistencia_TelefonicaData(callBack) {
+			
+					
+		 var arr = []; 
+		 $("form#CreateRegistro_de_Asistencia_Telefonica").find(':input').each(function( index ) {		 
+			if ($(this).prop('disabled')==true|| $(this).prop('disabled')=="disabled")
+			{		
+				arr.push($(this).attr('id')); 
+				$(this).prop('disabled', false);  	
+			}
+	    });
+		
+             var formData = new FormData($("form#CreateRegistro_de_Asistencia_Telefonica")[0]);
+			$.each( arr, function( key, value ) {
+			  $('#' +value).prop('disabled', true);
+			});
+			var id = $("#ReferenceFolio").val();
+            var isNew = $('#hdnIsNew').val();
+           
+			if (Tab_Datos_Generales && !checkClientValidate('Registro_de_Asistencia_TelefonicaCreateForm', 'Datos_Generales')) {
+				return false;
+			}						
+
+
+			
+			if (isNew == "True")
+            {
+                id = CreateID();
+            }
+			
+			
+			if (Tab_Datos_Generales)
+				Save_Datos_Generales(id);
+
+
+			showNotification("@Resources.Resources.SaveSuccess", "success");
+			callBack(id);
+            return true;
+        };
+		function CreateID()
+		{
+			var newId = 0;
+			$.ajax({
+				url: '@Url.Content("~/Frontal/Registro_de_Asistencia_Telefonica/CreateID")',
+				type: 'GET',
+				async: false,
+				success: function (result) {
+					if (result < 0) {
+						showNotification("@Resources.Resources.ErrorSave", "error");
+					} else {
+						newId = result;
+					}
+				},
+				error: function (result) {
+					showNotification("@Resources.Resources.ErrorContactingServer", "error");
+				},
+				cache: false,
+				contentType: false,
+				processData: false
+			});
+			return newId;
+		}
+		
+		function OpenRules()
+		{
+			$.get('@Url.Action("Index", "Business_Rule_Creation")', {}, function (data) {
+				$(".Registro_de_Asistencia_TelefonicaBusinessRuleModal").html(data);
+			});
+		}
+                function Registro_de_Asistencia_TelefonicaGetBusinessRule(FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null)
+			{
+			        $('#FieldId').val(FieldId);
+				$('#FieldName').val(FieldName);
+				$('#Attribute').val(Attribute);
+			}
+			$('#ObjectId').val('44458');
+			$('#Screen').val('Registro_de_Asistencia_Telefonica');
+			OpenRules();
+               }
+
+    var permission = {
+        Consult: '@permission.Consult' == 'True',
+        New: '@permission.New' == 'True',
+        Edit: '@permission.Edit' == 'True',
+        Delete: '@permission.Delete' == 'True',
+        Export: '@permission.Export' == 'True',
+        Print: '@permission.Print' == 'True',
+        Configure: '@permission.Configure' == 'True',
+    };
+
+    
+    //MR-var statusItems;
+    //MR-var stateItems;
+    //MR-var cityItems = [];
+    var isConsultMode = "@ViewBag.Consult" == "True";
+    Consult(isConsultMode);
+        function Consult(val) {
+            if (val) {
+                $(':input').attr('readonly', 'readonly');
+                $(':input').attr('disabled', 'true');
+                $('.noConsult').removeAttr('readonly');
+                $('.noConsult').removeAttr('disabled');
+            }
+        }
+
+    function Registro_de_Asistencia_TelefonicaBackToGrid() {
+        		if (isPartial)
+			window.close('', '_parent', '');
+        else
+			location.href = "@Url.Content("~/Frontal/Registro_de_Asistencia_Telefonica/")";
+    }
+	
+	function ReadScriptSettings(callback)
+    {
+        $.post("@Url.Content("~/Frontal/Registro_de_Asistencia_Telefonica/ReadScriptSettings")", function (data) {
+            mainElementObject = JSON.parse(data.MainElement);
+			if (data.ChildElement != null) {
+                childElementObject = JSON.parse(data.ChildElement);
+            }
+            callback();
+        });
+    }
+
+    function SaveSettingsWithoutReload() {
+        $.post("@Url.Content("~/Frontal/Registro_de_Asistencia_Telefonica/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+            //$('#hdnConfigureType').val("0");
+        }, "json");
+    }
+	
+        function SaveElementAttributes() {
+            if ($('#hdnConfigureType').val() == "1") {
+                $.post("@Url.Content("~/Frontal/Registro_de_Asistencia_Telefonica/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+                    $('#hdnConfigureType').val("0");
+                    location.reload(true);
+                }, "json");
+            } else {
+                $.post("@Url.Content("~/Frontal/Registro_de_Asistencia_Telefonica/ReadScriptSettings")", function (data) {
+                    mainElementObject = JSON.parse(data.MainElement);
+                    childElementObject = JSON.parse(data.ChildElement);
+
+                    for (var i = 0; i < mainElementObject.length; i++) {
+							var mainElementAttributes = '<div class="col-sm-2">';
+							mainElementAttributes += '<div class="displayAttributes requiredAttribute"><a class="requiredClick" title="' + (mainElementObject[i].IsRequired == true ? "@Resources.Resources.Required" : "@Resources.Resources.NotRequired") + '" onclick="setRequired(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsRequired == true ? "@Url.Content("~/Images/Required.png")" : "@Url.Content("~/Images/Not-Required.png")") + '" alt="" /></a></div>';
+							mainElementAttributes += '<div class="displayAttributes visibleAttribute"><a class="visibleClick" title="' + (mainElementObject[i].IsVisible == true ? "@Resources.Resources.Visible" : "@Resources.Resources.InVisible") + '" onclick="setVisible(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsVisible == true ? "@Url.Content("~/Images/Visible.png")" : "@Url.Content("~/Images/InVisible.png")") + '" alt="" /></a></div>';
+							mainElementAttributes += '<div class="displayAttributes readOnlyAttribute"><a class="readOnlyClick" title="' + (mainElementObject[i].IsReadOnly == true ? "@Resources.Resources.Disabled" : "@Resources.Resources.Enabled") + '" onclick="setReadOnly(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsReadOnly == true ? "@Url.Content("~/Images/Disabled.png")" : "@Url.Content("~/Images/Enabled.png")") + '" alt="" /></a></div>';
+							mainElementAttributes += '<div class="displayAttributes defaultValueAttribute"><a id="hlDefaultValue_' + i.toString() + '" class="defaultValueClick" title="' + (mainElementObject[i].DefaultValue) + '" onclick="setDefaultValue(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].DefaultValue != '' && mainElementObject[i].DefaultValue != null ? "@Url.Content("~/Images/default-value.png")" : "@Url.Content("~/Images/Not-Default-Value.png")") + '" alt="" /></a></div>';
+							mainElementAttributes += '<div class="displayAttributes helpTextAttribute"><a id="hlHelpText_' + i.toString() + '" class="helpTextClick" title="' + (mainElementObject[i].HelpText) + '" onclick="setHelpText(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].HelpText != '' && mainElementObject[i].HelpText != null ? "@Url.Content("~/Images/green-help.png")" : "@Url.Content("~/Images/red-help.jpg")") + '" alt="" /></a></div>';
+							mainElementAttributes += '</div>';
+							$('#' + mainElementObject[i].inputId).parent().closest('.form-group').show();
+
+							$('#' + mainElementObject[i].inputId).closest('.col-sm-8').after(mainElementAttributes);
+                  }
+					 if (childElementObject != null) {
+                        for (var j = 0; j < childElementObject.length; j++) {
+                            var table = childElementObject[j].table.trim();
+                            var grid = '#' + table + 'Grid';
+                            $(grid).find("thead").find("tr").find("th").each(function () {
+                                for (var i = 0; i < childElementObject[j].elements.length; i++) {
+                                    if ($(this).hasClass(childElementObject[j].elements[i].inputId + 'Header')) {
+                                        $(this).show();
+                                        $(this).parent().show();
+                                        $(this).append(returnAttributeHTML(childElementObject[j].elements[i], table, i));
+                                    }
+                                }
+                            });
+                        }
+
+                    }
+                     $('#ConfigureSave').text('@Html.Raw(Resources.Resources.Save  +" "+ Resources.Resources.Settings)');
+                    $('#hdnConfigureType').val("1");
+                });
+            }
+        }
+		$('#CreateRegistro_de_Asistencia_Telefonica').on('click', '.btnPopupBusinessRules', function () {
+			var fieldId = $(this).data('field-id');
+			var fieldName = $(this).data('field-name');
+			var attribute = $(this).data('attribute');
+			$('#FieldId').val(fieldId);
+			$('#FieldName').val(fieldName);
+			$('#Attribute').val(attribute);
+                        Registro_de_Asistencia_TelefonicaGetBusinessRule();
+		});
+		//Initialize HTML Editors            
+  var filebrowserBrowseUrl = '../../ckfinder/ckfinder.html';
+  var filebrowserImageBrowseUrl = '../../ckfinder/ckfinder.html?type=Images';
+  var filebrowserUploadUrl = '../../ckfinder/connector?command=QuickUpload&type=Files';
+  var filebrowserImageUploadUrl = '../../ckfinder/connector?command=QuickUpload&type=Images';
+		
+		
+		function Fill_Datos_Generales()
+        {
+            $.ajax({
+                url: "@Url.Content("~/Frontal/Registro_de_Asistencia_Telefonica/Get_Datos_Generales")?Id=" + $("#ReferenceFolio").val(),
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                                        $('#Folio').val(result.data.Folio);
+                    $('#Fecha_de_llamada').val(result.data.Fecha_de_llamada);
+                    $('#Hora_de_llamada').val(result.data.Hora_de_llamada);
+                    $('#Usuario_que_llama').val(result.data.Usuario_que_llama);
+                    $('#Dispositivo').val(result.data.Dispositivo);
+                    $('#Nombre_Paciente').val(result.data.Nombre_Paciente);
+                    var control = $('#Suscripcion');
+                    control.select2('open');
+                    $('.select2-search__field').val(result.data.Suscripcion).trigger('keyup');
+                    control.select2('close');
+                    setTimeout(function () {
+	                    var data = eval('AutoComplete' + control.selector.replace('#', '') + 'Data');
+	                    control.select2({ data: data });
+	                    control.val(result.data.Suscripcion).trigger('change');
+                    }, 3000);
+                    $('#Numero_telefonico_del_Paciente').val(result.data.Numero_telefonico_del_Paciente);
+                    $('#Correo_del_Paciente').val(result.data.Correo_del_Paciente);
+                    $('#Telefono_de_Asistencia_marcado').val(result.data.Telefono_de_Asistencia_marcado);
+                    $('#Hora_inicio_de_la_Llamada').val(result.data.Hora_inicio_de_la_Llamada);
+                    $('#Hora_fin_de_la_Llamada').val(result.data.Hora_fin_de_la_Llamada);
+                    $('#Duracion_minutos').val(result.data.Duracion_minutos);
+                    $('#Asunto_de_la_Llamada').val(result.data.Asunto_de_la_Llamada);
+                    $('#Atendio').val(result.data.Atendio);
+                    $('#Comentarios').val(result.data.Comentarios);
+                    $('#Estatus').val(result.data.Estatus);
+
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+		
+		function Save_Datos_Generales(newId) {
+			var data = new FormData();
+			data.append('Folio', newId);
+			                data.append('Fecha_de_llamada', $('#Fecha_de_llamada').val());
+                data.append('Hora_de_llamada', $('#Hora_de_llamada').val());
+                data.append('Usuario_que_llama', $('#Usuario_que_llama').val());
+                data.append('Dispositivo', $('#Dispositivo').val());
+                data.append('Nombre_Paciente', $('#Nombre_Paciente').val());
+                data.append('Suscripcion', $('#Suscripcion').val());
+                data.append('Numero_telefonico_del_Paciente', $('#Numero_telefonico_del_Paciente').val());
+                data.append('Correo_del_Paciente', $('#Correo_del_Paciente').val());
+                data.append('Telefono_de_Asistencia_marcado', $('#Telefono_de_Asistencia_marcado').val());
+                data.append('Hora_inicio_de_la_Llamada', $('#Hora_inicio_de_la_Llamada').val());
+                data.append('Hora_fin_de_la_Llamada', $('#Hora_fin_de_la_Llamada').val());
+                data.append('Duracion_minutos', $('#Duracion_minutos').val());
+                data.append('Asunto_de_la_Llamada', $('#Asunto_de_la_Llamada').val());
+                data.append('Atendio', $('#Atendio').val());
+                data.append('Comentarios', $('#Comentarios').val());
+                data.append('Estatus', $('#Estatus').val());
+
+			$.ajax({
+				url: '@Url.Content("~/Frontal/Registro_de_Asistencia_Telefonica/Post_Datos_Generales")',
+				type: 'POST',
+				data: data,
+				async: false,
+				dataType: "json",
+				contentType: false,
+				processData: false,
+				success: function (result) {
+					if (result < 0) {
+						showNotification("@Resources.Resources.ErrorSave", "Error al guardar Datos_Generales");
+					} else {
+						newId = result;
+                    
+					}
+				},
+				error: function (result) {
+					showNotification("@Resources.Resources.ErrorContactingServer", "Error al guardar Datos_Generales");
+				},
+				cache: false
+			});
+		}
+
+
+    </script>
+}
+    <input type="hidden" id="FieldId" name="FieldId" value="" />
+    <input type="hidden" id="FieldName" name="FieldName" value="" />
+    <input type="hidden" id="ObjectId" name="ObjectId" value="" />
+    <input type="hidden" id="Attribute" name="Attribute" value="" />
+    <input type="hidden" id="Screen" name="Screen" value="" />
+     <input type="hidden" id="Registro_de_Asistencia_Telefonica_cmbLabelSelect" name="Registro_de_Asistencia_Telefonica_cmbLabelSelect" value="@Resources.Resources.CmbSelect" />
+

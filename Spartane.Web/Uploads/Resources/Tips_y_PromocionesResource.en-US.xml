@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Tips_y_Promociones" value="Tips y Promociones"></resource>
+  <resource culture="en-US" name="Folio" value="Folio"></resource>
+  <resource culture="en-US" name="Fecha_de_registro" value="Fecha de registro"></resource>
+  <resource culture="en-US" name="Hora_de_Registro" value="Hora de Registro"></resource>
+  <resource culture="en-US" name="Usuario_que_Registra" value="Usuario que Registra"></resource>
+  <resource culture="en-US" name="Nombre" value="Nombre"></resource>
+  <resource culture="en-US" name="Descripcion_Corta" value="Descripción Corta"></resource>
+  <resource culture="en-US" name="Descripcion_Larga" value="Descripción Larga"></resource>
+  <resource culture="en-US" name="Imagen" value="Imagen"></resource>
+  <resource culture="en-US" name="Fecha_inicio_de_Vigencia" value="Fecha inicio de Vigencia"></resource>
+  <resource culture="en-US" name="Fecha_fin_de_Vigencia" value="Fecha fin de Vigencia"></resource>
+  <resource culture="en-US" name="Especialidad" value="Especialidad"></resource>
+  <resource culture="en-US" name="Especialista" value="Especialista"></resource>
+  <resource culture="en-US" name="Vendedor" value="Vendedor"></resource>
+  <resource culture="en-US" name="Estatus" value="Estatus"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Detalle_Actividades_Evento" value="Detalle Actividades Evento"></resource>
+  <resource culture="en-US" name="Folio" value="Folio"></resource>
+  <resource culture="en-US" name="Tipo_de_Actividad" value="Tipo de Actividad"></resource>
+  <resource culture="en-US" name="Especialidad" value="Especialidad"></resource>
+  <resource culture="en-US" name="Nombre_de_la_Actividad" value="Nombre de la Actividad"></resource>
+  <resource culture="en-US" name="Descripcion" value="Descripción"></resource>
+  <resource culture="en-US" name="Quien_imparte" value="¿Quién imparte?"></resource>
+  <resource culture="en-US" name="Dia" value="Día"></resource>
+  <resource culture="en-US" name="Hora_inicio" value="Hora inicio"></resource>
+  <resource culture="en-US" name="Hora_fin" value="Hora fin"></resource>
+  <resource culture="en-US" name="Tiene_receso" value="¿Tiene receso?"></resource>
+  <resource culture="en-US" name="Hora_inicio_receso" value="Hora inicio receso"></resource>
+  <resource culture="en-US" name="Hora_fin_receso" value="Hora fin receso"></resource>
+  <resource culture="en-US" name="Duracion_maxima_por_paciente_mins" value="Duración máxima por paciente (mins)"></resource>
+  <resource culture="en-US" name="Cupo_limitado" value="Cupo limitado"></resource>
+  <resource culture="en-US" name="Cupo_maximo" value="Cupo máximo"></resource>
+  <resource culture="en-US" name="Ubicacion" value="Ubicación"></resource>
+  <resource culture="en-US" name="Estatus_de_la_Actividad" value="Estatus de la Actividad"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

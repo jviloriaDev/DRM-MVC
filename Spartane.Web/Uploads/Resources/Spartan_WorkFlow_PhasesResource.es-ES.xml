@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Spartan_WorkFlow_Phases" value="Spartan WorkFlow Phases"></resource>
+  <resource culture="es-es" name="PhasesId" value="PhasesId"></resource>
+  <resource culture="es-es" name="Phase_Number" value="Phase Number"></resource>
+  <resource culture="es-es" name="Name" value="Name"></resource>
+  <resource culture="es-es" name="Phase_Type" value="Phase Type"></resource>
+  <resource culture="es-es" name="Type_of_Work_Distribution" value="Type of Work Distribution"></resource>
+  <resource culture="es-es" name="Type_Flow_Control" value="Type Flow Control"></resource>
+  <resource culture="es-es" name="Phase_Status" value="Phase Status"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

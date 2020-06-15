@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_BR_Modifications_Log" value="Spartan BR Modifications Log"></resource>
+  <resource culture="en-US" name="ModificationId" value="Id"></resource>
+  <resource culture="en-US" name="Modification_Date" value="Modification Date"></resource>
+  <resource culture="en-US" name="Modification_Hour" value="Modification Hour"></resource>
+  <resource culture="en-US" name="Modification_User" value="Modification User"></resource>
+  <resource culture="en-US" name="Comments" value="Comments"></resource>
+  <resource culture="en-US" name="Implementation_Code" value="Implementation Code"></resource>
+
+</resources>

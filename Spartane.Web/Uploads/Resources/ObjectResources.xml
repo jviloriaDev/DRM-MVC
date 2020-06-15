@@ -1,0 +1,1663 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Objects>
+  <Object Id="1" culture="en-us" value="Permissions" />
+  <Object Id="1" culture="es-es" value="Permisos" />
+  <Object Id="31754" culture="en-us" value="Formats List" />
+  <Object Id="31754" culture="es-es" value="Listado de Formatos" />
+  <Object Id="10" culture="en-us" value="Format Permissions" />
+  <Object Id="10" culture="es-es" value="Permisos de Formatos" />
+  <Object Id="11" culture="en-us" value="Report Permissions" />
+  <Object Id="11" culture="es-es" value="Permisos de Reportes" />
+  <Object Id="110" culture="en-us" value="Language Resources" />
+  <Object Id="110" culture="es-es" value="Recursos de Lenguaje" />
+  <Object Id="120" culture="en-us" value="Workflow List" />
+  <Object Id="120" culture="es-es" value="Listado de Flujos de Trabajo" />
+  <Object Id="31755" culture="en-us" value="Format Types" />
+  <Object Id="31755" culture="es-es" value="Tipos de Formatos" />
+  <Object Id="31756" culture="en-us" value="Spartan_Metadata" />
+  <Object Id="31756" culture="es-es" value="Spartan_Metadata" />
+  <Object Id="31870" culture="en-us" value="Format Configuration" />
+  <Object Id="31870" culture="es-es" value="Configuración de Formatos" />
+  <Object Id="31867" culture="en-us" value="Format Field" />
+  <Object Id="31867" culture="es-es" value="Campos de Formato" />
+  <Object Id="31869" culture="en-us" value="Format Permission Type" />
+  <Object Id="31869" culture="es-es" value="Tipos de Permisos de Formatos" />
+  <Object Id="31868" culture="en-us" value="Format Permissions" />
+  <Object Id="31868" culture="es-es" value="Permisos de Formatos" />
+  <Object Id="31953" culture="en-us" value="Report Configuration" />
+  <Object Id="31953" culture="es-es" value="Configuración de Reportes" />
+  <Object Id="32039" culture="en-us" value="Report Field Type" />
+  <Object Id="32039" culture="es-es" value="Tipos de Campo de Reporte" />
+  <Object Id="32035" culture="en-us" value="Report Fields Detail" />
+  <Object Id="32035" culture="es-es" value="Detalle de Campos de Reporte" />
+  <Object Id="32037" culture="en-us" value="Report Formats" />
+  <Object Id="32037" culture="es-es" value="Formatos de Reporte" />
+  <Object Id="32036" culture="en-us" value="Report Function" />
+  <Object Id="32036" culture="es-es" value="Funciones de Reportes" />
+  <Object Id="32038" culture="en-us" value="Report Order Type" />
+  <Object Id="32038" culture="es-es" value="Tipo de Orden de Reportes" />
+  <Object Id="31958" culture="en-us" value="Report Permission Type" />
+  <Object Id="31958" culture="es-es" value="Tipo de Permisos de Reporte" />
+  <Object Id="31957" culture="en-us" value="Report Permissions" />
+  <Object Id="31957" culture="es-es" value="Permisos de Reporte" />
+  <Object Id="31954" culture="en-us" value="Report Presentation Type" />
+  <Object Id="31954" culture="es-es" value="Tipo de Presentación de Reporte" />
+  <Object Id="31955" culture="en-us" value="Report Presentation View" />
+  <Object Id="31955" culture="es-es" value="Vista de Presentación de Reporte" />
+  <Object Id="31956" culture="en-us" value="Report Status" />
+  <Object Id="31956" culture="es-es" value="Estatus de Reporte" />
+  <Object Id="50000" culture="en-us" value="Attribute Control Type" />
+  <Object Id="50000" culture="es-es" value="Tipo de Conrol de Atributo" />
+  <Object Id="50001" culture="en-us" value="Attribute Type" />
+  <Object Id="50001" culture="es-es" value="Tipo de Atributo" />
+  <Object Id="50002" culture="en-us" value="Business Rule" />
+  <Object Id="50002" culture="es-es" value="Regla de Negocio" />
+  <Object Id="140" culture="en-us" value="Business Rule Action" />
+  <Object Id="140" culture="es-es" value="Acciones" />
+  <Object Id="152" culture="en-us" value="Business Rule Action Attribute Restrictions Detail" />
+  <Object Id="152" culture="es-es" value="Restricciones de Atributo" />
+  <Object Id="141" culture="en-us" value="Business Rule Action Classification" />
+  <Object Id="141" culture="es-es" value="Clasificación de Acciones" />
+  <Object Id="151" culture="en-us" value="Business Rule Action Configuration Detail" />
+  <Object Id="151" culture="es-es" value="Configuración de Acciones" />
+  <Object Id="153" culture="en-us" value="Business Rule Action Event Restrictions Detail" />
+  <Object Id="153" culture="es-es" value="Restricciones de Eventos" />
+  <Object Id="50008" culture="en-us" value="Business Rule Action False Detail" />
+  <Object Id="50008" culture="es-es" value="Acciones False" />
+  <Object Id="154" culture="en-us" value="Business Rule Action Operation Restrictions Detail" />
+  <Object Id="154" culture="es-es" value="Restricciones de Operaciones" />
+  <Object Id="142" culture="en-us" value="Business Rule Action Parameter Type" />
+  <Object Id="142" culture="es-es" value="Tipos de Parámetros" />
+  <Object Id="50011" culture="en-us" value="Business Rule Action Result" />
+  <Object Id="50011" culture="es-es" value="Resultado de Acción" />
+  <Object Id="50012" culture="en-us" value="Business Rule Actions True Detail" />
+  <Object Id="50012" culture="es-es" value="Business Rule Actions True Detail" />
+  <Object Id="143" culture="en-us" value="Business Rule Condition" />
+  <Object Id="143" culture="es-es" value="Business Rule Condition" />
+  <Object Id="144" culture="en-us" value="Business Rule Condition Operator" />
+  <Object Id="144" culture="es-es" value="Condición de Operador" />
+  <Object Id="50015" culture="en-us" value="Business Rule Conditions Detail" />
+  <Object Id="50015" culture="es-es" value="Detalle de Condiciones" />
+  <Object Id="145" culture="en-us" value="Business Rule Operation" />
+  <Object Id="145" culture="es-es" value="Operación" />
+  <Object Id="50017" culture="en-us" value="Business Rule Operation Detail" />
+  <Object Id="50017" culture="es-es" value="Detalle de Operaciones" />
+  <Object Id="146" culture="en-us" value="Business Rule Operator Type" />
+  <Object Id="146" culture="es-es" value="Tipos de Operadores" />
+  <Object Id="147" culture="en-us" value="Business Rule Presentation Control Type" />
+  <Object Id="147" culture="es-es" value="Presentación de Tipo de Control" />
+  <Object Id="148" culture="en-us" value="Business Rule Process Event" />
+  <Object Id="148" culture="es-es" value="Eventos de Proceso" />
+  <Object Id="50021" culture="en-us" value="Business Rule Process Event Detail" />
+  <Object Id="50021" culture="es-es" value="Detalle de Eventos de Proceso" />
+  <Object Id="149" culture="en-us" value="Business Rule Scope" />
+  <Object Id="149" culture="es-es" value="Ámbito" />
+  <Object Id="50023" culture="en-us" value="Business Rule Scope Detail" />
+  <Object Id="50023" culture="es-es" value="Detalle de Ámbitos" />
+  <Object Id="150" culture="en-us" value="Business Rule Status" />
+  <Object Id="150" culture="es-es" value="Estatus" />
+  <Object Id="50025" culture="en-us" value="Spartan BR Modifications Log" />
+  <Object Id="50025" culture="es-es" value="Spartan BR Modifications Log" />
+  <Object Id="100" culture="en-us" value="Users" />
+  <Object Id="100" culture="es-es" value="Usuarios" />
+  <Object Id="101" culture="en-us" value="User Roles" />
+  <Object Id="101" culture="es-es" value="Roles de Usuario" />
+  <Object Id="103" culture="en-us" value="User Role Status" />
+  <Object Id="103" culture="es-es" value="Estatus de Rol de Usuario" />
+  <Object Id="102" culture="en-us" value="User Status" />
+  <Object Id="102" culture="es-es" value="Estatus de Usuario" />
+  <Object Id="135" culture="en-us" value="Change Password Autorization" />
+  <Object Id="135" culture="es-es" value="Autorización de Cambio de Password" />
+  <Object Id="136" culture="en-us" value="Settings" />
+  <Object Id="136" culture="es-es" value="Configuraciones" />
+  <Object Id="137" culture="en-us" value="User Historical Password" />
+  <Object Id="137" culture="es-es" value="Histórico de Passwords" />
+  <Object Id="35351" culture="en-us" value="Business Rule Creation" />
+  <Object Id="35351" culture="es-es" value="Creación de Reglas de Negocio" />
+  <Object Id="35350" culture="en-us" value="Spartan BR Complexity" />
+  <Object Id="35350" culture="es-es" value="Complejidad" />
+  <Object Id="35347" culture="en-us" value="Spartan BR Peer Review" />
+  <Object Id="35347" culture="es-es" value="Revisión por Pares" />
+  <Object Id="35349" culture="en-us" value="Spartan BR Rejection Reason" />
+  <Object Id="35349" culture="es-es" value="Razones de Rechazo" />
+  <Object Id="35348" culture="en-us" value="Spartan BR Testing" />
+    <Object Id="34957" culture="es-es" value="Bitacora Sql" />
+  <Object Id="34957" culture="en-us" value="Log Sql" />
+  
+<Object Id="44290" culture="en-us" value="Antigüedad Ejercicios" />
+<Object Id="44290" culture="es-es" value="Antigüedad Ejercicios" />
+<Object Id="44318" culture="en-us" value="Bebidas" />
+<Object Id="44318" culture="es-es" value="Bebidas" />
+<Object Id="43965" culture="en-us" value="Calorias" />
+<Object Id="43965" culture="es-es" value="Calorias" />
+<Object Id="44323" culture="en-us" value="Cantidad Comidas" />
+<Object Id="44323" culture="es-es" value="Cantidad Comidas" />
+<Object Id="43963" culture="en-us" value="Categorias de platillos" />
+<Object Id="43963" culture="es-es" value="Categorias de platillos" />
+<Object Id="44302" culture="en-us" value="Clasificación Ingredientes" />
+<Object Id="44302" culture="es-es" value="Clasificación Ingredientes" />
+<Object Id="44341" culture="en-us" value="Detalle Antecedentes Familiares" />
+<Object Id="44341" culture="es-es" value="Detalle Antecedentes Familiares" />
+<Object Id="44342" culture="en-us" value="Detalle Antecedentes No Patológicos" />
+<Object Id="44342" culture="es-es" value="Detalle Antecedentes No Patológicos" />
+<Object Id="43968" culture="en-us" value="Detalle de Ingredientes" />
+<Object Id="43968" culture="es-es" value="Detalle de Ingredientes" />
+<Object Id="44309" culture="en-us" value="Detalle de Padecimientos" />
+<Object Id="44309" culture="es-es" value="Detalle de Padecimientos" />
+<Object Id="44344" culture="en-us" value="Detalle Exámenes Laboratorio" />
+<Object Id="44344" culture="es-es" value="Detalle Exámenes Laboratorio" />
+<Object Id="44336" culture="en-us" value="Detalle Preferencia Bebidas" />
+<Object Id="44336" culture="es-es" value="Detalle Preferencia Bebidas" />
+<Object Id="44345" culture="en-us" value="Detalle Terapia Hormonal" />
+<Object Id="44345" culture="es-es" value="Detalle Terapia Hormonal" />
+<Object Id="43962" culture="en-us" value="Dias de la semana" />
+<Object Id="43962" culture="es-es" value="Dias de la semana" />
+<Object Id="43964" culture="en-us" value="Dificultad de platillos" />
+<Object Id="43964" culture="es-es" value="Dificultad de platillos" />
+<Object Id="44310" culture="en-us" value="Duración Ejercicio" />
+<Object Id="44310" culture="es-es" value="Duración Ejercicio" />
+<Object Id="44289" culture="en-us" value="Ejercicios" />
+<Object Id="44289" culture="es-es" value="Ejercicios" />
+<Object Id="44282" culture="en-us" value="Empresas" />
+<Object Id="44282" culture="es-es" value="Empresas" />
+<Object Id="44291" culture="en-us" value="Enfermedades" />
+<Object Id="44291" culture="es-es" value="Enfermedades" />
+<Object Id="44286" culture="en-us" value="Estado" />
+<Object Id="44286" culture="es-es" value="Estado" />
+<Object Id="44331" culture="en-us" value="Estado Civil" />
+<Object Id="44331" culture="es-es" value="Estado Civil" />
+<Object Id="44330" culture="en-us" value="Estado de Animo" />
+<Object Id="44330" culture="es-es" value="Estado de Animo" />
+<Object Id="44335" culture="en-us" value="Estatus Paciente" />
+<Object Id="44335" culture="es-es" value="Estatus Paciente" />
+<Object Id="44316" culture="en-us" value="Estatus Padecimiento" />
+<Object Id="44316" culture="es-es" value="Estatus Padecimiento" />
+<Object Id="44312" culture="en-us" value="Frecuencia Ejercicio" />
+<Object Id="44312" culture="es-es" value="Frecuencia Ejercicio" />
+<Object Id="44334" culture="en-us" value="Frecuencia Sustancias" />
+<Object Id="44334" culture="es-es" value="Frecuencia Sustancias" />
+<Object Id="44343" culture="en-us" value="Indicadores Laboratorio" />
+<Object Id="44343" culture="es-es" value="Indicadores Laboratorio" />
+<Object Id="43960" culture="en-us" value="Ingredientes" />
+<Object Id="43960" culture="es-es" value="Ingredientes" />
+<Object Id="43971" culture="en-us" value="Marca" />
+<Object Id="43971" culture="es-es" value="Marca" />
+<Object Id="44283" culture="en-us" value="Medicos" />
+<Object Id="44283" culture="es-es" value="Medicos" />
+<Object Id="44326" culture="en-us" value="Nivel de Satisfacción" />
+<Object Id="44326" culture="es-es" value="Nivel de Satisfacción" />
+<Object Id="44339" culture="en-us" value="Objetivos" />
+<Object Id="44339" culture="es-es" value="Objetivos" />
+<Object Id="44337" culture="en-us" value="Pacientes" />
+<Object Id="44337" culture="es-es" value="Pacientes" />
+<Object Id="44315" culture="en-us" value="Padecimientos" />
+<Object Id="44315" culture="es-es" value="Padecimientos" />
+<Object Id="44285" culture="en-us" value="Pais" />
+<Object Id="44285" culture="es-es" value="Pais" />
+<Object Id="44332" culture="en-us" value="Parentesco" />
+<Object Id="44332" culture="es-es" value="Parentesco" />
+<Object Id="44329" culture="en-us" value="Periodo del día" />
+<Object Id="44329" culture="es-es" value="Periodo del día" />
+<Object Id="43967" culture="en-us" value="Platillos" />
+<Object Id="43967" culture="es-es" value="Platillos" />
+<Object Id="44325" culture="en-us" value="Preferencias Entrecomidas" />
+<Object Id="44325" culture="es-es" value="Preferencias Entrecomidas" />
+<Object Id="44322" culture="en-us" value="Preferencias Grasas" />
+<Object Id="44322" culture="es-es" value="Preferencias Grasas" />
+<Object Id="44324" culture="en-us" value="Preferencias Preparación" />
+<Object Id="44324" culture="es-es" value="Preferencias Preparación" />
+<Object Id="44321" culture="en-us" value="Preferencias Sal" />
+<Object Id="44321" culture="es-es" value="Preferencias Sal" />
+<Object Id="43970" culture="en-us" value="Presentación" />
+<Object Id="43970" culture="es-es" value="Presentación" />
+<Object Id="44319" culture="en-us" value="Rango Consumo Bebidas" />
+<Object Id="44319" culture="es-es" value="Rango Consumo Bebidas" />
+<Object Id="44288" culture="en-us" value="Rango de Horas" />
+<Object Id="44288" culture="es-es" value="Rango de Horas" />
+<Object Id="44280" culture="en-us" value="Registro" />
+<Object Id="44280" culture="es-es" value="Registro" />
+<Object Id="44327" culture="en-us" value="Respuesta Lógica" />
+<Object Id="44327" culture="es-es" value="Respuesta Lógica" />
+<Object Id="44346" culture="en-us" value="Resultados IMC" />
+<Object Id="44346" culture="es-es" value="Resultados IMC" />
+<Object Id="44287" culture="en-us" value="Selección de Rangos" />
+<Object Id="44287" culture="es-es" value="Selección de Rangos" />
+<Object Id="43966" culture="en-us" value="Sexo" />
+<Object Id="43966" culture="es-es" value="Sexo" />
+<Object Id="44320" culture="en-us" value="Suplementos" />
+<Object Id="44320" culture="es-es" value="Suplementos" />
+<Object Id="44333" culture="en-us" value="Sustancias" />
+<Object Id="44333" culture="es-es" value="Sustancias" />
+<Object Id="44314" culture="en-us" value="Tiempo Padecimiento" />
+<Object Id="44314" culture="es-es" value="Tiempo Padecimiento" />
+<Object Id="43961" culture="en-us" value="Tiempos de Comida" />
+<Object Id="43961" culture="es-es" value="Tiempos de Comida" />
+<Object Id="44317" culture="en-us" value="Tipo de Dieta" />
+<Object Id="44317" culture="es-es" value="Tipo de Dieta" />
+<Object Id="44311" culture="en-us" value="Tipo de Registro" />
+<Object Id="44311" culture="es-es" value="Tipo de Registro" />
+<Object Id="44313" culture="en-us" value="Tipo Ejercicio" />
+<Object Id="44313" culture="es-es" value="Tipo Ejercicio" />
+<Object Id="44328" culture="en-us" value="Tipo Modificación Alimentos" />
+<Object Id="44328" culture="es-es" value="Tipo Modificación Alimentos" />
+<Object Id="44281" culture="en-us" value="Tipo Paciente" />
+<Object Id="44281" culture="es-es" value="Tipo Paciente" />
+<Object Id="43958" culture="en-us" value="Unidades de Medida" />
+<Object Id="43958" culture="es-es" value="Unidades de Medida" />
+<Object Id="44352" culture="en-us" value="Consultas" />
+<Object Id="44352" culture="es-es" value="Consultas" />
+<Object Id="44376" culture="en-us" value="Estatus" />
+<Object Id="44376" culture="es-es" value="Estatus" />
+<Object Id="44377" culture="en-us" value="Profesiones" />
+<Object Id="44377" culture="es-es" value="Profesiones" />
+<Object Id="44378" culture="en-us" value="Especialidades" />
+<Object Id="44378" culture="es-es" value="Especialidades" />
+<Object Id="44379" culture="en-us" value="Especialistas" />
+<Object Id="44379" culture="es-es" value="Especialistas" />
+<Object Id="44380" culture="en-us" value="Detalle Identificación Oficial Médicos" />
+<Object Id="44380" culture="es-es" value="Detalle Identificación Oficial Médicos" />
+<Object Id="44381" culture="en-us" value="Identificaciones Oficiales" />
+<Object Id="44381" culture="es-es" value="Identificaciones Oficiales" />
+<Object Id="44382" culture="en-us" value="Régimenes Fiscales" />
+<Object Id="44382" culture="es-es" value="Régimenes Fiscales" />
+<Object Id="44385" culture="en-us" value="Interpretación de porcentaje de grasa corporal" />
+<Object Id="44385" culture="es-es" value="Interpretación de porcentaje de grasa corporal" />
+<Object Id="44386" culture="en-us" value="Interpretación IMC" />
+<Object Id="44386" culture="es-es" value="Interpretación IMC" />
+<Object Id="44387" culture="en-us" value="Interpretación corporal" />
+<Object Id="44387" culture="es-es" value="Interpretación corporal" />
+<Object Id="44388" culture="en-us" value="Interpretación distribución grasa corporal" />
+<Object Id="44388" culture="es-es" value="Interpretación distribución grasa corporal" />
+<Object Id="44389" culture="en-us" value="Interpretación Índice cintura - cadera" />
+<Object Id="44389" culture="es-es" value="Interpretación Índice cintura - cadera" />
+<Object Id="44390" culture="en-us" value="Interpretación consumo de agua" />
+<Object Id="44390" culture="es-es" value="Interpretación consumo de agua" />
+<Object Id="44391" culture="en-us" value="Interpretación Frecuencia cardíaca en Esfuerzo" />
+<Object Id="44391" culture="es-es" value="Interpretación Frecuencia cardíaca en Esfuerzo" />
+<Object Id="44392" culture="en-us" value="Interpretación Dificultad de Rutina de Ejercicios" />
+<Object Id="44392" culture="es-es" value="Interpretación Dificultad de Rutina de Ejercicios" />
+<Object Id="44393" culture="en-us" value="Interpretación Calorías" />
+<Object Id="44393" culture="es-es" value="Interpretación Calorías" />
+<Object Id="44394" culture="en-us" value="Tipo de Plan de Suscripción" />
+<Object Id="44394" culture="es-es" value="Tipo de Plan de Suscripción" />
+<Object Id="44395" culture="en-us" value="Duración de Planes de Suscripción" />
+<Object Id="44395" culture="es-es" value="Duración de Planes de Suscripción" />
+<Object Id="44396" culture="en-us" value="Planes de Suscripción" />
+<Object Id="44396" culture="es-es" value="Planes de Suscripción" />
+<Object Id="44397" culture="en-us" value="Estatus por Suscripción" />
+<Object Id="44397" culture="es-es" value="Estatus por Suscripción" />
+<Object Id="44398" culture="en-us" value="Detalle Suscripciones Paciente" />
+<Object Id="44398" culture="es-es" value="Detalle Suscripciones Paciente" />
+<Object Id="44399" culture="en-us" value="Detalle Pagos Paciente" />
+<Object Id="44399" culture="es-es" value="Detalle Pagos Paciente" />
+<Object Id="44400" culture="en-us" value="Estatus de Suscripción" />
+<Object Id="44400" culture="es-es" value="Estatus de Suscripción" />
+<Object Id="44401" culture="en-us" value="Estatus de Pago" />
+<Object Id="44401" culture="es-es" value="Estatus de Pago" />
+<Object Id="44402" culture="en-us" value="Formas de Pago" />
+<Object Id="44402" culture="es-es" value="Formas de Pago" />
+<Object Id="44403" culture="en-us" value="Frecuencia de pago Pacientes" />
+<Object Id="44403" culture="es-es" value="Frecuencia de pago Pacientes" />
+<Object Id="44404" culture="en-us" value="Frecuencia de pago Empresas" />
+<Object Id="44404" culture="es-es" value="Frecuencia de pago Empresas" />
+<Object Id="44405" culture="en-us" value="Detalle Resultados Consultas" />
+<Object Id="44405" culture="es-es" value="Detalle Resultados Consultas" />
+<Object Id="44406" culture="en-us" value="Indicadores Consultas" />
+<Object Id="44406" culture="es-es" value="Indicadores Consultas" />
+<Object Id="44407" culture="en-us" value="Tipos de Especialistas" />
+<Object Id="44407" culture="es-es" value="Tipos de Especialistas" />
+<Object Id="44408" culture="en-us" value="Detalle Títulos Médicos" />
+<Object Id="44408" culture="es-es" value="Detalle Títulos Médicos" />
+<Object Id="44409" culture="en-us" value="Áreas Empresas" />
+<Object Id="44409" culture="es-es" value="Áreas Empresas" />
+<Object Id="44410" culture="en-us" value="Detalle Suscripciones Empresa" />
+<Object Id="44410" culture="es-es" value="Detalle Suscripciones Empresa" />
+<Object Id="44411" culture="en-us" value="Detalle Pagos Empresa" />
+<Object Id="44411" culture="es-es" value="Detalle Pagos Empresa" />
+<Object Id="44412" culture="en-us" value="Detalle Contactos Empresa" />
+<Object Id="44412" culture="es-es" value="Detalle Contactos Empresa" />
+<Object Id="44413" culture="en-us" value="Detalle Contratos Empresa" />
+<Object Id="44413" culture="es-es" value="Detalle Contratos Empresa" />
+<Object Id="44414" culture="en-us" value="Tipos de Contrato" />
+<Object Id="44414" culture="es-es" value="Tipos de Contrato" />
+<Object Id="44420" culture="en-us" value="Detalle Códigos Referidos" />
+<Object Id="44420" culture="es-es" value="Detalle Códigos Referidos" />
+<Object Id="44421" culture="en-us" value="Detalle Convenio Médicos Aseguradoras" />
+<Object Id="44421" culture="es-es" value="Detalle Convenio Médicos Aseguradoras" />
+<Object Id="44422" culture="en-us" value="Aseguradoras" />
+<Object Id="44422" culture="es-es" value="Aseguradoras" />
+<Object Id="44423" culture="en-us" value="Detalle Planes de Suscripción Especialistas" />
+<Object Id="44423" culture="es-es" value="Detalle Planes de Suscripción Especialistas" />
+<Object Id="44424" culture="en-us" value="Detalle Datos Bancarios Especialistas" />
+<Object Id="44424" culture="es-es" value="Detalle Datos Bancarios Especialistas" />
+<Object Id="44425" culture="en-us" value="Detalle Pagos Especialistas" />
+<Object Id="44425" culture="es-es" value="Detalle Pagos Especialistas" />
+<Object Id="44426" culture="en-us" value="Planes de Suscripción Especialistas" />
+<Object Id="44426" culture="es-es" value="Planes de Suscripción Especialistas" />
+<Object Id="44427" culture="en-us" value="Frecuencia de pago Especialistas" />
+<Object Id="44427" culture="es-es" value="Frecuencia de pago Especialistas" />
+<Object Id="44428" culture="en-us" value="Bancos" />
+<Object Id="44428" culture="es-es" value="Bancos" />
+<Object Id="44429" culture="en-us" value="Eventos" />
+<Object Id="44429" culture="es-es" value="Eventos" />
+<Object Id="44431" culture="en-us" value="Detalle Actividades Evento" />
+<Object Id="44431" culture="es-es" value="Detalle Actividades Evento" />
+<Object Id="44432" culture="en-us" value="Estatus Actividades Evento" />
+<Object Id="44432" culture="es-es" value="Estatus Actividades Evento" />
+<Object Id="44433" culture="en-us" value="Estatus Reservaciones Actividad" />
+<Object Id="44433" culture="es-es" value="Estatus Reservaciones Actividad" />
+<Object Id="44434" culture="en-us" value="Tipos de Actividades" />
+<Object Id="44434" culture="es-es" value="Tipos de Actividades" />
+<Object Id="44435" culture="en-us" value="Ubicaciones Eventos Empresa" />
+<Object Id="44435" culture="es-es" value="Ubicaciones Eventos Empresa" />
+<Object Id="44436" culture="en-us" value="Actividades del Evento" />
+<Object Id="44436" culture="es-es" value="Actividades del Evento" />
+<Object Id="44437" culture="en-us" value="Detalle Horarios Actividad" />
+<Object Id="44437" culture="es-es" value="Detalle Horarios Actividad" />
+<Object Id="44438" culture="en-us" value="Parentescos Empleados" />
+<Object Id="44438" culture="es-es" value="Parentescos Empleados" />
+<Object Id="44439" culture="en-us" value="Registro en Evento" />
+<Object Id="44439" culture="es-es" value="Registro en Evento" />
+<Object Id="44440" culture="en-us" value="Detalle Consulta Actividades Registro Evento" />
+<Object Id="44440" culture="es-es" value="Detalle Consulta Actividades Registro Evento" />
+<Object Id="44441" culture="en-us" value="Detalle Registro en Actividad Evento" />
+<Object Id="44441" culture="es-es" value="Detalle Registro en Actividad Evento" />
+<Object Id="44442" culture="en-us" value="Estatus Eventos" />
+<Object Id="44442" culture="es-es" value="Estatus Eventos" />
+<Object Id="44445" culture="en-us" value="MS Exclusión Ingredientes Paciente" />
+<Object Id="44445" culture="es-es" value="MS Exclusión Ingredientes Paciente" />
+<Object Id="44446" culture="en-us" value="Detalle Especialistas Pacientes" />
+<Object Id="44446" culture="es-es" value="Detalle Especialistas Pacientes" />
+<Object Id="44447" culture="en-us" value="Detalle Facturación Especialistas" />
+<Object Id="44447" culture="es-es" value="Detalle Facturación Especialistas" />
+<Object Id="44448" culture="en-us" value="Estatus Facturas" />
+<Object Id="44448" culture="es-es" value="Estatus Facturas" />
+<Object Id="44449" culture="en-us" value="Títulos Personales" />
+<Object Id="44449" culture="es-es" value="Títulos Personales" />
+<Object Id="44450" culture="en-us" value="Detalle Redes Sociales Especialista" />
+<Object Id="44450" culture="es-es" value="Detalle Redes Sociales Especialista" />
+<Object Id="44451" culture="en-us" value="Redes sociales" />
+<Object Id="44451" culture="es-es" value="Redes sociales" />
+<Object Id="44452" culture="en-us" value="MS Suscripciones Códigos Referidos Especialista" />
+<Object Id="44452" culture="es-es" value="MS Suscripciones Códigos Referidos Especialista" />
+<Object Id="44453" culture="en-us" value="Motivos" />
+<Object Id="44453" culture="es-es" value="Motivos" />
+<Object Id="44454" culture="en-us" value="Solicitud de Cita con Especialista" />
+<Object Id="44454" culture="es-es" value="Solicitud de Cita con Especialista" />
+<Object Id="44455" culture="en-us" value="Calificación" />
+<Object Id="44455" culture="es-es" value="Calificación" />
+<Object Id="44456" culture="en-us" value="Asuntos Asistencia Telefónica" />
+<Object Id="44456" culture="es-es" value="Asuntos Asistencia Telefónica" />
+<Object Id="44457" culture="en-us" value="Estatus Llamadas" />
+<Object Id="44457" culture="es-es" value="Estatus Llamadas" />
+<Object Id="44458" culture="en-us" value="Registro de Asistencia Telefónica" />
+<Object Id="44458" culture="es-es" value="Registro de Asistencia Telefónica" />
+<Object Id="44459" culture="en-us" value="Detalle Registro Beneficiarios Empresa" />
+<Object Id="44459" culture="es-es" value="Detalle Registro Beneficiarios Empresa" />
+<Object Id="44460" culture="en-us" value="Tipos de Empresa" />
+<Object Id="44460" culture="es-es" value="Tipos de Empresa" />
+<Object Id="44550" culture="en-us" value="Detalle Características Ingrediente" />
+<Object Id="44550" culture="es-es" value="Detalle Características Ingrediente" />
+<Object Id="44551" culture="en-us" value="Tipo de comida platillos" />
+<Object Id="44551" culture="es-es" value="Tipo de comida platillos" />
+<Object Id="44552" culture="en-us" value="Características platillo" />
+<Object Id="44552" culture="es-es" value="Características platillo" />
+<Object Id="44553" culture="en-us" value="Detalle Platillos" />
+<Object Id="44553" culture="es-es" value="Detalle Platillos" />
+<Object Id="44554" culture="en-us" value="Cantidad fracción platillos" />
+<Object Id="44554" culture="es-es" value="Cantidad fracción platillos" />
+<Object Id="44562" culture="en-us" value="Pantalla Francisco" />
+<Object Id="44562" culture="es-es" value="Pantalla Francisco" />
+<Object Id="44563" culture="en-us" value="Detalle pantalla Francisco" />
+<Object Id="44563" culture="es-es" value="Detalle pantalla Francisco" />
+<Object Id="44564" culture="en-us" value="Tips y Promociones" />
+<Object Id="44564" culture="es-es" value="Tips y Promociones" />
+<Object Id="44568" culture="en-us" value="Planes Alimenticios" />
+<Object Id="44568" culture="es-es" value="Planes Alimenticios" />
+<Object Id="44569" culture="en-us" value="Detalle Planes Alimenticios" />
+<Object Id="44569" culture="es-es" value="Detalle Planes Alimenticios" />
+<Object Id="44570" culture="en-us" value="Planes de Rutinas" />
+<Object Id="44570" culture="es-es" value="Planes de Rutinas" />
+<Object Id="44571" culture="en-us" value="Detalle Planes de Rutinas" />
+<Object Id="44571" culture="es-es" value="Detalle Planes de Rutinas" />
+<Object Id="44572" culture="en-us" value="Rutinas" />
+<Object Id="44572" culture="es-es" value="Rutinas" />
+<Object Id="44573" culture="en-us" value="Nivel de dificultad" />
+<Object Id="44573" culture="es-es" value="Nivel de dificultad" />
+<Object Id="44574" culture="en-us" value="Nivel de Intensidad" />
+<Object Id="44574" culture="es-es" value="Nivel de Intensidad" />
+<Object Id="44575" culture="en-us" value="Detalle Ejercicios Rutinas" />
+<Object Id="44575" culture="es-es" value="Detalle Ejercicios Rutinas" />
+<Object Id="44576" culture="en-us" value="Músculos" />
+<Object Id="44576" culture="es-es" value="Músculos" />
+<Object Id="44577" culture="en-us" value="Equipamiento para Ejercicios" />
+<Object Id="44577" culture="es-es" value="Equipamiento para Ejercicios" />
+<Object Id="44578" culture="en-us" value="MS Músculos" />
+<Object Id="44578" culture="es-es" value="MS Músculos" />
+<Object Id="44579" culture="en-us" value="MS Equipamiento para Ejercicios" />
+<Object Id="44579" culture="es-es" value="MS Equipamiento para Ejercicios" />
+<Object Id="44586" culture="en-us" value="Vendedores" />
+<Object Id="44586" culture="es-es" value="Vendedores" />
+<Object Id="44587" culture="en-us" value="Detalle Códigos de Referencia Vendedores" />
+<Object Id="44587" culture="es-es" value="Detalle Códigos de Referencia Vendedores" />
+<Object Id="44588" culture="en-us" value="Detalle Facturación Vendedores" />
+<Object Id="44588" culture="es-es" value="Detalle Facturación Vendedores" />
+<Object Id="44591" culture="en-us" value="Proveedores" />
+<Object Id="44591" culture="es-es" value="Proveedores" />
+<Object Id="44592" culture="en-us" value="Tipo de proveedor" />
+<Object Id="44592" culture="es-es" value="Tipo de proveedor" />
+<Object Id="44593" culture="en-us" value="Detalle Sucursales Proveedores" />
+<Object Id="44593" culture="es-es" value="Detalle Sucursales Proveedores" />
+<Object Id="44594" culture="en-us" value="Tipo de Sucursal" />
+<Object Id="44594" culture="es-es" value="Tipo de Sucursal" />
+<Object Id="44595" culture="en-us" value="Detalle Suscripción Red de Especialistas Proveedores" />
+<Object Id="44595" culture="es-es" value="Detalle Suscripción Red de Especialistas Proveedores" />
+<Object Id="44596" culture="en-us" value="Planes de Suscripción Proveedores" />
+<Object Id="44596" culture="es-es" value="Planes de Suscripción Proveedores" />
+<!--@@INCLUDE@@-->
+</Objects>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

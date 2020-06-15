@@ -1,0 +1,447 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Globalization
+@using Spartane.Core.Domain.Permission
+@using Spartane.Core.Domain.Spartane_File
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.MS_Suscripciones_Codigos_Referidos_EspecialistaModel
+@{
+
+
+    List<SelectListItem> varPlanes_de_Suscripcion_Plan_de_Suscripcion = null;
+    if (ViewBag.Planes_de_Suscripcions_Plan_de_Suscripcion != null)
+    { varPlanes_de_Suscripcion_Plan_de_Suscripcion = (List<SelectListItem>)ViewBag.Planes_de_Suscripcions_Plan_de_Suscripcion; }
+
+
+    Permission permission = ViewBag.Permission;
+}
+<div class="modal-dialog" style="width:95%;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">
+                Add MS Suscripciones Códigos Referidos Especialista
+                <button data-dismiss="modal" class="close" type="button" onclick="@(ViewBag.functionMode == 0 ? "MS_Suscripciones_Codigos_Referidos_EspecialistaRemoveAddRow("+ ViewBag.currentRowIndex +")" : "")"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            </h4>
+        </div>
+        <div class="modal-body scroll_content">
+            <div class="form-horizontal MS_Suscripciones_Codigos_Referidos_EspecialistaPop_@ViewBag.currentRowIndex">
+				<div class="modal fade in" id="dvAttributeValue" style="background-color:rgba(0, 0, 0, 0.7);">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-body">
+								<div class="form-group">
+									<label class="col-sm-3 control-label" id="lblAttributeType">Value</label>
+									<div class="col-sm-7">
+										<input type="text" title="Value" class="form-control" id="txtAttributeValue" />
+									</div>
+									<div class="col-sm-2">
+										<a class="btn btn-primary" onclick="SaveValue()">Submit</a>
+									</div>
+									<input type="hidden" id="hdnAttributType" />
+									<input type="hidden" id="hdnAttributElement" />
+									<input type="hidden" id="hdnAttributNumber" />
+									<input type="hidden" id="hdnElementType" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row wrapper border-bottom white-bg page-heading">
+
+					<div class="row">
+						<div class="col-lg-10">
+							<h2>
+								MS Suscripciones Códigos Referidos Especialista
+								<button onclick="MS_Suscripciones_Codigos_Referidos_EspecialistaGetBusinessRule('', 'Abrir Pantalla', '0')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#MS_Suscripciones_Codigos_Referidos_EspecialistaBusinessRule-form">
+									<a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+										<i class="fa fa-cogs fa-spin"></i>
+									</a>
+								</button>
+							</h2>
+							<ol class="breadcrumb">
+								<li>
+									<a href="@Url.Action("Index", "Home")">@Resources.Resources.Home</a>
+								</li>
+								<li class="">
+									<label>@Resources.MS_Suscripciones_Codigos_Referidos_EspecialistaResources.MS_Suscripciones_Codigos_Referidos_Especialista</label>
+								</li>
+								<li class="active">
+									<strong>@Resources.Resources.Create</strong>
+								</li>
+							</ol>
+						</div>
+						<div class="col-lg-2">
+
+							@{
+								if (Convert.ToInt32(Spartane.Web.SessionHelper.Role) == (int)Spartane.Core.Enums.SpartanRoleEnum.Admin)
+								{
+									<h2>&nbsp;</h2>
+									<button onclick="MS_Suscripciones_Codigos_Referidos_EspecialistaDisplayBusinessRule()" type="button" class="btn btn-info btn-lg displayBusinessProperyButton">
+										<i class="fa fa-cogs fa-spin"></i>
+									</button>
+
+									<div aria-hidden="true" class="modal fade in MS_Suscripciones_Codigos_Referidos_EspecialistaPropertyBusinessModal" id="MS_Suscripciones_Codigos_Referidos_EspecialistaPropertyBusinessModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h4 class="modal-title">
+														Property & Business Rules
+														<button class="close" type="button" onclick="$(this).parent().parent().parent().parent().parent().modal('hide');"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+													</h4>
+												</div>
+												<div class="modal-body">
+													<div class="row">
+														<div class="col-sm-12">
+															<a class="btn btn-primary full-width" data-toggle="modal" data-target="#PropertyModal-form" onclick="GetPropertyBag()">Properties</a>
+														</div>
+														<div class="clearfix col-sm-12">&nbsp;</div>
+														<div class="col-sm-12">
+															<a class="btn btn-primary full-width" data-toggle="modal" data-target="#MS_Suscripciones_Codigos_Referidos_EspecialistaBusinessRule-form" onclick="MS_Suscripciones_Codigos_Referidos_EspecialistaGetBusinessRule()">Business Rule</a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									 <div aria-hidden="true" data-backdrop="static" class="modal fade in MS_Suscripciones_Codigos_Referidos_EspecialistaPropertyModal" id="MS_Suscripciones_Codigos_Referidos_EspecialistaPropertyModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+									</div>
+									<div aria-hidden="true" data-backdrop="static" class="modal fade in MS_Suscripciones_Codigos_Referidos_EspecialistaBusinessRuleModal" id="MS_Suscripciones_Codigos_Referidos_EspecialistaBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+									</div>
+                                    <div aria-hidden="true" data-backdrop="static" class="modal fade in MS_Suscripciones_Codigos_Referidos_EspecialistaAddBusinessRuleModal" id="MS_Suscripciones_Codigos_Referidos_EspecialistaAddBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                                    </div>
+
+				
+								}
+							}
+						</div>
+					</div>
+
+				<div class="wrapper wrapper-content animated fadeInRight">
+					<div class="ibox float-e-margins">
+						<div class="ibox-content">
+							@using (Html.BeginForm("Post", "MS_Suscripciones_Codigos_Referidos_Especialista", FormMethod.Post, new { id = "CreateMS_Suscripciones_Codigos_Referidos_Especialista", @readonly = "true", @class = "form-horizontal", enctype = "multipart/form-data" }))
+							{
+								<span id="popupNotification"></span>
+								<div class="container-fluid MS_Suscripciones_Codigos_Referidos_EspecialistaCreateForm" id="viewmodeledit">
+							<div class="tabs-container">
+											<ul class="nav nav-tabs">
+				@@groupers@@
+											</ul>
+										<div class="tab-content">
+				<div class="form-group" id="divFolio">
+                                <label class="col-sm-2 control-label">@Resources.MS_Suscripciones_Codigos_Referidos_EspecialistaResources.Folio</label>
+                                <div class="col-sm-8" data-field-id="Folio" data-attribute="258891" data-field-name="@Resources.MS_Suscripciones_Codigos_Referidos_EspecialistaResources.Folio">
+                                    <label class="form-control" for="MS_Suscripciones_Codigos_Referidos_EspecialistaFolio" id="MS_Suscripciones_Codigos_Referidos_EspecialistaFolio">@Model.Folio</label>
+                                </div>
+                            </div>
+<div class="form-group" id="divPlan_de_Suscripcion">
+	<label class="col-sm-2 control-label">@Resources.MS_Suscripciones_Codigos_Referidos_EspecialistaResources.Plan_de_Suscripcion</label>
+	<div class="col-sm-8" data-field-id="Plan_de_Suscripcion" data-attribute="258893" data-field-name="@Resources.MS_Suscripciones_Codigos_Referidos_EspecialistaResources.Plan_de_Suscripcion">
+		<select class="form-control" data-val="true" data-val-number="The field Plan de Suscripción must be a number." data-val-required="The Plan de Suscripción field is required." id="MS_Suscripciones_Codigos_Referidos_EspecialistaPlan_de_Suscripcion" name="MS_Suscripciones_Codigos_Referidos_EspecialistaPlan_de_Suscripcion">
+			<option value=""></option>
+			@if (varPlanes_de_Suscripcion_Plan_de_Suscripcion != null){ 
+				foreach (var itemPlan_de_Suscripcion in varPlanes_de_Suscripcion_Plan_de_Suscripcion)
+				{
+					if (itemPlan_de_Suscripcion.Value == Convert.ToString(Model.Plan_de_Suscripcion))
+					{
+						<option value="@itemPlan_de_Suscripcion.Value" selected>@itemPlan_de_Suscripcion.Text</option>
+					}
+					else
+					{
+						<option value="@itemPlan_de_Suscripcion.Value">@itemPlan_de_Suscripcion.Text</option>
+					}
+				}
+			}
+		</select>
+	</div>
+</div>
+
+								</div>	
+							</div>
+									<br />
+											<div class="form-actions fluid">
+												<input type="hidden" value="@Model.Folio" id="ReferenceFolio" />
+												<input type="hidden" value="@Model.Folio" name="Folio" id="FolioId" />
+												@if (!ViewBag.Consult)
+												{
+													<div id="dvSaveJob" style="display:inline-block"></div>
+
+													<button type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton">
+														<i class="fa fa-cogs fa-spin"></i>
+													</button>
+													<a title="@Resources.Resources.Configure" id="MS_Suscripciones_Codigos_Referidos_EspecialistaConfigureSave" name="MS_Suscripciones_Codigos_Referidos_EspecialistaConfigureSave" onclick="SaveElementAttributes()" class="btn btn-success">@Resources.Resources.Configure</a>
+												}
+
+												<input type="hidden" id="hdnMS_Suscripciones_Codigos_Referidos_EspecialistaConfigureType" />
+												<input type="hidden" id="hdnMS_Suscripciones_Codigos_Referidos_EspecialistaBusinessRuleFieldId" />
+												<input type="hidden" id="hdnMS_Suscripciones_Codigos_Referidos_EspecialistaBusinessRuleFieldName" />
+												<input type="hidden" id="hdnMS_Suscripciones_Codigos_Referidos_EspecialistaBusinessRuleAttribute" />
+
+												<input data-dismiss="modal" type="button" value="@Resources.Resources.Cancelar" class="btn btn-danger noConsult" data-bind="click: cancel" tabindex="16" />
+
+												<button onclick="MS_Suscripciones_Codigos_Referidos_EspecialistaGetBusinessRule('', 'Al Cancelar', '3')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#MS_Suscripciones_Codigos_Referidos_EspecialistaBusinessRule-form">
+													<a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+														<i class="fa fa-cogs fa-spin"></i>
+													</a>
+												</button>
+											</div>
+										</div>
+								}
+
+							</div>
+						</div>
+					</div>
+				</div>
+					<input id="hdnApplicationDirectory" type="hidden" value="@Url.Content("~/")" />
+				</div>
+			</div>
+		</div>
+</div>
+@section Styles {
+<link href="@Url.Content("~/Content/BootstrapDatePicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+    @Styles.Render("~/plugins/awesomeCheckboxStyles")
+    @Styles.Render("~/plugins/select2Styles")
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+    .select2-results{background-color:#fff;}
+    .select2-container .select2-dropdown{height:auto !important;}
+
+    div.dataTables_info {
+        display: inline-block;
+        float: right;
+    }
+        i {
+        font-size: 25px !important;
+        display: block;
+        color: #676a6c;
+        margin-left: 6px;
+        margin-right: 6px;
+    }
+
+    .fullWidth {
+        width: 100%;
+    }
+</style>
+}
+
+<script type="text/javascript" src="~/Uploads/Scripts/MS_Suscripciones_Codigos_Referidos_Especialista.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Scripts/Custom/MS_Suscripciones_Codigos_Referidos_EspecialistaGeneral.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/MS_Suscripciones_Codigos_Referidos_EspecialistaCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/Detalle_Codigos_ReferidosCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
+
+    <script type="text/javascript">
+        
+
+
+
+        $(document).ready(function () {
+			var currentIndex = @ViewBag.currentRowIndex
+
+            var MS_Suscripciones_Codigos_Referidos_EspecialistaRowElement = "MS_Suscripciones_Codigos_Referidos_EspecialistaPop_" + currentIndex.toString();
+            var abc = "if(dynamicFieldValidation('" + MS_Suscripciones_Codigos_Referidos_EspecialistaRowElement + "')){ MS_Suscripciones_Codigos_Referidos_EspecialistaInsertRowFromPopup(" + currentIndex + "); }";
+            var insertRowHTML = '<a class="btn btn-primary m-b" onclick="' + abc + '">Save</a>';
+            $('#dvSaveJob').html(insertRowHTML);
+			
+
+
+            initiateUIControls();
+            EjecutarValidacionesAlComienzo();
+			$('a').tooltip();
+        });
+
+
+
+        function initiateUIControls() {
+            $('.gridDatePicker').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            //Time Picker
+            $('.gridTimePicker').clockpicker();
+
+        }
+		
+		function SendMS_Suscripciones_Codigos_Referidos_EspecialistaData(callBack) {
+			
+					
+		 var arr = []; 
+		 $("form#CreateMS_Suscripciones_Codigos_Referidos_Especialista").find(':input').each(function( index ) {		 
+			if ($(this).prop('disabled')==true|| $(this).prop('disabled')=="disabled")
+			{		
+				arr.push($(this).attr('id')); 
+				$(this).prop('disabled', false);  	
+			}
+	    });
+		
+             var formData = new FormData($("form#CreateMS_Suscripciones_Codigos_Referidos_Especialista")[0]);
+			$.each( arr, function( key, value ) {
+			  $('#' +value).prop('disabled', true);
+			});
+
+            var isNew = $('#hdnIsNew').val();
+           
+            if (checkClientValidate('MS_Suscripciones_Codigos_Referidos_EspecialistaCreateForm')) {
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/MS_Suscripciones_Codigos_Referidos_Especialista/Post?IsNew=")' + isNew,
+                    type: 'POST',
+                    data: formData,
+                    async: true,
+                    success: function (result) {
+                        if (result < 0) {
+                            showNotification("@Resources.Resources.ErrorSave", "error");
+                        } else {
+
+                            showNotification("@Resources.Resources.SaveSuccess", "success");
+                            callBack(result);
+                        }
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            }
+            return false;
+        };
+		
+        function GetPropertyBag() {
+            $.get('@Url.Action("MS_Suscripciones_Codigos_Referidos_EspecialistaPropertyBag", "MS_Suscripciones_Codigos_Referidos_Especialista")', function (data) {
+                $(".PropertyModal").html(data);
+            });
+        }
+        function MS_Suscripciones_Codigos_Referidos_EspecialistaGetBusinessRule(FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null)
+			{
+				$('#hdnMS_Suscripciones_Codigos_Referidos_EspecialistaBusinessRuleFieldId').val(FieldId);
+				$('#hdnMS_Suscripciones_Codigos_Referidos_EspecialistaBusinessRuleFieldName').val(FieldName);
+				$('#hdnMS_Suscripciones_Codigos_Referidos_EspecialistaBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("BusinessRule", "BussinessRule")', { FieldId: $('#hdnMS_Suscripciones_Codigos_Referidos_EspecialistaBusinessRuleFieldId').val(), FieldName: $('#hdnMS_Suscripciones_Codigos_Referidos_EspecialistaBusinessRuleFieldName').val(), ObjectId: '44452', Attribute: $('#hdnMS_Suscripciones_Codigos_Referidos_EspecialistaBusinessRuleAttribute').val(), Screen: 'MS_Suscripciones_Codigos_Referidos_Especialista' }, function (data) {
+                $(".MS_Suscripciones_Codigos_Referidos_EspecialistaBusinessRuleModal").html(data);
+            });
+        }
+        function MS_Suscripciones_Codigos_Referidos_EspecialistaGetAddBusinessRule(RuleId, FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null) {
+				$('#hdnMS_Suscripciones_Codigos_Referidos_EspecialistaBusinessRuleFieldId').val(FieldId);
+				$('#hdnMS_Suscripciones_Codigos_Referidos_EspecialistaBusinessRuleFieldName').val(FieldName);
+				$('#hdnMS_Suscripciones_Codigos_Referidos_EspecialistaBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("AddBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnMS_Suscripciones_Codigos_Referidos_EspecialistaBusinessRuleFieldId').val(), FieldName: $('#hdnMS_Suscripciones_Codigos_Referidos_EspecialistaBusinessRuleFieldName').val(), ObjectId: '44452', Attribute: $('#hdnMS_Suscripciones_Codigos_Referidos_EspecialistaBusinessRuleAttribute').val(), Screen: 'MS_Suscripciones_Codigos_Referidos_Especialista' }, function (data) {
+                $(".MS_Suscripciones_Codigos_Referidos_EspecialistaAddBusinessRuleModal").html(data);
+                $(".datatable").DataTable();
+            });
+        }
+		function RemoveBusinessRule(RuleId) {
+			$.get('@Url.Action("RemoveBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnMS_Suscripciones_Codigos_Referidos_EspecialistaBusinessRuleFieldId').val(), FieldName: $('#hdnMS_Suscripciones_Codigos_Referidos_EspecialistaBusinessRuleFieldName').val(), ObjectId: '44452', Attribute: $('#hdnMS_Suscripciones_Codigos_Referidos_EspecialistaBusinessRuleAttribute').val(), Screen: 'MS_Suscripciones_Codigos_Referidos_Especialista' }, function (data) {
+				$(".MS_Suscripciones_Codigos_Referidos_EspecialistaBusinessRuleModal").html(data);
+			});
+		}
+
+    var permission = {
+        Consult: '@permission.Consult' == 'True',
+        New: '@permission.New' == 'True',
+        Edit: '@permission.Edit' == 'True',
+        Delete: '@permission.Delete' == 'True',
+        Export: '@permission.Export' == 'True',
+        Print: '@permission.Print' == 'True',
+        Configure: '@permission.Configure' == 'True',
+    };
+
+    
+    //MR-var statusItems;
+    //MR-var stateItems;
+    //MR-var cityItems = [];
+    var isConsultMode = "@ViewBag.Consult" == "True";
+    Consult(isConsultMode);
+        function Consult(val) {
+            if (val) {
+                $(':input').attr('readonly', 'readonly');
+                $(':input').attr('disabled', 'true');
+                $('.noConsult').removeAttr('readonly');
+                $('.noConsult').removeAttr('disabled');
+            }
+        }
+
+    function BackToGrid() {
+        location.href = "@Url.Content("~/Frontal/MS_Suscripciones_Codigos_Referidos_Especialista/")";
+    }
+	
+	function ReadScriptSettings(callback)
+    {
+        $.post("@Url.Content("~/Frontal/MS_Suscripciones_Codigos_Referidos_Especialista/ReadScriptSettings")", function (data) {
+            mainElementObject = JSON.parse(data.MainElement);
+			if (data.ChildElement != null) {
+                childElementObject = JSON.parse(data.ChildElement);
+            }
+            callback();
+        });
+    }
+
+    function SaveSettingsWithoutReload() {
+        $.post("@Url.Content("~/Frontal/MS_Suscripciones_Codigos_Referidos_Especialista/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+            //$('#hdnMS_Suscripciones_Codigos_Referidos_EspecialistaConfigureType').val("0");
+        }, "json");
+    }
+	
+        function SaveElementAttributes() {
+            if ($('#hdnMS_Suscripciones_Codigos_Referidos_EspecialistaConfigureType').val() == "1") {
+                $.post("@Url.Content("~/Frontal/MS_Suscripciones_Codigos_Referidos_Especialista/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+                    $('#hdnMS_Suscripciones_Codigos_Referidos_EspecialistaConfigureType').val("0");
+                    location.reload(true);
+                }, "json");
+            } else {
+                $.post("@Url.Content("~/Frontal/MS_Suscripciones_Codigos_Referidos_Especialista/ReadScriptSettings")", function (data) {
+                    mainElementObject = JSON.parse(data.MainElement);
+                    childElementObject = JSON.parse(data.ChildElement);
+
+                    for (var i = 0; i < mainElementObject.length; i++) {
+                        var mainElementAttributes = '<div class="col-sm-2">';
+                        mainElementAttributes += '<div class="displayAttributes requiredAttribute"><a class="requiredClick" title="' + (mainElementObject[i].IsRequired == true ? "Required" : "Not Required") + '" onclick="setRequired(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsRequired == true ? "@Url.Content("~/Images/Required.png")" : "@Url.Content("~/Images/Not-Required.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes visibleAttribute"><a class="visibleClick" title="' + (mainElementObject[i].IsVisible == true ? "Visible" : "In Visible") + '" onclick="setVisible(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsVisible == true ? "@Url.Content("~/Images/Visible.png")" : "@Url.Content("~/Images/InVisible.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes readOnlyAttribute"><a class="readOnlyClick" title="' + (mainElementObject[i].IsReadOnly == true ? "Disabled" : "Enabled") + '" onclick="setReadOnly(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsReadOnly == true ? "@Url.Content("~/Images/Disabled.png")" : "@Url.Content("~/Images/Enabled.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes defaultValueAttribute"><a id="hlDefaultValue_' + i.toString() + '" class="defaultValueClick" title="' + (mainElementObject[i].DefaultValue) + '" onclick="setDefaultValue(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].DefaultValue != '' && mainElementObject[i].DefaultValue != null ? "@Url.Content("~/Images/default-value.png")" : "@Url.Content("~/Images/Not-Default-Value.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes helpTextAttribute"><a id="hlHelpText_' + i.toString() + '" class="helpTextClick" title="' + (mainElementObject[i].HelpText) + '" onclick="setHelpText(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].HelpText != '' && mainElementObject[i].HelpText != null ? "@Url.Content("~/Images/green-help.png")" : "@Url.Content("~/Images/red-help.jpg")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '</div>';
+                        $('#MS_Suscripciones_Codigos_Referidos_Especialista' + mainElementObject[i].inputId).parent().closest('.form-group').show();
+
+                        $('#MS_Suscripciones_Codigos_Referidos_Especialista' + mainElementObject[i].inputId).closest('.col-sm-8').after(mainElementAttributes);
+                    }
+					if (childElementObject != null) {
+						for (var i = 0; i < childElementObject.length; i++) {
+							$('.' + childElementObject[i].inputId + 'Header').show();
+							$('.' + childElementObject[i].inputId).parent().show();
+							$('.' + childElementObject[i].inputId + 'Header').append(returnAttributeHTML(i));
+						}
+					}
+                    $('#MS_Suscripciones_Codigos_Referidos_EspecialistaConfigureSave').text('Save Settings');
+                    $('#hdnMS_Suscripciones_Codigos_Referidos_EspecialistaConfigureType').val("1");
+                });
+            }
+        }
+		$('#CreateMS_Suscripciones_Codigos_Referidos_Especialista').on('click', '.btnPopupBusinessRules', function () {
+			var fieldId = $(this).data('field-id');
+			var fieldName = $(this).data('field-name');
+			var attribute = $(this).data('attribute');
+			$('#hdnMS_Suscripciones_Codigos_Referidos_EspecialistaBusinessRuleFieldId').val(fieldId);
+			$('#hdnMS_Suscripciones_Codigos_Referidos_EspecialistaBusinessRuleFieldName').val(fieldName);
+			$('#hdnMS_Suscripciones_Codigos_Referidos_EspecialistaBusinessRuleAttribute').val(attribute);
+		});
+		//Initialize HTML Editors
+		
+    </script>

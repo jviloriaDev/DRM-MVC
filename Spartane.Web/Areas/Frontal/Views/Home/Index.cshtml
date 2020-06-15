@@ -1,0 +1,761 @@
+﻿@using System.Collections.Generic
+@using System.Web.UI.WebControls
+
+@using Spartane.Core.Domain.Permission
+@using Spartane.Web.Areas.WebApiConsumer
+@using Spartane.Web.Helpers
+@using Spartane.Core.Domain.Dashboard_Editor;
+
+@model IList<Dashboard_Editor>
+
+@{
+    ViewBag.Title = Resources.Resources.Index;
+
+}
+
+<style>
+    .btn-primary.active {
+        background-color: #18a689;
+        border-color: #18a689;
+        color: #FFFFFF;
+    }
+
+    #dashboardBtnGroup .active i{
+        display: inline !important;
+        opacity: 0.5;
+        transition: opacity 0.1s linear; 
+    }
+
+    #dashboardBtnGroup .active i:hover{
+        opacity: 1;
+    }
+
+    .dashboard-row {
+        width: 100%;
+        float: left; 
+        display:flex;
+    }
+
+    .dashboard-cell {
+        float:left; 
+        display:inline-block; 
+        padding:10px; 
+        margin:10px; 
+        border-radius: 4px; 
+        border: 2px solid #bababc; 
+    }
+    .title-h2{        
+    padding: 10px;
+    margin-top: 0px;
+    text-align:center;
+    }
+    .dashboard-row .ibox{
+        margin-bottom: 5px !important;
+    }
+    .cell-maximizada{
+        width: 100% !important;
+        min-height: calc(100vh - 178px);
+        transition: min-height 0.5s linear; 
+        transition: width 0.2s linear; 
+    }
+
+    div.table-responsive > div.dataTables_wrapper > table{
+        width:100% !important;
+    }
+
+    div.dashboard-action-container{
+        padding-bottom:10px;
+        opacity: 0.5;
+        transition: opacity 0.1s linear; 
+    }
+
+    div.dashboard-action-container:hover{        
+        opacity: 1;        
+    }
+    div.dashboard-action-container i{        
+        font-size:14px;      
+    }
+    .dashboardwizarditem:hover {
+        background-color: #18a689;
+    }
+
+    .dashboardwizarditem.Active {
+        background-color: #18a689;
+        border-color: #18a689;
+        color: #FFFFFF;
+    }
+    .tabs-container{
+        width: 90%;
+    }
+    #BtnDashboardAddElement{
+        border-color: #ccc !important;
+        color: #676a6c !important;
+        padding: 6px 12px;
+        background-color: #fff !important;
+    }
+    
+    #BtnDashboardAddElement a{
+        border-color: #ccc !important;
+    color: #676a6c !important;
+    background-color: #fff !important;
+    }
+    #btnPrintDashboard{
+        border-color: #ccc !important;
+        color: #676a6c !important;
+        padding: 6px 12px;
+        background-color: #fff !important;
+    }
+    
+    #btnPrintDashboard a{
+        border-color: #ccc !important;
+    color: #676a6c !important;
+    background-color: #fff !important;
+    }
+</style>
+<link href="@Url.Content("~/Content/BootstrapDatePicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+@Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+@Styles.Render("~/plugins/dateRangeStyles")
+@Styles.Render("~/plugins/dataPickerStyles")
+@Styles.Render("~/plugins/clockpickerStyles")
+@Styles.Render("~/plugins/awesomeCheckboxStyles")
+@Styles.Render("~/plugins/select2Styles")
+@Styles.Render("~/Content/plugins/chosen/chosenStyles")
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,600,400' rel='stylesheet' type='text/css'>
+
+<div class="row swhite-bg dashboard-header" style="background: #f3f3f4;text-align: right;width: 100%;">
+    @{
+        if (Convert.ToInt32(Spartane.Web.SessionHelper.Role) == (int)Spartane.Core.Enums.SpartanRoleEnum.Admin)
+        {
+            <button onclick="HomeGetBusinessRule()" type="button" class="btn btn-info btn-lg displayBusinessProperyButton" data-toggle="modal" data-target="#HomeBusinessRule-form">
+                <a class="top" title="" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+                    <i class="fa fa-cogs fa-spin"></i>
+                </a>
+            </button>
+        
+            <div aria-hidden="true" data-backdrop="static" class="modal fade in HomeBusinessRuleModal" id="HomeBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+            </div>
+            <div aria-hidden="true" data-backdrop="static" class="modal fade in HomeAddBusinessRuleModal" id="HomeAddBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+            </div>
+        }
+        <div class="btn-group pull-right">
+            <button class="btn btn-info btn-lg " id="BtnDashboardAddElement" onclick="DashBoard_Config_Wizard()">
+                <a class="top" title="" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="Nuevo Dashboard">
+                    <i class="glyphicon glyphicon-plus-sign"></i>
+                </a>
+            </button>
+        </div>
+        if (Model != null && Model.Count > 0)
+        {
+    <button id="btnPrintDashboard" style="" onclick="printTool.printDashboard()" class="btn btn-info btn-lg">
+        <a class="top" title="" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.Print">
+            <i class="glyphicon glyphicon-download"></i>
+        </a>        
+    </button>
+        }
+}
+
+</div>
+<span id="popupNotification"></span>
+<div aria-hidden="true" data-backdrop="static" class="modal" id="AddEditFiltersModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+    <div class="modal-dialog" style="width:80%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    @Resources.Resources.AdvanceFilter
+                    <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                </h4>
+            </div>
+            <div class="modal-body AddEditFiltersModal">
+            </div>
+        </div>
+    </div>
+</div>
+<div id="printZone" class="container-fluid">
+    @*<div class="panel-heading" style="height:50px;">
+            <div class="btn-group pull-right">
+                <button class="btn btn-xl" id="BtnDashboardAddElement" onclick="DashBoard_Config_Wizard()">
+                    <i class="glyphicon glyphicon-plus-sign"></i>
+                </button>
+            </div>
+        </div>*@
+    @if (Model != null && Model.Count > 0)
+    {
+        <div class="tabs-container">
+            <ul id="dashboardBtnGroup" class="nav nav-tabs" role="tablist">
+                @foreach (var dashboard in Model)
+                {
+                    <li>
+                        <a class="nav-link active show @IsNewDashBoardActive(dashboard.Dashboard_Id)" data-toggle="tab" href="#tab-1" data-dashboard-id="@dashboard.Dashboard_Id" data-dashboard-template-id="@dashboard.Dashboard_Template"><span>@dashboard.Name</span><i class="fa fa-trash-o" style="padding-left: 5px;font-size:14px;display:none;" aria-hidden="true"></i></a>
+                    </li>
+                }
+            </ul>
+
+
+            
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning text-center">
+            <h2>@Resources.Resources.NoDashboardsAvailable</h2>
+        </div>
+    }
+
+    <div id="dashboard-container" style="height: calc(100% - 109px);">
+    </div>
+</div>
+        <!-- Modal Wizard-->
+        <div id='modalWizard' class='modal'>
+            <div class="modal-dialog">
+                <div id='modalWizardContent'></div>
+            </div>
+        </div>
+        <!-- Fin Modal Wizard-->
+        @Html.Partial("DashBoardWizard")
+        <!-- Modal Confirmación Eliminar reporte de Dashboard-->
+        <div id="modalConfirmDeleteFromDashboard" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">@Resources.Resources.Report / @Resources.Resources.Graphic</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input id="RowConfirmDelete" type="hidden">
+                        <input id="ColumnConfirmDelete" type="hidden">
+
+                        <p>@Resources.Resources.RemoveReportFromDashboardConfirm</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resources.Cancelar</button>
+                        <button id="btnConfirmDeleteFromDashboard" type="button" class="btn btn-primary">@Resources.Resources.Delete</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <!-- Modal Confirmación Eliminar Dashboard-->
+        <div id="modalConfirmDeleteDashboard" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Dashboard</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>@Resources.Resources.DeleteConfirm</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resources.Cancelar</button>
+                        <button id="btnConfirmDeleteDashboard" type="button" class="btn btn-primary">@Resources.Resources.Delete</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <input type="hidden" value="List" name="Operation" id="Operation" />
+
+        <script type="text/javascript" src="~/Uploads/Scripts/Rules/HomeIndexRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+
+
+        <script type="text/javascript">
+    const urlReport = '@Url.Action("Index", "Report")';
+
+    function LoadReporte(idReporte) {
+        $.get(urlReport + '?id=' + idReporte + '&renderInPartial=true', function (reporte) {
+            debugger;
+            var $reporteContainer = $('div[data-reporte-id="' + idReporte + '"]');
+            let $cellHeader = $reporteContainer.find('div.cell-header');
+            $cellHeader.removeClass('hidden');
+
+            let $cellContent = $reporteContainer.find('div.cell-content');
+            $cellContent.unblock();
+            $cellContent.append(reporte);
+            //$reporteContainer.unblock();
+
+            //$reporteContainer.append(reporte);
+        });
+    }
+
+    function LoadDashboard(data, idDashboard, idTemplate) {
+        var $dashboard = $('#dashboard-container');
+
+        $dashboard.empty();
+
+        $dashboard.attr('data-dashboard-id', idDashboard);
+        $dashboard.attr('data-dashboard-template-id', idTemplate);
+
+        for (var i = 0; i < data.Rows.length; i++) {
+            var row = $('<div class="dashboard-row"></div>');
+            $dashboard.append(row);
+
+            for (var j = 0; j < data.Rows[i].length; j++) {
+                var width = 100 / data.Rows[i].length;
+
+                if (data.Rows[i][j]) {
+                    //var cell = $('<div data-reporte-id="' + data.Rows[i][j] + '" class="dashboard-cell" style="min-height: 100px;width:calc(' + width + '% - 20px);"></div>');
+                    var cell = $('<div data-reporte-id="' + data.Rows[i][j] + '" data-row=' + (i + 1) + ' data-column=' + (j + 1) + ' class="dashboard-cell" style="width:calc(' + width + '% - 20px);"></div>');
+
+                    var cellHeader =
+                      $('<div class="dashboard-action-container cell-header hidden text-right">' +
+                        '<i class="fa fa-trash fa-2x" aria-hidden="true" style="cursor:pointer;" data-eliminar-cell="true"]></i><i class="fa fa-pencil fa-2x" aria-hidden="true" style="padding-left:10px; cursor:pointer;" data-editar-cell="true"></i><i class="fa fa-arrows-alt fa-2x" aria-hidden="true" data-maximizar-cell="true" style="padding-left:10px; cursor:pointer;"></i>' +
+                        '</div>');
+                    cell.append(cellHeader);
+
+                    var cellContent = $('<div class="cell-content" style="min-height:100px; height: calc(100% - 27px);"></div>');
+                    cell.append(cellContent);
+
+                    row.append(cell);
+
+                    cellContent.block({
+                        css: {
+                            backgroundColor: 'transparent',
+                            border: 'none'
+                        },
+                        message: '<div class="spinner"></div>',
+                        baseZ: 1500,
+                        overlayCSS: {
+                            backgroundColor: '#FFFFFF',
+                            opacity: 0.7,
+                            cursor: 'wait'
+                        }
+                    });
+                    LoadReporte(data.Rows[i][j]);
+                }
+                else {
+                    /*var cell = $('<div class="dashboard-cell text-center" style="width:calc(' + width + '% - 20px);">' +
+                        '<a href="javascript:OpenWizard(' + idDashboard + ',' + idTemplate + ',' + i + ',' + j + ');"' +
+                        'style="top: calc(50% - 26px); position: relative;"><i class="fa fa-plus fa-4x"></i></a></div>');
+                        */
+                    var cell = GetEmptyCell(idDashboard, idTemplate, i, j);
+                    cell.css('width', 'calc(' + width + '% - 20px)');
+                    row.append(cell);
+                }
+            }
+        }
+
+
+
+        //Maximizar
+        $('div.cell-header i[data-maximizar-cell="true"]').click(function () {
+            let $cell = $(this).parent().parent();
+
+            $cell.toggleClass('cell-maximizada');
+            var reporteId = $($(this).parent().parent()).data('reporte-id');
+            //Estoy maximizando
+            debugger;
+            if ($cell.hasClass('cell-maximizada')) {
+                $('div.dashboard-cell:not(.cell-maximizada)').addClass('hidden');
+                var width = $('#dashboard-container').width() - 50;
+                if ($('chart_' + reporteId) != undefined)
+                    eval('chart_' + reporteId).setSize(width, 400);
+            }
+            else {
+                $('div.dashboard-cell').removeClass('hidden');
+                var width = $('body').find('[data-reporte-id=' + reporteId + ']').width() - 30;
+                if ($('chart_' + reporteId) != undefined)
+                    eval('chart_' + reporteId).setSize(width, 400);
+            }
+
+            let datatables = $.fn.dataTable.tables();
+
+            for (var i = 0; i < datatables.length; i++) {
+                $(datatables[i]).DataTable().draw(false);
+            }
+            //var width = $('body').find('[data-reporte-id=@ViewBag.IdReport]').width() - 30;
+            //eval(chart_@ViewBag.IdReport).setSize(width, 400);
+        });
+
+        //Editar
+        $('div.cell-header i[data-editar-cell="true"]').click(function () {
+            let $cell = $(this).parent().parent();
+
+            let dashboardTemplateId = $('#dashboard-container').attr('data-dashboard-template-id');
+            let dashboardId = $('#dashboard-container').attr('data-dashboard-id');
+            let row = parseInt($cell.attr('data-row'));
+            let column = parseInt($cell.attr('data-column'));
+
+            OpenWizard(dashboardId, dashboardTemplateId, row - 1, column - 1);
+        });
+
+        //Eliminar reporte de dashboard
+        $('div.cell-header i[data-eliminar-cell="true"]').click(function () {
+            let $cell = $(this).parent().parent();
+
+            let row = $cell.attr('data-row');
+            let column = $cell.attr('data-column');
+            $('#modalConfirmDeleteFromDashboard .modal-content .modal-body #RowConfirmDelete').val(row);
+            $('#modalConfirmDeleteFromDashboard .modal-content .modal-body #ColumnConfirmDelete').val(column);
+
+            //MostrarPopupAdvertencia
+            $('#modalConfirmDeleteFromDashboard').modal('show');
+        });
+    }
+    function GetEmptyCell(idDashboard, idTemplate, row, column) {
+        return $('<div class="text-center dashboard-cell">' +
+            GetEmptyCellContent(idDashboard, idTemplate, row, column) +
+            '</div>');
+    }
+
+    function GetEmptyCellContent(idDashboard, idTemplate, row, column) {
+        return '<a href="javascript:OpenWizard(' + idDashboard + ',' + idTemplate + ',' + row + ',' + column + ');"' +
+        'style="top: calc(50% - 26px); position: relative; padding-top:30px; padding-bottom:30px;"><i class="fa fa-plus fa-4x"></i></a>';
+    }
+
+    function OpenWizard(idDashboard, idTemplate, row, column) {
+        var url_wizard = '@Url.Action("OpenWizard", "Home")';
+        var options = { "backdrop": "static", keyboard: true };
+        $.ajax({
+            type: "GET",
+            url: url_wizard,
+            contentType: "application/json; charset=utf-8",
+            data: { "dashboardId": idDashboard, "templateId": idTemplate, "row": row + 1, "column": column + 1 },
+            datatype: "json",
+            success: function (data) {
+                $('#modalWizardContent').html(data);
+                $('#modalWizard').modal(options);
+                $('#modalWizard').modal('show');
+            },
+            error: function () {
+                //alert("Dynamic content load failed.");
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        $('#modalConfirmDeleteFromDashboard #btnConfirmDeleteFromDashboard').click(function () {
+
+            let urlEliminar = '@Url.Action("RemoveReportFromDashboard", "Home")';
+            let dashboardTemplateId = $('#dashboard-container').attr('data-dashboard-template-id');
+            let dashboardId = $('#dashboard-container').attr('data-dashboard-id');
+            let row = $('#modalConfirmDeleteFromDashboard .modal-content .modal-body #RowConfirmDelete').val();
+            let column = $('#modalConfirmDeleteFromDashboard .modal-content .modal-body #ColumnConfirmDelete').val();
+
+            $.get(urlEliminar + '?dashboardId=' + dashboardId + '&row=' + row + '&column=' + column,
+                function (data, e, jQueryXHR) {
+                    if (data.Success) {
+                        //let $currentRow = $($('#dashboard-container').children()[row - 1]);
+                        //let $currentCell = $($currentRow.children()[column - 1]);
+
+                        //$currentCell.empty();
+                        //let $emptyCellContent = $(GetEmptyCellContent(dashboardId, dashboardTemplateId, row - 1, column - 1));
+                        //$currentCell.append($emptyCellContent);
+                        //$currentCell.addClass('text-center');
+
+                        RefreshCurrentDashboard();
+                    }
+                });
+
+            $('#modalConfirmDeleteFromDashboard').modal('hide');
+        });
+
+        $('#modalConfirmDeleteDashboard #btnConfirmDeleteDashboard').click(function () {
+            let dashboardId = $('#dashboard-container').attr('data-dashboard-id');
+
+            DeleteDashboard(dashboardId);
+
+            $('#modalConfirmDeleteFromDashboard').modal('hide');
+        });
+
+        $('a').tooltip();
+
+        $('#dashboardBtnGroup a').click(function () {
+            $('#dashboardBtnGroup a').removeClass('active');
+            $(this).addClass('active');
+
+            var url = '@Url.Action("GetDashboardDetail", "Home")';
+            var idDashboard = this.dataset.dashboardId;
+            var idTemplate = this.dataset.dashboardTemplateId;
+
+            $.getJSON(url + '?idDashboard=' + idDashboard + '&idTemplate=' + idTemplate, function (data, event, jqueryXHR) {
+                if (data.Success) {
+                    LoadDashboard(data, idDashboard, idTemplate);
+                }
+            })
+        });
+        $('#dashboardBtnGroup li a i').click(function () {
+            $('#modalConfirmDeleteDashboard').modal('show');
+        });
+        var $btnGroup = $('#dashboardBtnGroup');
+        if ($btnGroup) {
+            //Se agrega funcionalidad para determinar si se ha agregado un nuevo DashBoard o si es el primero por defecto.
+            if ($btnGroup.children('.DashBoardActive').length > 0) {
+                //aca deberia buscar los que tengan la clase DashBoardActive
+                $btnGroup.children('.DashBoardActive').click()
+            } else {
+                $btnGroup.children('li').first().children('a').first().click();
+            }
+
+        }
+        @if(ViewBag.DashboardId != null)
+                {
+                    <text>$('#dashboardBtnGroup').find("[data-dashboard-id='@ViewBag.DashboardId']").click();</text>
+                }
+    });
+
+    function DeleteDashboard(dashboardId) {
+        $.ajax({
+            url: '@Url.Content("~/Frontal/Dashboard_Editor/Delete?id=")' + dashboardId,
+            type: 'DELETE',
+            success: function (result) {
+                if (result) {
+                    location.href = '';
+                    showNotification('@Resources.Resources.DeleteSuccess', "success");
+                } else {
+                    showNotification('@Resources.Resources.DeleteError', "error");
+                }
+            }
+        });
+    }
+
+    function RefreshCurrentDashboard() {
+        //location.href = '';
+        let dashboardTemplateId = $('#dashboard-container').attr('data-dashboard-template-id');
+        let dashboardId = $('#dashboard-container').attr('data-dashboard-id');
+
+        var url = '@Url.Action("GetDashboardDetail", "Home")';
+        $.getJSON(url + '?idDashboard=' + dashboardId + '&idTemplate=' + dashboardTemplateId, function (data, event, jqueryXHR) {
+            if (data.Success) {
+                LoadDashboard(data, dashboardId, dashboardTemplateId);
+            }
+        })
+    }
+
+    function GetPropertyBag() {
+        $.get('@Url.Action("HomePropertyBag", "Home")', function (data) {
+            $(".PropertyModal").html(data);
+        });
+    }
+    function OpenRules() {
+        $.get('@Url.Action("Index", "Business_Rule_Creation")', {}, function (data) {
+            $(".HomeBusinessRuleModal").html(data);
+            $(".HomeBusinessRuleModal").modal('show');
+        });
+    }
+    function HomeGetBusinessRule() {
+        $('#FieldId').val();
+        $('#FieldName').val('');
+        $('#ObjectId').val('2');
+        $('#Attribute').val('3');
+        $('#Screen').val('Home');
+        OpenRules();
+    }
+        </script>
+
+        @section Styles {
+
+            @Styles.Render("~/plugins/dateRangeStyles")
+            @Styles.Render("~/plugins/dataPickerStyles")
+        }
+
+        @section Scripts {
+            @Scripts.Render("~/Scripts/plugins/dataPicker/bootstrap-datepicker.js")
+            @Scripts.Render("~/Scripts/plugins/blockUI/jquery.blockUI.js")
+            @Scripts.Render("~/Scripts/BootstrapDatePicker/moment.js")
+            @Scripts.Render("~/Scripts/plugins/html2canvas/html2canvas.min.js")
+            @Scripts.Render("~/Scripts/plugins/jsPdf/jspdf.min.js")
+            @Scripts.Render("~/Scripts/plugins/printTool.js")
+        }
+
+        <script src="~/Scripts/plugins/highcharts/highcharts.js"></script>
+        <script src="~/Scripts/plugins/highcharts/modules/data.js"></script>
+        <script src="~/Scripts/plugins/highcharts/modules/exporting.js"></script>
+        <script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
+<script>
+
+    function DashBoard_Config_Wizard() {
+        document.getElementById("DashBoardEditForm").reset();
+        $("#DashBoardEditForm #step-1").addClass("active");
+        $("#DashBoardEditForm #step-2").removeClass("active").html('');
+        $("#DashBoardEditForm #step-1").show();
+        enablebutton("button-step-2", false);
+        $("#DashboardWizard").modal('show');
+    }
+
+    function Dashboard_Config_Card_SearchElement(id, callback) {
+        debugger;
+        $.ajaxSetup({
+            error: AjaxError
+        });
+        $.get('@Url.Action("Dashboard_Config_Card_SearchElement")', function (data) {
+            $("#DashBoardEditForm #step-2").html(data);
+            callback();
+        });
+
+        function AjaxError(x, e) {
+
+            alert('Unknow Error.\n' + x.responseText);
+
+        }
+    }
+
+    function Dashboard_Config_Card_Create() {
+        debugger;
+
+        var Model = $("#DashBoardEditForm").serialize();
+        loader(true);
+        $.post("@Url.Action("Dashboard_Templete_Create")", Model).done(function (data) {
+            debugger;
+            loader(false);
+            if (data.Success) {
+                $("#DashboardWizard").modal('hide');
+                window.location.href = '@Url.Action("Index")';
+            } else {
+                alert(data.Warnings);
+            }
+        });
+
+    }
+
+    function Select_Element_Dashboard(ele, elementid) {
+        debugger;
+        enablebutton("button-step-2", true);
+        $(".dashboardwizarditem").removeClass('Active');
+        $(ele).addClass('Active');
+        $('input[name=DashboardEditFormTemplete]').val(elementid);
+    }
+
+    function GetFiltersPopup(idReport, objId, objectId) {
+        var o = (objId == null) ? objectId : objId;
+        if (o != objectId)
+            previousObjectId = currentObjectIdPopUp;
+        else
+            previousObjectId = '';
+        currentObjectIdPopUp = o;
+        $.ajax({
+            url: url_content + "Frontal/Report/GetSpartan_Report_AdvanceFilter?ReportId=" + idReport + "&object_id=" + currentObjectIdPopUp,
+            type: "GET",
+        async: true,
+        success: function (result) {
+            if (result.data.length > 0) {
+                for (var i = 0; i < result.data.length; i++) {
+                    AdvanceFilters.push({
+                        checke: result.data[i].Visible,
+                        attributeId: result.data[i].AttributeId,
+                        physicalName: result.data[i].AttributeIdPhysical_Name,
+                        from: result.data[i].Defect_Value_From,
+                        to: result.data[i].Defect_Value_To,
+                        objectId: result.data[i].ObjectId,
+                        campoquery: result.data[i].CampoQuery
+                    });
+                }
+                $.ajax({
+                    url: url_content + "Frontal/Report/AdvanceFilterPopUp?reportId=" + idReport + "&objectId=" + currentObjectIdPopUp,
+                    type: "GET",
+                    async: true,
+                    success: function (data) {
+                    $("#AddEditFiltersModal-form").off('hidden.bs.modal').on('hidden.bs.modal', function () {
+
+                        $(this).removeData('bs.modal');
+                        $(this).data('bs.modal', null);
+                        if (previousObjectId != null && previousObjectId != '') {
+                            GetFiltersPopup(idReport, previousObjectId, objectId);
+                        }
+                        else {
+                            FilterAdvancePost(idReport);
+                        }
+                    });
+
+                    $(".AddEditFiltersModal").html(data);
+                    $('#AddEditFiltersModal-form').modal({
+                        keyboard: false,
+                        backdrop: 'static'
+                    });
+                    ajaxindicatorstop();
+                },
+                error: function () {
+                    ajaxindicatorstop();
+                }
+            });
+        }
+    else {
+                    showNotification('No existen filtros avanzados', "error");
+        $('#AddEditFiltersModal-form').modal('hide');
+        ajaxindicatorstop();
+    }
+    },
+    error: function () {
+        ajaxindicatorstop();
+    }
+
+    });
+
+    }
+    var AdvanceFilters = [];
+    var currentObjectIdPopUp = '';
+    var previousObjectId = '';
+
+    function GetAdvanceFilters() {
+        var result = [];
+        var obj = {};
+        var items = AdvanceFilters;
+        for (var i = 0; i < items.length; i++) {
+            var physicalName = items[i].pysicalName;
+            var val = '';
+            var values1 = items[i].from;
+            var values2 = items[i].to;
+            if (values2 != null && values2 != '') {
+                val = values1 + ';' + values2;
+            }
+            else {
+                val = values1;
+            }
+
+            obj = {
+                PhysicalName: physicalName,
+                Valor: val
+            };
+            result.push(obj);
+        }
+        return result;
+    }
+
+    function FilterAdvancePost(idReport) {
+        debugger;
+        var data = {
+            id: idReport,
+            filters: GetAdvanceFilters(),
+            type: 'advance'
+        };
+        var data = JSON.stringify({ 'data': data });
+        $.ajax({
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            type: 'POST',
+            url: url_content + "Frontal/Report/DetailedReport",
+            data: data,
+            success: function (strData) {
+                var jsonData = JSON.parse(strData);
+                var model = generateModel(jsonData);
+                if ($.fn.DataTable.isDataTable('#tblReport_' + idReport)) {
+                    $("#tblReport_" + idReport).empty();
+                    $("#tblReport_" + idReport).DataTable().destroy();
+                }
+                if (jsonData != '')
+                    table = $("#tblReport_" + idReport).DataTable(model);
+
+            },
+            failure: function (response) {
+
+            }
+        });
+    }
+
+</script>
+
+@functions {
+    public string IsNewDashBoardActive(int Dashboard_Id)
+    {
+        string ClassActive = "";
+
+        int dashboardactive = -1;
+
+        if (ViewBag.ActiveDash != null)
+        {
+            dashboardactive = (int)ViewBag.ActiveDash;
+
+            if (dashboardactive == Dashboard_Id) ClassActive = "DashBoardActive";
+        }
+
+        return ClassActive;
+    }
+}

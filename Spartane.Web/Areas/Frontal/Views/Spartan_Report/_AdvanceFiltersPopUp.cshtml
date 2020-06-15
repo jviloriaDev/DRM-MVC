@@ -1,0 +1,94 @@
+﻿@model string
+    <div class="modal-dialog">
+            <div class="modal-body">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">
+                            @Resources.Resources.AdvanceFilter
+                            <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                        </h4>
+                    </div>
+                    <div class="scroll_content">
+                        <div class="tab-pane active panel-body form-horizontal">
+                            <div id="filters">
+                                @Html.Raw(Model)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="btnSavePopup" class="btn btn-success">@Resources.Resources.Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Resources.Cancelar</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+<script>
+    $(document).ready(function () {
+        $('.control-select2').select2();
+        FillAdvanceFilterPopUp();
+        $('#btnSavePopup').click(function () {
+            debugger;
+            var AdvanceFiltersAux = AdvanceFilters;
+            AdvanceFilters = [];
+            for (var i = 0; i < AdvanceFiltersAux.length; i++) {
+                if (AdvanceFiltersAux[i].objectId != currentObjectIdPopUp) {
+                    AdvanceFilters.push(AdvanceFiltersAux[i]);
+                }
+            }
+            var checks = $('.check-filterpopup');
+            for (var i = 0; i < checks.length; i++) {
+                var checked = $(checks[i]).prop('checked');
+                var name = $(checks[i]).parent().data('physicalname');
+                var attributeid = $(checks[i]).parent().data('attributeid');
+                var objectid = $(checks[i]).parent().data('objectid');
+                var pathfield = $(checks[i]).parent().data('pathfield');
+                var values = $(checks[i]).parent().find('.control-value');
+                var from = $(values[0]).val();
+                var to = '';
+                if (values.length > 1) {
+                    to = $(values[1]).val();
+                }
+                AdvanceFilters.push({
+                    checke: checked,
+                    attributeId: attributeid,
+                    pysicalName: name,
+                    from: from,
+                    to: to,
+                    objectId: objectid,
+                    pathField: pathfield
+                });
+                $('#AdvanceFilter-form').modal('hide');
+            }
+        });
+
+        function FillAdvanceFilterPopUp() {
+            for (var i = 0; i < AdvanceFilters.length; i++) {
+                //$($('.filter-itempopup[data-physicalname="' + AdvanceFilters[i].physicalName + '"]').find('.check-filterpopup')[0]).prop('checked', AdvanceFilters[i].checke);
+               
+                if ($('.filter-itempopup[data-physicalname="' + AdvanceFilters[i].physicalName + '"]').length > 0)
+                {
+                    if ($('.filter-itempopup[data-physicalname="' + AdvanceFilters[i].physicalName + '"]').find('.control-value').length > 0) {
+                        if ($($('.filter-itempopup[data-physicalname="' + AdvanceFilters[i].physicalName + '"]').find('.control-value')[0]).attr('class').indexOf('control-select2') != -1) {
+                            var selectedValues = AdvanceFilters[i].from.split(',');
+                            $($('.filter-itempopup[data-physicalname="' + AdvanceFilters[i].physicalName + '"]').find('.control-value')[0]).select2('val', selectedValues);
+                        }
+                        else {
+                            $($('.filter-itempopup[data-physicalname="' + AdvanceFilters[i].physicalName + '"]').find('.control-value')[0]).val(AdvanceFilters[i].from);
+                            $($('.filter-itempopup[data-physicalname="' + AdvanceFilters[i].physicalName + '"]').find('.control-value')[1]).val(AdvanceFilters[i].to);
+                        }
+                    } else if ($('.filter-itempopup[data-physicalname="' + AdvanceFilters[i].physicalName + '"]').find('.datepicker').length > 0) {
+						$($('.filter-itempopup[data-physicalname="' + AdvanceFilters[i].physicalName + '"]').find('.datepicker')[0]).val(AdvanceFilters[i].from);
+						$($('.filter-itempopup[data-physicalname="' + AdvanceFilters[i].physicalName + '"]').find('.datepicker')[1]).val(AdvanceFilters[i].to);
+					}
+                }
+                //$($('.filter-itempopup[data-physicalname="' + AdvanceFilters[i].physicalName + '"]').find('.control-value')[0]).val(AdvanceFilters[i].from);
+                $($('.filter-itempopup[data-physicalname="' + AdvanceFilters[i].physicalName + '"]').find('.control-value')[1]).val(AdvanceFilters[i].to);
+                $('.filter-itempopup[data-physicalname="' + AdvanceFilters[i].physicalName + '"]').attr('data-attributeid', AdvanceFilters[i].attributeId);
+                $('.filter-itempopup[data-physicalname="' + AdvanceFilters[i].physicalName + '"]').attr('data-objectid', AdvanceFilters[i].objectId);
+                $('.filter-itempopup[data-physicalname="' + AdvanceFilters[i].physicalName + '"]').attr('data-pathfield', AdvanceFilters[i].pathField);
+                $('.filter-itempopup[data-physicalname="' + AdvanceFilters[i].physicalName + '"]').attr('data-campoquery', AdvanceFilters[i].campoQuery);
+             
+            }
+        }
+    });
+</script>

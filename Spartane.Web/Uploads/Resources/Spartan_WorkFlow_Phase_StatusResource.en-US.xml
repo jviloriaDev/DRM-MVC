@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_WorkFlow_Phase_Status" value="Spartan WorkFlow Phase Status"></resource>
+  <resource culture="en-US" name="StatusId" value="StatusId"></resource>
+  <resource culture="en-US" name="Description" value="Description"></resource>
+</resources>

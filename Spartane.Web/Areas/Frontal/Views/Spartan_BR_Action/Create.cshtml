@@ -1,0 +1,1331 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Globalization
+@using Spartane.Core.Domain.Permission
+@using Spartane.Core.Domain.Spartane_File
+@*@model Spartane.Core.Domain.Spartan_BR_Action.Spartan_BR_Action*@
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Spartan_BR_ActionModel
+@{
+
+
+    List<SelectListItem> varSpartan_BR_Action_Classification = null;
+    if (ViewBag.Spartan_BR_Action_Classifications != null)
+    { varSpartan_BR_Action_Classification = (List<SelectListItem>)ViewBag.Spartan_BR_Action_Classifications; }    
+
+    Permission permissionSpartan_BR_Action_Configuration_Detail = ViewBag.PermissionSpartan_BR_Action_Configuration_Detail;
+    Permission permissionSpartan_BR_Attribute_Restrictions_Detail = ViewBag.PermissionSpartan_BR_Attribute_Restrictions_Detail;
+    Permission permissionSpartan_BR_Operation_Restrictions_Detail = ViewBag.PermissionSpartan_BR_Operation_Restrictions_Detail;
+    Permission permissionSpartan_BR_Event_Restrictions_Detail = ViewBag.PermissionSpartan_BR_Event_Restrictions_Detail;
+
+    Permission permission = ViewBag.Permission;
+}
+@Scripts.Render("~/plugins/dataTables")
+
+<script src="@Url.Content("~/Scripts/BootstrapDatePicker/moment.js")"></script>
+<script src="@Url.Content("~/Scripts/BootstrapDatePicker/bootstrap-datetimepicker.js")"></script>
+
+<div class="modal fade in" id="dvAttributeValue" style="background-color:rgba(0, 0, 0, 0.7);">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" id="lblAttributeType">Value</label>
+                    <div class="col-sm-7">
+                        <input type="text" title="Value" class="form-control" id="txtAttributeValue" />
+                    </div>
+                    <div class="col-sm-2">
+                        <a class="btn btn-primary" onclick="SaveValue()">Submit</a>
+                    </div>
+                    <input type="hidden" id="hdnAttributType" />
+                    <input type="hidden" id="hdnAttributElement" />
+                    <input type="hidden" id="hdnAttributNumber" />
+                    <input type="hidden" id="hdnElementType" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row wrapper border-bottom white-bg page-heading">
+
+    <div class="row">
+        <div class="col-lg-10">
+            <h2>
+                Business Rule Action
+                <button onclick="GetBusinessRule()" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#BusinessRule-form">
+                    <i class="fa fa-cogs fa-spin"></i>
+                </button>
+            </h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">@Resources.Resources.Home</a>
+                </li>
+                <li class="">
+                    <label>@Resources.Spartan_BR_ActionResources.Spartan_BR_Action</label>
+                </li>
+                <li class="active">
+                    <strong>@Resources.Resources.Create</strong>
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-2">
+
+            @{
+                if (Convert.ToInt32(Spartane.Web.SessionHelper.Role) == (int)Spartane.Core.Enums.SpartanRoleEnum.Admin)
+                {
+                    <h2>&nbsp;</h2>
+                    <button onclick="DisplayBusinessRule()" type="button" class="btn btn-info btn-lg displayBusinessProperyButton">
+                        <i class="fa fa-cogs fa-spin"></i>
+                    </button>
+
+                    <div aria-hidden="true" class="modal fade in PropertyBusinessModal" id="PropertyBusinessModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">
+                                        Property & Business Rules
+                                        <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                                    </h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <a class="btn btn-primary full-width" data-dismiss="modal" data-toggle="modal" data-target="#PropertyModal-form" onclick="GetPropertyBag()">Properties</a>
+                                        </div>
+                                        <div class="clearfix col-sm-12">&nbsp;</div>
+                                        <div class="col-sm-12">
+                                            <a class="btn btn-primary full-width" data-dismiss="modal" data-toggle="modal" data-target="#BusinessRule-form" onclick="GetBusinessRule()">Business Rule</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div aria-hidden="true" class="modal fade in PropertyModal" id="PropertyModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                    </div>
+
+                    <div aria-hidden="true" class="modal fade in BusinessRuleModal" id="BusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                    </div>
+
+                    <div aria-hidden="true" class="modal fade in AddBusinessRuleModal" id="AddBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                    </div>
+
+                    <div aria-hidden="true" class="modal fade in AddSpartan_BR_Action_Configuration_DetailModal" id="AddSpartan_BR_Action_Configuration_Detail-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                    </div>
+
+                    <div aria-hidden="true" class="modal fade in AddSpartan_BR_Attribute_Restrictions_DetailModal" id="AddSpartan_BR_Attribute_Restrictions_Detail-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                    </div>
+
+                    <div aria-hidden="true" class="modal fade in AddSpartan_BR_Operation_Restrictions_DetailModal" id="AddSpartan_BR_Operation_Restrictions_Detail-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                    </div>
+
+                    <div aria-hidden="true" class="modal fade in AddSpartan_BR_Event_Restrictions_DetailModal" id="AddSpartan_BR_Event_Restrictions_Detail-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                    </div>
+
+
+                }
+            }
+        </div>
+    </div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            @using (Html.BeginForm("Post", "Spartan_BR_Action", FormMethod.Post, new { id = "CreateSpartan_BR_Action", @readonly = "true", @class = "form-horizontal", enctype = "multipart/form-data" }))
+            {
+                @*<script src="~/Scripts/BootstrapDatePicker/bootstrap-datetimepicker.js"></script>*@
+                <script src="@Url.Content("~/Scripts/BootstrapDatePicker/bootstrap-datetimepicker.js")"></script>
+                <span id="popupNotification"></span>
+                <div class="container-fluid Spartan_BR_ActionCreateForm" id="viewmodeledit">
+			<div class="tabs-container">
+                        	<ul class="nav nav-tabs">
+<li class="active"><a data-toggle="tab" href="#tabDatos_Generales"> Datos Generales</a></li>
+<li class=""><a data-toggle="tab" href="#tabConfiguration"> Configuration</a></li>
+<li class=""><a data-toggle="tab" href="#tabRestrictions"> Restrictions</a></li>
+
+                        	</ul>
+	                	<div class="tab-content">
+                            <div id="tabDatos_Generales" class="tab-pane active">
+                                <div class="panel-body">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_BR_ActionResources.ActionId</label>
+                                <div class="col-sm-8">
+                                    <label class="form-control" for="ActionId" id="lblActionId">@Model.ActionId</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_BR_ActionResources.Description</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="Description" name="Description" type="text" value="@Model.Description">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Description" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_BR_ActionResources.Classification</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" data-val="true" data-val-number="The field Classification must be a number." data-val-required="The Classification field is required." id="Classification" name="Classification">
+                                        <option value=""></option>
+                                        @if (varSpartan_BR_Action_Classification != null){ 
+                                            foreach (var itemClassification in varSpartan_BR_Action_Classification)
+                                            {
+                                                if (itemClassification.Value == Convert.ToString(Model.Classification))
+                                                {
+                                                    <option value="@itemClassification.Value" selected>@itemClassification.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemClassification.Value">@itemClassification.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Classification" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_BR_ActionResources.Implementation_Code</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" id="Implementation_Code" name="Implementation_Code" type="text">@Model.Implementation_Code</textarea>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Implementation_Code" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            </div>
+                                </div>
+
+
+                            <div id="tabConfiguration" class="tab-pane">
+                                <div class="panel-body">
+                            <div class="ibox-title">
+                                <h5>@Resources.Spartan_BR_Action_Configuration_DetailResources.Spartan_BR_Action_Configuration_Detail</h5>
+                                <div class="ibox-tools">
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="">
+                                    <a onclick="Spartan_BR_Action_Configuration_DetailfnClickAddRow();" href="javascript:void(0);" title="@Resources.Resources.AddNewRow" class="btn btn-primary @( !permissionSpartan_BR_Action_Configuration_Detail.New || ViewBag.Consult ? "disabled" : "")">
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                    </a>
+                                    @*<a onclick="Spartan_BR_Action_Configuration_DetailfnOpenAddRowPopUp();" data-toggle="modal" title="@Resources.Resources.AddNewRow" data-target="#AddSpartan_BR_Action_Configuration_Detail-form" data-backdrop="static" data-keyboard="false" class="btn btn-primary @( !permissionSpartan_BR_Action_Configuration_Detail.New || ViewBag.Consult ? "disabled" : "")">
+                                    <i class="glyphicon glyphicon-new-window"></i>
+                                    </a>*@
+                                </div>
+
+                                <br />
+
+                                <div style='overflow-x: auto;'>
+                                    <table class="table table-striped table-bordered table-hover childValidateTable" id="Spartan_BR_Action_Configuration_DetailGrid">
+                                        <thead>
+                                            <tr>
+                                                <th class="ActionHeader"><span>@Resources.Resources.Actions</span></th>
+                                                <th class="Parameter_NameHeader"><span>@Resources.Spartan_BR_Action_Configuration_DetailResources.Parameter_Name</span></th>
+                                                <th class="Parameter_TypeHeader"><span>@Resources.Spartan_BR_Action_Configuration_DetailResources.Parameter_Type</span></th>
+
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                            </div>
+                                </div>
+
+
+                            <div id="tabRestrictions" class="tab-pane">
+                                <div class="panel-body">
+                            <div class="ibox-title">
+                                <h5>@Resources.Spartan_BR_Attribute_Restrictions_DetailResources.Spartan_BR_Attribute_Restrictions_Detail</h5>
+                                <div class="ibox-tools">
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="">
+                                    <a onclick="Spartan_BR_Attribute_Restrictions_DetailfnClickAddRow();" href="javascript:void(0);" title="@Resources.Resources.AddNewRow" class="btn btn-primary @( !permissionSpartan_BR_Attribute_Restrictions_Detail.New || ViewBag.Consult ? "disabled" : "")">
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                    </a>
+                                    @*<a onclick="Spartan_BR_Attribute_Restrictions_DetailfnOpenAddRowPopUp();" data-toggle="modal" title="@Resources.Resources.AddNewRow" data-target="#AddSpartan_BR_Attribute_Restrictions_Detail-form" data-backdrop="static" data-keyboard="false" class="btn btn-primary @( !permissionSpartan_BR_Attribute_Restrictions_Detail.New || ViewBag.Consult ? "disabled" : "")">
+                                    <i class="glyphicon glyphicon-new-window"></i>
+                                    </a>*@
+                                </div>
+
+                                <br />
+
+                                <div style='overflow-x: auto;'>
+                                    <table class="table table-striped table-bordered table-hover childValidateTable" id="Spartan_BR_Attribute_Restrictions_DetailGrid">
+                                        <thead>
+                                            <tr>
+                                                <th class="ActionHeader"><span>@Resources.Resources.Actions</span></th>
+                                                <th class="Attribute_TypeHeader"><span>@Resources.Spartan_BR_Attribute_Restrictions_DetailResources.Attribute_Type</span></th>
+                                                <th class="Control_TypeHeader"><span>@Resources.Spartan_BR_Attribute_Restrictions_DetailResources.Control_Type</span></th>
+
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="ibox-title">
+                                <h5>@Resources.Spartan_BR_Operation_Restrictions_DetailResources.Spartan_BR_Operation_Restrictions_Detail</h5>
+                                <div class="ibox-tools">
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="">
+                                    <a onclick="Spartan_BR_Operation_Restrictions_DetailfnClickAddRow();" href="javascript:void(0);" title="@Resources.Resources.AddNewRow" class="btn btn-primary @( !permissionSpartan_BR_Operation_Restrictions_Detail.New || ViewBag.Consult ? "disabled" : "")">
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                    </a>
+                                    @*<a onclick="Spartan_BR_Operation_Restrictions_DetailfnOpenAddRowPopUp();" data-toggle="modal" title="@Resources.Resources.AddNewRow" data-target="#AddSpartan_BR_Operation_Restrictions_Detail-form" data-backdrop="static" data-keyboard="false" class="btn btn-primary @( !permissionSpartan_BR_Operation_Restrictions_Detail.New || ViewBag.Consult ? "disabled" : "")">
+                                    <i class="glyphicon glyphicon-new-window"></i>
+                                    </a>*@
+                                </div>
+
+                                <br />
+
+                                <div style='overflow-x: auto;'>
+                                    <table class="table table-striped table-bordered table-hover childValidateTable" id="Spartan_BR_Operation_Restrictions_DetailGrid">
+                                        <thead>
+                                            <tr>
+                                                <th class="ActionHeader"><span>@Resources.Resources.Actions</span></th>
+                                                <th class="OperationHeader"><span>@Resources.Spartan_BR_Operation_Restrictions_DetailResources.Operation</span></th>
+
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="ibox-title">
+                                <h5>@Resources.Spartan_BR_Event_Restrictions_DetailResources.Spartan_BR_Event_Restrictions_Detail</h5>
+                                <div class="ibox-tools">
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="">
+                                    <a onclick="Spartan_BR_Event_Restrictions_DetailfnClickAddRow();" href="javascript:void(0);" title="@Resources.Resources.AddNewRow" class="btn btn-primary @( !permissionSpartan_BR_Event_Restrictions_Detail.New || ViewBag.Consult ? "disabled" : "")">
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                    </a>
+                                    @*<a onclick="Spartan_BR_Event_Restrictions_DetailfnOpenAddRowPopUp();" data-toggle="modal" title="@Resources.Resources.AddNewRow" data-target="#AddSpartan_BR_Event_Restrictions_Detail-form" data-backdrop="static" data-keyboard="false" class="btn btn-primary @( !permissionSpartan_BR_Event_Restrictions_Detail.New || ViewBag.Consult ? "disabled" : "")">
+                                    <i class="glyphicon glyphicon-new-window"></i>
+                                    </a>*@
+                                </div>
+
+                                <br />
+
+                                <div style='overflow-x: auto;'>
+                                    <table class="table table-striped table-bordered table-hover childValidateTable" id="Spartan_BR_Event_Restrictions_DetailGrid">
+                                        <thead>
+                                            <tr>
+                                                <th class="ActionHeader"><span>@Resources.Resources.Actions</span></th>
+                                                <th class="Process_EventHeader"><span>@Resources.Spartan_BR_Event_Restrictions_DetailResources.Process_Event</span></th>
+
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                            </div>
+                                </div>
+
+				</div>	
+			</div>
+                    <br />
+                            <div class="form-actions fluid">
+                                <input type="hidden" value="@Model.ActionId" id="ReferenceActionId" />
+                                <input type="hidden" value="@Model.ActionId" name="ActionId" id="ActionIdId" />
+                                @if (!ViewBag.Consult)
+                                {
+                                    <input type="button" value="@Resources.Resources.Guardar" id="Guardar" class="btn btn-w-m btn-primary" onclick="return checkClientValidate('Spartan_BR_ActionCreateForm');"  />
+
+                                    <button type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton">
+                                        <i class="fa fa-cogs fa-spin"></i>
+                                    </button>
+
+                                    <input type="button" value="@Resources.Resources.GuardarNuevo" id="GuardarYNuevo" onclick="return checkClientValidate('Spartan_BR_ActionCreateForm');" data-bind="    click: saveAndNew" class="btn btn-w-m btn-success"  />
+                                    <input type="button" value="@Resources.Resources.GuardarCopia" id="GuardarYCopia" onclick="return checkClientValidate('Spartan_BR_ActionCreateForm');" data-bind="    click: saveAndNew" class="btn btn-w-m btn-success"  />
+                                    <a title="@Resources.Resources.Configure" id="ConfigureSave" name="ConfigureSave" onclick="SaveElementAttributes()" class="btn btn-success">@Resources.Resources.Configure</a>
+                                }
+
+                                @*<input type="submit" value="@Resources.Resources.Configure" id="Configure" name="Configure" class="btn btn-warning" tabindex="16" />*@
+                                <input type="hidden" id="hdnConfigureType" />
+
+                                <input type="button" value="@Resources.Resources.Cancelar" id="Cancelar" name="Cancelar" class="btn btn-danger noConsult" data-bind="click: cancel" tabindex="16" />
+
+                                <button type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton">
+                                    <i class="fa fa-cogs fa-spin"></i>
+                                </button>
+                            </div>
+                        </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+<input id="hdnApplicationDirectory" type="hidden" value="@Url.Content("~/")" />
+
+@section Styles {
+<link href="@Url.Content("~/Content/BootstrapDatePicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+    @Styles.Render("~/plugins/awesomeCheckboxStyles")
+    @Styles.Render("~/plugins/select2Styles")
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+    .select2-results{background-color:#fff;}
+    .select2-container .select2-dropdown{height:auto !important;}
+
+    div.dataTables_info {
+        display: inline-block;
+        float: right;
+    }
+        i {
+        font-size: 25px !important;
+        display: block;
+        color: #676a6c;
+        margin-left: 6px;
+        margin-right: 6px;
+    }
+
+    .fullWidth {
+        width: 100%;
+    }
+</style>
+}
+
+@section Scripts {
+
+
+
+    @Scripts.Render("~/plugins/iCheck")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/clockpicker")
+    @Scripts.Render("~/plugins/select2")
+
+@*<script src="~/Scripts/plugins/ckeditor/ckeditor.js"></script>*@
+    <script type="text/javascript">
+        
+
+
+
+        $(document).ready(function () {
+
+
+            GetSpartan_BR_Action_Configuration_Detail_Spartan_BR_Action_Param_TypeItem();
+
+            getSpartan_BR_Action_Configuration_DetailData();
+            GetSpartan_BR_Attribute_Restrictions_Detail_Spartan_Attribute_TypeItem();
+            GetSpartan_BR_Attribute_Restrictions_Detail_Spartan_Attribute_Control_TypeItem();
+
+            getSpartan_BR_Attribute_Restrictions_DetailData();
+            GetSpartan_BR_Operation_Restrictions_Detail_Spartan_BR_OperationItem();
+
+            getSpartan_BR_Operation_Restrictions_DetailData();
+            GetSpartan_BR_Event_Restrictions_Detail_Spartan_BR_Process_EventItem();
+
+            getSpartan_BR_Event_Restrictions_DetailData();
+
+            initiateUIControls();
+        });
+
+        var Spartan_BR_Action_Configuration_DetailinsertRowCurrentIndex = -1;
+        var Spartan_BR_Action_Configuration_DetailDataDataTable;
+        function getSpartan_BR_Action_Configuration_DetailData() {
+            $.ajax({
+                url: "@Url.Content("~/Frontal/Spartan_BR_Action/GetSpartan_BR_Action_Configuration_Detail")" + "?draw=1&start=1&length=2147483647" + ($("#ReferenceActionId").val() != "" ? "&RelationId=" + $("#ReferenceActionId").val() : ""),
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    Spartan_BR_Action_Configuration_DetailDataDataTable = result.data;
+                    showSpartan_BR_Action_Configuration_DetailGrid(result.data);
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+        function Spartan_BR_Action_Configuration_DetailGetUpdateRowControls(data) {
+
+            var columnData = [];
+            var inputData = "<input type='text' class='fullWidth form-control' />";
+            columnData[0] = $($($.parseHTML(inputData)).val(data.Parameter_Name)).addClass('Parameter_Name');
+            columnData[1] = $($(GetSpartan_BR_Action_Configuration_Detail_Spartan_BR_Action_Param_TypeDropDown()).val(data.Parameter_Type)).addClass('Parameter_Type');
+
+            return columnData;
+        }
+
+        var removedSpartan_BR_Action_Configuration_DetailData = [];
+        function Spartan_BR_Action_Configuration_DetailDeleteRow(rowIndex) {
+            if (!permission.Delete || isConsultMode)
+                return;
+
+            if (confirm("@Resources.Resources.DeleteConfirm")) {
+                var prevData = Spartan_BR_Action_Configuration_DetailTable.fnGetData(rowIndex);
+                removedSpartan_BR_Action_Configuration_DetailData.push(prevData);
+                Spartan_BR_Action_Configuration_DetailTable.fnDeleteRow(rowIndex);
+            }
+
+        }
+
+        function Spartan_BR_Action_Configuration_DetailrowCreationGrid(row, data, index) {
+            //debugger;
+            var Spartan_BR_Action_Configuration_DetailRowElement = "Spartan_BR_Action_Configuration_Detail_" + index.toString();
+            $(row).addClass(Spartan_BR_Action_Configuration_DetailRowElement);
+
+            row.innerHTML = "";
+
+            if (data.IsInsertRow) {
+
+                if (row.childNodes.length != 0) {
+                    for (var i = 0; i < row.childNodes.length; i++) {
+                        row.childNodes[i].remove();
+                    }
+                }
+                var controls = GetInsertSpartan_BR_Action_Configuration_DetailRowControls(index);
+
+                var actionColInsert = $('<td>');
+
+                var abc = "if(dynamicFieldValidation('" + Spartan_BR_Action_Configuration_DetailRowElement + "')){ Spartan_BR_Action_Configuration_DetailInsertRow(" + index + "); }";
+                var insertRowHTML = '<a  onclick="' + abc + '">';
+                $('<i class="fa fa-check">').appendTo($(insertRowHTML).appendTo(actionColInsert));
+				$('<i class="fa fa-times">').appendTo($("<a  onclick='Spartan_BR_Action_Configuration_DetailCancelRow(" + index + ")'>").appendTo(actionColInsert));
+                actionColInsert.appendTo(row);
+
+                for (i = 0; i < controls.length; i++) {
+                    $(controls[i]).appendTo($('<td>').appendTo(row));
+                }
+                return;
+            }
+
+            var actionCol = $('<td>');
+            $('<i class="fa fa-pencil">').appendTo($("<a title='Edit' class='" + (!permission.Edit || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Action_Configuration_DetailEditRow(" + index + ")'>").appendTo(actionCol));
+            @*$('<i class="fa fa-edit">').appendTo($("<a title='Edit' data-toggle='modal' data-target='#AddSpartan_BR_Action_Configuration_Detail-form' class='" + (!permission.Edit || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Action_Configuration_DetailEditRowPopup(" + index + ")'>").appendTo(actionCol));*@
+            $('<i class="fa fa-trash-o">').appendTo($("<a title='Delete' class='" + (!permission.Delete || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Action_Configuration_DetailDeleteRow(" + index + ")'>").appendTo(actionCol));
+            actionCol.appendTo(row);
+            $('<td>').text(data.Parameter_Name).appendTo(row);
+            $('<td>').text(GetSpartan_BR_Action_Configuration_Detail_Spartan_BR_Action_Param_TypeName(data.Parameter_Type)).appendTo(row);
+
+        }
+
+        var Spartan_BR_Action_Configuration_DetailTable;
+        function showSpartan_BR_Action_Configuration_DetailGrid(dataSet) {
+            removedSpartan_BR_Action_Configuration_DetailData = [];
+            Spartan_BR_Action_Configuration_DetailTable = $('#Spartan_BR_Action_Configuration_DetailGrid').dataTable({
+                dom: '<"html5buttons"B>lTgitp',
+                buttons: [
+                ],
+                "createdRow": Spartan_BR_Action_Configuration_DetailrowCreationGrid,
+                "lengthMenu": [[5, 10, 20, 50, -1], [5, 10, 20, 50, "All"]],
+                data: dataSet,
+                "columns": [
+                    { "data": null, 'visible': true, "orderable": false },
+                    { "data": "Parameter_Name", "orderable": false },
+                    { "data": "Parameter_Type", "orderable": false },
+
+                ],
+                "order": [[0, "asc"]],
+                "language": {
+                    "lengthMenu": "@Resources.Resources.Display" + " _MENU_ " + "@Resources.Resources.RecordsPerPage",
+                    "zeroRecords": "@Resources.Resources.NothingFound",
+                    "info": "@Resources.Resources.ShowingPages" + " _PAGE_ " + "@Resources.Resources.of" + " _PAGES_",
+                    "infoEmpty": "@Resources.Resources.NoRecords",
+                    "infoFiltered": "(" + "@Resources.Resources.FilteredFrom" + " _MAX_ " + "@Resources.Resources.TotalRecords" + ")",
+                    "sSearch": "@Resources.Resources.Search",
+                    "paginate": {
+                        "previous": "@Resources.Resources.Previous",
+                        "next": "@Resources.Resources.Next"
+                    }
+                },
+                "fnDrawCallback": function (settings) {
+                    setSpartan_BR_Action_Configuration_DetailValidation();
+                }
+            });
+        }
+
+    var Spartan_BR_Action_Configuration_Detail_Spartan_BR_Action_Param_TypeItems;
+        function GetSpartan_BR_Action_Configuration_Detail_Spartan_BR_Action_Param_TypeItem() {
+            Spartan_BR_Action_Configuration_Detail_Spartan_BR_Action_Param_TypeItems = null;
+            var ajaxUrl = "@Url.Content("~/Frontal/Spartan_BR_Action/GetSpartan_BR_Action_Configuration_Detail_Spartan_BR_Action_Param_TypeAll")";
+            $.ajax({
+                url: ajaxUrl,
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                global: false,
+                success: function (result) {
+                    Spartan_BR_Action_Configuration_Detail_Spartan_BR_Action_Param_TypeItems = result;
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+
+        var Spartan_BR_Action_Configuration_DetailData = [];
+        var Spartan_BR_Action_Configuration_DetaildeletedItem = [];
+        var Spartan_BR_Action_Configuration_DetailDataMain = [];
+        var Spartan_BR_Action_Configuration_DetailDataMainPages = [];
+        var Spartan_BR_Action_Configuration_DetailnewItemCount = 0;
+        var Spartan_BR_Action_Configuration_DetailmaxItemIndex = 0;
+        var Spartan_BR_Action_Configuration_DetailDataMainInitialized = false;
+
+        function SendSpartan_BR_Action_Configuration_Detail(callBack, ActionIdId) {
+            Spartan_BR_Action_Configuration_DetailData = GetSpartan_BR_Action_Configuration_DetailFromDataTable();
+
+            if (Spartan_BR_Action_Configuration_DetailData.length > 0 || $("#ReferenceActionId").val() != ActionIdId) {
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Spartan_BR_Action/PostSpartan_BR_Action_Configuration_Detail?MasterId=")' + ActionIdId + "&referenceId=" + $("#ReferenceActionId").val(),
+                    type: 'POST',
+                    data: GetSpartan_BR_Action_Configuration_Detail(),
+                    async: true,
+                    success: function (result) {
+
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            } else {
+                //showNotification("@Resources.Resources.SaveSuccess", "success");
+                //callBack(ActionIdId);
+            }
+            return true;
+        }
+
+        function GetAddSpartan_BR_Action_Configuration_DetailPopup(currentRowIndex, mode) {
+
+            $.ajax({
+                url: "@Url.Action("AddSpartan_BR_Action_Configuration_Detail", "Spartan_BR_Action")",
+                type: "GET",
+                async: false,
+                data: { rowIndex: currentRowIndex, functionMode: mode },
+                success: function (data) {
+                    $(".AddSpartan_BR_Action_Configuration_DetailModal").html(data);
+                },
+                error: function () {
+
+                }
+            });
+
+            @*$.get('@Url.Action("AddSpartan_BR_Action_Configuration_Detail", "Spartan_BR_Action")', { rowIndex: currentRowIndex }, function (data) {
+                $(".AddSpartan_BR_Action_Configuration_DetailModal").html(data);
+            });*@
+        }
+        var Spartan_BR_Attribute_Restrictions_DetailinsertRowCurrentIndex = -1;
+        var Spartan_BR_Attribute_Restrictions_DetailDataDataTable;
+        function getSpartan_BR_Attribute_Restrictions_DetailData() {
+            $.ajax({
+                url: "@Url.Content("~/Frontal/Spartan_BR_Action/GetSpartan_BR_Attribute_Restrictions_Detail")" + "?draw=1&start=1&length=2147483647" + ($("#ReferenceActionId").val() != "" ? "&RelationId=" + $("#ReferenceActionId").val() : ""),
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    Spartan_BR_Attribute_Restrictions_DetailDataDataTable = result.data;
+                    showSpartan_BR_Attribute_Restrictions_DetailGrid(result.data);
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+        function Spartan_BR_Attribute_Restrictions_DetailGetUpdateRowControls(data) {
+
+            var columnData = [];
+            var inputData = "<input type='text' class='fullWidth form-control' />";
+            columnData[0] = $($(GetSpartan_BR_Attribute_Restrictions_Detail_Spartan_Attribute_TypeDropDown()).val(data.Attribute_Type)).addClass('Attribute_Type');
+            columnData[1] = $($(GetSpartan_BR_Attribute_Restrictions_Detail_Spartan_Attribute_Control_TypeDropDown()).val(data.Control_Type)).addClass('Control_Type');
+
+            return columnData;
+        }
+
+        var removedSpartan_BR_Attribute_Restrictions_DetailData = [];
+        function Spartan_BR_Attribute_Restrictions_DetailDeleteRow(rowIndex) {
+            if (!permission.Delete || isConsultMode)
+                return;
+
+            if (confirm("@Resources.Resources.DeleteConfirm")) {
+                var prevData = Spartan_BR_Attribute_Restrictions_DetailTable.fnGetData(rowIndex);
+                removedSpartan_BR_Attribute_Restrictions_DetailData.push(prevData);
+                Spartan_BR_Attribute_Restrictions_DetailTable.fnDeleteRow(rowIndex);
+            }
+
+        }
+
+        function Spartan_BR_Attribute_Restrictions_DetailrowCreationGrid(row, data, index) {
+            //debugger;
+            var Spartan_BR_Attribute_Restrictions_DetailRowElement = "Spartan_BR_Attribute_Restrictions_Detail_" + index.toString();
+            $(row).addClass(Spartan_BR_Attribute_Restrictions_DetailRowElement);
+
+            row.innerHTML = "";
+
+            if (data.IsInsertRow) {
+
+                if (row.childNodes.length != 0) {
+                    for (var i = 0; i < row.childNodes.length; i++) {
+                        row.childNodes[i].remove();
+                    }
+                }
+                var controls = GetInsertSpartan_BR_Attribute_Restrictions_DetailRowControls(index);
+
+                var actionColInsert = $('<td>');
+
+                var abc = "if(dynamicFieldValidation('" + Spartan_BR_Attribute_Restrictions_DetailRowElement + "')){ Spartan_BR_Attribute_Restrictions_DetailInsertRow(" + index + "); }";
+                var insertRowHTML = '<a  onclick="' + abc + '">';
+                $('<i class="fa fa-check">').appendTo($(insertRowHTML).appendTo(actionColInsert));
+				$('<i class="fa fa-times">').appendTo($("<a  onclick='Spartan_BR_Attribute_Restrictions_DetailCancelRow(" + index + ")'>").appendTo(actionColInsert));
+                actionColInsert.appendTo(row);
+
+                for (i = 0; i < controls.length; i++) {
+                    $(controls[i]).appendTo($('<td>').appendTo(row));
+                }
+                return;
+            }
+
+            var actionCol = $('<td>');
+            $('<i class="fa fa-pencil">').appendTo($("<a title='Edit' class='" + (!permission.Edit || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Attribute_Restrictions_DetailEditRow(" + index + ")'>").appendTo(actionCol));
+            @*$('<i class="fa fa-edit">').appendTo($("<a title='Edit' data-toggle='modal' data-target='#AddSpartan_BR_Attribute_Restrictions_Detail-form' class='" + (!permission.Edit || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Attribute_Restrictions_DetailEditRowPopup(" + index + ")'>").appendTo(actionCol));*@
+            $('<i class="fa fa-trash-o">').appendTo($("<a title='Delete' class='" + (!permission.Delete || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Attribute_Restrictions_DetailDeleteRow(" + index + ")'>").appendTo(actionCol));
+            actionCol.appendTo(row);
+            $('<td>').text(GetSpartan_BR_Attribute_Restrictions_Detail_Spartan_Attribute_TypeName(data.Attribute_Type)).appendTo(row);
+            $('<td>').text(GetSpartan_BR_Attribute_Restrictions_Detail_Spartan_Attribute_Control_TypeName(data.Control_Type)).appendTo(row);
+
+        }
+
+        var Spartan_BR_Attribute_Restrictions_DetailTable;
+        function showSpartan_BR_Attribute_Restrictions_DetailGrid(dataSet) {
+            removedSpartan_BR_Attribute_Restrictions_DetailData = [];
+            Spartan_BR_Attribute_Restrictions_DetailTable = $('#Spartan_BR_Attribute_Restrictions_DetailGrid').dataTable({
+                dom: '<"html5buttons"B>lTgitp',
+                buttons: [
+                ],
+                "createdRow": Spartan_BR_Attribute_Restrictions_DetailrowCreationGrid,
+                "lengthMenu": [[5, 10, 20, 50, -1], [5, 10, 20, 50, "All"]],
+                data: dataSet,
+                "columns": [
+                    { "data": null, 'visible': true, "orderable": false },
+                    { "data": "Attribute_Type", "orderable": false },
+                    { "data": "Control_Type", "orderable": false },
+
+                ],
+                "order": [[0, "asc"]],
+                "language": {
+                    "lengthMenu": "@Resources.Resources.Display" + " _MENU_ " + "@Resources.Resources.RecordsPerPage",
+                    "zeroRecords": "@Resources.Resources.NothingFound",
+                    "info": "@Resources.Resources.ShowingPages" + " _PAGE_ " + "@Resources.Resources.of" + " _PAGES_",
+                    "infoEmpty": "@Resources.Resources.NoRecords",
+                    "infoFiltered": "(" + "@Resources.Resources.FilteredFrom" + " _MAX_ " + "@Resources.Resources.TotalRecords" + ")",
+                    "sSearch": "@Resources.Resources.Search",
+                    "paginate": {
+                        "previous": "@Resources.Resources.Previous",
+                        "next": "@Resources.Resources.Next"
+                    }
+                },
+                "fnDrawCallback": function (settings) {
+                    setSpartan_BR_Attribute_Restrictions_DetailValidation();
+                }
+            });
+        }
+
+    var Spartan_BR_Attribute_Restrictions_Detail_Spartan_Attribute_TypeItems;
+        function GetSpartan_BR_Attribute_Restrictions_Detail_Spartan_Attribute_TypeItem() {
+            Spartan_BR_Attribute_Restrictions_Detail_Spartan_Attribute_TypeItems = null;
+            var ajaxUrl = "@Url.Content("~/Frontal/Spartan_BR_Action/GetSpartan_BR_Attribute_Restrictions_Detail_Spartan_Attribute_TypeAll")";
+            $.ajax({
+                url: ajaxUrl,
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                global: false,
+                success: function (result) {
+                    Spartan_BR_Attribute_Restrictions_Detail_Spartan_Attribute_TypeItems = result;
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+    var Spartan_BR_Attribute_Restrictions_Detail_Spartan_Attribute_Control_TypeItems;
+        function GetSpartan_BR_Attribute_Restrictions_Detail_Spartan_Attribute_Control_TypeItem() {
+            Spartan_BR_Attribute_Restrictions_Detail_Spartan_Attribute_Control_TypeItems = null;
+            var ajaxUrl = "@Url.Content("~/Frontal/Spartan_BR_Action/GetSpartan_BR_Attribute_Restrictions_Detail_Spartan_Attribute_Control_TypeAll")";
+            $.ajax({
+                url: ajaxUrl,
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                global: false,
+                success: function (result) {
+                    Spartan_BR_Attribute_Restrictions_Detail_Spartan_Attribute_Control_TypeItems = result;
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+
+        var Spartan_BR_Attribute_Restrictions_DetailData = [];
+        var Spartan_BR_Attribute_Restrictions_DetaildeletedItem = [];
+        var Spartan_BR_Attribute_Restrictions_DetailDataMain = [];
+        var Spartan_BR_Attribute_Restrictions_DetailDataMainPages = [];
+        var Spartan_BR_Attribute_Restrictions_DetailnewItemCount = 0;
+        var Spartan_BR_Attribute_Restrictions_DetailmaxItemIndex = 0;
+        var Spartan_BR_Attribute_Restrictions_DetailDataMainInitialized = false;
+
+        function SendSpartan_BR_Attribute_Restrictions_Detail(callBack, ActionIdId) {
+            Spartan_BR_Attribute_Restrictions_DetailData = GetSpartan_BR_Attribute_Restrictions_DetailFromDataTable();
+
+            if (Spartan_BR_Attribute_Restrictions_DetailData.length > 0 || $("#ReferenceActionId").val() != ActionIdId) {
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Spartan_BR_Action/PostSpartan_BR_Attribute_Restrictions_Detail?MasterId=")' + ActionIdId + "&referenceId=" + $("#ReferenceActionId").val(),
+                    type: 'POST',
+                    data: GetSpartan_BR_Attribute_Restrictions_Detail(),
+                    async: true,
+                    success: function (result) {
+
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            } else {
+                //showNotification("@Resources.Resources.SaveSuccess", "success");
+                //callBack(ActionIdId);
+            }
+            return true;
+        }
+
+        function GetAddSpartan_BR_Attribute_Restrictions_DetailPopup(currentRowIndex, mode) {
+
+            $.ajax({
+                url: "@Url.Action("AddSpartan_BR_Attribute_Restrictions_Detail", "Spartan_BR_Action")",
+                type: "GET",
+                async: false,
+                data: { rowIndex: currentRowIndex, functionMode: mode },
+                success: function (data) {
+                    $(".AddSpartan_BR_Attribute_Restrictions_DetailModal").html(data);
+                },
+                error: function () {
+
+                }
+            });
+
+            @*$.get('@Url.Action("AddSpartan_BR_Attribute_Restrictions_Detail", "Spartan_BR_Action")', { rowIndex: currentRowIndex }, function (data) {
+                $(".AddSpartan_BR_Attribute_Restrictions_DetailModal").html(data);
+            });*@
+        }
+        var Spartan_BR_Operation_Restrictions_DetailinsertRowCurrentIndex = -1;
+        var Spartan_BR_Operation_Restrictions_DetailDataDataTable;
+        function getSpartan_BR_Operation_Restrictions_DetailData() {
+            $.ajax({
+                url: "@Url.Content("~/Frontal/Spartan_BR_Action/GetSpartan_BR_Operation_Restrictions_Detail")" + "?draw=1&start=1&length=2147483647" + ($("#ReferenceActionId").val() != "" ? "&RelationId=" + $("#ReferenceActionId").val() : ""),
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    Spartan_BR_Operation_Restrictions_DetailDataDataTable = result.data;
+                    showSpartan_BR_Operation_Restrictions_DetailGrid(result.data);
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+        function Spartan_BR_Operation_Restrictions_DetailGetUpdateRowControls(data) {
+
+            var columnData = [];
+            var inputData = "<input type='text' class='fullWidth form-control' />";
+            columnData[0] = $($(GetSpartan_BR_Operation_Restrictions_Detail_Spartan_BR_OperationDropDown()).val(data.Operation)).addClass('Operation');
+
+            return columnData;
+        }
+
+        var removedSpartan_BR_Operation_Restrictions_DetailData = [];
+        function Spartan_BR_Operation_Restrictions_DetailDeleteRow(rowIndex) {
+            if (!permission.Delete || isConsultMode)
+                return;
+
+            if (confirm("@Resources.Resources.DeleteConfirm")) {
+                var prevData = Spartan_BR_Operation_Restrictions_DetailTable.fnGetData(rowIndex);
+                removedSpartan_BR_Operation_Restrictions_DetailData.push(prevData);
+                Spartan_BR_Operation_Restrictions_DetailTable.fnDeleteRow(rowIndex);
+            }
+
+        }
+
+        function Spartan_BR_Operation_Restrictions_DetailrowCreationGrid(row, data, index) {
+            //debugger;
+            var Spartan_BR_Operation_Restrictions_DetailRowElement = "Spartan_BR_Operation_Restrictions_Detail_" + index.toString();
+            $(row).addClass(Spartan_BR_Operation_Restrictions_DetailRowElement);
+
+            row.innerHTML = "";
+
+            if (data.IsInsertRow) {
+
+                if (row.childNodes.length != 0) {
+                    for (var i = 0; i < row.childNodes.length; i++) {
+                        row.childNodes[i].remove();
+                    }
+                }
+                var controls = GetInsertSpartan_BR_Operation_Restrictions_DetailRowControls(index);
+
+                var actionColInsert = $('<td>');
+
+                var abc = "if(dynamicFieldValidation('" + Spartan_BR_Operation_Restrictions_DetailRowElement + "')){ Spartan_BR_Operation_Restrictions_DetailInsertRow(" + index + "); }";
+                var insertRowHTML = '<a  onclick="' + abc + '">';
+                $('<i class="fa fa-check">').appendTo($(insertRowHTML).appendTo(actionColInsert));
+				$('<i class="fa fa-times">').appendTo($("<a  onclick='Spartan_BR_Operation_Restrictions_DetailCancelRow(" + index + ")'>").appendTo(actionColInsert));
+                actionColInsert.appendTo(row);
+
+                for (i = 0; i < controls.length; i++) {
+                    $(controls[i]).appendTo($('<td>').appendTo(row));
+                }
+                return;
+            }
+
+            var actionCol = $('<td>');
+            $('<i class="fa fa-pencil">').appendTo($("<a title='Edit' class='" + (!permission.Edit || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Operation_Restrictions_DetailEditRow(" + index + ")'>").appendTo(actionCol));
+            @*$('<i class="fa fa-edit">').appendTo($("<a title='Edit' data-toggle='modal' data-target='#AddSpartan_BR_Operation_Restrictions_Detail-form' class='" + (!permission.Edit || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Operation_Restrictions_DetailEditRowPopup(" + index + ")'>").appendTo(actionCol));*@
+            $('<i class="fa fa-trash-o">').appendTo($("<a title='Delete' class='" + (!permission.Delete || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Operation_Restrictions_DetailDeleteRow(" + index + ")'>").appendTo(actionCol));
+            actionCol.appendTo(row);
+            $('<td>').text(GetSpartan_BR_Operation_Restrictions_Detail_Spartan_BR_OperationName(data.Operation)).appendTo(row);
+
+        }
+
+        var Spartan_BR_Operation_Restrictions_DetailTable;
+        function showSpartan_BR_Operation_Restrictions_DetailGrid(dataSet) {
+            removedSpartan_BR_Operation_Restrictions_DetailData = [];
+            Spartan_BR_Operation_Restrictions_DetailTable = $('#Spartan_BR_Operation_Restrictions_DetailGrid').dataTable({
+                dom: '<"html5buttons"B>lTgitp',
+                buttons: [
+                ],
+                "createdRow": Spartan_BR_Operation_Restrictions_DetailrowCreationGrid,
+                "lengthMenu": [[5, 10, 20, 50, -1], [5, 10, 20, 50, "All"]],
+                data: dataSet,
+                "columns": [
+                    { "data": null, 'visible': true, "orderable": false },
+                    { "data": "Operation", "orderable": false },
+
+                ],
+                "order": [[0, "asc"]],
+                "language": {
+                    "lengthMenu": "@Resources.Resources.Display" + " _MENU_ " + "@Resources.Resources.RecordsPerPage",
+                    "zeroRecords": "@Resources.Resources.NothingFound",
+                    "info": "@Resources.Resources.ShowingPages" + " _PAGE_ " + "@Resources.Resources.of" + " _PAGES_",
+                    "infoEmpty": "@Resources.Resources.NoRecords",
+                    "infoFiltered": "(" + "@Resources.Resources.FilteredFrom" + " _MAX_ " + "@Resources.Resources.TotalRecords" + ")",
+                    "sSearch": "@Resources.Resources.Search",
+                    "paginate": {
+                        "previous": "@Resources.Resources.Previous",
+                        "next": "@Resources.Resources.Next"
+                    }
+                },
+                "fnDrawCallback": function (settings) {
+                    setSpartan_BR_Operation_Restrictions_DetailValidation();
+                }
+            });
+        }
+
+    var Spartan_BR_Operation_Restrictions_Detail_Spartan_BR_OperationItems;
+        function GetSpartan_BR_Operation_Restrictions_Detail_Spartan_BR_OperationItem() {
+            Spartan_BR_Operation_Restrictions_Detail_Spartan_BR_OperationItems = null;
+            var ajaxUrl = "@Url.Content("~/Frontal/Spartan_BR_Action/GetSpartan_BR_Operation_Restrictions_Detail_Spartan_BR_OperationAll")";
+            $.ajax({
+                url: ajaxUrl,
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                global: false,
+                success: function (result) {
+                    Spartan_BR_Operation_Restrictions_Detail_Spartan_BR_OperationItems = result;
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+
+        var Spartan_BR_Operation_Restrictions_DetailData = [];
+        var Spartan_BR_Operation_Restrictions_DetaildeletedItem = [];
+        var Spartan_BR_Operation_Restrictions_DetailDataMain = [];
+        var Spartan_BR_Operation_Restrictions_DetailDataMainPages = [];
+        var Spartan_BR_Operation_Restrictions_DetailnewItemCount = 0;
+        var Spartan_BR_Operation_Restrictions_DetailmaxItemIndex = 0;
+        var Spartan_BR_Operation_Restrictions_DetailDataMainInitialized = false;
+
+        function SendSpartan_BR_Operation_Restrictions_Detail(callBack, ActionIdId) {
+            Spartan_BR_Operation_Restrictions_DetailData = GetSpartan_BR_Operation_Restrictions_DetailFromDataTable();
+
+            if (Spartan_BR_Operation_Restrictions_DetailData.length > 0 || $("#ReferenceActionId").val() != ActionIdId) {
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Spartan_BR_Action/PostSpartan_BR_Operation_Restrictions_Detail?MasterId=")' + ActionIdId + "&referenceId=" + $("#ReferenceActionId").val(),
+                    type: 'POST',
+                    data: GetSpartan_BR_Operation_Restrictions_Detail(),
+                    async: true,
+                    success: function (result) {
+
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            } else {
+                //showNotification("@Resources.Resources.SaveSuccess", "success");
+                //callBack(ActionIdId);
+            }
+            return true;
+        }
+
+        function GetAddSpartan_BR_Operation_Restrictions_DetailPopup(currentRowIndex, mode) {
+
+            $.ajax({
+                url: "@Url.Action("AddSpartan_BR_Operation_Restrictions_Detail", "Spartan_BR_Action")",
+                type: "GET",
+                async: false,
+                data: { rowIndex: currentRowIndex, functionMode: mode },
+                success: function (data) {
+                    $(".AddSpartan_BR_Operation_Restrictions_DetailModal").html(data);
+                },
+                error: function () {
+
+                }
+            });
+
+            @*$.get('@Url.Action("AddSpartan_BR_Operation_Restrictions_Detail", "Spartan_BR_Action")', { rowIndex: currentRowIndex }, function (data) {
+                $(".AddSpartan_BR_Operation_Restrictions_DetailModal").html(data);
+            });*@
+        }
+        var Spartan_BR_Event_Restrictions_DetailinsertRowCurrentIndex = -1;
+        var Spartan_BR_Event_Restrictions_DetailDataDataTable;
+        function getSpartan_BR_Event_Restrictions_DetailData() {
+            $.ajax({
+                url: "@Url.Content("~/Frontal/Spartan_BR_Action/GetSpartan_BR_Event_Restrictions_Detail")" + "?draw=1&start=1&length=2147483647" + ($("#ReferenceActionId").val() != "" ? "&RelationId=" + $("#ReferenceActionId").val() : ""),
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    Spartan_BR_Event_Restrictions_DetailDataDataTable = result.data;
+                    showSpartan_BR_Event_Restrictions_DetailGrid(result.data);
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+        function Spartan_BR_Event_Restrictions_DetailGetUpdateRowControls(data) {
+
+            var columnData = [];
+            var inputData = "<input type='text' class='fullWidth form-control' />";
+            columnData[0] = $($(GetSpartan_BR_Event_Restrictions_Detail_Spartan_BR_Process_EventDropDown()).val(data.Process_Event)).addClass('Process_Event');
+
+            return columnData;
+        }
+
+        var removedSpartan_BR_Event_Restrictions_DetailData = [];
+        function Spartan_BR_Event_Restrictions_DetailDeleteRow(rowIndex) {
+            if (!permission.Delete || isConsultMode)
+                return;
+
+            if (confirm("@Resources.Resources.DeleteConfirm")) {
+                var prevData = Spartan_BR_Event_Restrictions_DetailTable.fnGetData(rowIndex);
+                removedSpartan_BR_Event_Restrictions_DetailData.push(prevData);
+                Spartan_BR_Event_Restrictions_DetailTable.fnDeleteRow(rowIndex);
+            }
+
+        }
+
+        function Spartan_BR_Event_Restrictions_DetailrowCreationGrid(row, data, index) {
+            //debugger;
+            var Spartan_BR_Event_Restrictions_DetailRowElement = "Spartan_BR_Event_Restrictions_Detail_" + index.toString();
+            $(row).addClass(Spartan_BR_Event_Restrictions_DetailRowElement);
+
+            row.innerHTML = "";
+
+            if (data.IsInsertRow) {
+
+                if (row.childNodes.length != 0) {
+                    for (var i = 0; i < row.childNodes.length; i++) {
+                        row.childNodes[i].remove();
+                    }
+                }
+                var controls = GetInsertSpartan_BR_Event_Restrictions_DetailRowControls(index);
+
+                var actionColInsert = $('<td>');
+
+                var abc = "if(dynamicFieldValidation('" + Spartan_BR_Event_Restrictions_DetailRowElement + "')){ Spartan_BR_Event_Restrictions_DetailInsertRow(" + index + "); }";
+                var insertRowHTML = '<a  onclick="' + abc + '">';
+                $('<i class="fa fa-check">').appendTo($(insertRowHTML).appendTo(actionColInsert));
+				$('<i class="fa fa-times">').appendTo($("<a  onclick='Spartan_BR_Event_Restrictions_DetailCancelRow(" + index + ")'>").appendTo(actionColInsert));
+                actionColInsert.appendTo(row);
+
+                for (i = 0; i < controls.length; i++) {
+                    $(controls[i]).appendTo($('<td>').appendTo(row));
+                }
+                return;
+            }
+
+            var actionCol = $('<td>');
+            $('<i class="fa fa-pencil">').appendTo($("<a title='Edit' class='" + (!permission.Edit || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Event_Restrictions_DetailEditRow(" + index + ")'>").appendTo(actionCol));
+            @*$('<i class="fa fa-edit">').appendTo($("<a title='Edit' data-toggle='modal' data-target='#AddSpartan_BR_Event_Restrictions_Detail-form' class='" + (!permission.Edit || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Event_Restrictions_DetailEditRowPopup(" + index + ")'>").appendTo(actionCol));*@
+            $('<i class="fa fa-trash-o">').appendTo($("<a title='Delete' class='" + (!permission.Delete || isConsultMode ? " disabled" : "") + "' onclick='Spartan_BR_Event_Restrictions_DetailDeleteRow(" + index + ")'>").appendTo(actionCol));
+            actionCol.appendTo(row);
+            $('<td>').text(GetSpartan_BR_Event_Restrictions_Detail_Spartan_BR_Process_EventName(data.Process_Event)).appendTo(row);
+
+        }
+
+        var Spartan_BR_Event_Restrictions_DetailTable;
+        function showSpartan_BR_Event_Restrictions_DetailGrid(dataSet) {
+            removedSpartan_BR_Event_Restrictions_DetailData = [];
+            Spartan_BR_Event_Restrictions_DetailTable = $('#Spartan_BR_Event_Restrictions_DetailGrid').dataTable({
+                dom: '<"html5buttons"B>lTgitp',
+                buttons: [
+                ],
+                "createdRow": Spartan_BR_Event_Restrictions_DetailrowCreationGrid,
+                "lengthMenu": [[5, 10, 20, 50, -1], [5, 10, 20, 50, "All"]],
+                data: dataSet,
+                "columns": [
+                    { "data": null, 'visible': true, "orderable": false },
+                    { "data": "Process_Event", "orderable": false },
+
+                ],
+                "order": [[0, "asc"]],
+                "language": {
+                    "lengthMenu": "@Resources.Resources.Display" + " _MENU_ " + "@Resources.Resources.RecordsPerPage",
+                    "zeroRecords": "@Resources.Resources.NothingFound",
+                    "info": "@Resources.Resources.ShowingPages" + " _PAGE_ " + "@Resources.Resources.of" + " _PAGES_",
+                    "infoEmpty": "@Resources.Resources.NoRecords",
+                    "infoFiltered": "(" + "@Resources.Resources.FilteredFrom" + " _MAX_ " + "@Resources.Resources.TotalRecords" + ")",
+                    "sSearch": "@Resources.Resources.Search",
+                    "paginate": {
+                        "previous": "@Resources.Resources.Previous",
+                        "next": "@Resources.Resources.Next"
+                    }
+                },
+                "fnDrawCallback": function (settings) {
+                    setSpartan_BR_Event_Restrictions_DetailValidation();
+                }
+            });
+        }
+
+    var Spartan_BR_Event_Restrictions_Detail_Spartan_BR_Process_EventItems;
+        function GetSpartan_BR_Event_Restrictions_Detail_Spartan_BR_Process_EventItem() {
+            Spartan_BR_Event_Restrictions_Detail_Spartan_BR_Process_EventItems = null;
+            var ajaxUrl = "@Url.Content("~/Frontal/Spartan_BR_Action/GetSpartan_BR_Event_Restrictions_Detail_Spartan_BR_Process_EventAll")";
+            $.ajax({
+                url: ajaxUrl,
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                global: false,
+                success: function (result) {
+                    Spartan_BR_Event_Restrictions_Detail_Spartan_BR_Process_EventItems = result;
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+
+        var Spartan_BR_Event_Restrictions_DetailData = [];
+        var Spartan_BR_Event_Restrictions_DetaildeletedItem = [];
+        var Spartan_BR_Event_Restrictions_DetailDataMain = [];
+        var Spartan_BR_Event_Restrictions_DetailDataMainPages = [];
+        var Spartan_BR_Event_Restrictions_DetailnewItemCount = 0;
+        var Spartan_BR_Event_Restrictions_DetailmaxItemIndex = 0;
+        var Spartan_BR_Event_Restrictions_DetailDataMainInitialized = false;
+
+        function SendSpartan_BR_Event_Restrictions_Detail(callBack, ActionIdId) {
+            Spartan_BR_Event_Restrictions_DetailData = GetSpartan_BR_Event_Restrictions_DetailFromDataTable();
+
+            if (Spartan_BR_Event_Restrictions_DetailData.length > 0 || $("#ReferenceActionId").val() != ActionIdId) {
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Spartan_BR_Action/PostSpartan_BR_Event_Restrictions_Detail?MasterId=")' + ActionIdId + "&referenceId=" + $("#ReferenceActionId").val(),
+                    type: 'POST',
+                    data: GetSpartan_BR_Event_Restrictions_Detail(),
+                    async: true,
+                    success: function (result) {
+
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            } else {
+                //showNotification("@Resources.Resources.SaveSuccess", "success");
+                //callBack(ActionIdId);
+            }
+            return true;
+        }
+
+        function GetAddSpartan_BR_Event_Restrictions_DetailPopup(currentRowIndex, mode) {
+
+            $.ajax({
+                url: "@Url.Action("AddSpartan_BR_Event_Restrictions_Detail", "Spartan_BR_Action")",
+                type: "GET",
+                async: false,
+                data: { rowIndex: currentRowIndex, functionMode: mode },
+                success: function (data) {
+                    $(".AddSpartan_BR_Event_Restrictions_DetailModal").html(data);
+                },
+                error: function () {
+
+                }
+            });
+
+            @*$.get('@Url.Action("AddSpartan_BR_Event_Restrictions_Detail", "Spartan_BR_Action")', { rowIndex: currentRowIndex }, function (data) {
+                $(".AddSpartan_BR_Event_Restrictions_DetailModal").html(data);
+            });*@
+        }
+
+
+        function initiateUIControls() {
+            $('.gridDatePicker').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            //Time Picker
+            $('.gridTimePicker').clockpicker();
+
+
+
+
+
+        }
+
+    </script>
+
+<script type="text/javascript">
+
+        function SendSpartan_BR_ActionData(callBack) {
+            var formData = new FormData($("form#CreateSpartan_BR_Action")[0]);
+            if (checkClientValidate('Spartan_BR_ActionCreateForm')) {
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Spartan_BR_Action/Post/")',
+                    type: 'POST',
+                    data: formData,
+                    async: true,
+                    success: function (result) {
+                        if (result < 0) {
+                            showNotification("@Resources.Resources.ErrorSave", "error");
+                        } else {
+                            SendSpartan_BR_Action_Configuration_Detail(callBack, result);
+                            SendSpartan_BR_Attribute_Restrictions_Detail(callBack, result);
+                            SendSpartan_BR_Operation_Restrictions_Detail(callBack, result);
+                            SendSpartan_BR_Event_Restrictions_Detail(callBack, result);
+
+                            showNotification("@Resources.Resources.SaveSuccess", "success");
+                            callBack(result);
+                        }
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            }
+            return false;
+        };
+        function GetPropertyBag() {
+            $.get('@Url.Action("Spartan_BR_ActionPropertyBag", "Spartan_BR_Action")', function (data) {
+                $(".PropertyModal").html(data);
+            });
+        }
+        function GetBusinessRule() {
+            $.get('@Url.Action("Spartan_BR_ActionBusinessRule", "Spartan_BR_Action")', function (data) {
+                $(".BusinessRuleModal").html(data);
+            });
+        }
+        function GetAddBusinessRule(RuleId) {
+            $.get('@Url.Action("AddBusinessRule", "Spartan_BR_Action")', { BusinessRuleId: RuleId }, function (data) {
+                $(".AddBusinessRuleModal").html(data);
+                $(".datatable").DataTable();
+            });
+        }
+
+    var permission = {
+        Consult: '@permission.Consult' == 'True',
+        New: '@permission.New' == 'True',
+        Edit: '@permission.Edit' == 'True',
+        Delete: '@permission.Delete' == 'True',
+        Export: '@permission.Export' == 'True',
+        Print: '@permission.Print' == 'True',
+        Configure: '@permission.Configure' == 'True',
+    };
+
+    
+    //MR-var statusItems;
+    //MR-var stateItems;
+    //MR-var cityItems = [];
+    var isConsultMode = "@ViewBag.Consult" == "True";
+    Consult(isConsultMode);
+        function Consult(val) {
+            if (val) {
+                $(':input').attr('readonly', 'readonly');
+                $(':input').attr('disabled', 'true');
+                $('.noConsult').removeAttr('readonly');
+                $('.noConsult').removeAttr('disabled');
+            }
+        }
+
+    function BackToGrid() {
+        location.href = "@Url.Content("~/Frontal/Spartan_BR_Action/")";
+    }
+
+        function SaveElementAttributes() {
+            if ($('#hdnConfigureType').val() == "1") {
+                $.post("@Url.Content("~/Frontal/Spartan_BR_Action/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+                    $('#hdnConfigureType').val("0");
+                    location.reload(true);
+                }, "json");
+            } else {
+                $.post("@Url.Content("~/Frontal/Spartan_BR_Action/ReadScriptSettings")", function (data) {
+                    mainElementObject = JSON.parse(data.MainElement);
+                    childElementObject = JSON.parse(data.ChildElement);
+
+                    for (var i = 0; i < mainElementObject.length; i++) {
+                        var mainElementAttributes = '<div class="col-sm-2">';
+                        mainElementAttributes += '<div class="displayAttributes requiredAttribute"><a class="requiredClick" title="' + (mainElementObject[i].IsRequired == true ? "Required" : "Not Required") + '" onclick="setRequired(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsRequired == true ? "@Url.Content("~/Images/Required.png")" : "@Url.Content("~/Images/Not-Required.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes visibleAttribute"><a class="visibleClick" title="' + (mainElementObject[i].IsVisible == true ? "Visible" : "In Visible") + '" onclick="setVisible(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsVisible == true ? "@Url.Content("~/Images/Visible.png")" : "@Url.Content("~/Images/InVisible.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes readOnlyAttribute"><a class="readOnlyClick" title="' + (mainElementObject[i].IsReadOnly == true ? "Disabled" : "Enabled") + '" onclick="setReadOnly(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsReadOnly == true ? "@Url.Content("~/Images/Disabled.png")" : "@Url.Content("~/Images/Enabled.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes defaultValueAttribute"><a id="hlDefaultValue_' + i.toString() + '" class="defaultValueClick" title="' + (mainElementObject[i].DefaultValue) + '" onclick="setDefaultValue(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].DefaultValue != '' && mainElementObject[i].DefaultValue != null ? "@Url.Content("~/Images/default-value.png")" : "@Url.Content("~/Images/Not-Default-Value.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes helpTextAttribute"><a id="hlHelpText_' + i.toString() + '" class="helpTextClick" title="' + (mainElementObject[i].HelpText) + '" onclick="setHelpText(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].HelpText != '' && mainElementObject[i].HelpText != null ? "@Url.Content("~/Images/green-help.png")" : "@Url.Content("~/Images/red-help.jpg")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '</div>';
+                        $('#' + mainElementObject[i].inputId).parent().closest('.form-group').show();
+
+                        $('#' + mainElementObject[i].inputId).closest('.col-sm-8').after(mainElementAttributes);
+                    }
+
+                    for (var i = 0; i < childElementObject.length; i++) {
+                        $('.' + childElementObject[i].inputId + 'Header').show();
+                        $('.' + childElementObject[i].inputId).parent().show();
+                        $('.' + childElementObject[i].inputId + 'Header').append(returnAttributeHTML(i));
+                    }
+
+                    $('#ConfigureSave').text('Save Settings');
+                    $('#hdnConfigureType').val("1");
+                });
+            }
+        }
+    </script>
+<script type="text/javascript" src="~/Uploads/Scripts/Spartan_BR_Action.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Scripts/Custom/Spartan_BR_ActionGeneral.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+}

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_Report_Presentation_View" value="Report Presentation View"></resource>
+  <resource culture="en-US" name="PresentationViewId" value="PresentationViewId"></resource>
+  <resource culture="en-US" name="Description" value="Description"></resource>
+  <resource culture="en-US" name="Presentation_Type" value="Presentation Type"></resource>
+
+</resources>

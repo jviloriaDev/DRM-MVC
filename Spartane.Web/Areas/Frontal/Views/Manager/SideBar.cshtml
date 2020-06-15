@@ -1,0 +1,120 @@
+﻿@model ICollection<Spartane.Web.Areas.Frontal.Models.SideBar>
+@{
+    Layout = null;
+}
+<div class="page-sidebar-wrapper">
+    <div class="page-sidebar navbar-collapse collapse">
+        <ul class="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" id="ulmenu">
+            <li class="sidebar-search-wrapper">
+                <form class="sidebar-search sidebar-search-bordered sidebar-search-solid" action="extra_search.html" method="POST">
+                    <a class="remove" href="javascript:;">
+                        <i class="icon-close"></i>
+                    </a>
+                    <div class="input-group">
+                        <input class="form-control" type="text" placeholder="Buscar...">
+                        <span class="input-group-btn">
+                            <a class="btn submit" href="javascript:;"><i class="icon-magnifier"></i></a>
+                        </span>
+                    </div>
+                </form>
+            </li>
+            @foreach (var opcion in Model.Where(o => o.Tabs != ""))
+            {
+                <li>
+                    <a href="javascript:;" id="@opcion.Id">
+                        <i class="@opcion.IconClass"></i>
+                        <span class="title">@opcion.Label</span>
+                        <span class="selected"></span>
+                        <span class="arrow open"></span>
+                    </a>
+                    @if (opcion.Opciones.Count > 0)
+                    {
+                        <ul class="sub-menu">
+                            @foreach (var subopciones in opcion.Opciones)
+                            {
+                                <li>
+                                    <a class="" data-toggle="menu" data-title="@subopciones.Titulo" data-description="@subopciones.Descripcion" data-tabs="@subopciones.Tabs" href="@Url.Action("default", @subopciones.Controller)" id="Menu_@opcion.Id">
+                                        @if (subopciones.IconClass != "")
+                                        {
+                                            <i class="@subopciones.IconClass"></i>
+                                        }
+                                        @subopciones.Label
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    }
+
+                </li>
+            }
+            <li>
+                <a href="javascript:;">
+                    <i class="icon-folder"></i>
+                    <span class="title">Demos</span>
+                    <span class="arrow "></span>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a href="javascript:;">
+                            <i class="icon-settings"></i> Submódulos <span class="arrow"></span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li>
+                                <a href="javascript:;">
+                                    <i class="icon-user"></i>
+                                    Sample Link 1 <span class="arrow"></span>
+                                </a>
+                                <ul class="sub-menu">
+                                    <li>
+                                        <a href="#"><i class="icon-power"></i> Opcion 1</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="icon-paper-plane"></i> Opcion 2</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="icon-star"></i> Opcion 3</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#"><i class="icon-camera"></i> Opcion 1</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="icon-link"></i> Opcion 2</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="icon-pointer"></i>Oocion 3</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            <i class="icon-globe"></i> Notificaciones <span class="arrow"></span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li>
+                                <a href="#" id="optSuccess"><i class="icon-tag"></i> Success</a>
+                            </li>
+                            <li>
+                                <a href="#" id="optError"><i class="icon-pencil"></i> Error </a>
+                            </li>
+                            <li>
+                                <a href="#" id="optInfo"><i class="icon-graph"></i> Info</a>
+                            </li>
+                            <li>
+                                <a href="#" id="optWarning"><i class="icon-graph"></i> Warning</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="icon-bar-chart"></i>
+                            Item 3
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>        
+        <!-- END SIDEBAR MENU -->
+    </div>
+</div>

@@ -1,0 +1,593 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Globalization
+@using Spartane.Core.Domain.Permission
+@using Spartane.Core.Domain.Spartane_File
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Spartan_Bitacora_SQLModel
+@{
+
+/*
+    string Register_Date = "";
+    if (Model.Register_Date == "")
+    { Model.Register_Date = DateTime.Now.ToString(ConfigurationProperty.DateFormat); }
+
+*/
+
+
+    Permission permission = ViewBag.Permission;
+}
+<div class="loading style-2"><div class="loading-wheel"></div></div>
+<div class="modal fade in" id="dvAttributeValue" style="background-color:rgba(0, 0, 0, 0.7);">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" id="lblAttributeType">Value</label>
+                    <div class="col-sm-7">
+                        <input type="text" title="Value" class="form-control" id="txtAttributeValue" />
+                    </div>
+                    <div class="col-sm-2">
+                        <a class="btn btn-primary" onclick="SaveValue()">Submit</a>
+                    </div>
+                    <input type="hidden" id="hdnAttributType" />
+                    <input type="hidden" id="hdnAttributElement" />
+                    <input type="hidden" id="hdnAttributNumber" />
+                    <input type="hidden" id="hdnElementType" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row wrapper border-bottom white-bg page-heading">
+
+    <div class="row">
+        <div class="col-lg-10">
+            <h2>
+                @Resources.Spartan_Bitacora_SQLResources.Spartan_Bitacora_SQL
+                <button onclick="Spartan_Bitacora_SQLGetBusinessRule('', 'Al Abrir Pantalla', '0')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Spartan_Bitacora_SQLBusinessRule-form">
+                    <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+                        <i class="fa fa-cogs fa-spin"></i>
+                    </a>
+                </button>
+            </h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">@Resources.Resources.Home</a>
+                </li>
+                <li class="">
+                    <label>@Resources.Spartan_Bitacora_SQLResources.Spartan_Bitacora_SQL</label>
+                </li>
+                <li class="active">
+                    <strong>@Resources.Resources.Create</strong>
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-2">
+
+            @{
+                if (Convert.ToInt32(Spartane.Web.SessionHelper.Role) == (int)Spartane.Core.Enums.SpartanRoleEnum.Admin)
+                {
+                    <h2>&nbsp;</h2>
+                    <button onclick="Spartan_Bitacora_SQLDisplayBusinessRule()" type="button" class="btn btn-info btn-lg displayBusinessProperyButton">
+                        <i class="fa fa-cogs fa-spin"></i>
+                    </button>
+
+                    <div aria-hidden="true" class="modal fade in Spartan_Bitacora_SQLPropertyBusinessModal" id="Spartan_Bitacora_SQLPropertyBusinessModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">
+                                        Property & Business Rules
+                                        <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                                    </h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <a class="btn btn-primary full-width" data-dismiss="modal" data-toggle="modal" data-target="#PropertyModal-form" onclick="GetPropertyBag()">Properties</a>
+                                        </div>
+                                        <div class="clearfix col-sm-12">&nbsp;</div>
+                                        <div class="col-sm-12">
+                                            <a class="btn btn-primary full-width" data-dismiss="modal" data-toggle="modal" data-target="#Spartan_Bitacora_SQLBusinessRule-form" onclick="Spartan_Bitacora_SQLGetBusinessRule()">Business Rule</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     <div aria-hidden="true" data-backdrop="static" class="modal fade in PropertyModal" id="PropertyModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+					</div>
+					<div aria-hidden="true" data-backdrop="static" class="modal fade in Spartan_Bitacora_SQLBusinessRuleModal" id="Spartan_Bitacora_SQLBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+					</div>
+					<div aria-hidden="true" data-backdrop="static" class="modal fade in Spartan_Bitacora_SQLAddBusinessRuleModal" id="Spartan_Bitacora_SQLAddBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+					</div>
+
+
+                }
+            }
+
+        </div>
+    </div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            @using (Html.BeginForm("Post", "Spartan_Bitacora_SQL", FormMethod.Post, new { id = "CreateSpartan_Bitacora_SQL", @readonly = "true", @class = "form-horizontal", enctype = "multipart/form-data" }))
+            {
+                                <input type="hidden" id="hdnIsNew" name="hdnIsNew" value="@ViewBag.IsNew.ToString()" />
+                <span id="popupNotification"></span>
+                <div class="container-fluid Spartan_Bitacora_SQLCreateForm" id="viewmodeledit">
+				 <div class="alert alert-warning" id="controlsRequerid" style="display:none">
+                        <a href="#" class="close" onclick="$('#controlsRequerid').hide();">&times;</a>
+                        <span id="textRequired"></span>
+                 </div>
+			<div class="tabs-container">
+                        	<ul class="nav nav-tabs">
+<li class="active"><a data-toggle="tab" href="#tabDatos_Generales"> @Resources.Spartan_Bitacora_SQLResources.TabDatos_Generales</a></li>
+
+                        	</ul>
+	                	<div class="tab-content">
+                            <div id="tabDatos_Generales" class="tab-pane active">
+                                <div class="panel-body">
+                            <div class="form-group" id="divFolio">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Bitacora_SQLResources.Folio</label>
+                                <div class="col-sm-8" data-field-id="Folio" data-attribute="185627" data-field-name="@Resources.Spartan_Bitacora_SQLResources.Folio">
+                                    <label class="form-control" for="Folio" id="lblFolio">
+                                    @if (Model.Folio== 0)
+                                        {
+                                            <text>@Resources.Resources.ClaveDefault</text>
+                                        }
+                                        else
+                                        { 
+                                            <text>@Model.Folio</text>
+                                        }
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divId_User">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Bitacora_SQLResources.Id_User</label>
+                                <div class="col-sm-8" data-field-id="Id_User" data-attribute="185628" data-field-name="@Resources.Spartan_Bitacora_SQLResources.Id_User">
+                                    <input class="form-control inputNumber" id="Id_User" name="Id_User" type="text" value="@Model.Id_User">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Id_User" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divType_SQL">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Bitacora_SQLResources.Type_SQL</label>
+                                <div class="col-sm-8" data-field-id="Type_SQL" data-attribute="185629" data-field-name="@Resources.Spartan_Bitacora_SQLResources.Type_SQL">
+                                    <input class="form-control" id="Type_SQL" name="Type_SQL" type="text" value="@Model.Type_SQL">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Type_SQL" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divRegister_Date">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Bitacora_SQLResources.Register_Date</label>
+                                <div class="col-sm-8" data-field-id="Register_Date" data-attribute="185630" data-field-name="@Resources.Spartan_Bitacora_SQLResources.Register_Date">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input class="form-control col-md-12" id="Register_Date"  name="Register_Date" type="text" value="@Model.Register_Date">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divComputer_Name">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Bitacora_SQLResources.Computer_Name</label>
+                                <div class="col-sm-8" data-field-id="Computer_Name" data-attribute="185631" data-field-name="@Resources.Spartan_Bitacora_SQLResources.Computer_Name">
+                                    <input class="form-control" id="Computer_Name" name="Computer_Name" type="text" value="@Model.Computer_Name">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Computer_Name" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divServer_Name">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Bitacora_SQLResources.Server_Name</label>
+                                <div class="col-sm-8" data-field-id="Server_Name" data-attribute="185632" data-field-name="@Resources.Spartan_Bitacora_SQLResources.Server_Name">
+                                    <input class="form-control" id="Server_Name" name="Server_Name" type="text" value="@Model.Server_Name">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Server_Name" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divDatabase_Name">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Bitacora_SQLResources.Database_Name</label>
+                                <div class="col-sm-8" data-field-id="Database_Name" data-attribute="185633" data-field-name="@Resources.Spartan_Bitacora_SQLResources.Database_Name">
+                                    <input class="form-control" id="Database_Name" name="Database_Name" type="text" value="@Model.Database_Name">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Database_Name" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divSystem_Name">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Bitacora_SQLResources.System_Name</label>
+                                <div class="col-sm-8" data-field-id="System_Name" data-attribute="185634" data-field-name="@Resources.Spartan_Bitacora_SQLResources.System_Name">
+                                    <input class="form-control" id="System_Name" name="System_Name" type="text" value="@Model.System_Name">
+                                    @*<span class="field-validation-valid" data-valmsg-for="System_Name" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divSystem_Version">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Bitacora_SQLResources.System_Version</label>
+                                <div class="col-sm-8" data-field-id="System_Version" data-attribute="185635" data-field-name="@Resources.Spartan_Bitacora_SQLResources.System_Version">
+                                    <input class="form-control" id="System_Version" name="System_Version" type="text" value="@Model.System_Version">
+                                    @*<span class="field-validation-valid" data-valmsg-for="System_Version" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divWindows_Version">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Bitacora_SQLResources.Windows_Version</label>
+                                <div class="col-sm-8" data-field-id="Windows_Version" data-attribute="185636" data-field-name="@Resources.Spartan_Bitacora_SQLResources.Windows_Version">
+                                    <input class="form-control" id="Windows_Version" name="Windows_Version" type="text" value="@Model.Windows_Version">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Windows_Version" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divCommand_SQL">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Bitacora_SQLResources.Command_SQL</label>
+                                <div class="col-sm-8" data-field-id="Command_SQL" data-attribute="185637" data-field-name="@Resources.Spartan_Bitacora_SQLResources.Command_SQL">
+                                    <input class="form-control" id="Command_SQL" name="Command_SQL" type="text" value="@Model.Command_SQL">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Command_SQL" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divFolio_SQL">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Bitacora_SQLResources.Folio_SQL</label>
+                                <div class="col-sm-8" data-field-id="Folio_SQL" data-attribute="185638" data-field-name="@Resources.Spartan_Bitacora_SQLResources.Folio_SQL">
+                                    <input class="form-control" id="Folio_SQL" name="Folio_SQL" type="text" value="@Model.Folio_SQL">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Folio_SQL" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divObject_Id">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Bitacora_SQLResources.Object_Id</label>
+                                <div class="col-sm-8" data-field-id="Object_Id" data-attribute="185639" data-field-name="@Resources.Spartan_Bitacora_SQLResources.Object_Id">
+                                    <input class="form-control inputNumber" id="Object_Id" name="Object_Id" type="text" value="@Model.Object_Id">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Object_Id" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divIP">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Bitacora_SQLResources.IP</label>
+                                <div class="col-sm-8" data-field-id="IP" data-attribute="185640" data-field-name="@Resources.Spartan_Bitacora_SQLResources.IP">
+                                    <input class="form-control" id="IP" name="IP" type="text" value="@Model.IP">
+                                    @*<span class="field-validation-valid" data-valmsg-for="IP" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divJson">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Bitacora_SQLResources.Json</label>
+                                <div class="col-sm-8" data-field-id="Json" data-attribute="186384" data-field-name="@Resources.Spartan_Bitacora_SQLResources.Json">
+                                    <textarea id="Json" name="Json" class="form-control" rows="4" cols="50">@Model.Json</textarea>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Json" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divResult">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Bitacora_SQLResources.Result</label>
+                                <div class="col-sm-8" data-field-id="Result" data-attribute="186385" data-field-name="@Resources.Spartan_Bitacora_SQLResources.Result">
+                                    @Html.CheckBoxFor(m => m.Result, new { @class = "i-checks" })
+                                </div>
+                            </div>
+                            <div class="form-group" id="divError">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Bitacora_SQLResources.Error</label>
+                                <div class="col-sm-8" data-field-id="Error" data-attribute="186388" data-field-name="@Resources.Spartan_Bitacora_SQLResources.Error">
+                                    <textarea id="Error" name="Error" class="form-control" rows="4" cols="50">@Model.Error</textarea>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Error" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            </div>
+                                </div>
+
+				</div>	
+                    <br />
+                            <div class="form-actions fluid">
+                                <input type="hidden" value="@Model.Folio" id="ReferenceFolio" />
+                                <input type="hidden" value="@Model.Folio" name="Folio" id="FolioId" />
+                                <input type="hidden" value="@ViewBag.Operation" name="Operation" id="Operation" />
+                                @if (!ViewBag.Consult)
+                                {
+                                    <input type="button" value="@Resources.Resources.Guardar" id="Spartan_Bitacora_SQLGuardar" class="btn btn-w-m btn-primary btn_save" onclick="return checkClientValidate('Spartan_Bitacora_SQLCreateForm');"  />
+									<button onclick="Spartan_Bitacora_SQLGetBusinessRule('', 'Al Guardar o al Cerrar la Pantalla', '2')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Spartan_Bitacora_SQLBusinessRule-form">
+                                        <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleBeforeSave">
+                                            <i class="fa fa-cogs fa-spin"></i>
+                                        </a>
+                                    </button>
+                                    <button type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton">
+                                        <i class="fa fa-cogs fa-spin"></i>
+                                    </button>
+
+                                    <input type="button" value="@Resources.Resources.GuardarNuevo" id="Spartan_Bitacora_SQLGuardarYNuevo" onclick="return checkClientValidate('Spartan_Bitacora_SQLCreateForm');" data-bind="    click: saveAndNew" class="btn btn-w-m btn-success btn_saveandnew"  />
+                                    <input type="button" value="@Resources.Resources.GuardarCopia" id="Spartan_Bitacora_SQLGuardarYCopia" onclick="return checkClientValidate('Spartan_Bitacora_SQLCreateForm');" data-bind="    click: saveAndNew" class="btn btn-w-m btn-success btn_saveandcopy"  />
+                                    if (permission.Configure)
+                                    {
+                                        <a title="@Resources.Resources.Configure" id="ConfigureSave" name="ConfigureSave" onclick="SaveElementAttributes()" class="btn btn-success btn-configure">@Resources.Resources.Configure</a>
+                                    }
+                                    else
+                                    {
+                                        <a title="@Resources.Resources.NoPermission" class="btn btn-danger btn-configure">@Resources.Resources.Configure</a>
+                                    }
+                                }
+
+                                <input type="hidden" id="hdnConfigureType" />
+								<input type="hidden" id="hdnSpartan_Bitacora_SQLBusinessRuleFieldId" />
+                                <input type="hidden" id="hdnSpartan_Bitacora_SQLBusinessRuleFieldName" />
+                                <input type="hidden" id="hdnSpartan_Bitacora_SQLBusinessRuleAttribute" />
+
+                                <input type="button" value="@Resources.Resources.Cancelar" id="Spartan_Bitacora_SQLCancelar" name="Spartan_Bitacora_SQLCancelar" class="btn btn-danger noConsult btn_cancelar" data-bind="click: cancel" tabindex="16" />
+
+                                <button onclick="Spartan_Bitacora_SQLGetBusinessRule('', 'Al Cancelar', '3')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Spartan_Bitacora_SQLBusinessRule-form">
+                                    <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+                                        <i class="fa fa-cogs fa-spin"></i>
+                                    </a>
+                                </button>
+                            </div>
+						</div>
+					</div>
+                }
+        </div>
+    </div>
+</div>
+<input id="hdnApplicationDirectory" type="hidden" value="@Url.Content("~/")" />
+
+@section Styles {
+<link href="@Url.Content("~/Content/BootstrapDatePicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+    @Styles.Render("~/plugins/awesomeCheckboxStyles")
+    @Styles.Render("~/plugins/select2Styles")
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+    .select2-results{background-color:#fff;}
+    .select2-container .select2-dropdown{height:auto !important;}
+
+    div.dataTables_info {
+        display: inline-block;
+        float: right;
+    }
+        i {
+        font-size: 25px !important;
+        display: block;
+        color: #676a6c;
+        margin-left: 6px;
+        margin-right: 6px;
+    }
+
+    .fullWidth {
+        width: 100%;
+    }
+</style>
+}
+
+<script type="text/javascript" src="~/Uploads/Scripts/Spartan_Bitacora_SQL.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Scripts/Custom/Spartan_Bitacora_SQLGeneral.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/Spartan_Bitacora_SQLCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
+
+@section Scripts {
+
+
+    <script type="text/javascript">
+        
+
+
+
+        $(document).ready(function () {
+            
+		   
+             @if(ViewBag.IsNew)
+            { 
+                <text>$('input:checkbox').prop('checked', false);</text>
+            }
+            $('#Register_Date').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+
+
+            initiateUIControls();
+			$('a').tooltip();
+			EjecutarValidacionesAlComienzo();
+			$('.loading').css('display', 'none');
+
+        });
+
+
+
+        function initiateUIControls() {
+             $('.gridDatePicker').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            //Time Picker
+            $('.gridTimePicker').clockpicker();
+			 $('.inputMoney').inputmask("currency", { greedy: false, prefix: "", rightAlign: false });
+
+        }
+
+    </script>
+
+<script type="text/javascript">
+
+        function SendSpartan_Bitacora_SQLData(callBack) {
+			
+					
+		 var arr = []; 
+		 $("form#CreateSpartan_Bitacora_SQL").find(':input').each(function( index ) {		 
+			if ($(this).prop('disabled')==true|| $(this).prop('disabled')=="disabled")
+			{		
+				arr.push($(this).attr('id')); 
+				$(this).prop('disabled', false);  	
+			}
+	    });
+		
+             var formData = new FormData($("form#CreateSpartan_Bitacora_SQL")[0]);
+			$.each( arr, function( key, value ) {
+			  $('#' +value).prop('disabled', true);
+			});
+
+            var isNew = $('#hdnIsNew').val();
+           
+            if (checkClientValidate('Spartan_Bitacora_SQLCreateForm')) {
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Spartan_Bitacora_SQL/Post?IsNew=")' + isNew,
+                    type: 'POST',
+                    data: formData,
+                    async: true,
+                    success: function (result) {
+                        if (result < 0) {
+                            showNotification("@Resources.Resources.ErrorSave", "error");
+                        } else {
+
+                            showNotification("@Resources.Resources.SaveSuccess", "success");
+                            callBack(result);
+                        }
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            }
+            return false;
+        };
+        function GetPropertyBag() {
+            $.get('@Url.Action("Spartan_Bitacora_SQLPropertyBag", "Spartan_Bitacora_SQL")', function (data) {
+                $(".PropertyModal").html(data);
+            });
+        }
+        function Spartan_Bitacora_SQLGetBusinessRule(FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null)
+			{
+				$('#hdnSpartan_Bitacora_SQLBusinessRuleFieldId').val(FieldId);
+				$('#hdnSpartan_Bitacora_SQLBusinessRuleFieldName').val(FieldName);
+				$('#hdnSpartan_Bitacora_SQLBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("BusinessRule", "BussinessRule")', { FieldId: $('#hdnSpartan_Bitacora_SQLBusinessRuleFieldId').val(), FieldName: $('#hdnSpartan_Bitacora_SQLBusinessRuleFieldName').val(), ObjectId: '34957', Attribute: $('#hdnSpartan_Bitacora_SQLBusinessRuleAttribute').val(), Screen: 'Spartan_Bitacora_SQL' }, function (data) {
+                $(".Spartan_Bitacora_SQLBusinessRuleModal").html(data);
+            });
+        }
+        function Spartan_Bitacora_SQLGetAddBusinessRule(RuleId, FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null) {
+				$('#hdnSpartan_Bitacora_SQLBusinessRuleFieldId').val(FieldId);
+				$('#hdnSpartan_Bitacora_SQLBusinessRuleFieldName').val(FieldName);
+				$('#hdnSpartan_Bitacora_SQLBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("AddBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnSpartan_Bitacora_SQLBusinessRuleFieldId').val(), FieldName: $('#hdnSpartan_Bitacora_SQLBusinessRuleFieldName').val(), ObjectId: '34957', Attribute: $('#hdnSpartan_Bitacora_SQLBusinessRuleAttribute').val(), Screen: 'Spartan_Bitacora_SQL' }, function (data) {
+                $(".Spartan_Bitacora_SQLAddBusinessRuleModal").html(data);
+                $(".datatable").DataTable();
+            });
+        }
+		function RemoveBusinessRule(RuleId) {
+			$.get('@Url.Action("RemoveBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnSpartan_Bitacora_SQLBusinessRuleFieldId').val(), FieldName: $('#hdnSpartan_Bitacora_SQLBusinessRuleFieldName').val(), ObjectId: '34957', Attribute: $('#hdnSpartan_Bitacora_SQLBusinessRuleAttribute').val(), Screen: 'Spartan_Bitacora_SQL' }, function (data) {
+				$(".Spartan_Bitacora_SQLBusinessRuleModal").html(data);
+			});
+		}
+
+    var permission = {
+        Consult: '@permission.Consult' == 'True',
+        New: '@permission.New' == 'True',
+        Edit: '@permission.Edit' == 'True',
+        Delete: '@permission.Delete' == 'True',
+        Export: '@permission.Export' == 'True',
+        Print: '@permission.Print' == 'True',
+        Configure: '@permission.Configure' == 'True',
+    };
+
+    
+    //MR-var statusItems;
+    //MR-var stateItems;
+    //MR-var cityItems = [];
+    var isConsultMode = "@ViewBag.Consult" == "True";
+    Consult(isConsultMode);
+        function Consult(val) {
+            if (val) {
+                $(':input').attr('readonly', 'readonly');
+                $(':input').attr('disabled', 'true');
+                $('.noConsult').removeAttr('readonly');
+                $('.noConsult').removeAttr('disabled');
+            }
+        }
+
+    function Spartan_Bitacora_SQLBackToGrid() {
+        location.href = "@Url.Content("~/Frontal/Spartan_Bitacora_SQL/")";
+    }
+	
+	function ReadScriptSettings(callback)
+    {
+        $.post("@Url.Content("~/Frontal/Spartan_Bitacora_SQL/ReadScriptSettings")", function (data) {
+            mainElementObject = JSON.parse(data.MainElement);
+			if (data.ChildElement != null) {
+                childElementObject = JSON.parse(data.ChildElement);
+            }
+            callback();
+        });
+    }
+
+    function SaveSettingsWithoutReload() {
+        $.post("@Url.Content("~/Frontal/Spartan_Bitacora_SQL/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+            //$('#hdnConfigureType').val("0");
+        }, "json");
+    }
+	
+        function SaveElementAttributes() {
+            if ($('#hdnConfigureType').val() == "1") {
+                $.post("@Url.Content("~/Frontal/Spartan_Bitacora_SQL/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+                    $('#hdnConfigureType').val("0");
+                    location.reload(true);
+                }, "json");
+            } else {
+                $.post("@Url.Content("~/Frontal/Spartan_Bitacora_SQL/ReadScriptSettings")", function (data) {
+                    mainElementObject = JSON.parse(data.MainElement);
+                    childElementObject = JSON.parse(data.ChildElement);
+
+                    for (var i = 0; i < mainElementObject.length; i++) {
+                        var mainElementAttributes = '<div class="col-sm-2">';
+                        mainElementAttributes += '<div class="displayAttributes requiredAttribute"><a class="requiredClick" title="' + (mainElementObject[i].IsRequired == true ? "Required" : "Not Required") + '" onclick="setRequired(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsRequired == true ? "@Url.Content("~/Images/Required.png")" : "@Url.Content("~/Images/Not-Required.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes visibleAttribute"><a class="visibleClick" title="' + (mainElementObject[i].IsVisible == true ? "Visible" : "In Visible") + '" onclick="setVisible(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsVisible == true ? "@Url.Content("~/Images/Visible.png")" : "@Url.Content("~/Images/InVisible.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes readOnlyAttribute"><a class="readOnlyClick" title="' + (mainElementObject[i].IsReadOnly == true ? "Disabled" : "Enabled") + '" onclick="setReadOnly(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsReadOnly == true ? "@Url.Content("~/Images/Disabled.png")" : "@Url.Content("~/Images/Enabled.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes defaultValueAttribute"><a id="hlDefaultValue_' + i.toString() + '" class="defaultValueClick" title="' + (mainElementObject[i].DefaultValue) + '" onclick="setDefaultValue(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].DefaultValue != '' && mainElementObject[i].DefaultValue != null ? "@Url.Content("~/Images/default-value.png")" : "@Url.Content("~/Images/Not-Default-Value.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes helpTextAttribute"><a id="hlHelpText_' + i.toString() + '" class="helpTextClick" title="' + (mainElementObject[i].HelpText) + '" onclick="setHelpText(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].HelpText != '' && mainElementObject[i].HelpText != null ? "@Url.Content("~/Images/green-help.png")" : "@Url.Content("~/Images/red-help.jpg")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '</div>';
+                        $('#' + mainElementObject[i].inputId).parent().closest('.form-group').show();
+
+                        $('#' + mainElementObject[i].inputId).closest('.col-sm-8').after(mainElementAttributes);
+                    }
+					 if (childElementObject != null) {
+                        for (var j = 0; j < childElementObject.length; j++) {
+                            var table = childElementObject[j].table.trim();
+                            var grid = '#' + table + 'Grid';
+                            $(grid).find("thead").find("tr").find("th").each(function () {
+                                for (var i = 0; i < childElementObject[j].elements.length; i++) {
+                                    if ($(this).hasClass(childElementObject[j].elements[i].inputId + 'Header')) {
+                                        $(this).show();
+                                        $(this).parent().show();
+                                        $(this).append(returnAttributeHTML(childElementObject[j].elements[i], table, i));
+                                    }
+                                }
+                            });
+                        }
+
+                    }
+                    $('#ConfigureSave').text('Save Settings');
+                    $('#hdnConfigureType').val("1");
+                });
+            }
+        }
+		$('#CreateSpartan_Bitacora_SQL').on('click', '.btnPopupBusinessRules', function () {
+			var fieldId = $(this).data('field-id');
+			var fieldName = $(this).data('field-name');
+			var attribute = $(this).data('attribute');
+			$('#hdnSpartan_Bitacora_SQLBusinessRuleFieldId').val(fieldId);
+			$('#hdnSpartan_Bitacora_SQLBusinessRuleFieldName').val(fieldName);
+			$('#hdnSpartan_Bitacora_SQLBusinessRuleAttribute').val(attribute);
+		});
+		//Initialize HTML Editors            
+  var filebrowserBrowseUrl = '../../ckfinder/ckfinder.html';
+  var filebrowserImageBrowseUrl = '../../ckfinder/ckfinder.html?type=Images';
+  var filebrowserUploadUrl = '../../ckfinder/connector?command=QuickUpload&type=Files';
+  var filebrowserImageUploadUrl = '../../ckfinder/connector?command=QuickUpload&type=Images';
+		
+    </script>
+}

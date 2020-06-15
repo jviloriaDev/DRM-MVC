@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_BR_Action_Param_Type" value="Business Rule Action Parameter Type"></resource>
+  <resource culture="en-US" name="ParameterTypeId" value="Id"></resource>
+  <resource culture="en-US" name="Description" value="Description"></resource>
+  <resource culture="en-US" name="Presentation_Control_Type" value="Presentation Control Type"></resource>
+  <resource culture="en-US" name="Query_for_Fill_Condition" value="Query for Fill Condition"></resource>
+  <resource culture="en-US" name="Code_for_Fill_Condition" value="Code for Fill Condition"></resource>
+  <resource culture="en-US" name="Implementation_Code" value="Implementation Code"></resource>
+
+</resources>

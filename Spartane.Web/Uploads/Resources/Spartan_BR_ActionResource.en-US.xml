@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_BR_Action" value="Business Rule Action"></resource>
+  <resource culture="en-US" name="ActionId" value="Id"></resource>
+  <resource culture="en-US" name="Description" value="Description"></resource>
+  <resource culture="en-US" name="Classification" value="Classification"></resource>
+  <resource culture="en-US" name="Implementation_Code" value="Implementation Code"></resource>
+  <resource culture="en-US" name="Configuration" value="Configuration"></resource>
+  <resource culture="en-US" name="Attribute_Restrictions" value="Attribute Restrictions"></resource>
+  <resource culture="en-US" name="Operation_Restrictions" value="Operation Restrictions"></resource>
+  <resource culture="en-US" name="Process_Event_Restrictions" value="Process Event Restrictions"></resource>
+  
+  <resource name="Description.1" control="Description" value="Execute Query" culture="en-US" />
+  <resource name="Description.3" control="Description" value="Create Session Var" culture="en-US" />
+  <resource name="Description.4" control="Description" value="Send Email By Query List" culture="en-US" />
+  <resource name="Description.5" control="Description" value="Set Value" culture="en-US" />
+  <resource name="Description.6" control="Description" value="Set Value From Query" culture="en-US" />
+  <resource name="Description.7" control="Description" value="Set Not Required To Control" culture="en-US" />
+  <resource name="Description.8" control="Description" value="Set Required To Control" culture="en-US" />
+  <resource name="Description.9" control="Description" value="Show Field of MultiRenglon" culture="en-US" />
+  <resource name="Description.10" control="Description" value="Hide Field of Multirenglon" culture="en-US" />
+  <resource name="Description.11" control="Description" value="Show Field of Form" culture="en-US" />
+  <resource name="Description.12" control="Description" value="Hide Field of Form" culture="en-US" />
+  <resource name="Description.13" control="Description" value="Show Message" culture="en-US" />
+  <resource name="Description.14" control="Description" value="Show Message from Query" culture="en-US" />
+  <resource name="Description.15" control="Description" value="Fill MultiRenglon from Query" culture="en-US" />
+  <resource name="Description.50" control="Description" value="Hide Folder" culture="en-US" />
+  <resource name="Description.51" control="Description" value="Show Folder" culture="en-US" />
+  <resource name="Description.52" control="Description" value="Disable Folder" culture="en-US" />
+  <resource name="Description.53" control="Description" value="Enable Folder" culture="en-US" />
+  <resource name="Description.55" control="Description" value="Set Disabled To Control" culture="en-US" />
+  <resource name="Description.56" control="Description" value="Set Disabled To MR Control" culture="en-US" />
+  <resource name="Description.57" control="Description" value="Set Enable To MR Control" culture="en-US" />
+  <resource name="Description.64" control="Description" value="Create Session Var(Query value)" culture="en-US" />
+
+</resources>

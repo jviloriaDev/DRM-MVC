@@ -1,0 +1,284 @@
+﻿@using System.Collections.Generic
+@using Spartane.Web.Areas.Frontal.Models
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Spartan_BR_Modifications_LogAdvanceSearchModel
+@{
+
+    var filters = (List<SelectListItem>)ViewBag.Filter;
+}
+<style>
+    .input-validation-error {
+        background: rgb(251, 227, 228);
+        border: 1px solid #fbc2c4;
+        color: #8a1f11;
+    }
+
+    .MarginBottom {
+        margin-bottom: 1%;
+    }
+
+    #divAdvanceSearch input {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch button {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch select {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch h3 {
+        margin-top: 2%;
+    }
+
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins" id="divAdvanceSearch">
+        <div class="ibox-content">
+            @using (Html.BeginForm("ShowAdvanceFilter", "Spartan_BR_Modifications_Log", FormMethod.Post, new { @id = "frmAdvanceSearch", @role = "form" }))
+            {
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_BR_Modifications_LogResources.ModificationId</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromModificationId, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromModificationId" })
+                    @Html.ValidationMessageFor(m => m.FromModificationId)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToModificationId, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToModificationId", @data_min = "txtAdvanceFromModificationId" })
+                    @Html.ValidationMessageFor(m => m.ToModificationId)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_BR_Modifications_LogResources.Modification_Date</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <div class="input-daterange input-group" id="datepicker">
+                        <span class="input-group-addon">@Resources.Resources.From</span>
+                        @Html.TextBoxFor(m => m.FromModification_Date, new { @class = "input-sm form-control", @type = "text", @id = "txtAdvanceFromModification_Date" })
+                        @Html.ValidationMessageFor(m => m.FromModification_Date)
+                        <span class="input-group-addon">@Resources.Resources.To</span>
+                        @Html.TextBoxFor(m => m.ToModification_Date, new { @class = "input-sm form-control", @type = "text", @id = "txtAdvanceToModification_Date" })
+                        @Html.ValidationMessageFor(m => m.ToModification_Date)
+                    </div>
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_BR_Modifications_LogResources.Modification_Hour</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    <div class="input-group clockpicker" data-autoclose="true">
+                        @Html.TextBoxFor(m => m.FromModification_Hour, new { @class = "form-control", @id = "txtAdvanceFromModification_Hour" })
+                        <span class="input-group-addon">
+                            <span class="fa fa-clock-o"></span>
+                        </span>
+                    </div>
+                    <label class="">@Resources.Resources.To: </label>
+                    <div class="input-group clockpicker" data-autoclose="true">
+                        @Html.TextBoxFor(m => m.ToModification_Hour, new { @class = "form-control greaterThanTime", @id = "txtAdvanceToModification_Hour", @data_min = "txtAdvanceFromModification_Hour" })
+                        <span class="input-group-addon">
+                            <span class="fa fa-clock-o"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_BR_Modifications_LogResources.Modification_User</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromModification_User, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromModification_User" })
+                    @Html.ValidationMessageFor(m => m.FromModification_User)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToModification_User, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToModification_User", @data_min = "txtAdvanceFromModification_User" })
+                    @Html.ValidationMessageFor(m => m.ToModification_User)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_BR_Modifications_LogResources.Comments</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.CommentsFilter, filters, new { @class = "form-control", @id = "ddlCommentsFilter" })
+                    @Html.TextBoxFor(m => m.Comments, new { @class = "form-control", @type = "text", @id = "txtComments" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_BR_Modifications_LogResources.Implementation_Code</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Implementation_CodeFilter, filters, new { @class = "form-control", @id = "ddlImplementation_CodeFilter" })
+                    @Html.TextBoxFor(m => m.Implementation_Code, new { @class = "form-control", @type = "text", @id = "txtImplementation_Code" })
+                </div>
+
+                <div class="MarginBottom form-inline">
+                    <input type="submit" class="btn btn-primary" value="@Resources.Resources.Search"><a class="btn btn-primary" href="@Url.Content("~/Frontal/Spartan_BR_Modifications_Log/")" value=" ">@Resources.Resources.Cancelar</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function InitiateAdvanceSearch() {
+        var advanceSearch = {}, hasParameter = false;
+        if ($("#txtAdvanceFromModificationId").val() != "" || $("#txtAdvanceToModificationId").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_BR_Modifications_LogModificationIdFrom = $("#txtAdvanceFromModificationId").val();
+            advanceSearch.Spartan_BR_Modifications_LogModificationIdTo = $("#txtAdvanceToModificationId").val();
+        }
+        if ($("#txtAdvanceFromModification_Date").val() != "" || $("#txtAdvanceToModification_Date").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_BR_Modifications_LogModification_DateFrom = $("#txtAdvanceFromModification_Date").val();
+            advanceSearch.Spartan_BR_Modifications_LogModification_DateTo = $("#txtAdvanceToModification_Date").val();
+        }
+        if ($("#txtAdvanceModification_Hour").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_BR_Modifications_LogModification_Hour = $("#txtAdvanceModification_Hour").val();
+            advanceSearch.Spartan_BR_Modifications_LogModification_HourSearchType = $("#ddlAdvanceModification_HourFilter").val();
+        }
+        if ($("#txtAdvanceFromModification_User").val() != "" || $("#txtAdvanceToModification_User").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_BR_Modifications_LogModification_UserFrom = $("#txtAdvanceFromModification_User").val();
+            advanceSearch.Spartan_BR_Modifications_LogModification_UserTo = $("#txtAdvanceToModification_User").val();
+        }
+        if ($("#txtAdvanceComments").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_BR_Modifications_LogComments = $("#txtAdvanceComments").val();
+            advanceSearch.Spartan_BR_Modifications_LogCommentsSearchType = $("#ddlAdvanceCommentsFilter").val();
+        }
+        if ($("#txtAdvanceImplementation_Code").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_BR_Modifications_LogImplementation_Code = $("#txtAdvanceImplementation_Code").val();
+            advanceSearch.Spartan_BR_Modifications_LogImplementation_CodeSearchType = $("#ddlAdvanceImplementation_CodeFilter").val();
+        }
+
+        advanceSearchQuery = hasParameter ? JSON.stringify(advanceSearch) : "";
+        $('#tblSpartan_BR_Modifications_Log').DataTable().draw();
+        return false;
+    }
+
+    var advanceSearchQuery = "", isSpartan_BR_Modifications_LogTextSearch = true;
+
+    $(document).ready(function () {
+        $('.clockpicker').clockpicker();
+
+    });
+</script>
+
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/chosen")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/clockpicker")
+
+
+    <script>
+        //Adding Rules
+        jQuery.validator.unobtrusive
+      .adapters.addSingleVal("isnumberafter", "propertyname");
+        jQuery.validator.unobtrusive
+    .adapters.addSingleVal("isdateafter", "propertyname");
+
+        //Number after method
+        jQuery.validator.addMethod("isnumberafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+                //if (Date.parse(val) <= Date.parse(otherVal)) {
+                if (Number(val) < Number(otherVal)) {
+                    return false;
+                }
+                        }
+            return true;
+        });
+
+        //Date after after method
+        jQuery.validator.addMethod("isdateafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+
+                if (GetDateObject(val) < GetDateObject(otherVal)) {
+
+                    return false;
+                    }
+                }
+            return true;
+            });
+
+
+        function GetDateObject(value) {
+            var delimiter = GetDelimiter(dateFormat);
+            var dateCollection = value.split(delimiter);
+            var formatCollection = dateFormat.split(delimiter);
+            var dateModel = GetDateModel(dateCollection, formatCollection);
+            return new Date(dateModel.Year, dateModel.Month - 1, dateModel.Day);
+        }
+        //Used to get the date model by parsing the date and the format
+        function GetDateModel(dateCollection,formatCollection) {
+            var day, month, year;
+            for (var i = 0; i < formatCollection.length; i++) {
+                switch (formatCollection[i][0].toUpperCase()) {
+                
+                    case "D":
+                        day = dateCollection[i];
+                        break;
+
+                    case "Y":
+                        year = dateCollection[i];
+                        break;
+
+                    case "M":
+                        month = dateCollection[i];
+                        break;
+                }
+            }
+
+            return {
+                Day:day,
+                Month:month,
+                Year:year
+            };
+        }
+
+        function GetDelimiter(format) {
+
+            for (var i = 0; i < format.length; i++) {
+                if (/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(format[i])) {
+                    return format[i];
+                }
+            }
+            return null;
+        }
+
+        var dateFormat = "@ConfigurationProperty.DateFormatDatePicker";
+
+        $(document).ready(function () {
+
+
+
+            $('.input-daterange').datepicker({
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                format: dateFormat,
+                message: 'The date is not a valid'
+            });
+
+            $(".chosen-select").chosen({ width: "22%", no_results_text: "Oops, nothing found!" });
+
+        });
+
+    </script>
+}
+

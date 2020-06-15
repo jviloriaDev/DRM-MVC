@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_WorkFlow_Matrix_of_States" value="Spartan WorkFlow Matrix of States"></resource>
+  <resource culture="en-US" name="Matrix_of_StatesId" value="Matrix of StatesId"></resource>
+  <resource culture="en-US" name="Phase" value="Phase"></resource>
+  <resource culture="en-US" name="State" value="State"></resource>
+  <resource culture="en-US" name="Attribute" value="Attribute"></resource>
+  <resource culture="en-US" name="Visible" value="Visible"></resource>
+  <resource culture="en-US" name="Required" value="Required"></resource>
+  <resource culture="en-US" name="Read_Only" value="Read Only"></resource>
+  <resource culture="en-US" name="Label" value="Label"></resource>
+  <resource culture="en-US" name="Default_Value" value="Default Value"></resource>
+  <resource culture="en-US" name="Help_Text" value="Help Text"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

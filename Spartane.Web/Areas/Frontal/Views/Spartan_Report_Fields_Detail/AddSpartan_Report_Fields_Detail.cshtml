@@ -1,0 +1,519 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Globalization
+@using Spartane.Core.Domain.Permission
+@using Spartane.Core.Domain.Spartane_File
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Spartan_Report_Fields_DetailModel
+@{
+
+
+    List<SelectListItem> varSpartan_Report_Function = null;
+    if (ViewBag.Spartan_Report_Functions != null)
+    { varSpartan_Report_Function = (List<SelectListItem>)ViewBag.Spartan_Report_Functions; }    
+    List<SelectListItem> varSpartan_Report_Format = null;
+    if (ViewBag.Spartan_Report_Formats != null)
+    { varSpartan_Report_Format = (List<SelectListItem>)ViewBag.Spartan_Report_Formats; }    
+    List<SelectListItem> varSpartan_Report_Order_Type = null;
+    if (ViewBag.Spartan_Report_Order_Types != null)
+    { varSpartan_Report_Order_Type = (List<SelectListItem>)ViewBag.Spartan_Report_Order_Types; }    
+    List<SelectListItem> varSpartan_Report_Field_Type = null;
+    if (ViewBag.Spartan_Report_Field_Types != null)
+    { varSpartan_Report_Field_Type = (List<SelectListItem>)ViewBag.Spartan_Report_Field_Types; }    
+    List<SelectListItem> varSpartan_Metadata = null;
+    if (ViewBag.Spartan_Metadatas != null)
+    { varSpartan_Metadata = (List<SelectListItem>)ViewBag.Spartan_Metadatas; }    
+
+
+    Permission permission = ViewBag.Permission;
+}
+<div class="modal-dialog" style="width:95%;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">
+                Add Report Fields Detail
+                <button data-dismiss="modal" class="close" type="button" onclick="@(ViewBag.functionMode == 0 ? "Spartan_Report_Fields_DetailRemoveAddRow("+ ViewBag.currentRowIndex +")" : "")"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            </h4>
+        </div>
+        <div class="modal-body scroll_content">
+            <div class="form-horizontal Spartan_Report_Fields_DetailPop_@ViewBag.currentRowIndex">
+				<div class="modal fade in" id="dvAttributeValue" style="background-color:rgba(0, 0, 0, 0.7);">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-body">
+								<div class="form-group">
+									<label class="col-sm-3 control-label" id="lblAttributeType">Value</label>
+									<div class="col-sm-7">
+										<input type="text" title="Value" class="form-control" id="txtAttributeValue" />
+									</div>
+									<div class="col-sm-2">
+										<a class="btn btn-primary" onclick="SaveValue()">Submit</a>
+									</div>
+									<input type="hidden" id="hdnAttributType" />
+									<input type="hidden" id="hdnAttributElement" />
+									<input type="hidden" id="hdnAttributNumber" />
+									<input type="hidden" id="hdnElementType" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row wrapper border-bottom white-bg page-heading">
+
+					<div class="row">
+						<div class="col-lg-10">
+							<h2>
+								Report Fields Detail
+								<button onclick="Spartan_Report_Fields_DetailGetBusinessRule('', 'Abrir Pantalla', '0')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Spartan_Report_Fields_DetailBusinessRule-form">
+									<a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+										<i class="fa fa-cogs fa-spin"></i>
+									</a>
+								</button>
+							</h2>
+							<ol class="breadcrumb">
+								<li>
+									<a href="@Url.Action("Index", "Home")">@Resources.Resources.Home</a>
+								</li>
+								<li class="">
+									<label>@Resources.Spartan_Report_Fields_DetailResources.Spartan_Report_Fields_Detail</label>
+								</li>
+								<li class="active">
+									<strong>@Resources.Resources.Create</strong>
+								</li>
+							</ol>
+						</div>
+						<div class="col-lg-2">
+
+							@{
+								if (Convert.ToInt32(Spartane.Web.SessionHelper.Role) == (int)Spartane.Core.Enums.SpartanRoleEnum.Admin)
+								{
+									<h2>&nbsp;</h2>
+									<button onclick="Spartan_Report_Fields_DetailDisplayBusinessRule()" type="button" class="btn btn-info btn-lg displayBusinessProperyButton">
+										<i class="fa fa-cogs fa-spin"></i>
+									</button>
+
+									<div aria-hidden="true" class="modal fade in Spartan_Report_Fields_DetailPropertyBusinessModal" id="Spartan_Report_Fields_DetailPropertyBusinessModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h4 class="modal-title">
+														Property & Business Rules
+														<button class="close" type="button" onclick="$(this).parent().parent().parent().parent().parent().modal('hide');"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+													</h4>
+												</div>
+												<div class="modal-body">
+													<div class="row">
+														<div class="col-sm-12">
+															<a class="btn btn-primary full-width" data-dismiss="modal" data-toggle="modal" data-target="#PropertyModal-form" onclick="GetPropertyBag()">Properties</a>
+														</div>
+														<div class="clearfix col-sm-12">&nbsp;</div>
+														<div class="col-sm-12">
+															<a class="btn btn-primary full-width" data-dismiss="modal" data-toggle="modal" data-target="#Spartan_Report_Fields_DetailBusinessRule-form" onclick="Spartan_Report_Fields_DetailGetBusinessRule()">Business Rule</a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									 <div aria-hidden="true" data-backdrop="static" class="modal fade in Spartan_Report_Fields_DetailPropertyModal" id="Spartan_Report_Fields_DetailPropertyModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+									</div>
+									<div aria-hidden="true" data-backdrop="static" class="modal fade in Spartan_Report_Fields_DetailBusinessRuleModal" id="Spartan_Report_Fields_DetailBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+									</div>
+                                    <div aria-hidden="true" data-backdrop="static" class="modal fade in Spartan_Report_Fields_DetailAddBusinessRuleModal" id="Spartan_Report_Fields_DetailAddBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                                    </div>
+
+				
+								}
+							}
+						</div>
+					</div>
+
+				<div class="wrapper wrapper-content animated fadeInRight">
+					<div class="ibox float-e-margins">
+						<div class="ibox-content">
+							@using (Html.BeginForm("Post", "Spartan_Report_Fields_Detail", FormMethod.Post, new { id = "CreateSpartan_Report_Fields_Detail", @readonly = "true", @class = "form-horizontal", enctype = "multipart/form-data" }))
+							{
+								<input type="hidden" id="hdnObjectId" name="hdnObjectId" value="@ViewBag.ObjectId" />
+								<span id="popupNotification"></span>
+								<div class="container-fluid Spartan_Report_Fields_DetailCreateForm" id="viewmodeledit">
+							<div class="tabs-container">
+											<ul class="nav nav-tabs">
+				@@groupers@@
+											</ul>
+										<div class="tab-content">
+				<div class="form-group" id="divDesignDetailId">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Report_Fields_DetailResources.DesignDetailId</label>
+                                <div class="col-sm-8" data-field-id="DesignDetailId" data-attribute="159223" data-field-name="@Resources.Spartan_Report_Fields_DetailResources.DesignDetailId">
+                                    <label class="form-control" for="Spartan_Report_Fields_DetailDesignDetailId" id="Spartan_Report_Fields_DetailDesignDetailId">@Model.DesignDetailId</label>
+                                </div>
+                            </div>
+<div class="form-group" id="divPathField">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Report_Fields_DetailResources.PathField</label>
+                                <div class="col-sm-8" data-field-id="PathField" data-attribute="159227" data-field-name="@Resources.Spartan_Report_Fields_DetailResources.PathField">
+                                    <input class="form-control" id="Spartan_Report_Fields_DetailPathField" name="Spartan_Report_Fields_DetailPathField" type="text" value="@Model.PathField">
+                                </div>
+                            </div>
+<div class="form-group" id="divPhysical_Name">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Report_Fields_DetailResources.Physical_Name</label>
+                                <div class="col-sm-8" data-field-id="Physical_Name" data-attribute="159229" data-field-name="@Resources.Spartan_Report_Fields_DetailResources.Physical_Name">
+                                    <input class="form-control" id="Spartan_Report_Fields_DetailPhysical_Name" name="Spartan_Report_Fields_DetailPhysical_Name" type="text" value="@Model.Physical_Name">
+                                </div>
+                            </div>
+<div class="form-group" id="divTitle">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Report_Fields_DetailResources.Title</label>
+                                <div class="col-sm-8" data-field-id="Title" data-attribute="159230" data-field-name="@Resources.Spartan_Report_Fields_DetailResources.Title">
+                                    <input class="form-control" id="Spartan_Report_Fields_DetailTitle" name="Spartan_Report_Fields_DetailTitle" type="text" value="@Model.Title">
+                                </div>
+                            </div>
+<div class="form-group" id="divFunction">
+	<label class="col-sm-2 control-label">@Resources.Spartan_Report_Fields_DetailResources.Function</label>
+	<div class="col-sm-8" data-field-id="Function" data-attribute="159233" data-field-name="@Resources.Spartan_Report_Fields_DetailResources.Function">
+		<select class="form-control" data-val="true" data-val-number="The field Function must be a number." data-val-required="The Function field is required." id="Spartan_Report_Fields_DetailFunction" name="Spartan_Report_Fields_DetailFunction">
+			<option value=""></option>
+			@if (varSpartan_Report_Function != null){ 
+				foreach (var itemFunction in varSpartan_Report_Function)
+				{
+					if (itemFunction.Value == Convert.ToString(Model.Function))
+					{
+						<option value="@itemFunction.Value" selected>@itemFunction.Text</option>
+					}
+					else
+					{
+						<option value="@itemFunction.Value">@itemFunction.Text</option>
+					}
+				}
+			}
+		</select>
+	</div>
+</div>
+<div class="form-group" id="divFormat">
+	<label class="col-sm-2 control-label">@Resources.Spartan_Report_Fields_DetailResources.Format</label>
+	<div class="col-sm-8" data-field-id="Format" data-attribute="159237" data-field-name="@Resources.Spartan_Report_Fields_DetailResources.Format">
+		<select class="form-control" data-val="true" data-val-number="The field Format must be a number." data-val-required="The Format field is required." id="Spartan_Report_Fields_DetailFormat" name="Spartan_Report_Fields_DetailFormat">
+			<option value=""></option>
+			@if (varSpartan_Report_Format != null){ 
+				foreach (var itemFormat in varSpartan_Report_Format)
+				{
+					if (itemFormat.Value == Convert.ToString(Model.Format))
+					{
+						<option value="@itemFormat.Value" selected>@itemFormat.Text</option>
+					}
+					else
+					{
+						<option value="@itemFormat.Value">@itemFormat.Text</option>
+					}
+				}
+			}
+		</select>
+	</div>
+</div>
+<div class="form-group" id="divOrder_Type">
+	<label class="col-sm-2 control-label">@Resources.Spartan_Report_Fields_DetailResources.Order_Type</label>
+	<div class="col-sm-8" data-field-id="Order_Type" data-attribute="159241" data-field-name="@Resources.Spartan_Report_Fields_DetailResources.Order_Type">
+		<select class="form-control" data-val="true" data-val-number="The field Order Type must be a number." data-val-required="The Order Type field is required." id="Spartan_Report_Fields_DetailOrder_Type" name="Spartan_Report_Fields_DetailOrder_Type">
+			<option value=""></option>
+			@if (varSpartan_Report_Order_Type != null){ 
+				foreach (var itemOrder_Type in varSpartan_Report_Order_Type)
+				{
+					if (itemOrder_Type.Value == Convert.ToString(Model.Order_Type))
+					{
+						<option value="@itemOrder_Type.Value" selected>@itemOrder_Type.Text</option>
+					}
+					else
+					{
+						<option value="@itemOrder_Type.Value">@itemOrder_Type.Text</option>
+					}
+				}
+			}
+		</select>
+	</div>
+</div>
+<div class="form-group" id="divField_Type">
+	<label class="col-sm-2 control-label">@Resources.Spartan_Report_Fields_DetailResources.Field_Type</label>
+	<div class="col-sm-8" data-field-id="Field_Type" data-attribute="159244" data-field-name="@Resources.Spartan_Report_Fields_DetailResources.Field_Type">
+		<select class="form-control" data-val="true" data-val-number="The field Field Type must be a number." data-val-required="The Field Type field is required." id="Spartan_Report_Fields_DetailField_Type" name="Spartan_Report_Fields_DetailField_Type">
+			<option value=""></option>
+			@if (varSpartan_Report_Field_Type != null){ 
+				foreach (var itemField_Type in varSpartan_Report_Field_Type)
+				{
+					if (itemField_Type.Value == Convert.ToString(Model.Field_Type))
+					{
+						<option value="@itemField_Type.Value" selected>@itemField_Type.Text</option>
+					}
+					else
+					{
+						<option value="@itemField_Type.Value">@itemField_Type.Text</option>
+					}
+				}
+			}
+		</select>
+	</div>
+</div>
+<div class="form-group" id="divOrder_Number">
+	<label class="col-sm-2 control-label">@Resources.Spartan_Report_Fields_DetailResources.Order_Number</label>
+	<div class="col-sm-8" data-field-id="Order_Number" data-attribute="159245" data-field-name="@Resources.Spartan_Report_Fields_DetailResources.Order_Number">
+		<input class="form-control inputNumber" id="Spartan_Report_Fields_DetailOrder_Number" name="Spartan_Report_Fields_DetailOrder_Number" type="text" value="@Model.Order_Number">
+	</div>
+</div>
+<div class="form-group" id="divAttributeId">
+	<label class="col-sm-2 control-label">@Resources.Spartan_Report_Fields_DetailResources.AttributeId</label>
+	<div class="col-sm-8" data-field-id="AttributeId" data-attribute="159249" data-field-name="@Resources.Spartan_Report_Fields_DetailResources.AttributeId">
+		<select class="form-control" data-val="true" data-val-number="The field AttributeId must be a number." data-val-required="The AttributeId field is required." id="Spartan_Report_Fields_DetailAttributeId" name="Spartan_Report_Fields_DetailAttributeId">
+			<option value=""></option>
+			@if (varSpartan_Metadata != null){ 
+				foreach (var itemAttributeId in varSpartan_Metadata)
+				{
+					if (itemAttributeId.Value == Convert.ToString(Model.AttributeId))
+					{
+						<option value="@itemAttributeId.Value" selected>@itemAttributeId.Text</option>
+					}
+					else
+					{
+						<option value="@itemAttributeId.Value">@itemAttributeId.Text</option>
+					}
+				}
+			}
+		</select>
+	</div>
+</div>
+
+								</div>	
+							</div>
+									<br />
+											<div class="form-actions fluid">
+												<input type="hidden" value="@Model.DesignDetailId" id="ReferenceDesignDetailId" />
+												<input type="hidden" value="@Model.DesignDetailId" name="DesignDetailId" id="DesignDetailIdId" />
+												@if (!ViewBag.Consult)
+												{
+													<div id="dvSaveJob" style="display:inline-block"></div>
+
+													<button type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton">
+														<i class="fa fa-cogs fa-spin"></i>
+													</button>
+													<a title="@Resources.Resources.Configure" id="ConfigureSave" name="ConfigureSave" onclick="SaveElementAttributes()" class="btn btn-success">@Resources.Resources.Configure</a>
+												}
+
+												<input type="hidden" id="hdnConfigureType" />
+												<input type="hidden" id="hdnSpartan_Report_Fields_DetailBusinessRuleFieldId" />
+												<input type="hidden" id="hdnSpartan_Report_Fields_DetailBusinessRuleFieldName" />
+												<input type="hidden" id="hdnSpartan_Report_Fields_DetailBusinessRuleAttribute" />
+
+												<input data-dismiss="modal" type="button" value="@Resources.Resources.Cancelar" class="btn btn-danger noConsult" data-bind="click: cancel" tabindex="16" />
+
+												<button onclick="Spartan_Report_Fields_DetailGetBusinessRule('', 'Al Cancelar', '3')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Spartan_Report_Fields_DetailBusinessRule-form">
+													<a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+														<i class="fa fa-cogs fa-spin"></i>
+													</a>
+												</button>
+											</div>
+										</div>
+								}
+
+							</div>
+						</div>
+					</div>
+				</div>
+					<input id="hdnApplicationDirectory" type="hidden" value="@Url.Content("~/")" />
+				</div>
+			</div>
+		</div>
+</div>
+@section Styles {
+<link href="@Url.Content("~/Content/BootstrapDatePicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+    @Styles.Render("~/plugins/awesomeCheckboxStyles")
+    @Styles.Render("~/plugins/select2Styles")
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+    .select2-results{background-color:#fff;}
+    .select2-container .select2-dropdown{height:auto !important;}
+
+    div.dataTables_info {
+        display: inline-block;
+        float: right;
+    }
+        i {
+        font-size: 25px !important;
+        display: block;
+        color: #676a6c;
+        margin-left: 6px;
+        margin-right: 6px;
+    }
+
+    .fullWidth {
+        width: 100%;
+    }
+</style>
+}
+
+<script type="text/javascript" src="~/Uploads/Scripts/Spartan_Report_Fields_Detail.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Scripts/Custom/Spartan_Report_Fields_DetailGeneral.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/Spartan_ReportCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+
+    <script type="text/javascript">
+        
+
+
+
+        $(document).ready(function () {
+			var currentIndex = @ViewBag.currentRowIndex
+
+            var Spartan_Report_Fields_DetailRowElement = "Spartan_Report_Fields_DetailPop_" + currentIndex.toString();
+            var abc = "if(dynamicFieldValidation('" + Spartan_Report_Fields_DetailRowElement + "')){ Spartan_Report_Fields_DetailInsertRowFromPopup(" + currentIndex + "); }";
+            var insertRowHTML = '<a class="btn btn-primary m-b" onclick="' + abc + '">Save</a>';
+            $('#dvSaveJob').html(insertRowHTML);
+			
+
+
+            initiateUIControls();
+			$('a').tooltip();
+        });
+
+
+
+        function initiateUIControls() {
+            $('.gridDatePicker').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            //Time Picker
+            $('.gridTimePicker').clockpicker();
+
+        }
+
+        function GetPropertyBag() {
+            $.get('@Url.Action("Spartan_Report_Fields_DetailPropertyBag", "Spartan_Report_Fields_Detail")', function (data) {
+                $(".PropertyModal").html(data);
+            });
+        }
+        function Spartan_Report_Fields_DetailGetBusinessRule(FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null)
+			{
+				$('#hdnSpartan_Report_Fields_DetailBusinessRuleFieldId').val(FieldId);
+				$('#hdnSpartan_Report_Fields_DetailBusinessRuleFieldName').val(FieldName);
+				$('#hdnSpartan_Report_Fields_DetailBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("BusinessRule", "BussinessRule")', { FieldId: $('#hdnSpartan_Report_Fields_DetailBusinessRuleFieldId').val(), FieldName: $('#hdnSpartan_Report_Fields_DetailBusinessRuleFieldName').val(), ObjectId: $('#hdnObjectId').val(), Attribute: $('#hdnSpartan_Report_Fields_DetailBusinessRuleAttribute').val(), Screen: 'Spartan_Report_Fields_Detail' }, function (data) {
+                $(".Spartan_Report_Fields_DetailBusinessRuleModal").html(data);
+            });
+        }
+        function Spartan_Report_Fields_DetailGetAddBusinessRule(RuleId, FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null) {
+				$('#hdnSpartan_Report_Fields_DetailBusinessRuleFieldId').val(FieldId);
+				$('#hdnSpartan_Report_Fields_DetailBusinessRuleFieldName').val(FieldName);
+				$('#hdnSpartan_Report_Fields_DetailBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("AddBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnSpartan_Report_Fields_DetailBusinessRuleFieldId').val(), FieldName: $('#hdnSpartan_Report_Fields_DetailBusinessRuleFieldName').val(), ObjectId: $('#hdnObjectId').val(), Attribute: $('#hdnSpartan_Report_Fields_DetailBusinessRuleAttribute').val(), Screen: 'Spartan_Report_Fields_Detail' }, function (data) {
+                $(".AddBusinessRuleModal").html(data);
+                $(".datatable").DataTable();
+            });
+        }
+		function RemoveBusinessRule(RuleId) {
+			$.get('@Url.Action("RemoveBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnSpartan_Report_Fields_DetailBusinessRuleFieldId').val(), FieldName: $('#hdnSpartan_Report_Fields_DetailBusinessRuleFieldName').val(), ObjectId: $('#hdnObjectId').val(), Attribute: $('#hdnSpartan_Report_Fields_DetailBusinessRuleAttribute').val(), Screen: 'Spartan_Report_Fields_Detail' }, function (data) {
+				$(".Spartan_Report_Fields_DetailBusinessRuleModal").html(data);
+			});
+		}
+
+    var permission = {
+        Consult: '@permission.Consult' == 'True',
+        New: '@permission.New' == 'True',
+        Edit: '@permission.Edit' == 'True',
+        Delete: '@permission.Delete' == 'True',
+        Export: '@permission.Export' == 'True',
+        Print: '@permission.Print' == 'True',
+        Configure: '@permission.Configure' == 'True',
+    };
+
+    
+    //MR-var statusItems;
+    //MR-var stateItems;
+    //MR-var cityItems = [];
+    var isConsultMode = "@ViewBag.Consult" == "True";
+    Consult(isConsultMode);
+        function Consult(val) {
+            if (val) {
+                $(':input').attr('readonly', 'readonly');
+                $(':input').attr('disabled', 'true');
+                $('.noConsult').removeAttr('readonly');
+                $('.noConsult').removeAttr('disabled');
+            }
+        }
+
+    function BackToGrid() {
+        location.href = "@Url.Content("~/Frontal/Spartan_Report_Fields_Detail/")";
+    }
+	
+	function ReadScriptSettings(callback)
+    {
+        $.post("@Url.Content("~/Frontal/Spartan_Report_Fields_Detail/ReadScriptSettings")", function (data) {
+            mainElementObject = JSON.parse(data.MainElement);
+			if (data.ChildElement != null) {
+                childElementObject = JSON.parse(data.ChildElement);
+            }
+            callback();
+        });
+    }
+
+    function SaveSettingsWithoutReload() {
+        $.post("@Url.Content("~/Frontal/Spartan_Report_Fields_Detail/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+            //$('#hdnConfigureType').val("0");
+        }, "json");
+    }
+	
+        function SaveElementAttributes() {
+            if ($('#hdnConfigureType').val() == "1") {
+                $.post("@Url.Content("~/Frontal/Spartan_Report_Fields_Detail/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+                    $('#hdnConfigureType').val("0");
+                    location.reload(true);
+                }, "json");
+            } else {
+                $.post("@Url.Content("~/Frontal/Spartan_Report_Fields_Detail/ReadScriptSettings")", function (data) {
+                    mainElementObject = JSON.parse(data.MainElement);
+                    childElementObject = JSON.parse(data.ChildElement);
+
+                    for (var i = 0; i < mainElementObject.length; i++) {
+                        var mainElementAttributes = '<div class="col-sm-2">';
+                        mainElementAttributes += '<div class="displayAttributes requiredAttribute"><a class="requiredClick" title="' + (mainElementObject[i].IsRequired == true ? "Required" : "Not Required") + '" onclick="setRequired(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsRequired == true ? "@Url.Content("~/Images/Required.png")" : "@Url.Content("~/Images/Not-Required.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes visibleAttribute"><a class="visibleClick" title="' + (mainElementObject[i].IsVisible == true ? "Visible" : "In Visible") + '" onclick="setVisible(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsVisible == true ? "@Url.Content("~/Images/Visible.png")" : "@Url.Content("~/Images/InVisible.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes readOnlyAttribute"><a class="readOnlyClick" title="' + (mainElementObject[i].IsReadOnly == true ? "Disabled" : "Enabled") + '" onclick="setReadOnly(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsReadOnly == true ? "@Url.Content("~/Images/Disabled.png")" : "@Url.Content("~/Images/Enabled.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes defaultValueAttribute"><a id="hlDefaultValue_' + i.toString() + '" class="defaultValueClick" title="' + (mainElementObject[i].DefaultValue) + '" onclick="setDefaultValue(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].DefaultValue != '' && mainElementObject[i].DefaultValue != null ? "@Url.Content("~/Images/default-value.png")" : "@Url.Content("~/Images/Not-Default-Value.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes helpTextAttribute"><a id="hlHelpText_' + i.toString() + '" class="helpTextClick" title="' + (mainElementObject[i].HelpText) + '" onclick="setHelpText(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].HelpText != '' && mainElementObject[i].HelpText != null ? "@Url.Content("~/Images/green-help.png")" : "@Url.Content("~/Images/red-help.jpg")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '</div>';
+                        $('#' + mainElementObject[i].inputId).parent().closest('.form-group').show();
+
+                        $('#' + mainElementObject[i].inputId).closest('.col-sm-8').after(mainElementAttributes);
+                    }
+					if (childElementObject != null) {
+						for (var i = 0; i < childElementObject.length; i++) {
+							$('.' + childElementObject[i].inputId + 'Header').show();
+							$('.' + childElementObject[i].inputId).parent().show();
+							$('.' + childElementObject[i].inputId + 'Header').append(returnAttributeHTML(i));
+						}
+					}
+                    $('#ConfigureSave').text('Save Settings');
+                    $('#hdnConfigureType').val("1");
+                });
+            }
+        }
+		$('#CreateSpartan_Report_Fields_Detail').on('click', '.btnPopupBusinessRules', function () {
+			var fieldId = $(this).data('field-id');
+			var fieldName = $(this).data('field-name');
+			var attribute = $(this).data('attribute');
+			$('#hdnSpartan_Report_Fields_DetailBusinessRuleFieldId').val(fieldId);
+			$('#hdnSpartan_Report_Fields_DetailBusinessRuleFieldName').val(fieldName);
+			$('#hdnSpartan_Report_Fields_DetailBusinessRuleAttribute').val(attribute);
+		});
+		//Initialize HTML Editors
+		
+    </script>

@@ -1,0 +1,556 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Globalization
+@using Spartane.Core.Domain.Permission
+@using Spartane.Core.Domain.Spartane_File
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Spartan_MetadataModel
+@{
+
+
+
+
+    Permission permission = ViewBag.Permission;
+}
+
+<div class="modal fade in" id="dvAttributeValue" style="background-color:rgba(0, 0, 0, 0.7);">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" id="lblAttributeType">Value</label>
+                    <div class="col-sm-7">
+                        <input type="text" title="Value" class="form-control" id="txtAttributeValue" />
+                    </div>
+                    <div class="col-sm-2">
+                        <a class="btn btn-primary" onclick="SaveValue()">Submit</a>
+                    </div>
+                    <input type="hidden" id="hdnAttributType" />
+                    <input type="hidden" id="hdnAttributElement" />
+                    <input type="hidden" id="hdnAttributNumber" />
+                    <input type="hidden" id="hdnElementType" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row wrapper border-bottom white-bg page-heading">
+
+    <div class="row">
+        <div class="col-lg-10">
+            <h2>
+                Spartan Metadata
+                <button onclick="Spartan_MetadataGetBusinessRule('', 'Abrir Pantalla', '0')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Spartan_MetadataBusinessRule-form">
+                    <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+                        <i class="fa fa-cogs fa-spin"></i>
+                    </a>
+                </button>
+            </h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">@Resources.Resources.Home</a>
+                </li>
+                <li class="">
+                    <label>@Resources.Spartan_MetadataResources.Spartan_Metadata</label>
+                </li>
+                <li class="active">
+                    <strong>@Resources.Resources.Create</strong>
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-2">
+
+            @{
+                if (Convert.ToInt32(Spartane.Web.SessionHelper.Role) == (int)Spartane.Core.Enums.SpartanRoleEnum.Admin)
+                {
+                    <h2>&nbsp;</h2>
+                    <button onclick="Spartan_MetadataDisplayBusinessRule()" type="button" class="btn btn-info btn-lg displayBusinessProperyButton">
+                        <i class="fa fa-cogs fa-spin"></i>
+                    </button>
+
+                    <div aria-hidden="true" class="modal fade in Spartan_MetadataPropertyBusinessModal" id="Spartan_MetadataPropertyBusinessModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">
+                                        Property & Business Rules
+                                        <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                                    </h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <a class="btn btn-primary full-width" data-dismiss="modal" data-toggle="modal" data-target="#PropertyModal-form" onclick="GetPropertyBag()">Properties</a>
+                                        </div>
+                                        <div class="clearfix col-sm-12">&nbsp;</div>
+                                        <div class="col-sm-12">
+                                            <a class="btn btn-primary full-width" data-dismiss="modal" data-toggle="modal" data-target="#Spartan_MetadataBusinessRule-form" onclick="Spartan_MetadataGetBusinessRule()">Business Rule</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     <div aria-hidden="true" data-backdrop="static" class="modal fade in PropertyModal" id="PropertyModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+					</div>
+					<div aria-hidden="true" data-backdrop="static" class="modal fade in Spartan_MetadataBusinessRuleModal" id="Spartan_MetadataBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+					</div>
+					<div aria-hidden="true" data-backdrop="static" class="modal fade in Spartan_MetadataAddBusinessRuleModal" id="AddBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+					</div>
+
+
+                }
+            }
+        </div>
+    </div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            @using (Html.BeginForm("Post", "Spartan_Metadata", FormMethod.Post, new { id = "CreateSpartan_Metadata", @readonly = "true", @class = "form-horizontal", enctype = "multipart/form-data" }))
+            {
+				<input type="hidden" id="hdnObjectId" name="hdnObjectId" value="@ViewBag.ObjectId" />
+                <span id="popupNotification"></span>
+                <div class="container-fluid Spartan_MetadataCreateForm" id="viewmodeledit">
+			<div class="tabs-container">
+                        	<ul class="nav nav-tabs">
+<li class="active"><a data-toggle="tab" href="#tabDatos_Generales"> Datos Generales</a></li>
+
+                        	</ul>
+	                	<div class="tab-content">
+                            <div id="tabDatos_Generales" class="tab-pane active">
+                                <div class="panel-body">
+
+                            <div class="form-group" id="divClass_Id">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_MetadataResources.Class_Id</label>
+                                <div class="col-sm-8" data-field-id="Class_Id" data-attribute="157246" data-field-name="@Resources.Spartan_MetadataResources.Class_Id">
+                                    <input class="form-control inputNumber" id="Class_Id" name="Class_Id" type="text" value="@Model.Class_Id">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Class_Id" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divClass_Name">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_MetadataResources.Class_Name</label>
+                                <div class="col-sm-8" data-field-id="Class_Name" data-attribute="157247" data-field-name="@Resources.Spartan_MetadataResources.Class_Name">
+                                    <input class="form-control" id="Class_Name" name="Class_Name" type="text" value="@Model.Class_Name">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Class_Name" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divObject_Id">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_MetadataResources.Object_Id</label>
+                                <div class="col-sm-8" data-field-id="Object_Id" data-attribute="157249" data-field-name="@Resources.Spartan_MetadataResources.Object_Id">
+                                    <input class="form-control inputNumber" id="Object_Id" name="Object_Id" type="text" value="@Model.Object_Id">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Object_Id" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divPhysical_Name">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_MetadataResources.Physical_Name</label>
+                                <div class="col-sm-8" data-field-id="Physical_Name" data-attribute="157250" data-field-name="@Resources.Spartan_MetadataResources.Physical_Name">
+                                    <input class="form-control" id="Physical_Name" name="Physical_Name" type="text" value="@Model.Physical_Name">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Physical_Name" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divLogical_Name">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_MetadataResources.Logical_Name</label>
+                                <div class="col-sm-8" data-field-id="Logical_Name" data-attribute="157251" data-field-name="@Resources.Spartan_MetadataResources.Logical_Name">
+                                    <input class="form-control" id="Logical_Name" name="Logical_Name" type="text" value="@Model.Logical_Name">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Logical_Name" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divIdentifier_Type">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_MetadataResources.Identifier_Type</label>
+                                <div class="col-sm-8" data-field-id="Identifier_Type" data-attribute="157252" data-field-name="@Resources.Spartan_MetadataResources.Identifier_Type">
+                                    <input class="form-control inputNumber" id="Identifier_Type" name="Identifier_Type" type="text" value="@Model.Identifier_Type">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Identifier_Type" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divAttribute_Type">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_MetadataResources.Attribute_Type</label>
+                                <div class="col-sm-8" data-field-id="Attribute_Type" data-attribute="157253" data-field-name="@Resources.Spartan_MetadataResources.Attribute_Type">
+                                    <input class="form-control inputNumber" id="Attribute_Type" name="Attribute_Type" type="text" value="@Model.Attribute_Type">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Attribute_Type" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divLength">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_MetadataResources.Length</label>
+                                <div class="col-sm-8" data-field-id="Length" data-attribute="157254" data-field-name="@Resources.Spartan_MetadataResources.Length">
+                                    <input class="form-control inputNumber" id="Length" name="Length" type="text" value="@Model.Length">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Length" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divDecimals_Length">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_MetadataResources.Decimals_Length</label>
+                                <div class="col-sm-8" data-field-id="Decimals_Length" data-attribute="157255" data-field-name="@Resources.Spartan_MetadataResources.Decimals_Length">
+                                    <input class="form-control inputNumber" id="Decimals_Length" name="Decimals_Length" type="text" value="@Model.Decimals_Length">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Decimals_Length" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divRelation_Type">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_MetadataResources.Relation_Type</label>
+                                <div class="col-sm-8" data-field-id="Relation_Type" data-attribute="157256" data-field-name="@Resources.Spartan_MetadataResources.Relation_Type">
+                                    <input class="form-control inputNumber" id="Relation_Type" name="Relation_Type" type="text" value="@Model.Relation_Type">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Relation_Type" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divRelated_Object_Id">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_MetadataResources.Related_Object_Id</label>
+                                <div class="col-sm-8" data-field-id="Related_Object_Id" data-attribute="157763" data-field-name="@Resources.Spartan_MetadataResources.Related_Object_Id">
+                                    <input class="form-control inputNumber" id="Related_Object_Id" name="Related_Object_Id" type="text" value="@Model.Related_Object_Id">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Related_Object_Id" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divRelated_Class_Id">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_MetadataResources.Related_Class_Id</label>
+                                <div class="col-sm-8" data-field-id="Related_Class_Id" data-attribute="157257" data-field-name="@Resources.Spartan_MetadataResources.Related_Class_Id">
+                                    <input class="form-control inputNumber" id="Related_Class_Id" name="Related_Class_Id" type="text" value="@Model.Related_Class_Id">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Related_Class_Id" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divRelated_Class_Name">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_MetadataResources.Related_Class_Name</label>
+                                <div class="col-sm-8" data-field-id="Related_Class_Name" data-attribute="157258" data-field-name="@Resources.Spartan_MetadataResources.Related_Class_Name">
+                                    <input class="form-control" id="Related_Class_Name" name="Related_Class_Name" type="text" value="@Model.Related_Class_Name">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Related_Class_Name" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divRelated_Class_Identifier">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_MetadataResources.Related_Class_Identifier</label>
+                                <div class="col-sm-8" data-field-id="Related_Class_Identifier" data-attribute="157259" data-field-name="@Resources.Spartan_MetadataResources.Related_Class_Identifier">
+                                    <input class="form-control inputNumber" id="Related_Class_Identifier" name="Related_Class_Identifier" type="text" value="@Model.Related_Class_Identifier">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Related_Class_Identifier" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divRelated_Class_Description">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_MetadataResources.Related_Class_Description</label>
+                                <div class="col-sm-8" data-field-id="Related_Class_Description" data-attribute="157260" data-field-name="@Resources.Spartan_MetadataResources.Related_Class_Description">
+                                    <input class="form-control" id="Related_Class_Description" name="Related_Class_Description" type="text" value="@Model.Related_Class_Description">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Related_Class_Description" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divRequired">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_MetadataResources.Required</label>
+                                <div class="col-sm-8" data-field-id="Required" data-attribute="157261" data-field-name="@Resources.Spartan_MetadataResources.Required">
+                                    @Html.CheckBoxFor(m => m.Required, new { @class = "i-checks" })
+                                </div>
+                            </div>
+                            <div class="form-group" id="divDefaultValue">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_MetadataResources.DefaultValue</label>
+                                <div class="col-sm-8" data-field-id="DefaultValue" data-attribute="157262" data-field-name="@Resources.Spartan_MetadataResources.DefaultValue">
+                                    <input class="form-control" id="DefaultValue" name="DefaultValue" type="text" value="@Model.DefaultValue">
+                                    @*<span class="field-validation-valid" data-valmsg-for="DefaultValue" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divVisible">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_MetadataResources.Visible</label>
+                                <div class="col-sm-8" data-field-id="Visible" data-attribute="157263" data-field-name="@Resources.Spartan_MetadataResources.Visible">
+                                    @Html.CheckBoxFor(m => m.Visible, new { @class = "i-checks" })
+                                </div>
+                            </div>
+                            <div class="form-group" id="divHelp_Text">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_MetadataResources.Help_Text</label>
+                                <div class="col-sm-8" data-field-id="Help_Text" data-attribute="157264" data-field-name="@Resources.Spartan_MetadataResources.Help_Text">
+                                    <input class="form-control" id="Help_Text" name="Help_Text" type="text" value="@Model.Help_Text">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Help_Text" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divRead_Only">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_MetadataResources.Read_Only</label>
+                                <div class="col-sm-8" data-field-id="Read_Only" data-attribute="157265" data-field-name="@Resources.Spartan_MetadataResources.Read_Only">
+                                    @Html.CheckBoxFor(m => m.Read_Only, new { @class = "i-checks" })
+                                </div>
+                            </div>
+                            <div class="form-group" id="divScreenOrder">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_MetadataResources.ScreenOrder</label>
+                                <div class="col-sm-8" data-field-id="ScreenOrder" data-attribute="157268" data-field-name="@Resources.Spartan_MetadataResources.ScreenOrder">
+                                    <input class="form-control inputNumber" id="ScreenOrder" name="ScreenOrder" type="text" value="@Model.ScreenOrder">
+                                    @*<span class="field-validation-valid" data-valmsg-for="ScreenOrder" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divControl_Type">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_MetadataResources.Control_Type</label>
+                                <div class="col-sm-8" data-field-id="Control_Type" data-attribute="157269" data-field-name="@Resources.Spartan_MetadataResources.Control_Type">
+                                    <input class="form-control inputNumber" id="Control_Type" name="Control_Type" type="text" value="@Model.Control_Type">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Control_Type" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divGroup_Name">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_MetadataResources.Group_Name</label>
+                                <div class="col-sm-8" data-field-id="Group_Name" data-attribute="157270" data-field-name="@Resources.Spartan_MetadataResources.Group_Name">
+                                    <input class="form-control" id="Group_Name" name="Group_Name" type="text" value="@Model.Group_Name">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Group_Name" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            </div>
+                                </div>
+
+				</div>	
+			</div>
+                    <br />
+                            <div class="form-actions fluid">
+                                <input type="hidden" value="@Model.AttributeId" id="ReferenceAttributeId" />
+                                <input type="hidden" value="@Model.AttributeId" name="AttributeId" id="AttributeIdId" />
+                                <input type="hidden" value="@ViewBag.Operation" name="Operation" id="Operation" />
+                                @if (!ViewBag.Consult)
+                                {
+                                    <input type="button" value="@Resources.Resources.Guardar" id="Spartan_MetadataGuardar" class="btn btn-w-m btn-primary" onclick="return checkClientValidate('Spartan_MetadataCreateForm');"  />
+									<button onclick="Spartan_MetadataGetBusinessRule('', 'Al Guardar', '2')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Spartan_MetadataBusinessRule-form">
+                                        <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleBeforeSave">
+                                            <i class="fa fa-cogs fa-spin"></i>
+                                        </a>
+                                    </button>
+                                    <button type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton">
+                                        <i class="fa fa-cogs fa-spin"></i>
+                                    </button>
+
+                                    <input type="button" value="@Resources.Resources.GuardarNuevo" id="Spartan_MetadataGuardarYNuevo" onclick="return checkClientValidate('Spartan_MetadataCreateForm');" data-bind="    click: saveAndNew" class="btn btn-w-m btn-success"  />
+                                    <input type="button" value="@Resources.Resources.GuardarCopia" id="Spartan_MetadataGuardarYCopia" onclick="return checkClientValidate('Spartan_MetadataCreateForm');" data-bind="    click: saveAndNew" class="btn btn-w-m btn-success"  />
+                                    <a title="@Resources.Resources.Configure" id="ConfigureSave" name="ConfigureSave" onclick="SaveElementAttributes()" class="btn btn-success">@Resources.Resources.Configure</a>
+                                }
+
+                                <input type="hidden" id="hdnConfigureType" />
+								<input type="hidden" id="hdnSpartan_MetadataBusinessRuleFieldId" />
+                                <input type="hidden" id="hdnSpartan_MetadataBusinessRuleFieldName" />
+                                <input type="hidden" id="hdnSpartan_MetadataBusinessRuleAttribute" />
+
+                                <input type="button" value="@Resources.Resources.Cancelar" id="Spartan_MetadataCancelar" name="Spartan_MetadataCancelar" class="btn btn-danger noConsult" data-bind="click: cancel" tabindex="16" />
+
+                                <button onclick="Spartan_MetadataGetBusinessRule('', 'Al Cancelar', '3')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Spartan_MetadataBusinessRule-form">
+                                    <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+                                        <i class="fa fa-cogs fa-spin"></i>
+                                    </a>
+                                </button>
+                            </div>
+                        </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+<input id="hdnApplicationDirectory" type="hidden" value="@Url.Content("~/")" />
+
+@section Styles {
+<link href="@Url.Content("~/Content/BootstrapDatePicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+    @Styles.Render("~/plugins/awesomeCheckboxStyles")
+    @Styles.Render("~/plugins/select2Styles")
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+    .select2-results{background-color:#fff;}
+    .select2-container .select2-dropdown{height:auto !important;}
+
+    div.dataTables_info {
+        display: inline-block;
+        float: right;
+    }
+        i {
+        font-size: 25px !important;
+        display: block;
+        color: #676a6c;
+        margin-left: 6px;
+        margin-right: 6px;
+    }
+
+    .fullWidth {
+        width: 100%;
+    }
+</style>
+}
+
+<script type="text/javascript" src="~/Uploads/Scripts/Spartan_Metadata.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Scripts/Custom/Spartan_MetadataGeneral.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/Spartan_MetadataCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+
+@section Scripts {
+
+
+    <script type="text/javascript">
+        
+
+
+
+        $(document).ready(function () {
+
+
+
+            initiateUIControls();
+			$('a').tooltip();
+        });
+
+
+
+        function initiateUIControls() {
+             $('.gridDatePicker').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            //Time Picker
+            $('.gridTimePicker').clockpicker();
+
+        }
+
+    </script>
+
+<script type="text/javascript">
+
+        function SendSpartan_MetadataData(callBack) {
+            var formData = new FormData($("form#CreateSpartan_Metadata")[0]);
+            if (checkClientValidate('Spartan_MetadataCreateForm')) {
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Spartan_Metadata/Post?IsNew="+ViewBag.IsNew+"")',
+                    type: 'POST',
+                    data: formData,
+                    async: true,
+                    success: function (result) {
+                        if (result < 0) {
+                            showNotification("@Resources.Resources.ErrorSave", "error");
+                        } else {
+
+                            showNotification("@Resources.Resources.SaveSuccess", "success");
+                            callBack(result);
+                        }
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            }
+            return false;
+        };
+        function GetPropertyBag() {
+            $.get('@Url.Action("Spartan_MetadataPropertyBag", "Spartan_Metadata")', function (data) {
+                $(".PropertyModal").html(data);
+            });
+        }
+        function Spartan_MetadataGetBusinessRule(FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null)
+			{
+				$('#hdnSpartan_MetadataBusinessRuleFieldId').val(FieldId);
+				$('#hdnSpartan_MetadataBusinessRuleFieldName').val(FieldName);
+				$('#hdnSpartan_MetadataBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("BusinessRule", "BussinessRule")', { FieldId: $('#hdnSpartan_MetadataBusinessRuleFieldId').val(), FieldName: $('#hdnSpartan_MetadataBusinessRuleFieldName').val(), ObjectId: $('#hdnObjectId').val(), Attribute: $('#hdnSpartan_MetadataBusinessRuleAttribute').val() }, function (data) {
+                $(".Spartan_MetadataBusinessRuleModal").html(data);
+            });
+        }
+        function GetAddBusinessRule(RuleId, FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null) {
+				$('#hdnSpartan_MetadataBusinessRuleFieldId').val(FieldId);
+				$('#hdnSpartan_MetadataBusinessRuleFieldName').val(FieldName);
+				$('#hdnSpartan_MetadataBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("AddBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnSpartan_MetadataBusinessRuleFieldId').val(), FieldName: $('#hdnSpartan_MetadataBusinessRuleFieldName').val(), ObjectId: $('#hdnObjectId').val(), Attribute: $('#hdnSpartan_MetadataBusinessRuleAttribute').val(), Screen: 'Spartan_Metadata' }, function (data) {
+                $(".Spartan_MetadataAddBusinessRuleModal").html(data);
+                $(".datatable").DataTable();
+            });
+        }
+		function RemoveBusinessRule(RuleId) {
+			$.get('@Url.Action("RemoveBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnSpartan_MetadataBusinessRuleFieldId').val(), FieldName: $('#hdnSpartan_MetadataBusinessRuleFieldName').val(), ObjectId: $('#hdnObjectId').val(), Attribute: $('#hdnSpartan_MetadataBusinessRuleAttribute').val(), Screen: 'Spartan_Metadata' }, function (data) {
+				$(".Spartan_MetadataBusinessRuleModal").html(data);
+			});
+		}
+
+    var permission = {
+        Consult: '@permission.Consult' == 'True',
+        New: '@permission.New' == 'True',
+        Edit: '@permission.Edit' == 'True',
+        Delete: '@permission.Delete' == 'True',
+        Export: '@permission.Export' == 'True',
+        Print: '@permission.Print' == 'True',
+        Configure: '@permission.Configure' == 'True',
+    };
+
+    
+    //MR-var statusItems;
+    //MR-var stateItems;
+    //MR-var cityItems = [];
+    var isConsultMode = "@ViewBag.Consult" == "True";
+    Consult(isConsultMode);
+        function Consult(val) {
+            if (val) {
+                $(':input').attr('readonly', 'readonly');
+                $(':input').attr('disabled', 'true');
+                $('.noConsult').removeAttr('readonly');
+                $('.noConsult').removeAttr('disabled');
+            }
+        }
+
+    function BackToGrid() {
+        location.href = "@Url.Content("~/Frontal/Spartan_Metadata/")";
+    }
+	
+	function ReadScriptSettings(callback)
+    {
+        $.post("@Url.Content("~/Frontal/Spartan_Metadata/ReadScriptSettings")", function (data) {
+            mainElementObject = JSON.parse(data.MainElement);
+			if (data.ChildElement != null) {
+                childElementObject = JSON.parse(data.ChildElement);
+            }
+            callback();
+        });
+    }
+
+    function SaveSettingsWithoutReload() {
+        $.post("@Url.Content("~/Frontal/Spartan_Metadata/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+            //$('#hdnConfigureType').val("0");
+        }, "json");
+    }
+	
+        function SaveElementAttributes() {
+            if ($('#hdnConfigureType').val() == "1") {
+                $.post("@Url.Content("~/Frontal/Spartan_Metadata/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+                    $('#hdnConfigureType').val("0");
+                    location.reload(true);
+                }, "json");
+            } else {
+                $.post("@Url.Content("~/Frontal/Spartan_Metadata/ReadScriptSettings")", function (data) {
+                    mainElementObject = JSON.parse(data.MainElement);
+                    childElementObject = JSON.parse(data.ChildElement);
+
+                    for (var i = 0; i < mainElementObject.length; i++) {
+                        var mainElementAttributes = '<div class="col-sm-2">';
+                        mainElementAttributes += '<div class="displayAttributes requiredAttribute"><a class="requiredClick" title="' + (mainElementObject[i].IsRequired == true ? "Required" : "Not Required") + '" onclick="setRequired(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsRequired == true ? "@Url.Content("~/Images/Required.png")" : "@Url.Content("~/Images/Not-Required.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes visibleAttribute"><a class="visibleClick" title="' + (mainElementObject[i].IsVisible == true ? "Visible" : "In Visible") + '" onclick="setVisible(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsVisible == true ? "@Url.Content("~/Images/Visible.png")" : "@Url.Content("~/Images/InVisible.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes readOnlyAttribute"><a class="readOnlyClick" title="' + (mainElementObject[i].IsReadOnly == true ? "Disabled" : "Enabled") + '" onclick="setReadOnly(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsReadOnly == true ? "@Url.Content("~/Images/Disabled.png")" : "@Url.Content("~/Images/Enabled.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes defaultValueAttribute"><a id="hlDefaultValue_' + i.toString() + '" class="defaultValueClick" title="' + (mainElementObject[i].DefaultValue) + '" onclick="setDefaultValue(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].DefaultValue != '' && mainElementObject[i].DefaultValue != null ? "@Url.Content("~/Images/default-value.png")" : "@Url.Content("~/Images/Not-Default-Value.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes helpTextAttribute"><a id="hlHelpText_' + i.toString() + '" class="helpTextClick" title="' + (mainElementObject[i].HelpText) + '" onclick="setHelpText(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].HelpText != '' && mainElementObject[i].HelpText != null ? "@Url.Content("~/Images/green-help.png")" : "@Url.Content("~/Images/red-help.jpg")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '</div>';
+                        $('#' + mainElementObject[i].inputId).parent().closest('.form-group').show();
+
+                        $('#' + mainElementObject[i].inputId).closest('.col-sm-8').after(mainElementAttributes);
+                    }
+					if (childElementObject != null) {
+						for (var i = 0; i < childElementObject.length; i++) {
+							$('.' + childElementObject[i].inputId + 'Header').show();
+							$('.' + childElementObject[i].inputId).parent().show();
+							$('.' + childElementObject[i].inputId + 'Header').append(returnAttributeHTML(i));
+						}
+					}
+                    $('#ConfigureSave').text('Save Settings');
+                    $('#hdnConfigureType').val("1");
+                });
+            }
+        }
+		$('#CreateSpartan_Metadata').on('click', '.btnPopupBusinessRules', function () {
+			var fieldId = $(this).data('field-id');
+			var fieldName = $(this).data('field-name');
+			var attribute = $(this).data('attribute');
+			$('#hdnSpartan_MetadataBusinessRuleFieldId').val(fieldId);
+			$('#hdnSpartan_MetadataBusinessRuleFieldName').val(fieldName);
+			$('#hdnSpartan_MetadataBusinessRuleAttribute').val(attribute);
+		});
+    </script>
+}

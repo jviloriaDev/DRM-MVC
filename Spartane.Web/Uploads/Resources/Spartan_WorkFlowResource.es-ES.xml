@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Spartan_WorkFlow" value="Spartan WorkFlow"></resource>
+  <resource culture="es-es" name="WorkFlowId" value="WorkFlowId"></resource>
+  <resource culture="es-es" name="Name" value="Name"></resource>
+  <resource culture="es-es" name="Description" value="Description"></resource>
+  <resource culture="es-es" name="Objective" value="Objective"></resource>
+  <resource culture="es-es" name="Status" value="Status"></resource>
+  <resource culture="es-es" name="Object" value="Object"></resource>
+  <resource culture="es-es" name="Phases" value="Phases"></resource>
+  <resource culture="es-es" name="State" value="State"></resource>
+  <resource culture="es-es" name="Conditions_by_State" value="Conditions by State"></resource>
+  <resource culture="es-es" name="Information_by_State" value="Information by State"></resource>
+  <resource culture="es-es" name="Roles_by_State" value="Roles by State"></resource>
+  <resource culture="es-es" name="Matrix_of_States" value="Matrix of States"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+<resource culture="es-es" name="TabPhases" value="Phases"></resource>
+<resource culture="es-es" name="TabState" value="State"></resource>
+<resource culture="es-es" name="TabConditions_by_State" value="Conditions by State"></resource>
+<resource culture="es-es" name="TabInformation_by_State" value="Information by State"></resource>
+<resource culture="es-es" name="TabRoles_by_State" value="Roles by State"></resource>
+<resource culture="es-es" name="TabMatrix_of_States" value="Matrix of States"></resource>
+
+</resources>

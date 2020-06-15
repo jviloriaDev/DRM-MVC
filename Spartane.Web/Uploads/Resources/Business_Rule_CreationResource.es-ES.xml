@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Business_Rule_Creation" value="Reglas de Negocio"></resource>
+  <resource culture="es-es" name="Key_Business_Rule_Creation" value="Clave"></resource>
+  <resource culture="es-es" name="User" value="Usuario"></resource>
+  <resource culture="es-es" name="Creation_Date" value="Fecha de Creación"></resource>
+  <resource culture="es-es" name="Creation_Hour" value="Hora de Creación"></resource>
+  <resource culture="es-es" name="Last_Updated_Date" value="Fecha de última actualización"></resource>
+  <resource culture="es-es" name="Last_Updated_Hour" value="Hora de última actualización"></resource>
+  <resource culture="es-es" name="Time_that_took" value="Tiempo que tomó"></resource>
+  <resource culture="es-es" name="Name" value="Nombre"></resource>
+  <resource culture="es-es" name="Documentation" value="Documentación"></resource>
+  <resource culture="es-es" name="Conditions" value="Condiciones"></resource>
+  <resource culture="es-es" name="Actions_if_conditions_are_True" value="Acciones si las condiciones son Verdaderas"></resource>
+  <resource culture="es-es" name="Actions_if_conditions_are_False" value="Acciones si las condiciones son Falsas"></resource>
+  <resource culture="es-es" name="Operations" value="Operaciones"></resource>
+  <resource culture="es-es" name="Events" value="Eventos"></resource>
+  <resource culture="es-es" name="Peer_Reviews" value="Revisión por Pares"></resource>
+  <resource culture="es-es" name="Testing" value="Pruebas"></resource>
+  <resource culture="es-es" name="Scopes" value="Alcance"></resource>
+  <resource culture="es-es" name="Status" value="Estatus"></resource>
+  <resource culture="es-es" name="Complexity" value="Complejidad"></resource>
+  <resource culture="es-es" name="ErrorName" value="El nombre ya existe"></resource>
+  <resource culture="es-es" name="StatusChanged" value="Estatus modificado"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+<resource culture="es-es" name="TabPeer_Review" value="Revisión por Pares"></resource>
+<resource culture="es-es" name="TabTesting" value="Pruebas"></resource>
+  <resource culture="es-es" name="TabHistory" value="Historial de modificaciones"></resource>
+
+</resources>

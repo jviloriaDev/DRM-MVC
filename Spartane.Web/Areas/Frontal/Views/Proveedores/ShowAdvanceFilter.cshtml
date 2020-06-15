@@ -1,0 +1,1010 @@
+﻿@using System.Collections.Generic
+@using Spartane.Web.Areas.Frontal.Models
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.ProveedoresAdvanceSearchModel
+@{
+    List<SelectListItem> varSpartan_User_Usuario_que_Registra = null;
+    if (ViewBag.Spartan_Users_Usuario_que_Registra != null)
+    { varSpartan_User_Usuario_que_Registra = (List<SelectListItem>)ViewBag.Spartan_Users_Usuario_que_Registra; }
+    List<SelectListItem> varTipo_de_proveedor_Tipo_de_Proveedor = null;
+    if (ViewBag.Tipo_de_proveedors_Tipo_de_Proveedor != null)
+    { varTipo_de_proveedor_Tipo_de_Proveedor = (List<SelectListItem>)ViewBag.Tipo_de_proveedors_Tipo_de_Proveedor; }
+    List<SelectListItem> varEstatus_Estatus = null;
+    if (ViewBag.Estatuss_Estatus != null)
+    { varEstatus_Estatus = (List<SelectListItem>)ViewBag.Estatuss_Estatus; }
+    List<SelectListItem> varSpartan_User_Usuario_Registrado = null;
+    if (ViewBag.Spartan_Users_Usuario_Registrado != null)
+    { varSpartan_User_Usuario_Registrado = (List<SelectListItem>)ViewBag.Spartan_Users_Usuario_Registrado; }
+    List<SelectListItem> varPais_Pais_de_nacimiento = null;
+    if (ViewBag.Paiss_Pais_de_nacimiento != null)
+    { varPais_Pais_de_nacimiento = (List<SelectListItem>)ViewBag.Paiss_Pais_de_nacimiento; }
+    List<SelectListItem> varEstado_Entidad_de_nacimiento = null;
+    if (ViewBag.Estados_Entidad_de_nacimiento != null)
+    { varEstado_Entidad_de_nacimiento = (List<SelectListItem>)ViewBag.Estados_Entidad_de_nacimiento; }
+    List<SelectListItem> varSexo_Sexo = null;
+    if (ViewBag.Sexos_Sexo != null)
+    { varSexo_Sexo = (List<SelectListItem>)ViewBag.Sexos_Sexo; }
+    List<SelectListItem> varRegimenes_Fiscales_Regimen_Fiscal = null;
+    if (ViewBag.Regimenes_Fiscaless_Regimen_Fiscal != null)
+    { varRegimenes_Fiscales_Regimen_Fiscal = (List<SelectListItem>)ViewBag.Regimenes_Fiscaless_Regimen_Fiscal; }
+    List<SelectListItem> varEstado_Estado_Fiscal = null;
+    if (ViewBag.Estados_Estado_Fiscal != null)
+    { varEstado_Estado_Fiscal = (List<SelectListItem>)ViewBag.Estados_Estado_Fiscal; }
+    List<SelectListItem> varPais_Pais_Fiscal = null;
+    if (ViewBag.Paiss_Pais_Fiscal != null)
+    { varPais_Pais_Fiscal = (List<SelectListItem>)ViewBag.Paiss_Pais_Fiscal; }
+
+    var filters = (List<SelectListItem>)ViewBag.Filter;
+}
+<style>
+    .input-validation-error {
+        background: rgb(251, 227, 228);
+        border: 1px solid #fbc2c4;
+        color: #8a1f11;
+    }
+
+    .MarginBottom {
+        margin-bottom: 1%;
+    }
+
+    #divAdvanceSearch input {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch button {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch select {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch h3 {
+        margin-top: 2%;
+    }
+
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins" id="divAdvanceSearch">
+        <div class="ibox-content">
+            @using (Html.BeginForm("ShowAdvanceFilter", "Proveedores", FormMethod.Post, new { @id = "frmAdvanceSearch", @role = "form" }))
+            {
+				<input type="hidden" value="-1" name="idFilter" id="idFilter" />
+                <div class="MarginBottom ">
+                    <h3>@Resources.ProveedoresResources.Folio</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromFolio, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromFolio" })
+                    @Html.ValidationMessageFor(m => m.FromFolio)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToFolio, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToFolio", @data_min = "txtAdvanceFromFolio" })
+                    @Html.ValidationMessageFor(m => m.ToFolio)
+                </div>
+        <div class="MarginBottom ">
+            <h3>@Resources.ProveedoresResources.Fecha_de_Registro</h3>
+        </div>
+        <div class="MarginBottom form-inline">
+            <label class="">@Resources.Resources.From:</label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceFromFecha_de_Registro" name="FromFecha_de_Registro" type="text" value="@Model.FromFecha_de_Registro" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+            <label class="">@Resources.Resources.To: </label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceToFecha_de_Registro" name="ToFecha_de_Registro" type="text" value="@Model.ToFecha_de_Registro" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+        <div class="MarginBottom ">
+            <h3>@Resources.ProveedoresResources.Hora_de_Registro</h3>
+        </div>
+        <div class="MarginBottom form-inline">
+            <label class="">@Resources.Resources.From:</label>
+            <div class="input-group clock" data-autoclose="true">
+                <input class="form-control" id="txtAdvanceFromHora_de_Registro" name="FromHora_de_Registro" type="text" value="@Model.FromHora_de_Registro" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-time"></span>
+                </span>
+            </div>
+            <label class="">@Resources.Resources.To: </label>
+            <div class="input-group clock" data-autoclose="true">
+                <input class="form-control" id="txtAdvanceToHora_de_Registro" name="ToHora_de_Registro" type="text" value="@Model.ToHora_de_Registro" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-time"></span>
+                </span>
+            </div>
+        </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.ProveedoresResources.Usuario_que_Registra</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Usuario_que_RegistraFilter, filters, new { @class = "form-control", @id = "ddlUsuario_que_RegistraFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceUsuario_que_Registra, new { @class = "form-control", @type = "text", @id = "txtAdvanceUsuario_que_Registra" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSpartan_User_Usuario_que_Registra!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceUsuario_que_RegistraMultiple, varSpartan_User_Usuario_que_Registra,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceUsuario_que_Registra"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.ProveedoresResources.Nombre_del_Proveedor</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Nombre_del_ProveedorFilter, filters, new { @class = "form-control", @id = "ddlNombre_del_ProveedorFilter" })
+                    @Html.TextBoxFor(m => m.Nombre_del_Proveedor, new { @class = "form-control", @type = "text", @id = "txtNombre_del_Proveedor" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.ProveedoresResources.Tipo_de_Proveedor</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Tipo_de_ProveedorFilter, filters, new { @class = "form-control", @id = "ddlTipo_de_ProveedorFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceTipo_de_Proveedor, new { @class = "form-control", @type = "text", @id = "txtAdvanceTipo_de_Proveedor" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varTipo_de_proveedor_Tipo_de_Proveedor!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceTipo_de_ProveedorMultiple, varTipo_de_proveedor_Tipo_de_Proveedor,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceTipo_de_Proveedor"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.ProveedoresResources.Estatus</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.EstatusFilter, filters, new { @class = "form-control", @id = "ddlEstatusFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceEstatus, new { @class = "form-control", @type = "text", @id = "txtAdvanceEstatus" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varEstatus_Estatus!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceEstatusMultiple, varEstatus_Estatus,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceEstatus"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.ProveedoresResources.Nombres</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.NombresFilter, filters, new { @class = "form-control", @id = "ddlNombresFilter" })
+                    @Html.TextBoxFor(m => m.Nombres, new { @class = "form-control", @type = "text", @id = "txtNombres" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.ProveedoresResources.Apellido_Paterno</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Apellido_PaternoFilter, filters, new { @class = "form-control", @id = "ddlApellido_PaternoFilter" })
+                    @Html.TextBoxFor(m => m.Apellido_Paterno, new { @class = "form-control", @type = "text", @id = "txtApellido_Paterno" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.ProveedoresResources.Apellido_Materno</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Apellido_MaternoFilter, filters, new { @class = "form-control", @id = "ddlApellido_MaternoFilter" })
+                    @Html.TextBoxFor(m => m.Apellido_Materno, new { @class = "form-control", @type = "text", @id = "txtApellido_Materno" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.ProveedoresResources.Nombre_Completo</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Nombre_CompletoFilter, filters, new { @class = "form-control", @id = "ddlNombre_CompletoFilter" })
+                    @Html.TextBoxFor(m => m.Nombre_Completo, new { @class = "form-control", @type = "text", @id = "txtNombre_Completo" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.ProveedoresResources.Nombre_de_Usuario</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Nombre_de_UsuarioFilter, filters, new { @class = "form-control", @id = "ddlNombre_de_UsuarioFilter" })
+                    @Html.TextBoxFor(m => m.Nombre_de_Usuario, new { @class = "form-control", @type = "text", @id = "txtNombre_de_Usuario" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.ProveedoresResources.Usuario_Registrado</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Usuario_RegistradoFilter, filters, new { @class = "form-control", @id = "ddlUsuario_RegistradoFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceUsuario_Registrado, new { @class = "form-control", @type = "text", @id = "txtAdvanceUsuario_Registrado" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSpartan_User_Usuario_Registrado!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceUsuario_RegistradoMultiple, varSpartan_User_Usuario_Registrado,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceUsuario_Registrado"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.ProveedoresResources.Email</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.EmailFilter, filters, new { @class = "form-control", @id = "ddlEmailFilter" })
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @type = "text", @id = "txtEmail" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.ProveedoresResources.Celular</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.CelularFilter, filters, new { @class = "form-control", @id = "ddlCelularFilter" })
+                    @Html.TextBoxFor(m => m.Celular, new { @class = "form-control", @type = "text", @id = "txtCelular" })
+                </div>
+        <div class="MarginBottom ">
+            <h3>@Resources.ProveedoresResources.Fecha_de_Nacimiento</h3>
+        </div>
+        <div class="MarginBottom form-inline">
+            <label class="">@Resources.Resources.From:</label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceFromFecha_de_Nacimiento" name="FromFecha_de_Nacimiento" type="text" value="@Model.FromFecha_de_Nacimiento" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+            <label class="">@Resources.Resources.To: </label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceToFecha_de_Nacimiento" name="ToFecha_de_Nacimiento" type="text" value="@Model.ToFecha_de_Nacimiento" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.ProveedoresResources.Pais_de_nacimiento</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Pais_de_nacimientoFilter, filters, new { @class = "form-control", @id = "ddlPais_de_nacimientoFilter" })
+                    @Html.TextBoxFor(m => m.AdvancePais_de_nacimiento, new { @class = "form-control", @type = "text", @id = "txtAdvancePais_de_nacimiento" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varPais_Pais_de_nacimiento!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvancePais_de_nacimientoMultiple, varPais_Pais_de_nacimiento,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvancePais_de_nacimiento"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.ProveedoresResources.Entidad_de_nacimiento</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Entidad_de_nacimientoFilter, filters, new { @class = "form-control", @id = "ddlEntidad_de_nacimientoFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceEntidad_de_nacimiento, new { @class = "form-control", @type = "text", @id = "txtAdvanceEntidad_de_nacimiento" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varEstado_Entidad_de_nacimiento!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceEntidad_de_nacimientoMultiple, varEstado_Entidad_de_nacimiento,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceEntidad_de_nacimiento"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.ProveedoresResources.Sexo</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.SexoFilter, filters, new { @class = "form-control", @id = "ddlSexoFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceSexo, new { @class = "form-control", @type = "text", @id = "txtAdvanceSexo" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSexo_Sexo!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceSexoMultiple, varSexo_Sexo,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceSexo"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.ProveedoresResources.Regimen_Fiscal</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Regimen_FiscalFilter, filters, new { @class = "form-control", @id = "ddlRegimen_FiscalFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceRegimen_Fiscal, new { @class = "form-control", @type = "text", @id = "txtAdvanceRegimen_Fiscal" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varRegimenes_Fiscales_Regimen_Fiscal!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceRegimen_FiscalMultiple, varRegimenes_Fiscales_Regimen_Fiscal,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceRegimen_Fiscal"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.ProveedoresResources.Nombre_o_Razon_Social</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Nombre_o_Razon_SocialFilter, filters, new { @class = "form-control", @id = "ddlNombre_o_Razon_SocialFilter" })
+                    @Html.TextBoxFor(m => m.Nombre_o_Razon_Social, new { @class = "form-control", @type = "text", @id = "txtNombre_o_Razon_Social" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.ProveedoresResources.RFC</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.RFCFilter, filters, new { @class = "form-control", @id = "ddlRFCFilter" })
+                    @Html.TextBoxFor(m => m.RFC, new { @class = "form-control", @type = "text", @id = "txtRFC" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.ProveedoresResources.Calle_Fiscal</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Calle_FiscalFilter, filters, new { @class = "form-control", @id = "ddlCalle_FiscalFilter" })
+                    @Html.TextBoxFor(m => m.Calle_Fiscal, new { @class = "form-control", @type = "text", @id = "txtCalle_Fiscal" })
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.ProveedoresResources.Numero_exterior_Fiscal</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromNumero_exterior_Fiscal, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromNumero_exterior_Fiscal" })
+                    @Html.ValidationMessageFor(m => m.FromNumero_exterior_Fiscal)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToNumero_exterior_Fiscal, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToNumero_exterior_Fiscal", @data_min = "txtAdvanceFromNumero_exterior_Fiscal" })
+                    @Html.ValidationMessageFor(m => m.ToNumero_exterior_Fiscal)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.ProveedoresResources.Numero_interior_Fiscal</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromNumero_interior_Fiscal, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromNumero_interior_Fiscal" })
+                    @Html.ValidationMessageFor(m => m.FromNumero_interior_Fiscal)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToNumero_interior_Fiscal, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToNumero_interior_Fiscal", @data_min = "txtAdvanceFromNumero_interior_Fiscal" })
+                    @Html.ValidationMessageFor(m => m.ToNumero_interior_Fiscal)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.ProveedoresResources.Colonia_Fiscal</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Colonia_FiscalFilter, filters, new { @class = "form-control", @id = "ddlColonia_FiscalFilter" })
+                    @Html.TextBoxFor(m => m.Colonia_Fiscal, new { @class = "form-control", @type = "text", @id = "txtColonia_Fiscal" })
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.ProveedoresResources.C_P__Fiscal</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromC_P__Fiscal, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromC_P__Fiscal" })
+                    @Html.ValidationMessageFor(m => m.FromC_P__Fiscal)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToC_P__Fiscal, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToC_P__Fiscal", @data_min = "txtAdvanceFromC_P__Fiscal" })
+                    @Html.ValidationMessageFor(m => m.ToC_P__Fiscal)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.ProveedoresResources.Ciudad_Fiscal</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Ciudad_FiscalFilter, filters, new { @class = "form-control", @id = "ddlCiudad_FiscalFilter" })
+                    @Html.TextBoxFor(m => m.Ciudad_Fiscal, new { @class = "form-control", @type = "text", @id = "txtCiudad_Fiscal" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.ProveedoresResources.Estado_Fiscal</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Estado_FiscalFilter, filters, new { @class = "form-control", @id = "ddlEstado_FiscalFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceEstado_Fiscal, new { @class = "form-control", @type = "text", @id = "txtAdvanceEstado_Fiscal" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varEstado_Estado_Fiscal!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceEstado_FiscalMultiple, varEstado_Estado_Fiscal,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceEstado_Fiscal"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.ProveedoresResources.Pais_Fiscal</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Pais_FiscalFilter, filters, new { @class = "form-control", @id = "ddlPais_FiscalFilter" })
+                    @Html.TextBoxFor(m => m.AdvancePais_Fiscal, new { @class = "form-control", @type = "text", @id = "txtAdvancePais_Fiscal" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varPais_Pais_Fiscal!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvancePais_FiscalMultiple, varPais_Pais_Fiscal,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvancePais_Fiscal"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.ProveedoresResources.Telefono</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.TelefonoFilter, filters, new { @class = "form-control", @id = "ddlTelefonoFilter" })
+                    @Html.TextBoxFor(m => m.Telefono, new { @class = "form-control", @type = "text", @id = "txtTelefono" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.ProveedoresResources.Fax</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.FaxFilter, filters, new { @class = "form-control", @id = "ddlFaxFilter" })
+                    @Html.TextBoxFor(m => m.Fax, new { @class = "form-control", @type = "text", @id = "txtFax" })
+                </div>
+
+                <div class="MarginBottom form-inline">
+                    <input type="submit" class="btn btn-primary" value="@Resources.Resources.Search"><a class="btn btn-primary" href="@Url.Content("~/Frontal/Proveedores/")" value=" ">@Resources.Resources.Cancelar</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function InitiateAdvanceSearch() {
+        var advanceSearch = {}, hasParameter = false;
+        if ($("#txtAdvanceFromFolio").val() != "" || $("#txtAdvanceToFolio").val() != "") {
+            hasParameter = true;
+            advanceSearch.ProveedoresFolioFrom = $("#txtAdvanceFromFolio").val();
+            advanceSearch.ProveedoresFolioTo = $("#txtAdvanceToFolio").val();
+        }
+        if ($("#txtAdvanceFromFecha_de_Registro").val() != "" || $("#txtAdvanceToFecha_de_Registro").val() != "") {
+            hasParameter = true;
+            advanceSearch.ProveedoresFecha_de_RegistroFrom = $("#txtAdvanceFromFecha_de_Registro").val();
+            advanceSearch.ProveedoresFecha_de_RegistroTo = $("#txtAdvanceToFecha_de_Registro").val();
+        }
+        if ($("#txtAdvanceHora_de_Registro").val() != "") {
+            hasParameter = true;
+            advanceSearch.ProveedoresHora_de_Registro = $("#txtAdvanceHora_de_Registro").val();
+            advanceSearch.ProveedoresHora_de_RegistroSearchType = $("#ddlAdvanceHora_de_RegistroFilter").val();
+        }
+        advanceSearch.Usuario_que_RegistraSearchType = 0;
+        if ($('#ddlAdvanceUsuario_que_Registra').val().length > 0 || $("#txtAdvanceUsuario_que_Registra").val() == "") {
+
+
+            if (isProveedoresTextSearch) {
+                advanceSearch.Usuario_que_RegistraName = $("#txtAdvanceUsuario_que_Registra").val();
+                advanceSearch.Usuario_que_RegistraNameSearchType = $("#ddlAdvanceUsuario_que_Registra").val();
+                advanceSearch.Usuario_que_RegistraSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Usuario_que_RegistraToSearch = $("#ddlAdvanceUsuario_que_Registra").val();
+                advanceSearch.Usuario_que_RegistraSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceNombre_del_Proveedor").val() != "") {
+            hasParameter = true;
+            advanceSearch.ProveedoresNombre_del_Proveedor = $("#txtAdvanceNombre_del_Proveedor").val();
+            advanceSearch.ProveedoresNombre_del_ProveedorSearchType = $("#ddlAdvanceNombre_del_ProveedorFilter").val();
+        }
+        advanceSearch.Tipo_de_ProveedorSearchType = 0;
+        if ($('#ddlAdvanceTipo_de_Proveedor').val().length > 0 || $("#txtAdvanceTipo_de_Proveedor").val() == "") {
+
+
+            if (isProveedoresTextSearch) {
+                advanceSearch.Tipo_de_ProveedorName = $("#txtAdvanceTipo_de_Proveedor").val();
+                advanceSearch.Tipo_de_ProveedorNameSearchType = $("#ddlAdvanceTipo_de_Proveedor").val();
+                advanceSearch.Tipo_de_ProveedorSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Tipo_de_ProveedorToSearch = $("#ddlAdvanceTipo_de_Proveedor").val();
+                advanceSearch.Tipo_de_ProveedorSearchType = 2;
+            }
+        }
+        advanceSearch.EstatusSearchType = 0;
+        if ($('#ddlAdvanceEstatus').val().length > 0 || $("#txtAdvanceEstatus").val() == "") {
+
+
+            if (isProveedoresTextSearch) {
+                advanceSearch.EstatusName = $("#txtAdvanceEstatus").val();
+                advanceSearch.EstatusNameSearchType = $("#ddlAdvanceEstatus").val();
+                advanceSearch.EstatusSearchType = 1;
+            }
+            else {
+
+                advanceSearch.EstatusToSearch = $("#ddlAdvanceEstatus").val();
+                advanceSearch.EstatusSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceNombres").val() != "") {
+            hasParameter = true;
+            advanceSearch.ProveedoresNombres = $("#txtAdvanceNombres").val();
+            advanceSearch.ProveedoresNombresSearchType = $("#ddlAdvanceNombresFilter").val();
+        }
+        if ($("#txtAdvanceApellido_Paterno").val() != "") {
+            hasParameter = true;
+            advanceSearch.ProveedoresApellido_Paterno = $("#txtAdvanceApellido_Paterno").val();
+            advanceSearch.ProveedoresApellido_PaternoSearchType = $("#ddlAdvanceApellido_PaternoFilter").val();
+        }
+        if ($("#txtAdvanceApellido_Materno").val() != "") {
+            hasParameter = true;
+            advanceSearch.ProveedoresApellido_Materno = $("#txtAdvanceApellido_Materno").val();
+            advanceSearch.ProveedoresApellido_MaternoSearchType = $("#ddlAdvanceApellido_MaternoFilter").val();
+        }
+        if ($("#txtAdvanceNombre_Completo").val() != "") {
+            hasParameter = true;
+            advanceSearch.ProveedoresNombre_Completo = $("#txtAdvanceNombre_Completo").val();
+            advanceSearch.ProveedoresNombre_CompletoSearchType = $("#ddlAdvanceNombre_CompletoFilter").val();
+        }
+        if ($("#txtAdvanceNombre_de_Usuario").val() != "") {
+            hasParameter = true;
+            advanceSearch.ProveedoresNombre_de_Usuario = $("#txtAdvanceNombre_de_Usuario").val();
+            advanceSearch.ProveedoresNombre_de_UsuarioSearchType = $("#ddlAdvanceNombre_de_UsuarioFilter").val();
+        }
+        advanceSearch.Usuario_RegistradoSearchType = 0;
+        if ($('#ddlAdvanceUsuario_Registrado').val().length > 0 || $("#txtAdvanceUsuario_Registrado").val() == "") {
+
+
+            if (isProveedoresTextSearch) {
+                advanceSearch.Usuario_RegistradoName = $("#txtAdvanceUsuario_Registrado").val();
+                advanceSearch.Usuario_RegistradoNameSearchType = $("#ddlAdvanceUsuario_Registrado").val();
+                advanceSearch.Usuario_RegistradoSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Usuario_RegistradoToSearch = $("#ddlAdvanceUsuario_Registrado").val();
+                advanceSearch.Usuario_RegistradoSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceEmail").val() != "") {
+            hasParameter = true;
+            advanceSearch.ProveedoresEmail = $("#txtAdvanceEmail").val();
+            advanceSearch.ProveedoresEmailSearchType = $("#ddlAdvanceEmailFilter").val();
+        }
+        if ($("#txtAdvanceCelular").val() != "") {
+            hasParameter = true;
+            advanceSearch.ProveedoresCelular = $("#txtAdvanceCelular").val();
+            advanceSearch.ProveedoresCelularSearchType = $("#ddlAdvanceCelularFilter").val();
+        }
+        if ($("#txtAdvanceFromFecha_de_Nacimiento").val() != "" || $("#txtAdvanceToFecha_de_Nacimiento").val() != "") {
+            hasParameter = true;
+            advanceSearch.ProveedoresFecha_de_NacimientoFrom = $("#txtAdvanceFromFecha_de_Nacimiento").val();
+            advanceSearch.ProveedoresFecha_de_NacimientoTo = $("#txtAdvanceToFecha_de_Nacimiento").val();
+        }
+        advanceSearch.Pais_de_nacimientoSearchType = 0;
+        if ($('#ddlAdvancePais_de_nacimiento').val().length > 0 || $("#txtAdvancePais_de_nacimiento").val() == "") {
+
+
+            if (isProveedoresTextSearch) {
+                advanceSearch.Pais_de_nacimientoName = $("#txtAdvancePais_de_nacimiento").val();
+                advanceSearch.Pais_de_nacimientoNameSearchType = $("#ddlAdvancePais_de_nacimiento").val();
+                advanceSearch.Pais_de_nacimientoSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Pais_de_nacimientoToSearch = $("#ddlAdvancePais_de_nacimiento").val();
+                advanceSearch.Pais_de_nacimientoSearchType = 2;
+            }
+        }
+        advanceSearch.Entidad_de_nacimientoSearchType = 0;
+        if ($('#ddlAdvanceEntidad_de_nacimiento').val().length > 0 || $("#txtAdvanceEntidad_de_nacimiento").val() == "") {
+
+
+            if (isProveedoresTextSearch) {
+                advanceSearch.Entidad_de_nacimientoName = $("#txtAdvanceEntidad_de_nacimiento").val();
+                advanceSearch.Entidad_de_nacimientoNameSearchType = $("#ddlAdvanceEntidad_de_nacimiento").val();
+                advanceSearch.Entidad_de_nacimientoSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Entidad_de_nacimientoToSearch = $("#ddlAdvanceEntidad_de_nacimiento").val();
+                advanceSearch.Entidad_de_nacimientoSearchType = 2;
+            }
+        }
+        advanceSearch.SexoSearchType = 0;
+        if ($('#ddlAdvanceSexo').val().length > 0 || $("#txtAdvanceSexo").val() == "") {
+
+
+            if (isProveedoresTextSearch) {
+                advanceSearch.SexoName = $("#txtAdvanceSexo").val();
+                advanceSearch.SexoNameSearchType = $("#ddlAdvanceSexo").val();
+                advanceSearch.SexoSearchType = 1;
+            }
+            else {
+
+                advanceSearch.SexoToSearch = $("#ddlAdvanceSexo").val();
+                advanceSearch.SexoSearchType = 2;
+            }
+        }
+        advanceSearch.Regimen_FiscalSearchType = 0;
+        if ($('#ddlAdvanceRegimen_Fiscal').val().length > 0 || $("#txtAdvanceRegimen_Fiscal").val() == "") {
+
+
+            if (isProveedoresTextSearch) {
+                advanceSearch.Regimen_FiscalName = $("#txtAdvanceRegimen_Fiscal").val();
+                advanceSearch.Regimen_FiscalNameSearchType = $("#ddlAdvanceRegimen_Fiscal").val();
+                advanceSearch.Regimen_FiscalSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Regimen_FiscalToSearch = $("#ddlAdvanceRegimen_Fiscal").val();
+                advanceSearch.Regimen_FiscalSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceNombre_o_Razon_Social").val() != "") {
+            hasParameter = true;
+            advanceSearch.ProveedoresNombre_o_Razon_Social = $("#txtAdvanceNombre_o_Razon_Social").val();
+            advanceSearch.ProveedoresNombre_o_Razon_SocialSearchType = $("#ddlAdvanceNombre_o_Razon_SocialFilter").val();
+        }
+        if ($("#txtAdvanceRFC").val() != "") {
+            hasParameter = true;
+            advanceSearch.ProveedoresRFC = $("#txtAdvanceRFC").val();
+            advanceSearch.ProveedoresRFCSearchType = $("#ddlAdvanceRFCFilter").val();
+        }
+        if ($("#txtAdvanceCalle_Fiscal").val() != "") {
+            hasParameter = true;
+            advanceSearch.ProveedoresCalle_Fiscal = $("#txtAdvanceCalle_Fiscal").val();
+            advanceSearch.ProveedoresCalle_FiscalSearchType = $("#ddlAdvanceCalle_FiscalFilter").val();
+        }
+        if ($("#txtAdvanceFromNumero_exterior_Fiscal").val() != "" || $("#txtAdvanceToNumero_exterior_Fiscal").val() != "") {
+            hasParameter = true;
+            advanceSearch.ProveedoresNumero_exterior_FiscalFrom = $("#txtAdvanceFromNumero_exterior_Fiscal").val();
+            advanceSearch.ProveedoresNumero_exterior_FiscalTo = $("#txtAdvanceToNumero_exterior_Fiscal").val();
+        }
+        if ($("#txtAdvanceFromNumero_interior_Fiscal").val() != "" || $("#txtAdvanceToNumero_interior_Fiscal").val() != "") {
+            hasParameter = true;
+            advanceSearch.ProveedoresNumero_interior_FiscalFrom = $("#txtAdvanceFromNumero_interior_Fiscal").val();
+            advanceSearch.ProveedoresNumero_interior_FiscalTo = $("#txtAdvanceToNumero_interior_Fiscal").val();
+        }
+        if ($("#txtAdvanceColonia_Fiscal").val() != "") {
+            hasParameter = true;
+            advanceSearch.ProveedoresColonia_Fiscal = $("#txtAdvanceColonia_Fiscal").val();
+            advanceSearch.ProveedoresColonia_FiscalSearchType = $("#ddlAdvanceColonia_FiscalFilter").val();
+        }
+        if ($("#txtAdvanceFromC_P__Fiscal").val() != "" || $("#txtAdvanceToC_P__Fiscal").val() != "") {
+            hasParameter = true;
+            advanceSearch.ProveedoresC_P__FiscalFrom = $("#txtAdvanceFromC_P__Fiscal").val();
+            advanceSearch.ProveedoresC_P__FiscalTo = $("#txtAdvanceToC_P__Fiscal").val();
+        }
+        if ($("#txtAdvanceCiudad_Fiscal").val() != "") {
+            hasParameter = true;
+            advanceSearch.ProveedoresCiudad_Fiscal = $("#txtAdvanceCiudad_Fiscal").val();
+            advanceSearch.ProveedoresCiudad_FiscalSearchType = $("#ddlAdvanceCiudad_FiscalFilter").val();
+        }
+        advanceSearch.Estado_FiscalSearchType = 0;
+        if ($('#ddlAdvanceEstado_Fiscal').val().length > 0 || $("#txtAdvanceEstado_Fiscal").val() == "") {
+
+
+            if (isProveedoresTextSearch) {
+                advanceSearch.Estado_FiscalName = $("#txtAdvanceEstado_Fiscal").val();
+                advanceSearch.Estado_FiscalNameSearchType = $("#ddlAdvanceEstado_Fiscal").val();
+                advanceSearch.Estado_FiscalSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Estado_FiscalToSearch = $("#ddlAdvanceEstado_Fiscal").val();
+                advanceSearch.Estado_FiscalSearchType = 2;
+            }
+        }
+        advanceSearch.Pais_FiscalSearchType = 0;
+        if ($('#ddlAdvancePais_Fiscal').val().length > 0 || $("#txtAdvancePais_Fiscal").val() == "") {
+
+
+            if (isProveedoresTextSearch) {
+                advanceSearch.Pais_FiscalName = $("#txtAdvancePais_Fiscal").val();
+                advanceSearch.Pais_FiscalNameSearchType = $("#ddlAdvancePais_Fiscal").val();
+                advanceSearch.Pais_FiscalSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Pais_FiscalToSearch = $("#ddlAdvancePais_Fiscal").val();
+                advanceSearch.Pais_FiscalSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceTelefono").val() != "") {
+            hasParameter = true;
+            advanceSearch.ProveedoresTelefono = $("#txtAdvanceTelefono").val();
+            advanceSearch.ProveedoresTelefonoSearchType = $("#ddlAdvanceTelefonoFilter").val();
+        }
+        if ($("#txtAdvanceFax").val() != "") {
+            hasParameter = true;
+            advanceSearch.ProveedoresFax = $("#txtAdvanceFax").val();
+            advanceSearch.ProveedoresFaxSearchType = $("#ddlAdvanceFaxFilter").val();
+        }
+
+        advanceSearchQuery = hasParameter ? JSON.stringify(advanceSearch) : "";
+        $('#tblProveedores').DataTable().draw();
+        return false;
+    }
+
+    var advanceSearchQuery = "", isProveedoresTextSearch = true;
+
+    $(document).ready(function () {
+        $('.clock').clockpicker();
+		$('.date').datepicker({
+			todayBtn: "linked",
+			keyboardNavigation: false,
+			forceParse: false,
+			calendarWeeks: true,
+			autoclose: true,
+			format: "@ConfigurationProperty.DateFormatDatePicker"
+		});
+        $("#txtAdvanceUsuario_que_Registra").keypress(function () {
+            isProveedoresTextSearch = true;
+            $("#ddlAdvanceUsuario_que_Registra").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceUsuario_que_Registra").change(function () {
+            isProveedoresTextSearch = false;
+            $("#txtAdvanceUsuario_que_Registra").val('');
+        });
+        $("#txtAdvanceTipo_de_Proveedor").keypress(function () {
+            isProveedoresTextSearch = true;
+            $("#ddlAdvanceTipo_de_Proveedor").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceTipo_de_Proveedor").change(function () {
+            isProveedoresTextSearch = false;
+            $("#txtAdvanceTipo_de_Proveedor").val('');
+        });
+        $("#txtAdvanceEstatus").keypress(function () {
+            isProveedoresTextSearch = true;
+            $("#ddlAdvanceEstatus").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceEstatus").change(function () {
+            isProveedoresTextSearch = false;
+            $("#txtAdvanceEstatus").val('');
+        });
+        $("#txtAdvanceUsuario_Registrado").keypress(function () {
+            isProveedoresTextSearch = true;
+            $("#ddlAdvanceUsuario_Registrado").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceUsuario_Registrado").change(function () {
+            isProveedoresTextSearch = false;
+            $("#txtAdvanceUsuario_Registrado").val('');
+        });
+        $("#txtAdvancePais_de_nacimiento").keypress(function () {
+            isProveedoresTextSearch = true;
+            $("#ddlAdvancePais_de_nacimiento").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvancePais_de_nacimiento").change(function () {
+            isProveedoresTextSearch = false;
+            $("#txtAdvancePais_de_nacimiento").val('');
+        });
+        $("#txtAdvanceEntidad_de_nacimiento").keypress(function () {
+            isProveedoresTextSearch = true;
+            $("#ddlAdvanceEntidad_de_nacimiento").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceEntidad_de_nacimiento").change(function () {
+            isProveedoresTextSearch = false;
+            $("#txtAdvanceEntidad_de_nacimiento").val('');
+        });
+        $("#txtAdvanceSexo").keypress(function () {
+            isProveedoresTextSearch = true;
+            $("#ddlAdvanceSexo").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceSexo").change(function () {
+            isProveedoresTextSearch = false;
+            $("#txtAdvanceSexo").val('');
+        });
+        $("#txtAdvanceRegimen_Fiscal").keypress(function () {
+            isProveedoresTextSearch = true;
+            $("#ddlAdvanceRegimen_Fiscal").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceRegimen_Fiscal").change(function () {
+            isProveedoresTextSearch = false;
+            $("#txtAdvanceRegimen_Fiscal").val('');
+        });
+        $("#txtAdvanceEstado_Fiscal").keypress(function () {
+            isProveedoresTextSearch = true;
+            $("#ddlAdvanceEstado_Fiscal").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceEstado_Fiscal").change(function () {
+            isProveedoresTextSearch = false;
+            $("#txtAdvanceEstado_Fiscal").val('');
+        });
+        $("#txtAdvancePais_Fiscal").keypress(function () {
+            isProveedoresTextSearch = true;
+            $("#ddlAdvancePais_Fiscal").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvancePais_Fiscal").change(function () {
+            isProveedoresTextSearch = false;
+            $("#txtAdvancePais_Fiscal").val('');
+        });
+
+    });
+</script>
+
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/chosen")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/clockpicker")
+
+
+    <script>
+        //Adding Rules
+        jQuery.validator.unobtrusive
+      .adapters.addSingleVal("isnumberafter", "propertyname");
+        jQuery.validator.unobtrusive
+    .adapters.addSingleVal("isdateafter", "propertyname");
+
+        //Number after method
+        jQuery.validator.addMethod("isnumberafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+                //if (Date.parse(val) <= Date.parse(otherVal)) {
+                if (Number(val) < Number(otherVal)) {
+                    return false;
+                }
+                        }
+            return true;
+        });
+
+        //Date after after method
+        jQuery.validator.addMethod("isdateafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+
+                if (GetDateObject(val) < GetDateObject(otherVal)) {
+
+                    return false;
+                    }
+                }
+            return true;
+            });
+
+
+        function GetDateObject(value) {
+            var delimiter = GetDelimiter(dateFormat);
+            var dateCollection = value.split(delimiter);
+            var formatCollection = dateFormat.split(delimiter);
+            var dateModel = GetDateModel(dateCollection, formatCollection);
+            return new Date(dateModel.Year, dateModel.Month - 1, dateModel.Day);
+        }
+        //Used to get the date model by parsing the date and the format
+        function GetDateModel(dateCollection,formatCollection) {
+            var day, month, year;
+            for (var i = 0; i < formatCollection.length; i++) {
+                switch (formatCollection[i][0].toUpperCase()) {
+                
+                    case "D":
+                        day = dateCollection[i];
+                        break;
+
+                    case "Y":
+                        year = dateCollection[i];
+                        break;
+
+                    case "M":
+                        month = dateCollection[i];
+                        break;
+                }
+            }
+
+            return {
+                Day:day,
+                Month:month,
+                Year:year
+            };
+        }
+
+        function GetDelimiter(format) {
+
+            for (var i = 0; i < format.length; i++) {
+                if (/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(format[i])) {
+                    return format[i];
+                }
+            }
+            return null;
+        }
+
+        var dateFormat = "@ConfigurationProperty.DateFormatDatePicker";
+
+        $(document).ready(function () {
+            $('.input-daterange').datepicker({
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                format: dateFormat,
+                message: 'The date is not a valid'
+            });
+
+            $(".chosen-select").chosen({ width: "22%", no_results_text: "Oops, nothing found!" });
+			if ($('#IsFilterModal').val() == 'true') {
+                $('.ShowAdvanceFilter #right-sidebar').css('display', 'none');
+                $('.ShowAdvanceFilter .navbar-default').css('display', 'none');
+                $('.ShowAdvanceFilter .border-bottom').css('display', 'none');
+                $('.ShowAdvanceFilter #page-wrapper').css('margin', '0 auto');
+                $('.ShowAdvanceFilter .btn-save').val('@Resources.Resources.Filter');
+                $('.ShowAdvanceFilter .btn-cancelar').attr('data-dismiss', 'modal');
+                $('.ShowAdvanceFilter .btn-cancelar').removeAttr('href');
+                $('#idFilter').val($('#IdReport').val());
+            }
+        });
+
+    </script>
+}
+

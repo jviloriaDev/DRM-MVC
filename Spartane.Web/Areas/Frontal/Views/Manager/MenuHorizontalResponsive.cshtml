@@ -1,0 +1,46 @@
+@model ICollection<Spartane.Web.Areas.Frontal.Models.SideBar>
+
+@{
+    Layout = null;
+}
+
+<!-- MENU HORIZONTAL RESPONSIVE  -->
+<div class="page-sidebar-wrapper">
+    <div class="page-sidebar navbar-collapse collapse">
+        <ul class="page-sidebar-menu" data-slide-speed="200" data-auto-scroll="true">
+            <li class="sidebar-search-wrapper">
+                <form class="sidebar-search sidebar-search-bordered" action="extra_search.html" method="POST">
+                    <a href="javascript:;" class="remove">
+                        <i class="icon-close"></i>
+                    </a>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="@Resources.Resources.Search...">
+                        <span class="input-group-btn">
+                            <button class="btn submit"><i class="icon-magnifier"></i></button>
+                        </span>
+                    </div>
+                </form>
+            </li>
+
+            @foreach (var opcion in Model.Where(o => o.Tabs != ""))
+            {
+                <li class="classic-menu-dropdown">
+                    <a data-hover="dropdown" data-close-others="true" data-toggle="dropdown" href="javascript:;">
+                        @opcion.Label <i class="fa fa-angle-down"></i>
+                    </a>
+                    @if (opcion.Opciones.Count > 0)
+                    {
+                        <ul class="sub-menu">
+                            @foreach (var subopciones in opcion.Opciones)
+                            {
+                                var def = "false";
+                                <li><a data-toggle="menu" data-default="@def" data-title="@subopciones.Titulo" data-description="@subopciones.Descripcion" data-url="@Url.Action("default", subopciones.Controller)" data-tabs="@subopciones.Tabs" href="@Url.Action("default", @subopciones.Controller)"><i class="icon-user"></i> @subopciones.Label</a> </li>
+                            }
+                        </ul>
+                    }
+                </li>
+            }
+        </ul>
+    </div>
+    <!-- END HORIZONTAL RESPONSIVE MENU -->
+</div>

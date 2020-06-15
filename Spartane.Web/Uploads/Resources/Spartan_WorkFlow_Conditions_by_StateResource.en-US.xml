@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_WorkFlow_Conditions_by_State" value="Spartan WorkFlow Conditions by State"></resource>
+  <resource culture="en-US" name="Conditions_by_StateId" value="Conditions by StateId"></resource>
+  <resource culture="en-US" name="Phase" value="Phase"></resource>
+  <resource culture="en-US" name="State" value="State"></resource>
+  <resource culture="en-US" name="Condition_Operator" value="Condition Operator"></resource>
+  <resource culture="en-US" name="Attribute" value="Attribute"></resource>
+  <resource culture="en-US" name="Condition" value="Condition"></resource>
+  <resource culture="en-US" name="Operator" value="Operator"></resource>
+  <resource culture="en-US" name="Operator_Value" value="Operator Value"></resource>
+  <resource culture="en-US" name="Priority" value="Priority"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

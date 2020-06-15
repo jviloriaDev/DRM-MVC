@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_BR_Operation_Restrictions_Detail" value="Business Rule Action Operation Restrictions Detail"></resource>
+  <resource culture="en-US" name="RestrictionId" value="Id"></resource>
+  <resource culture="en-US" name="Operation" value="Operation"></resource>
+
+</resources>

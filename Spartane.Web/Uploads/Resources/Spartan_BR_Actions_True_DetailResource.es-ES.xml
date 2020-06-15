@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Spartan_BR_Actions_True_Detail" value="Acciones Verdaderas"></resource>
+  <resource culture="es-es" name="ActionsTrueDetailId" value="Clave"></resource>
+  <resource culture="es-es" name="Action_Classification" value="Clasificación"></resource>
+  <resource culture="es-es" name="Action" value="Acción"></resource>
+  <resource culture="es-es" name="Action_Result" value="Resultado de la Acción"></resource>
+  <resource culture="es-es" name="Parameter_1" value="Parámetro 1"></resource>
+  <resource culture="es-es" name="Parameter_2" value="Parámetro 2"></resource>
+  <resource culture="es-es" name="Parameter_3" value="Parámetro 3"></resource>
+  <resource culture="es-es" name="Parameter_4" value="Parámetro 4"></resource>
+  <resource culture="es-es" name="Parameter_5" value="Parámetro 5"></resource>
+
+</resources>

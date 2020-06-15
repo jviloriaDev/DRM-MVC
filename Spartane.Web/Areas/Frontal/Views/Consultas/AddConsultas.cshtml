@@ -1,0 +1,669 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Globalization
+@using Spartane.Core.Domain.Permission
+@using Spartane.Core.Domain.Spartane_File
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.ConsultasModel
+@{
+
+    string Fecha_de_Registo = "";
+    if (Model.Fecha_de_Registo == "")
+    { Model.Fecha_de_Registo = DateTime.Now.ToString(ConfigurationProperty.DateFormat); }
+    string Fecha_Programada = "";
+    if (Model.Fecha_Programada == "")
+    { Model.Fecha_Programada = DateTime.Now.ToString(ConfigurationProperty.DateFormat); }
+    string Fecha_siguiente_Consulta = "";
+    if (Model.Fecha_siguiente_Consulta == "")
+    { Model.Fecha_siguiente_Consulta = DateTime.Now.ToString(ConfigurationProperty.DateFormat); }
+
+
+
+    Permission permission = ViewBag.Permission;
+}
+<div class="modal-dialog" style="width:95%;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">
+                Add Consultas
+                <button data-dismiss="modal" class="close" type="button" onclick="@(ViewBag.functionMode == 0 ? "ConsultasRemoveAddRow("+ ViewBag.currentRowIndex +")" : "")"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            </h4>
+        </div>
+        <div class="modal-body scroll_content">
+            <div class="form-horizontal ConsultasPop_@ViewBag.currentRowIndex">
+				<div class="modal fade in" id="dvAttributeValue" style="background-color:rgba(0, 0, 0, 0.7);">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-body">
+								<div class="form-group">
+									<label class="col-sm-3 control-label" id="lblAttributeType">Value</label>
+									<div class="col-sm-7">
+										<input type="text" title="Value" class="form-control" id="txtAttributeValue" />
+									</div>
+									<div class="col-sm-2">
+										<a class="btn btn-primary" onclick="SaveValue()">Submit</a>
+									</div>
+									<input type="hidden" id="hdnAttributType" />
+									<input type="hidden" id="hdnAttributElement" />
+									<input type="hidden" id="hdnAttributNumber" />
+									<input type="hidden" id="hdnElementType" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row wrapper border-bottom white-bg page-heading">
+
+					<div class="row">
+						<div class="col-lg-10">
+							<h2>
+								Consultas
+								<button onclick="ConsultasGetBusinessRule('', 'Abrir Pantalla', '0')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#ConsultasBusinessRule-form">
+									<a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+										<i class="fa fa-cogs fa-spin"></i>
+									</a>
+								</button>
+							</h2>
+							<ol class="breadcrumb">
+								<li>
+									<a href="@Url.Action("Index", "Home")">@Resources.Resources.Home</a>
+								</li>
+								<li class="">
+									<label>@Resources.ConsultasResources.Consultas</label>
+								</li>
+								<li class="active">
+									<strong>@Resources.Resources.Create</strong>
+								</li>
+							</ol>
+						</div>
+						<div class="col-lg-2">
+
+							@{
+								if (Convert.ToInt32(Spartane.Web.SessionHelper.Role) == (int)Spartane.Core.Enums.SpartanRoleEnum.Admin)
+								{
+									<h2>&nbsp;</h2>
+									<button onclick="ConsultasDisplayBusinessRule()" type="button" class="btn btn-info btn-lg displayBusinessProperyButton">
+										<i class="fa fa-cogs fa-spin"></i>
+									</button>
+
+									<div aria-hidden="true" class="modal fade in ConsultasPropertyBusinessModal" id="ConsultasPropertyBusinessModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h4 class="modal-title">
+														Property & Business Rules
+														<button class="close" type="button" onclick="$(this).parent().parent().parent().parent().parent().modal('hide');"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+													</h4>
+												</div>
+												<div class="modal-body">
+													<div class="row">
+														<div class="col-sm-12">
+															<a class="btn btn-primary full-width" data-toggle="modal" data-target="#PropertyModal-form" onclick="GetPropertyBag()">Properties</a>
+														</div>
+														<div class="clearfix col-sm-12">&nbsp;</div>
+														<div class="col-sm-12">
+															<a class="btn btn-primary full-width" data-toggle="modal" data-target="#ConsultasBusinessRule-form" onclick="ConsultasGetBusinessRule()">Business Rule</a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									 <div aria-hidden="true" data-backdrop="static" class="modal fade in ConsultasPropertyModal" id="ConsultasPropertyModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+									</div>
+									<div aria-hidden="true" data-backdrop="static" class="modal fade in ConsultasBusinessRuleModal" id="ConsultasBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+									</div>
+                                    <div aria-hidden="true" data-backdrop="static" class="modal fade in ConsultasAddBusinessRuleModal" id="ConsultasAddBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                                    </div>
+
+				
+								}
+							}
+						</div>
+					</div>
+
+				<div class="wrapper wrapper-content animated fadeInRight">
+					<div class="ibox float-e-margins">
+						<div class="ibox-content">
+							@using (Html.BeginForm("Post", "Consultas", FormMethod.Post, new { id = "CreateConsultas", @readonly = "true", @class = "form-horizontal", enctype = "multipart/form-data" }))
+							{
+								<span id="popupNotification"></span>
+								<div class="container-fluid ConsultasCreateForm" id="viewmodeledit">
+							<div class="tabs-container">
+											<ul class="nav nav-tabs">
+				@@groupers@@
+											</ul>
+										<div class="tab-content">
+				<div class="form-group" id="divFolio">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Folio</label>
+                                <div class="col-sm-8" data-field-id="Folio" data-attribute="257897" data-field-name="@Resources.ConsultasResources.Folio">
+                                    <label class="form-control" for="ConsultasFolio" id="ConsultasFolio">@Model.Folio</label>
+                                </div>
+                            </div>
+<div class="form-group" id="divFecha_de_Registo">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Fecha_de_Registo</label>
+                                <div class="col-sm-8" data-field-id="Fecha_de_Registo" data-attribute="257898" data-field-name="@Resources.ConsultasResources.Fecha_de_Registo">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input class="form-control col-md-12" id="ConsultasFecha_de_Registo" readonly="readonly" name="ConsultasFecha_de_Registo" type="text" value="@Model.Fecha_de_Registo">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+<div class="form-group" id="divHora_de_Registro">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Hora_de_Registro</label>
+                                <div class="col-sm-8" data-field-id="Hora_de_Registro" data-attribute="257899" data-field-name="@Resources.ConsultasResources.Hora_de_Registro">
+                                    <div class='input-group date' id='timePicker'>
+                                        <input class="form-control col-md-12" id="ConsultasHora_de_Registro" readonly="readonly" name="ConsultasHora_de_Registro" type="text" data-autoclose="true" value="@Model.Hora_de_Registro">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-time"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+<div class="form-group" id="divUsuario_que_Registra">
+	<label class="col-sm-2 control-label">@Resources.ConsultasResources.Usuario_que_Registra</label>
+	<div class="col-sm-8" data-field-id="Usuario_que_Registra" data-attribute="257900" data-field-name="@Resources.ConsultasResources.Usuario_que_Registra">
+		<input class="form-control inputNumber" id="ConsultasUsuario_que_Registra" name="ConsultasUsuario_que_Registra" type="text" value="@Model.Usuario_que_Registra">
+	</div>
+</div>
+<div class="form-group" id="divPaciente">
+	<label class="col-sm-2 control-label">@Resources.ConsultasResources.Paciente</label>
+	<div class="col-sm-8" data-field-id="Paciente" data-attribute="257901" data-field-name="@Resources.ConsultasResources.Paciente">
+		<input class="form-control inputNumber" id="ConsultasPaciente" name="ConsultasPaciente" type="text" value="@Model.Paciente">
+	</div>
+</div>
+<div class="form-group" id="divFecha_Programada">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Fecha_Programada</label>
+                                <div class="col-sm-8" data-field-id="Fecha_Programada" data-attribute="257923" data-field-name="@Resources.ConsultasResources.Fecha_Programada">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input class="form-control col-md-12" id="ConsultasFecha_Programada" readonly="readonly" name="ConsultasFecha_Programada" type="text" value="@Model.Fecha_Programada">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+<div class="form-group" id="divFecha_siguiente_Consulta">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Fecha_siguiente_Consulta</label>
+                                <div class="col-sm-8" data-field-id="Fecha_siguiente_Consulta" data-attribute="257924" data-field-name="@Resources.ConsultasResources.Fecha_siguiente_Consulta">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input class="form-control col-md-12" id="ConsultasFecha_siguiente_Consulta" readonly="readonly" name="ConsultasFecha_siguiente_Consulta" type="text" value="@Model.Fecha_siguiente_Consulta">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+<div class="form-group" id="divEdad">
+	<label class="col-sm-2 control-label">@Resources.ConsultasResources.Edad</label>
+	<div class="col-sm-8" data-field-id="Edad" data-attribute="257902" data-field-name="@Resources.ConsultasResources.Edad">
+		<input class="form-control inputNumber" id="ConsultasEdad" name="ConsultasEdad" type="text" value="@Model.Edad">
+	</div>
+</div>
+<div class="form-group" id="divNombre_del_padre">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Nombre_del_padre</label>
+                                <div class="col-sm-8" data-field-id="Nombre_del_padre" data-attribute="257903" data-field-name="@Resources.ConsultasResources.Nombre_del_padre">
+                                    <input class="form-control" id="ConsultasNombre_del_padre" name="ConsultasNombre_del_padre" type="text" value="@Model.Nombre_del_padre">
+                                </div>
+                            </div>
+<div class="form-group" id="divSexo">
+	<label class="col-sm-2 control-label">@Resources.ConsultasResources.Sexo</label>
+	<div class="col-sm-8" data-field-id="Sexo" data-attribute="257904" data-field-name="@Resources.ConsultasResources.Sexo">
+		<input class="form-control inputNumber" id="ConsultasSexo" name="ConsultasSexo" type="text" value="@Model.Sexo">
+	</div>
+</div>
+<div class="form-group" id="divEmail">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Email</label>
+                                <div class="col-sm-8" data-field-id="Email" data-attribute="257905" data-field-name="@Resources.ConsultasResources.Email">
+                                    <input class="form-control" id="ConsultasEmail" name="ConsultasEmail" type="text" value="@Model.Email">
+                                </div>
+                            </div>
+<div class="form-group" id="divObjetivo">
+	<label class="col-sm-2 control-label">@Resources.ConsultasResources.Objetivo</label>
+	<div class="col-sm-8" data-field-id="Objetivo" data-attribute="257906" data-field-name="@Resources.ConsultasResources.Objetivo">
+		<input class="form-control inputNumber" id="ConsultasObjetivo" name="ConsultasObjetivo" type="text" value="@Model.Objetivo">
+	</div>
+</div>
+<div class="form-group" id="divFrecuencia_Cardiaca">
+	<label class="col-sm-2 control-label">@Resources.ConsultasResources.Frecuencia_Cardiaca</label>
+	<div class="col-sm-8" data-field-id="Frecuencia_Cardiaca" data-attribute="257907" data-field-name="@Resources.ConsultasResources.Frecuencia_Cardiaca">
+		<input class="form-control inputNumber" id="ConsultasFrecuencia_Cardiaca" name="ConsultasFrecuencia_Cardiaca" type="text" value="@Model.Frecuencia_Cardiaca">
+	</div>
+</div>
+<div class="form-group" id="divPresion_sistolica">
+	<label class="col-sm-2 control-label">@Resources.ConsultasResources.Presion_sistolica</label>
+	<div class="col-sm-8" data-field-id="Presion_sistolica" data-attribute="257908" data-field-name="@Resources.ConsultasResources.Presion_sistolica">
+		<input class="form-control inputNumber" id="ConsultasPresion_sistolica" name="ConsultasPresion_sistolica" type="text" value="@Model.Presion_sistolica">
+	</div>
+</div>
+<div class="form-group" id="divPresion_diastolica">
+	<label class="col-sm-2 control-label">@Resources.ConsultasResources.Presion_diastolica</label>
+	<div class="col-sm-8" data-field-id="Presion_diastolica" data-attribute="257909" data-field-name="@Resources.ConsultasResources.Presion_diastolica">
+		<input class="form-control inputNumber" id="ConsultasPresion_diastolica" name="ConsultasPresion_diastolica" type="text" value="@Model.Presion_diastolica">
+	</div>
+</div>
+<div class="form-group" id="divPeso_actual">
+	<label class="col-sm-2 control-label">@Resources.ConsultasResources.Peso_actual</label>
+	<div class="col-sm-8" data-field-id="Peso_actual" data-attribute="257910" data-field-name="@Resources.ConsultasResources.Peso_actual">
+		<input class="form-control inputNumber" id="ConsultasPeso_actual" name="ConsultasPeso_actual" type="text" value="@Model.Peso_actual">
+	</div>
+</div>
+<div class="form-group" id="divEstatura">
+	<label class="col-sm-2 control-label">@Resources.ConsultasResources.Estatura</label>
+	<div class="col-sm-8" data-field-id="Estatura" data-attribute="257911" data-field-name="@Resources.ConsultasResources.Estatura">
+		<input class="form-control inputNumber" id="ConsultasEstatura" name="ConsultasEstatura" type="text" value="@Model.Estatura">
+	</div>
+</div>
+<div class="form-group" id="divCircunferencia_de_cintura_cm">
+	<label class="col-sm-2 control-label">@Resources.ConsultasResources.Circunferencia_de_cintura_cm</label>
+	<div class="col-sm-8" data-field-id="Circunferencia_de_cintura_cm" data-attribute="257912" data-field-name="@Resources.ConsultasResources.Circunferencia_de_cintura_cm">
+		<input class="form-control inputNumber" id="ConsultasCircunferencia_de_cintura_cm" name="ConsultasCircunferencia_de_cintura_cm" type="text" value="@Model.Circunferencia_de_cintura_cm">
+	</div>
+</div>
+<div class="form-group" id="divCircunferencia_abdominal_cm">
+	<label class="col-sm-2 control-label">@Resources.ConsultasResources.Circunferencia_abdominal_cm</label>
+	<div class="col-sm-8" data-field-id="Circunferencia_abdominal_cm" data-attribute="257913" data-field-name="@Resources.ConsultasResources.Circunferencia_abdominal_cm">
+		<input class="form-control inputNumber" id="ConsultasCircunferencia_abdominal_cm" name="ConsultasCircunferencia_abdominal_cm" type="text" value="@Model.Circunferencia_abdominal_cm">
+	</div>
+</div>
+<div class="form-group" id="divCircunferencia_de_cadera_cm">
+	<label class="col-sm-2 control-label">@Resources.ConsultasResources.Circunferencia_de_cadera_cm</label>
+	<div class="col-sm-8" data-field-id="Circunferencia_de_cadera_cm" data-attribute="257914" data-field-name="@Resources.ConsultasResources.Circunferencia_de_cadera_cm">
+		<input class="form-control inputNumber" id="ConsultasCircunferencia_de_cadera_cm" name="ConsultasCircunferencia_de_cadera_cm" type="text" value="@Model.Circunferencia_de_cadera_cm">
+	</div>
+</div>
+<div class="form-group" id="divEdad_Metabolica">
+	<label class="col-sm-2 control-label">@Resources.ConsultasResources.Edad_Metabolica</label>
+	<div class="col-sm-8" data-field-id="Edad_Metabolica" data-attribute="257915" data-field-name="@Resources.ConsultasResources.Edad_Metabolica">
+		<input class="form-control inputNumber" id="ConsultasEdad_Metabolica" name="ConsultasEdad_Metabolica" type="text" value="@Model.Edad_Metabolica">
+	</div>
+</div>
+<div class="form-group" id="divAgua_corporal">
+	<label class="col-sm-2 control-label">@Resources.ConsultasResources.Agua_corporal</label>
+	<div class="col-sm-8" data-field-id="Agua_corporal" data-attribute="257916" data-field-name="@Resources.ConsultasResources.Agua_corporal">
+		<input class="form-control inputNumber" id="ConsultasAgua_corporal" name="ConsultasAgua_corporal" type="text" value="@Model.Agua_corporal">
+	</div>
+</div>
+<div class="form-group" id="divGrasa_Visceral">
+	<label class="col-sm-2 control-label">@Resources.ConsultasResources.Grasa_Visceral</label>
+	<div class="col-sm-8" data-field-id="Grasa_Visceral" data-attribute="257917" data-field-name="@Resources.ConsultasResources.Grasa_Visceral">
+		<input class="form-control inputNumber" id="ConsultasGrasa_Visceral" name="ConsultasGrasa_Visceral" type="text" value="@Model.Grasa_Visceral">
+	</div>
+</div>
+<div class="form-group" id="divGrasa_Corporal">
+	<label class="col-sm-2 control-label">@Resources.ConsultasResources.Grasa_Corporal</label>
+	<div class="col-sm-8" data-field-id="Grasa_Corporal" data-attribute="257918" data-field-name="@Resources.ConsultasResources.Grasa_Corporal">
+		<input class="form-control inputNumber" id="ConsultasGrasa_Corporal" name="ConsultasGrasa_Corporal" type="text" value="@Model.Grasa_Corporal">
+	</div>
+</div>
+<div class="form-group" id="divGrasa_Corporal_kg">
+	<label class="col-sm-2 control-label">@Resources.ConsultasResources.Grasa_Corporal_kg</label>
+	<div class="col-sm-8" data-field-id="Grasa_Corporal_kg" data-attribute="257919" data-field-name="@Resources.ConsultasResources.Grasa_Corporal_kg">
+		<input class="form-control inputNumber" id="ConsultasGrasa_Corporal_kg" name="ConsultasGrasa_Corporal_kg" type="text" value="@Model.Grasa_Corporal_kg">
+	</div>
+</div>
+<div class="form-group" id="divMasa_Muscular">
+	<label class="col-sm-2 control-label">@Resources.ConsultasResources.Masa_Muscular</label>
+	<div class="col-sm-8" data-field-id="Masa_Muscular" data-attribute="257920" data-field-name="@Resources.ConsultasResources.Masa_Muscular">
+		<input class="form-control inputNumber" id="ConsultasMasa_Muscular" name="ConsultasMasa_Muscular" type="text" value="@Model.Masa_Muscular">
+	</div>
+</div>
+<div class="form-group" id="divSemana_de_gestacion">
+	<label class="col-sm-2 control-label">@Resources.ConsultasResources.Semana_de_gestacion</label>
+	<div class="col-sm-8" data-field-id="Semana_de_gestacion" data-attribute="257925" data-field-name="@Resources.ConsultasResources.Semana_de_gestacion">
+		<input class="form-control inputNumber" id="ConsultasSemana_de_gestacion" name="ConsultasSemana_de_gestacion" type="text" value="@Model.Semana_de_gestacion">
+	</div>
+</div>
+<div class="form-group" id="divIMC">
+	<label class="col-sm-2 control-label">@Resources.ConsultasResources.IMC</label>
+	<div class="col-sm-8" data-field-id="IMC" data-attribute="257926" data-field-name="@Resources.ConsultasResources.IMC">
+		<input class="form-control inputNumber" id="ConsultasIMC" name="ConsultasIMC" type="text" value="@Model.IMC">
+	</div>
+</div>
+<div class="form-group" id="divConsumo_de_agua_resultado">
+	<label class="col-sm-2 control-label">@Resources.ConsultasResources.Consumo_de_agua_resultado</label>
+	<div class="col-sm-8" data-field-id="Consumo_de_agua_resultado" data-attribute="257927" data-field-name="@Resources.ConsultasResources.Consumo_de_agua_resultado">
+		<input class="form-control inputNumber" id="ConsultasConsumo_de_agua_resultado" name="ConsultasConsumo_de_agua_resultado" type="text" value="@Model.Consumo_de_agua_resultado">
+	</div>
+</div>
+<div class="form-group" id="divFrecuencia_cardiaca_en_Esfuerzo">
+	<label class="col-sm-2 control-label">@Resources.ConsultasResources.Frecuencia_cardiaca_en_Esfuerzo</label>
+	<div class="col-sm-8" data-field-id="Frecuencia_cardiaca_en_Esfuerzo" data-attribute="257928" data-field-name="@Resources.ConsultasResources.Frecuencia_cardiaca_en_Esfuerzo">
+		<input class="form-control inputNumber" id="ConsultasFrecuencia_cardiaca_en_Esfuerzo" name="ConsultasFrecuencia_cardiaca_en_Esfuerzo" type="text" value="@Model.Frecuencia_cardiaca_en_Esfuerzo">
+	</div>
+</div>
+<div class="form-group" id="divDificultad_de_Rutina_de_Ejercicios">
+	<label class="col-sm-2 control-label">@Resources.ConsultasResources.Dificultad_de_Rutina_de_Ejercicios</label>
+	<div class="col-sm-8" data-field-id="Dificultad_de_Rutina_de_Ejercicios" data-attribute="257929" data-field-name="@Resources.ConsultasResources.Dificultad_de_Rutina_de_Ejercicios">
+		<input class="form-control inputNumber" id="ConsultasDificultad_de_Rutina_de_Ejercicios" name="ConsultasDificultad_de_Rutina_de_Ejercicios" type="text" value="@Model.Dificultad_de_Rutina_de_Ejercicios">
+	</div>
+</div>
+<div class="form-group" id="divCalorias">
+	<label class="col-sm-2 control-label">@Resources.ConsultasResources.Calorias</label>
+	<div class="col-sm-8" data-field-id="Calorias" data-attribute="257930" data-field-name="@Resources.ConsultasResources.Calorias">
+		<input class="form-control inputNumber" id="ConsultasCalorias" name="ConsultasCalorias" type="text" value="@Model.Calorias">
+	</div>
+</div>
+<div class="form-group" id="divObservaciones">
+                                <label class="col-sm-2 control-label">@Resources.ConsultasResources.Observaciones</label>
+                                <div class="col-sm-8" data-field-id="Observaciones" data-attribute="257931" data-field-name="@Resources.ConsultasResources.Observaciones">
+                                    <input class="form-control" id="ConsultasObservaciones" name="ConsultasObservaciones" type="text" value="@Model.Observaciones">
+                                </div>
+                            </div>
+
+								</div>	
+							</div>
+									<br />
+											<div class="form-actions fluid">
+												<input type="hidden" value="@Model.Folio" id="ReferenceFolio" />
+												<input type="hidden" value="@Model.Folio" name="Folio" id="FolioId" />
+												@if (!ViewBag.Consult)
+												{
+													<div id="dvSaveJob" style="display:inline-block"></div>
+
+													<button type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton">
+														<i class="fa fa-cogs fa-spin"></i>
+													</button>
+													<a title="@Resources.Resources.Configure" id="ConsultasConfigureSave" name="ConsultasConfigureSave" onclick="SaveElementAttributes()" class="btn btn-success">@Resources.Resources.Configure</a>
+												}
+
+												<input type="hidden" id="hdnConsultasConfigureType" />
+												<input type="hidden" id="hdnConsultasBusinessRuleFieldId" />
+												<input type="hidden" id="hdnConsultasBusinessRuleFieldName" />
+												<input type="hidden" id="hdnConsultasBusinessRuleAttribute" />
+
+												<input data-dismiss="modal" type="button" value="@Resources.Resources.Cancelar" class="btn btn-danger noConsult" data-bind="click: cancel" tabindex="16" />
+
+												<button onclick="ConsultasGetBusinessRule('', 'Al Cancelar', '3')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#ConsultasBusinessRule-form">
+													<a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+														<i class="fa fa-cogs fa-spin"></i>
+													</a>
+												</button>
+											</div>
+										</div>
+								}
+
+							</div>
+						</div>
+					</div>
+				</div>
+					<input id="hdnApplicationDirectory" type="hidden" value="@Url.Content("~/")" />
+				</div>
+			</div>
+		</div>
+</div>
+@section Styles {
+<link href="@Url.Content("~/Content/BootstrapDatePicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+    @Styles.Render("~/plugins/awesomeCheckboxStyles")
+    @Styles.Render("~/plugins/select2Styles")
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+    .select2-results{background-color:#fff;}
+    .select2-container .select2-dropdown{height:auto !important;}
+
+    div.dataTables_info {
+        display: inline-block;
+        float: right;
+    }
+        i {
+        font-size: 25px !important;
+        display: block;
+        color: #676a6c;
+        margin-left: 6px;
+        margin-right: 6px;
+    }
+
+    .fullWidth {
+        width: 100%;
+    }
+</style>
+}
+
+<script type="text/javascript" src="~/Uploads/Scripts/Consultas.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Scripts/Custom/ConsultasGeneral.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/ConsultasCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/PacientesCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
+
+    <script type="text/javascript">
+        
+
+
+
+        $(document).ready(function () {
+			var currentIndex = @ViewBag.currentRowIndex
+
+            var ConsultasRowElement = "ConsultasPop_" + currentIndex.toString();
+            var abc = "if(dynamicFieldValidation('" + ConsultasRowElement + "')){ ConsultasInsertRowFromPopup(" + currentIndex + "); }";
+            var insertRowHTML = '<a class="btn btn-primary m-b" onclick="' + abc + '">Save</a>';
+            $('#dvSaveJob').html(insertRowHTML);
+			
+            $('#ConsultasFecha_de_Registo').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            $('#ConsultasHora_de_Registro').clockpicker();
+            $('#ConsultasFecha_Programada').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            $('#ConsultasFecha_siguiente_Consulta').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+
+
+            initiateUIControls();
+            EjecutarValidacionesAlComienzo();
+			$('a').tooltip();
+        });
+
+
+
+        function initiateUIControls() {
+            $('.gridDatePicker').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            //Time Picker
+            $('.gridTimePicker').clockpicker();
+
+        }
+		
+		function SendConsultasData(callBack) {
+			
+					
+		 var arr = []; 
+		 $("form#CreateConsultas").find(':input').each(function( index ) {		 
+			if ($(this).prop('disabled')==true|| $(this).prop('disabled')=="disabled")
+			{		
+				arr.push($(this).attr('id')); 
+				$(this).prop('disabled', false);  	
+			}
+	    });
+		
+             var formData = new FormData($("form#CreateConsultas")[0]);
+			$.each( arr, function( key, value ) {
+			  $('#' +value).prop('disabled', true);
+			});
+
+            var isNew = $('#hdnIsNew').val();
+           
+            if (checkClientValidate('ConsultasCreateForm')) {
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Consultas/Post?IsNew=")' + isNew,
+                    type: 'POST',
+                    data: formData,
+                    async: true,
+                    success: function (result) {
+                        if (result < 0) {
+                            showNotification("@Resources.Resources.ErrorSave", "error");
+                        } else {
+
+                            showNotification("@Resources.Resources.SaveSuccess", "success");
+                            callBack(result);
+                        }
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            }
+            return false;
+        };
+		
+        function GetPropertyBag() {
+            $.get('@Url.Action("ConsultasPropertyBag", "Consultas")', function (data) {
+                $(".PropertyModal").html(data);
+            });
+        }
+        function ConsultasGetBusinessRule(FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null)
+			{
+				$('#hdnConsultasBusinessRuleFieldId').val(FieldId);
+				$('#hdnConsultasBusinessRuleFieldName').val(FieldName);
+				$('#hdnConsultasBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("BusinessRule", "BussinessRule")', { FieldId: $('#hdnConsultasBusinessRuleFieldId').val(), FieldName: $('#hdnConsultasBusinessRuleFieldName').val(), ObjectId: '44352', Attribute: $('#hdnConsultasBusinessRuleAttribute').val(), Screen: 'Consultas' }, function (data) {
+                $(".ConsultasBusinessRuleModal").html(data);
+            });
+        }
+        function ConsultasGetAddBusinessRule(RuleId, FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null) {
+				$('#hdnConsultasBusinessRuleFieldId').val(FieldId);
+				$('#hdnConsultasBusinessRuleFieldName').val(FieldName);
+				$('#hdnConsultasBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("AddBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnConsultasBusinessRuleFieldId').val(), FieldName: $('#hdnConsultasBusinessRuleFieldName').val(), ObjectId: '44352', Attribute: $('#hdnConsultasBusinessRuleAttribute').val(), Screen: 'Consultas' }, function (data) {
+                $(".ConsultasAddBusinessRuleModal").html(data);
+                $(".datatable").DataTable();
+            });
+        }
+		function RemoveBusinessRule(RuleId) {
+			$.get('@Url.Action("RemoveBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnConsultasBusinessRuleFieldId').val(), FieldName: $('#hdnConsultasBusinessRuleFieldName').val(), ObjectId: '44352', Attribute: $('#hdnConsultasBusinessRuleAttribute').val(), Screen: 'Consultas' }, function (data) {
+				$(".ConsultasBusinessRuleModal").html(data);
+			});
+		}
+
+    var permission = {
+        Consult: '@permission.Consult' == 'True',
+        New: '@permission.New' == 'True',
+        Edit: '@permission.Edit' == 'True',
+        Delete: '@permission.Delete' == 'True',
+        Export: '@permission.Export' == 'True',
+        Print: '@permission.Print' == 'True',
+        Configure: '@permission.Configure' == 'True',
+    };
+
+    
+    //MR-var statusItems;
+    //MR-var stateItems;
+    //MR-var cityItems = [];
+    var isConsultMode = "@ViewBag.Consult" == "True";
+    Consult(isConsultMode);
+        function Consult(val) {
+            if (val) {
+                $(':input').attr('readonly', 'readonly');
+                $(':input').attr('disabled', 'true');
+                $('.noConsult').removeAttr('readonly');
+                $('.noConsult').removeAttr('disabled');
+            }
+        }
+
+    function BackToGrid() {
+        location.href = "@Url.Content("~/Frontal/Consultas/")";
+    }
+	
+	function ReadScriptSettings(callback)
+    {
+        $.post("@Url.Content("~/Frontal/Consultas/ReadScriptSettings")", function (data) {
+            mainElementObject = JSON.parse(data.MainElement);
+			if (data.ChildElement != null) {
+                childElementObject = JSON.parse(data.ChildElement);
+            }
+            callback();
+        });
+    }
+
+    function SaveSettingsWithoutReload() {
+        $.post("@Url.Content("~/Frontal/Consultas/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+            //$('#hdnConsultasConfigureType').val("0");
+        }, "json");
+    }
+	
+        function SaveElementAttributes() {
+            if ($('#hdnConsultasConfigureType').val() == "1") {
+                $.post("@Url.Content("~/Frontal/Consultas/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+                    $('#hdnConsultasConfigureType').val("0");
+                    location.reload(true);
+                }, "json");
+            } else {
+                $.post("@Url.Content("~/Frontal/Consultas/ReadScriptSettings")", function (data) {
+                    mainElementObject = JSON.parse(data.MainElement);
+                    childElementObject = JSON.parse(data.ChildElement);
+
+                    for (var i = 0; i < mainElementObject.length; i++) {
+                        var mainElementAttributes = '<div class="col-sm-2">';
+                        mainElementAttributes += '<div class="displayAttributes requiredAttribute"><a class="requiredClick" title="' + (mainElementObject[i].IsRequired == true ? "Required" : "Not Required") + '" onclick="setRequired(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsRequired == true ? "@Url.Content("~/Images/Required.png")" : "@Url.Content("~/Images/Not-Required.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes visibleAttribute"><a class="visibleClick" title="' + (mainElementObject[i].IsVisible == true ? "Visible" : "In Visible") + '" onclick="setVisible(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsVisible == true ? "@Url.Content("~/Images/Visible.png")" : "@Url.Content("~/Images/InVisible.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes readOnlyAttribute"><a class="readOnlyClick" title="' + (mainElementObject[i].IsReadOnly == true ? "Disabled" : "Enabled") + '" onclick="setReadOnly(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsReadOnly == true ? "@Url.Content("~/Images/Disabled.png")" : "@Url.Content("~/Images/Enabled.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes defaultValueAttribute"><a id="hlDefaultValue_' + i.toString() + '" class="defaultValueClick" title="' + (mainElementObject[i].DefaultValue) + '" onclick="setDefaultValue(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].DefaultValue != '' && mainElementObject[i].DefaultValue != null ? "@Url.Content("~/Images/default-value.png")" : "@Url.Content("~/Images/Not-Default-Value.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes helpTextAttribute"><a id="hlHelpText_' + i.toString() + '" class="helpTextClick" title="' + (mainElementObject[i].HelpText) + '" onclick="setHelpText(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].HelpText != '' && mainElementObject[i].HelpText != null ? "@Url.Content("~/Images/green-help.png")" : "@Url.Content("~/Images/red-help.jpg")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '</div>';
+                        $('#Consultas' + mainElementObject[i].inputId).parent().closest('.form-group').show();
+
+                        $('#Consultas' + mainElementObject[i].inputId).closest('.col-sm-8').after(mainElementAttributes);
+                    }
+					if (childElementObject != null) {
+						for (var i = 0; i < childElementObject.length; i++) {
+							$('.' + childElementObject[i].inputId + 'Header').show();
+							$('.' + childElementObject[i].inputId).parent().show();
+							$('.' + childElementObject[i].inputId + 'Header').append(returnAttributeHTML(i));
+						}
+					}
+                    $('#ConsultasConfigureSave').text('Save Settings');
+                    $('#hdnConsultasConfigureType').val("1");
+                });
+            }
+        }
+		$('#CreateConsultas').on('click', '.btnPopupBusinessRules', function () {
+			var fieldId = $(this).data('field-id');
+			var fieldName = $(this).data('field-name');
+			var attribute = $(this).data('attribute');
+			$('#hdnConsultasBusinessRuleFieldId').val(fieldId);
+			$('#hdnConsultasBusinessRuleFieldName').val(fieldName);
+			$('#hdnConsultasBusinessRuleAttribute').val(attribute);
+		});
+		//Initialize HTML Editors
+		
+    </script>

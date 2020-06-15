@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Spartan_Business_Rule" value="Business Rule"></resource>
+  <resource culture="es-es" name="BusinessRuleId" value="Id"></resource>
+  <resource culture="es-es" name="Registration_Date" value="Registration Date"></resource>
+  <resource culture="es-es" name="Registration_Hour" value="Registration Hour"></resource>
+  <resource culture="es-es" name="User_who_registers" value="User who registers"></resource>
+  <resource culture="es-es" name="Description" value="Description"></resource>
+  <resource culture="es-es" name="Object" value="Object"></resource>
+  <resource culture="es-es" name="Scope" value="Scope"></resource>
+  <resource culture="es-es" name="Attribute" value="Attribute"></resource>
+  <resource culture="es-es" name="Operation" value="Operation"></resource>
+  <resource culture="es-es" name="Process_Event" value="Process Event"></resource>
+  <resource culture="es-es" name="Conditions" value="Conditions"></resource>
+  <resource culture="es-es" name="Actions_if_Fulfills" value="Actions if Fulfills"></resource>
+  <resource culture="es-es" name="Actions_if_not_Fulfills" value="Actions if not Fulfills"></resource>
+  <resource culture="es-es" name="Modifications_Log" value="Modifications Log"></resource>
+  <resource culture="es-es" name="Implementation_Code" value="Implementation Code"></resource>
+
+</resources>

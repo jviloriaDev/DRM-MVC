@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Detalle_Ejercicios_Rutinas" value="Detalle Ejercicios Rutinas"></resource>
+  <resource culture="en-US" name="Folio" value="Folio"></resource>
+  <resource culture="en-US" name="Orden_de_realizacion" value="Orden de realización"></resource>
+  <resource culture="en-US" name="Numero_de_serie" value="Número de serie"></resource>
+  <resource culture="en-US" name="Ejercicio" value="Ejercicio"></resource>
+  <resource culture="en-US" name="Cantidad_de_Repeticiones" value="Cantidad de Repeticiones"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

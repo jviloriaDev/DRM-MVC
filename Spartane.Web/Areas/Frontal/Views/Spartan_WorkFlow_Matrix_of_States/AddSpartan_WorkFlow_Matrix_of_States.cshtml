@@ -1,0 +1,503 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Globalization
+@using Spartane.Core.Domain.Permission
+@using Spartane.Core.Domain.Spartane_File
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Spartan_WorkFlow_Matrix_of_StatesModel
+@{
+
+
+    List<SelectListItem> varSpartan_WorkFlow_Phases_Phase = null;
+    if (ViewBag.Spartan_WorkFlow_Phasess_Phase != null)
+    { varSpartan_WorkFlow_Phases_Phase = (List<SelectListItem>)ViewBag.Spartan_WorkFlow_Phasess_Phase; }
+    List<SelectListItem> varSpartan_WorkFlow_State_State = null;
+    if (ViewBag.Spartan_WorkFlow_States_State != null)
+    { varSpartan_WorkFlow_State_State = (List<SelectListItem>)ViewBag.Spartan_WorkFlow_States_State; }
+ List<SelectListItem> varSpartan_Metadata_Attribute = null;
+    if (ViewBag.Spartan_Metadatas_Attribute != null)
+    { varSpartan_Metadata_Attribute = (List<SelectListItem>)ViewBag.Spartan_Metadatas_Attribute; }
+
+
+    Permission permission = ViewBag.Permission;
+}
+<div class="modal-dialog" style="width:95%;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">
+                Add Spartan WorkFlow Matrix of States
+                <button data-dismiss="modal" class="close" type="button" onclick="@(ViewBag.functionMode == 0 ? "Spartan_WorkFlow_Matrix_of_StatesRemoveAddRow("+ ViewBag.currentRowIndex +")" : "")"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            </h4>
+        </div>
+        <div class="modal-body scroll_content">
+            <div class="form-horizontal Spartan_WorkFlow_Matrix_of_StatesPop_@ViewBag.currentRowIndex">
+				<div class="modal fade in" id="dvAttributeValue" style="background-color:rgba(0, 0, 0, 0.7);">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-body">
+								<div class="form-group">
+									<label class="col-sm-3 control-label" id="lblAttributeType">Value</label>
+									<div class="col-sm-7">
+										<input type="text" title="Value" class="form-control" id="txtAttributeValue" />
+									</div>
+									<div class="col-sm-2">
+										<a class="btn btn-primary" onclick="SaveValue()">Submit</a>
+									</div>
+									<input type="hidden" id="hdnAttributType" />
+									<input type="hidden" id="hdnAttributElement" />
+									<input type="hidden" id="hdnAttributNumber" />
+									<input type="hidden" id="hdnElementType" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row wrapper border-bottom white-bg page-heading">
+
+					<div class="row">
+						<div class="col-lg-10">
+							<h2>
+								Spartan WorkFlow Matrix of States
+								<button onclick="Spartan_WorkFlow_Matrix_of_StatesGetBusinessRule('', 'Abrir Pantalla', '0')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Spartan_WorkFlow_Matrix_of_StatesBusinessRule-form">
+									<a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+										<i class="fa fa-cogs fa-spin"></i>
+									</a>
+								</button>
+							</h2>
+							<ol class="breadcrumb">
+								<li>
+									<a href="@Url.Action("Index", "Home")">@Resources.Resources.Home</a>
+								</li>
+								<li class="">
+									<label>@Resources.Spartan_WorkFlow_Matrix_of_StatesResources.Spartan_WorkFlow_Matrix_of_States</label>
+								</li>
+								<li class="active">
+									<strong>@Resources.Resources.Create</strong>
+								</li>
+							</ol>
+						</div>
+						<div class="col-lg-2">
+
+							@{
+								if (Convert.ToInt32(Spartane.Web.SessionHelper.Role) == (int)Spartane.Core.Enums.SpartanRoleEnum.Admin)
+								{
+									<h2>&nbsp;</h2>
+									<button onclick="Spartan_WorkFlow_Matrix_of_StatesDisplayBusinessRule()" type="button" class="btn btn-info btn-lg displayBusinessProperyButton">
+										<i class="fa fa-cogs fa-spin"></i>
+									</button>
+
+									<div aria-hidden="true" class="modal fade in Spartan_WorkFlow_Matrix_of_StatesPropertyBusinessModal" id="Spartan_WorkFlow_Matrix_of_StatesPropertyBusinessModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h4 class="modal-title">
+														Property & Business Rules
+														<button class="close" type="button" onclick="$(this).parent().parent().parent().parent().parent().modal('hide');"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+													</h4>
+												</div>
+												<div class="modal-body">
+													<div class="row">
+														<div class="col-sm-12">
+															<a class="btn btn-primary full-width" data-toggle="modal" data-target="#PropertyModal-form" onclick="GetPropertyBag()">Properties</a>
+														</div>
+														<div class="clearfix col-sm-12">&nbsp;</div>
+														<div class="col-sm-12">
+															<a class="btn btn-primary full-width" data-toggle="modal" data-target="#Spartan_WorkFlow_Matrix_of_StatesBusinessRule-form" onclick="Spartan_WorkFlow_Matrix_of_StatesGetBusinessRule()">Business Rule</a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									 <div aria-hidden="true" data-backdrop="static" class="modal fade in Spartan_WorkFlow_Matrix_of_StatesPropertyModal" id="Spartan_WorkFlow_Matrix_of_StatesPropertyModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+									</div>
+									<div aria-hidden="true" data-backdrop="static" class="modal fade in Spartan_WorkFlow_Matrix_of_StatesBusinessRuleModal" id="Spartan_WorkFlow_Matrix_of_StatesBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+									</div>
+                                    <div aria-hidden="true" data-backdrop="static" class="modal fade in Spartan_WorkFlow_Matrix_of_StatesAddBusinessRuleModal" id="Spartan_WorkFlow_Matrix_of_StatesAddBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                                    </div>
+
+				
+								}
+							}
+						</div>
+					</div>
+
+				<div class="wrapper wrapper-content animated fadeInRight">
+					<div class="ibox float-e-margins">
+						<div class="ibox-content">
+							@using (Html.BeginForm("Post", "Spartan_WorkFlow_Matrix_of_States", FormMethod.Post, new { id = "CreateSpartan_WorkFlow_Matrix_of_States", @readonly = "true", @class = "form-horizontal", enctype = "multipart/form-data" }))
+							{
+								<span id="popupNotification"></span>
+								<div class="container-fluid Spartan_WorkFlow_Matrix_of_StatesCreateForm" id="viewmodeledit">
+							<div class="tabs-container">
+											<ul class="nav nav-tabs">
+				@@groupers@@
+											</ul>
+										<div class="tab-content">
+				<div class="form-group" id="divMatrix_of_StatesId">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_WorkFlow_Matrix_of_StatesResources.Matrix_of_StatesId</label>
+                                <div class="col-sm-8" data-field-id="Matrix_of_StatesId" data-attribute="163689" data-field-name="@Resources.Spartan_WorkFlow_Matrix_of_StatesResources.Matrix_of_StatesId">
+                                    <label class="form-control" for="Spartan_WorkFlow_Matrix_of_StatesMatrix_of_StatesId" id="Spartan_WorkFlow_Matrix_of_StatesMatrix_of_StatesId">@Model.Matrix_of_StatesId</label>
+                                </div>
+                            </div>
+<div class="form-group" id="divPhase">
+	<label class="col-sm-2 control-label">@Resources.Spartan_WorkFlow_Matrix_of_StatesResources.Phase</label>
+	<div class="col-sm-8" data-field-id="Phase" data-attribute="163690" data-field-name="@Resources.Spartan_WorkFlow_Matrix_of_StatesResources.Phase">
+		<select class="form-control" data-val="true" data-val-number="The field Phase must be a number." data-val-required="The Phase field is required." id="Spartan_WorkFlow_Matrix_of_StatesPhase" name="Spartan_WorkFlow_Matrix_of_StatesPhase">
+			<option value=""></option>
+			@if (varSpartan_WorkFlow_Phases_Phase != null){ 
+				foreach (var itemPhase in varSpartan_WorkFlow_Phases_Phase)
+				{
+					if (itemPhase.Value == Convert.ToString(Model.Phase))
+					{
+						<option value="@itemPhase.Value" selected>@itemPhase.Text</option>
+					}
+					else
+					{
+						<option value="@itemPhase.Value">@itemPhase.Text</option>
+					}
+				}
+			}
+		</select>
+	</div>
+</div>
+<div class="form-group" id="divState">
+	<label class="col-sm-2 control-label">@Resources.Spartan_WorkFlow_Matrix_of_StatesResources.State</label>
+	<div class="col-sm-8" data-field-id="State" data-attribute="163691" data-field-name="@Resources.Spartan_WorkFlow_Matrix_of_StatesResources.State">
+		<select class="form-control" data-val="true" data-val-number="The field State must be a number." data-val-required="The State field is required." id="Spartan_WorkFlow_Matrix_of_StatesState" name="Spartan_WorkFlow_Matrix_of_StatesState">
+			<option value=""></option>
+			@if (varSpartan_WorkFlow_State_State != null){ 
+				foreach (var itemState in varSpartan_WorkFlow_State_State)
+				{
+					if (itemState.Value == Convert.ToString(Model.State))
+					{
+						<option value="@itemState.Value" selected>@itemState.Text</option>
+					}
+					else
+					{
+						<option value="@itemState.Value">@itemState.Text</option>
+					}
+				}
+			}
+		</select>
+	</div>
+</div>
+<div class="form-group" id="divAttribute">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_WorkFlow_Matrix_of_StatesResources.Attribute</label>
+                                <div class="col-sm-8" data-field-id="Attribute" data-attribute="163693" data-field-name="@Resources.Spartan_WorkFlow_Matrix_of_StatesResources.Attribute">
+                                    <select class='fullWidth AutoCompleteSpartan_Metadata form-control select2-dropdown' data-val="true" id="Spartan_WorkFlow_Matrix_of_StatesAttribute" name="Spartan_WorkFlow_Matrix_of_StatesAttribute">
+                                        <option value="@Model.Attribute">@(Model.AttributeLogical_Name??Model.AttributeLogical_Name)</option>
+                                    </select>
+                                </div>
+                            </div>
+<div class="form-group" id="divVisible">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_WorkFlow_Matrix_of_StatesResources.Visible</label>
+                                <div class="col-sm-8" data-field-id="Visible" data-attribute="163694" data-field-name="@Resources.Spartan_WorkFlow_Matrix_of_StatesResources.Visible">
+                                    @Html.CheckBoxFor(m => m.Visible, new { @class = "i-checks" })
+                                </div>
+                            </div>
+<div class="form-group" id="divRequired">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_WorkFlow_Matrix_of_StatesResources.Required</label>
+                                <div class="col-sm-8" data-field-id="Required" data-attribute="163695" data-field-name="@Resources.Spartan_WorkFlow_Matrix_of_StatesResources.Required">
+                                    @Html.CheckBoxFor(m => m.Required, new { @class = "i-checks" })
+                                </div>
+                            </div>
+<div class="form-group" id="divRead_Only">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_WorkFlow_Matrix_of_StatesResources.Read_Only</label>
+                                <div class="col-sm-8" data-field-id="Read_Only" data-attribute="163696" data-field-name="@Resources.Spartan_WorkFlow_Matrix_of_StatesResources.Read_Only">
+                                    @Html.CheckBoxFor(m => m.Read_Only, new { @class = "i-checks" })
+                                </div>
+                            </div>
+<div class="form-group" id="divLabel">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_WorkFlow_Matrix_of_StatesResources.Label</label>
+                                <div class="col-sm-8" data-field-id="Label" data-attribute="163697" data-field-name="@Resources.Spartan_WorkFlow_Matrix_of_StatesResources.Label">
+                                    <input class="form-control" id="Spartan_WorkFlow_Matrix_of_StatesLabel" name="Spartan_WorkFlow_Matrix_of_StatesLabel" type="text" value="@Model.Label">
+                                </div>
+                            </div>
+<div class="form-group" id="divDefault_Value">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_WorkFlow_Matrix_of_StatesResources.Default_Value</label>
+                                <div class="col-sm-8" data-field-id="Default_Value" data-attribute="163698" data-field-name="@Resources.Spartan_WorkFlow_Matrix_of_StatesResources.Default_Value">
+                                    <input class="form-control" id="Spartan_WorkFlow_Matrix_of_StatesDefault_Value" name="Spartan_WorkFlow_Matrix_of_StatesDefault_Value" type="text" value="@Model.Default_Value">
+                                </div>
+                            </div>
+<div class="form-group" id="divHelp_Text">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_WorkFlow_Matrix_of_StatesResources.Help_Text</label>
+                                <div class="col-sm-8" data-field-id="Help_Text" data-attribute="163699" data-field-name="@Resources.Spartan_WorkFlow_Matrix_of_StatesResources.Help_Text">
+                                    <input class="form-control" id="Spartan_WorkFlow_Matrix_of_StatesHelp_Text" name="Spartan_WorkFlow_Matrix_of_StatesHelp_Text" type="text" value="@Model.Help_Text">
+                                </div>
+                            </div>
+
+								</div>	
+							</div>
+									<br />
+											<div class="form-actions fluid">
+												<input type="hidden" value="@Model.Matrix_of_StatesId" id="ReferenceMatrix_of_StatesId" />
+												<input type="hidden" value="@Model.Matrix_of_StatesId" name="Matrix_of_StatesId" id="Matrix_of_StatesIdId" />
+												@if (!ViewBag.Consult)
+												{
+													<div id="dvSaveJob" style="display:inline-block"></div>
+
+													<button type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton">
+														<i class="fa fa-cogs fa-spin"></i>
+													</button>
+													<a title="@Resources.Resources.Configure" id="Spartan_WorkFlow_Matrix_of_StatesConfigureSave" name="Spartan_WorkFlow_Matrix_of_StatesConfigureSave" onclick="SaveElementAttributes()" class="btn btn-success">@Resources.Resources.Configure</a>
+												}
+
+												<input type="hidden" id="hdnSpartan_WorkFlow_Matrix_of_StatesConfigureType" />
+												<input type="hidden" id="hdnSpartan_WorkFlow_Matrix_of_StatesBusinessRuleFieldId" />
+												<input type="hidden" id="hdnSpartan_WorkFlow_Matrix_of_StatesBusinessRuleFieldName" />
+												<input type="hidden" id="hdnSpartan_WorkFlow_Matrix_of_StatesBusinessRuleAttribute" />
+
+												<input data-dismiss="modal" type="button" value="@Resources.Resources.Cancelar" class="btn btn-danger noConsult" data-bind="click: cancel" tabindex="16" />
+
+												<button onclick="Spartan_WorkFlow_Matrix_of_StatesGetBusinessRule('', 'Al Cancelar', '3')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Spartan_WorkFlow_Matrix_of_StatesBusinessRule-form">
+													<a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+														<i class="fa fa-cogs fa-spin"></i>
+													</a>
+												</button>
+											</div>
+										</div>
+								}
+
+							</div>
+						</div>
+					</div>
+				</div>
+					<input id="hdnApplicationDirectory" type="hidden" value="@Url.Content("~/")" />
+				</div>
+			</div>
+		</div>
+</div>
+@section Styles {
+<link href="@Url.Content("~/Content/BootstrapDatePicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+    @Styles.Render("~/plugins/awesomeCheckboxStyles")
+    @Styles.Render("~/plugins/select2Styles")
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+    .select2-results{background-color:#fff;}
+    .select2-container .select2-dropdown{height:auto !important;}
+
+    div.dataTables_info {
+        display: inline-block;
+        float: right;
+    }
+        i {
+        font-size: 25px !important;
+        display: block;
+        color: #676a6c;
+        margin-left: 6px;
+        margin-right: 6px;
+    }
+
+    .fullWidth {
+        width: 100%;
+    }
+</style>
+}
+
+<script type="text/javascript" src="~/Uploads/Scripts/Spartan_WorkFlow_Matrix_of_States.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Scripts/Custom/Spartan_WorkFlow_Matrix_of_StatesGeneral.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/Spartan_WorkFlowCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
+
+    <script type="text/javascript">
+        
+
+
+
+        $(document).ready(function () {
+			var currentIndex = @ViewBag.currentRowIndex
+
+            var Spartan_WorkFlow_Matrix_of_StatesRowElement = "Spartan_WorkFlow_Matrix_of_StatesPop_" + currentIndex.toString();
+            var abc = "if(dynamicFieldValidation('" + Spartan_WorkFlow_Matrix_of_StatesRowElement + "')){ Spartan_WorkFlow_Matrix_of_StatesInsertRowFromPopup(" + currentIndex + "); }";
+            var insertRowHTML = '<a class="btn btn-primary m-b" onclick="' + abc + '">Save</a>';
+            $('#dvSaveJob').html(insertRowHTML);
+			
+
+
+            initiateUIControls();
+			$('a').tooltip();
+        });
+        $(".AutoCompleteSpartan_WorkFlow_Matrix_of_States_Attribute").select2({
+            dropdownCssClass: 'fullWidth form-control',
+            ajax: {
+                url: "@Url.Content("~/Frontal/Spartan_WorkFlow_Matrix_of_States/GetSpartan_WorkFlow_Matrix_of_States_Attribute_Spartan_Metadata")",
+		cache: false,
+                dataType: 'json',
+                async: true,
+                global: false,
+                data: function (params) {
+                    return {
+                        query: params.term, 
+                    };
+                },
+                processResults: function (data, params) {
+                    params.page = params.page || 1;
+
+                    return {
+                        results: GetAutoCompleteSpartan_WorkFlow_Matrix_of_States_Attribute_Spartan_MetadataData(data),
+                        pagination: {
+                            more: false 
+                        }
+                    };
+                }
+            },
+            escapeMarkup: function (markup) { return markup; }, 
+            minimumInputLength: 1,
+        });
+        var $eventExternal = $(".AutoCompleteSpartan_WorkFlow_Matrix_of_States_Attribute");
+        $eventExternal.on("select2:open", function (e) {
+            $('.select2-search__field').val(' ');
+            $('.select2-search__field').keyup();
+        });
+
+
+
+        function initiateUIControls() {
+            $('.gridDatePicker').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            //Time Picker
+            $('.gridTimePicker').clockpicker();
+
+        }
+
+        function GetPropertyBag() {
+            $.get('@Url.Action("Spartan_WorkFlow_Matrix_of_StatesPropertyBag", "Spartan_WorkFlow_Matrix_of_States")', function (data) {
+                $(".PropertyModal").html(data);
+            });
+        }
+        function Spartan_WorkFlow_Matrix_of_StatesGetBusinessRule(FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null)
+			{
+				$('#hdnSpartan_WorkFlow_Matrix_of_StatesBusinessRuleFieldId').val(FieldId);
+				$('#hdnSpartan_WorkFlow_Matrix_of_StatesBusinessRuleFieldName').val(FieldName);
+				$('#hdnSpartan_WorkFlow_Matrix_of_StatesBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("BusinessRule", "BussinessRule")', { FieldId: $('#hdnSpartan_WorkFlow_Matrix_of_StatesBusinessRuleFieldId').val(), FieldName: $('#hdnSpartan_WorkFlow_Matrix_of_StatesBusinessRuleFieldName').val(), ObjectId: '32562', Attribute: $('#hdnSpartan_WorkFlow_Matrix_of_StatesBusinessRuleAttribute').val(), Screen: 'Spartan_WorkFlow_Matrix_of_States' }, function (data) {
+                $(".Spartan_WorkFlow_Matrix_of_StatesBusinessRuleModal").html(data);
+            });
+        }
+        function Spartan_WorkFlow_Matrix_of_StatesGetAddBusinessRule(RuleId, FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null) {
+				$('#hdnSpartan_WorkFlow_Matrix_of_StatesBusinessRuleFieldId').val(FieldId);
+				$('#hdnSpartan_WorkFlow_Matrix_of_StatesBusinessRuleFieldName').val(FieldName);
+				$('#hdnSpartan_WorkFlow_Matrix_of_StatesBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("AddBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnSpartan_WorkFlow_Matrix_of_StatesBusinessRuleFieldId').val(), FieldName: $('#hdnSpartan_WorkFlow_Matrix_of_StatesBusinessRuleFieldName').val(), ObjectId: '32562', Attribute: $('#hdnSpartan_WorkFlow_Matrix_of_StatesBusinessRuleAttribute').val(), Screen: 'Spartan_WorkFlow_Matrix_of_States' }, function (data) {
+                $(".Spartan_WorkFlow_Matrix_of_StatesAddBusinessRuleModal").html(data);
+                $(".datatable").DataTable();
+            });
+        }
+		function RemoveBusinessRule(RuleId) {
+			$.get('@Url.Action("RemoveBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnSpartan_WorkFlow_Matrix_of_StatesBusinessRuleFieldId').val(), FieldName: $('#hdnSpartan_WorkFlow_Matrix_of_StatesBusinessRuleFieldName').val(), ObjectId: '32562', Attribute: $('#hdnSpartan_WorkFlow_Matrix_of_StatesBusinessRuleAttribute').val(), Screen: 'Spartan_WorkFlow_Matrix_of_States' }, function (data) {
+				$(".Spartan_WorkFlow_Matrix_of_StatesBusinessRuleModal").html(data);
+			});
+		}
+
+    var permission = {
+        Consult: '@permission.Consult' == 'True',
+        New: '@permission.New' == 'True',
+        Edit: '@permission.Edit' == 'True',
+        Delete: '@permission.Delete' == 'True',
+        Export: '@permission.Export' == 'True',
+        Print: '@permission.Print' == 'True',
+        Configure: '@permission.Configure' == 'True',
+    };
+
+    
+    //MR-var statusItems;
+    //MR-var stateItems;
+    //MR-var cityItems = [];
+    var isConsultMode = "@ViewBag.Consult" == "True";
+    Consult(isConsultMode);
+        function Consult(val) {
+            if (val) {
+                $(':input').attr('readonly', 'readonly');
+                $(':input').attr('disabled', 'true');
+                $('.noConsult').removeAttr('readonly');
+                $('.noConsult').removeAttr('disabled');
+            }
+        }
+
+    function BackToGrid() {
+        location.href = "@Url.Content("~/Frontal/Spartan_WorkFlow_Matrix_of_States/")";
+    }
+	
+	function ReadScriptSettings(callback)
+    {
+        $.post("@Url.Content("~/Frontal/Spartan_WorkFlow_Matrix_of_States/ReadScriptSettings")", function (data) {
+            mainElementObject = JSON.parse(data.MainElement);
+			if (data.ChildElement != null) {
+                childElementObject = JSON.parse(data.ChildElement);
+            }
+            callback();
+        });
+    }
+
+    function SaveSettingsWithoutReload() {
+        $.post("@Url.Content("~/Frontal/Spartan_WorkFlow_Matrix_of_States/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+            //$('#hdnSpartan_WorkFlow_Matrix_of_StatesConfigureType').val("0");
+        }, "json");
+    }
+	
+        function SaveElementAttributes() {
+            if ($('#hdnSpartan_WorkFlow_Matrix_of_StatesConfigureType').val() == "1") {
+                $.post("@Url.Content("~/Frontal/Spartan_WorkFlow_Matrix_of_States/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+                    $('#hdnSpartan_WorkFlow_Matrix_of_StatesConfigureType').val("0");
+                    location.reload(true);
+                }, "json");
+            } else {
+                $.post("@Url.Content("~/Frontal/Spartan_WorkFlow_Matrix_of_States/ReadScriptSettings")", function (data) {
+                    mainElementObject = JSON.parse(data.MainElement);
+                    childElementObject = JSON.parse(data.ChildElement);
+
+                    for (var i = 0; i < mainElementObject.length; i++) {
+                        var mainElementAttributes = '<div class="col-sm-2">';
+                        mainElementAttributes += '<div class="displayAttributes requiredAttribute"><a class="requiredClick" title="' + (mainElementObject[i].IsRequired == true ? "Required" : "Not Required") + '" onclick="setRequired(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsRequired == true ? "@Url.Content("~/Images/Required.png")" : "@Url.Content("~/Images/Not-Required.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes visibleAttribute"><a class="visibleClick" title="' + (mainElementObject[i].IsVisible == true ? "Visible" : "In Visible") + '" onclick="setVisible(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsVisible == true ? "@Url.Content("~/Images/Visible.png")" : "@Url.Content("~/Images/InVisible.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes readOnlyAttribute"><a class="readOnlyClick" title="' + (mainElementObject[i].IsReadOnly == true ? "Disabled" : "Enabled") + '" onclick="setReadOnly(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsReadOnly == true ? "@Url.Content("~/Images/Disabled.png")" : "@Url.Content("~/Images/Enabled.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes defaultValueAttribute"><a id="hlDefaultValue_' + i.toString() + '" class="defaultValueClick" title="' + (mainElementObject[i].DefaultValue) + '" onclick="setDefaultValue(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].DefaultValue != '' && mainElementObject[i].DefaultValue != null ? "@Url.Content("~/Images/default-value.png")" : "@Url.Content("~/Images/Not-Default-Value.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes helpTextAttribute"><a id="hlHelpText_' + i.toString() + '" class="helpTextClick" title="' + (mainElementObject[i].HelpText) + '" onclick="setHelpText(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].HelpText != '' && mainElementObject[i].HelpText != null ? "@Url.Content("~/Images/green-help.png")" : "@Url.Content("~/Images/red-help.jpg")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '</div>';
+                        $('#Spartan_WorkFlow_Matrix_of_States' + mainElementObject[i].inputId).parent().closest('.form-group').show();
+
+                        $('#Spartan_WorkFlow_Matrix_of_States' + mainElementObject[i].inputId).closest('.col-sm-8').after(mainElementAttributes);
+                    }
+					if (childElementObject != null) {
+						for (var i = 0; i < childElementObject.length; i++) {
+							$('.' + childElementObject[i].inputId + 'Header').show();
+							$('.' + childElementObject[i].inputId).parent().show();
+							$('.' + childElementObject[i].inputId + 'Header').append(returnAttributeHTML(i));
+						}
+					}
+                    $('#Spartan_WorkFlow_Matrix_of_StatesConfigureSave').text('Save Settings');
+                    $('#hdnSpartan_WorkFlow_Matrix_of_StatesConfigureType').val("1");
+                });
+            }
+        }
+		$('#CreateSpartan_WorkFlow_Matrix_of_States').on('click', '.btnPopupBusinessRules', function () {
+			var fieldId = $(this).data('field-id');
+			var fieldName = $(this).data('field-name');
+			var attribute = $(this).data('attribute');
+			$('#hdnSpartan_WorkFlow_Matrix_of_StatesBusinessRuleFieldId').val(fieldId);
+			$('#hdnSpartan_WorkFlow_Matrix_of_StatesBusinessRuleFieldName').val(fieldName);
+			$('#hdnSpartan_WorkFlow_Matrix_of_StatesBusinessRuleAttribute').val(attribute);
+		});
+		//Initialize HTML Editors
+		
+    </script>

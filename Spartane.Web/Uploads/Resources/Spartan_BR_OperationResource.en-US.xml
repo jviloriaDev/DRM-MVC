@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_BR_Operation" value="Business Rule Operation"></resource>
+  <resource culture="en-US" name="OperationId" value="OperationId"></resource>
+  <resource culture="en-US" name="Description" value="Description"></resource>
+
+</resources>

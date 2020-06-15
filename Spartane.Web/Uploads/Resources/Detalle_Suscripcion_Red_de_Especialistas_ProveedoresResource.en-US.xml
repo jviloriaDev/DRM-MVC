@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Detalle_Suscripcion_Red_de_Especialistas_Proveedores" value="Detalle Suscripción Red de Especialistas Proveedores"></resource>
+  <resource culture="en-US" name="Folio" value="Folio"></resource>
+  <resource culture="en-US" name="Plan_de_Suscripcion" value="Plan de Suscripción"></resource>
+  <resource culture="en-US" name="Fecha_inicio" value="Fecha inicio"></resource>
+  <resource culture="en-US" name="Fecha_fin" value="Fecha fin"></resource>
+  <resource culture="en-US" name="Costo" value="Costo"></resource>
+  <resource culture="en-US" name="Contrato" value="Contrato"></resource>
+  <resource culture="en-US" name="Firmo_Contrato" value="Firmó Contrato"></resource>
+  <resource culture="en-US" name="Estatus" value="Estatus"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

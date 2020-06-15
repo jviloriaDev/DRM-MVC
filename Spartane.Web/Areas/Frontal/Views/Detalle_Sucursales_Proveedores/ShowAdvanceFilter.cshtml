@@ -1,0 +1,384 @@
+﻿@using System.Collections.Generic
+@using Spartane.Web.Areas.Frontal.Models
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Detalle_Sucursales_ProveedoresAdvanceSearchModel
+@{
+ List<SelectListItem> varTipo_de_Sucursal_Tipo_de_Sucursal = null;
+    if (ViewBag.Tipo_de_Sucursals_Tipo_de_Sucursal != null)
+    { varTipo_de_Sucursal_Tipo_de_Sucursal = (List<SelectListItem>)ViewBag.Tipo_de_Sucursals_Tipo_de_Sucursal; }
+
+    var filters = (List<SelectListItem>)ViewBag.Filter;
+}
+<style>
+    .input-validation-error {
+        background: rgb(251, 227, 228);
+        border: 1px solid #fbc2c4;
+        color: #8a1f11;
+    }
+
+    .MarginBottom {
+        margin-bottom: 1%;
+    }
+
+    #divAdvanceSearch input {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch button {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch select {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch h3 {
+        margin-top: 2%;
+    }
+
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins" id="divAdvanceSearch">
+        <div class="ibox-content">
+            @using (Html.BeginForm("ShowAdvanceFilter", "Detalle_Sucursales_Proveedores", FormMethod.Post, new { @id = "frmAdvanceSearch", @role = "form" }))
+            {
+				<input type="hidden" value="-1" name="idFilter" id="idFilter" />
+                <div class="MarginBottom ">
+                    <h3>@Resources.Detalle_Sucursales_ProveedoresResources.Folio</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromFolio, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromFolio" })
+                    @Html.ValidationMessageFor(m => m.FromFolio)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToFolio, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToFolio", @data_min = "txtAdvanceFromFolio" })
+                    @Html.ValidationMessageFor(m => m.ToFolio)
+                </div>
+ List<SelectListItem> varTipo_de_Sucursal_Tipo_de_Sucursal = null;
+    if (ViewBag.Tipo_de_Sucursals_Tipo_de_Sucursal != null)
+    { varTipo_de_Sucursal_Tipo_de_Sucursal = (List<SelectListItem>)ViewBag.Tipo_de_Sucursals_Tipo_de_Sucursal; }
+                <div class="MarginBottom">
+                    <h3>@Resources.Detalle_Sucursales_ProveedoresResources.Email</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.EmailFilter, filters, new { @class = "form-control", @id = "ddlEmailFilter" })
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @type = "text", @id = "txtEmail" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Detalle_Sucursales_ProveedoresResources.Telefono</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.TelefonoFilter, filters, new { @class = "form-control", @id = "ddlTelefonoFilter" })
+                    @Html.TextBoxFor(m => m.Telefono, new { @class = "form-control", @type = "text", @id = "txtTelefono" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Detalle_Sucursales_ProveedoresResources.Calle</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.CalleFilter, filters, new { @class = "form-control", @id = "ddlCalleFilter" })
+                    @Html.TextBoxFor(m => m.Calle, new { @class = "form-control", @type = "text", @id = "txtCalle" })
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Detalle_Sucursales_ProveedoresResources.Numero_exterior</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromNumero_exterior, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromNumero_exterior" })
+                    @Html.ValidationMessageFor(m => m.FromNumero_exterior)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToNumero_exterior, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToNumero_exterior", @data_min = "txtAdvanceFromNumero_exterior" })
+                    @Html.ValidationMessageFor(m => m.ToNumero_exterior)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Detalle_Sucursales_ProveedoresResources.Numero_interior</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromNumero_interior, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromNumero_interior" })
+                    @Html.ValidationMessageFor(m => m.FromNumero_interior)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToNumero_interior, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToNumero_interior", @data_min = "txtAdvanceFromNumero_interior" })
+                    @Html.ValidationMessageFor(m => m.ToNumero_interior)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Detalle_Sucursales_ProveedoresResources.Colonia</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.ColoniaFilter, filters, new { @class = "form-control", @id = "ddlColoniaFilter" })
+                    @Html.TextBoxFor(m => m.Colonia, new { @class = "form-control", @type = "text", @id = "txtColonia" })
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Detalle_Sucursales_ProveedoresResources.C_P_</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromC_P_, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromC_P_" })
+                    @Html.ValidationMessageFor(m => m.FromC_P_)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToC_P_, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToC_P_", @data_min = "txtAdvanceFromC_P_" })
+                    @Html.ValidationMessageFor(m => m.ToC_P_)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Detalle_Sucursales_ProveedoresResources.Ciudad</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.CiudadFilter, filters, new { @class = "form-control", @id = "ddlCiudadFilter" })
+                    @Html.TextBoxFor(m => m.Ciudad, new { @class = "form-control", @type = "text", @id = "txtCiudad" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Detalle_Sucursales_ProveedoresResources.Estado</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.EstadoFilter, filters, new { @class = "form-control", @id = "ddlEstadoFilter" })
+                    @Html.TextBoxFor(m => m.Estado, new { @class = "form-control", @type = "text", @id = "txtEstado" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Detalle_Sucursales_ProveedoresResources.Pais</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.PaisFilter, filters, new { @class = "form-control", @id = "ddlPaisFilter" })
+                    @Html.TextBoxFor(m => m.Pais, new { @class = "form-control", @type = "text", @id = "txtPais" })
+                </div>
+
+                <div class="MarginBottom form-inline">
+                    <input type="submit" class="btn btn-primary" value="@Resources.Resources.Search"><a class="btn btn-primary" href="@Url.Content("~/Frontal/Detalle_Sucursales_Proveedores/")" value=" ">@Resources.Resources.Cancelar</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function InitiateAdvanceSearch() {
+        var advanceSearch = {}, hasParameter = false;
+        if ($("#txtAdvanceFromFolio").val() != "" || $("#txtAdvanceToFolio").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Sucursales_ProveedoresFolioFrom = $("#txtAdvanceFromFolio").val();
+            advanceSearch.Detalle_Sucursales_ProveedoresFolioTo = $("#txtAdvanceToFolio").val();
+        }
+        advanceSearch.Tipo_de_SucursalSearchType = 0;
+        if ($('#ddlAdvanceTipo_de_Sucursal').val().length > 0 || $("#txtAdvanceTipo_de_Sucursal").val() == "") {
+
+
+            if (isDetalle_Sucursales_ProveedoresTextSearch) {
+                advanceSearch.Tipo_de_SucursalName = $("#txtAdvanceTipo_de_Sucursal").val();
+                advanceSearch.Tipo_de_SucursalNameSearchType = $("#ddlAdvanceTipo_de_Sucursal").val();
+                advanceSearch.Tipo_de_SucursalSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Tipo_de_SucursalToSearch = $("#ddlAdvanceTipo_de_Sucursal").val();
+                advanceSearch.Tipo_de_SucursalSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceEmail").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Sucursales_ProveedoresEmail = $("#txtAdvanceEmail").val();
+            advanceSearch.Detalle_Sucursales_ProveedoresEmailSearchType = $("#ddlAdvanceEmailFilter").val();
+        }
+        if ($("#txtAdvanceTelefono").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Sucursales_ProveedoresTelefono = $("#txtAdvanceTelefono").val();
+            advanceSearch.Detalle_Sucursales_ProveedoresTelefonoSearchType = $("#ddlAdvanceTelefonoFilter").val();
+        }
+        if ($("#txtAdvanceCalle").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Sucursales_ProveedoresCalle = $("#txtAdvanceCalle").val();
+            advanceSearch.Detalle_Sucursales_ProveedoresCalleSearchType = $("#ddlAdvanceCalleFilter").val();
+        }
+        if ($("#txtAdvanceFromNumero_exterior").val() != "" || $("#txtAdvanceToNumero_exterior").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Sucursales_ProveedoresNumero_exteriorFrom = $("#txtAdvanceFromNumero_exterior").val();
+            advanceSearch.Detalle_Sucursales_ProveedoresNumero_exteriorTo = $("#txtAdvanceToNumero_exterior").val();
+        }
+        if ($("#txtAdvanceFromNumero_interior").val() != "" || $("#txtAdvanceToNumero_interior").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Sucursales_ProveedoresNumero_interiorFrom = $("#txtAdvanceFromNumero_interior").val();
+            advanceSearch.Detalle_Sucursales_ProveedoresNumero_interiorTo = $("#txtAdvanceToNumero_interior").val();
+        }
+        if ($("#txtAdvanceColonia").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Sucursales_ProveedoresColonia = $("#txtAdvanceColonia").val();
+            advanceSearch.Detalle_Sucursales_ProveedoresColoniaSearchType = $("#ddlAdvanceColoniaFilter").val();
+        }
+        if ($("#txtAdvanceFromC_P_").val() != "" || $("#txtAdvanceToC_P_").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Sucursales_ProveedoresC_P_From = $("#txtAdvanceFromC_P_").val();
+            advanceSearch.Detalle_Sucursales_ProveedoresC_P_To = $("#txtAdvanceToC_P_").val();
+        }
+        if ($("#txtAdvanceCiudad").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Sucursales_ProveedoresCiudad = $("#txtAdvanceCiudad").val();
+            advanceSearch.Detalle_Sucursales_ProveedoresCiudadSearchType = $("#ddlAdvanceCiudadFilter").val();
+        }
+        if ($("#txtAdvanceEstado").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Sucursales_ProveedoresEstado = $("#txtAdvanceEstado").val();
+            advanceSearch.Detalle_Sucursales_ProveedoresEstadoSearchType = $("#ddlAdvanceEstadoFilter").val();
+        }
+        if ($("#txtAdvancePais").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Sucursales_ProveedoresPais = $("#txtAdvancePais").val();
+            advanceSearch.Detalle_Sucursales_ProveedoresPaisSearchType = $("#ddlAdvancePaisFilter").val();
+        }
+
+        advanceSearchQuery = hasParameter ? JSON.stringify(advanceSearch) : "";
+        $('#tblDetalle_Sucursales_Proveedores').DataTable().draw();
+        return false;
+    }
+
+    var advanceSearchQuery = "", isDetalle_Sucursales_ProveedoresTextSearch = true;
+
+    $(document).ready(function () {
+        $('.clock').clockpicker();
+		$('.date').datepicker({
+			todayBtn: "linked",
+			keyboardNavigation: false,
+			forceParse: false,
+			calendarWeeks: true,
+			autoclose: true,
+			format: "@ConfigurationProperty.DateFormatDatePicker"
+		});
+        $("#txtAdvanceTipo_de_Sucursal").keypress(function () {
+            isDetalle_Sucursales_ProveedoresTextSearch = true;
+            $("#ddlAdvanceTipo_de_Sucursal").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceTipo_de_Sucursal").change(function () {
+            isDetalle_Sucursales_ProveedoresTextSearch = false;
+            $("#txtAdvanceTipo_de_Sucursal").val('');
+        });
+
+    });
+</script>
+
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/chosen")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/clockpicker")
+
+
+    <script>
+        //Adding Rules
+        jQuery.validator.unobtrusive
+      .adapters.addSingleVal("isnumberafter", "propertyname");
+        jQuery.validator.unobtrusive
+    .adapters.addSingleVal("isdateafter", "propertyname");
+
+        //Number after method
+        jQuery.validator.addMethod("isnumberafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+                //if (Date.parse(val) <= Date.parse(otherVal)) {
+                if (Number(val) < Number(otherVal)) {
+                    return false;
+                }
+                        }
+            return true;
+        });
+
+        //Date after after method
+        jQuery.validator.addMethod("isdateafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+
+                if (GetDateObject(val) < GetDateObject(otherVal)) {
+
+                    return false;
+                    }
+                }
+            return true;
+            });
+
+
+        function GetDateObject(value) {
+            var delimiter = GetDelimiter(dateFormat);
+            var dateCollection = value.split(delimiter);
+            var formatCollection = dateFormat.split(delimiter);
+            var dateModel = GetDateModel(dateCollection, formatCollection);
+            return new Date(dateModel.Year, dateModel.Month - 1, dateModel.Day);
+        }
+        //Used to get the date model by parsing the date and the format
+        function GetDateModel(dateCollection,formatCollection) {
+            var day, month, year;
+            for (var i = 0; i < formatCollection.length; i++) {
+                switch (formatCollection[i][0].toUpperCase()) {
+                
+                    case "D":
+                        day = dateCollection[i];
+                        break;
+
+                    case "Y":
+                        year = dateCollection[i];
+                        break;
+
+                    case "M":
+                        month = dateCollection[i];
+                        break;
+                }
+            }
+
+            return {
+                Day:day,
+                Month:month,
+                Year:year
+            };
+        }
+
+        function GetDelimiter(format) {
+
+            for (var i = 0; i < format.length; i++) {
+                if (/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(format[i])) {
+                    return format[i];
+                }
+            }
+            return null;
+        }
+
+        var dateFormat = "@ConfigurationProperty.DateFormatDatePicker";
+
+        $(document).ready(function () {
+            $('.input-daterange').datepicker({
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                format: dateFormat,
+                message: 'The date is not a valid'
+            });
+
+            $(".chosen-select").chosen({ width: "22%", no_results_text: "Oops, nothing found!" });
+			if ($('#IsFilterModal').val() == 'true') {
+                $('.ShowAdvanceFilter #right-sidebar').css('display', 'none');
+                $('.ShowAdvanceFilter .navbar-default').css('display', 'none');
+                $('.ShowAdvanceFilter .border-bottom').css('display', 'none');
+                $('.ShowAdvanceFilter #page-wrapper').css('margin', '0 auto');
+                $('.ShowAdvanceFilter .btn-save').val('@Resources.Resources.Filter');
+                $('.ShowAdvanceFilter .btn-cancelar').attr('data-dismiss', 'modal');
+                $('.ShowAdvanceFilter .btn-cancelar').removeAttr('href');
+                $('#idFilter').val($('#IdReport').val());
+            }
+        });
+
+    </script>
+}
+

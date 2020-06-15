@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Unidades_de_Medida" value="Unidades de Medida"></resource>
+  <resource culture="en-US" name="Clave" value="Clave"></resource>
+  <resource culture="en-US" name="Unidad" value="Unidad"></resource>
+  <resource culture="en-US" name="Abreviacion" value="Abreviacion"></resource>
+  <resource culture="en-US" name="Texto_Singular" value="Texto Singular"></resource>
+  <resource culture="en-US" name="Texto_Plural" value="Texto Plural"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

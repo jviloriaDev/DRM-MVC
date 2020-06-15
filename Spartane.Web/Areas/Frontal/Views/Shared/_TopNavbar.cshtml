@@ -1,0 +1,40 @@
+﻿<div class="row border-bottom" >
+    <nav class="navbar navbar-static-top " role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-white " href="#"><i class="fa fa-bars"></i> </a>
+            <form role="search" class="navbar-form-custom" method="post" action="">
+                <div class="form-group">
+                    
+                    
+                </div>
+            </form>
+        </div>
+        <ul class="nav navbar-top-links navbar-right text-white">
+            <li>
+                <span class="m-r-sm text-muted welcome-message" data-i18n="topnav.welcometext"></span>
+                <!--<img src="~/Images/Logo-90-90-white.png" alt="" width="70" height="70" style="margin-top:5px" />-->
+            </li>
+            
+            <li style="padding-top:15px;"   >
+
+
+                @*<input type="button" value="Go Somewhere Else" formmethod="post" onclick="location.href = '../../../Account/LogOff'" / >*@
+                @*<a href="~/Account/LogOut"  >
+                    <i class="fa fa-sign-out"></i> Log out
+                </a>*@
+                
+                @using (Html.BeginForm("LogOff", "Account", new { area = "" }, FormMethod.Post, new { id = "logoutForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <a href="javascript: document.getElementById('logoutForm').submit()" ><span style="color: #282828;"   ><i class="fa fa-sign-out"></i> @Resources.Resources.LogOut </span></a>
+                    if (System.Configuration.ConfigurationManager.AppSettings["VersionApp"] != null)
+                    {
+                        <br />
+                        <span class="version" style="color: #282828;padding: 0px 12px;float: right;font-size: 12px;">Version @System.Configuration.ConfigurationManager.AppSettings["VersionApp"].ToString()</span>
+                    }
+                }
+            </li>
+            
+        </ul>
+    </nav>
+</div>

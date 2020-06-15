@@ -1,0 +1,15 @@
+﻿@using System
+@using MvcCheckBoxList.Model
+@model System.Collections.Generic.List<Spartane.Web.Areas.Frontal.Models.ObjectModuleListModel>
+@{
+    Layout = null;
+    var htmlListInfo = new HtmlListInfo(HtmlTag.vertical_columns, Convert.ToInt32(Math.Ceiling(Convert.ToDouble(Model.Count % 9))), null, TextLayout.Default, TemplateIsUsed.No);
+}
+
+
+
+@Html.CheckBoxList("LIST_NAME",
+                   model => model,
+                   entity => entity.Value,
+                   entity => entity.Name,
+                           model => model.IsSelected, htmlListInfo)

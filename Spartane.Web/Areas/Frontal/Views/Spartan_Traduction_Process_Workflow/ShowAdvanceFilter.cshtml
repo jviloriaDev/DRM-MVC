@@ -1,0 +1,300 @@
+﻿@using System.Collections.Generic
+@using Spartane.Web.Areas.Frontal.Models
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Spartan_Traduction_Process_WorkflowAdvanceSearchModel
+@{
+    List<SelectListItem> varSpartan_Traduction_Concept_Type_Concept = null;
+    if (ViewBag.Spartan_Traduction_Concept_Types_Concept != null)
+    { varSpartan_Traduction_Concept_Type_Concept = (List<SelectListItem>)ViewBag.Spartan_Traduction_Concept_Types_Concept; }
+
+    var filters = (List<SelectListItem>)ViewBag.Filter;
+}
+<style>
+    .input-validation-error {
+        background: rgb(251, 227, 228);
+        border: 1px solid #fbc2c4;
+        color: #8a1f11;
+    }
+
+    .MarginBottom {
+        margin-bottom: 1%;
+    }
+
+    #divAdvanceSearch input {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch button {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch select {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch h3 {
+        margin-top: 2%;
+    }
+
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins" id="divAdvanceSearch">
+        <div class="ibox-content">
+            @using (Html.BeginForm("ShowAdvanceFilter", "Spartan_Traduction_Process_Workflow", FormMethod.Post, new { @id = "frmAdvanceSearch", @role = "form" }))
+            {
+				<input type="hidden" value="-1" name="idFilter" id="idFilter" />
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_Traduction_Process_WorkflowResources.Clave</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromClave, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromClave" })
+                    @Html.ValidationMessageFor(m => m.FromClave)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToClave, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToClave", @data_min = "txtAdvanceFromClave" })
+                    @Html.ValidationMessageFor(m => m.ToClave)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_Traduction_Process_WorkflowResources.Concept</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.ConceptFilter, filters, new { @class = "form-control", @id = "ddlConceptFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceConcept, new { @class = "form-control", @type = "text", @id = "txtAdvanceConcept" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSpartan_Traduction_Concept_Type_Concept!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceConceptMultiple, varSpartan_Traduction_Concept_Type_Concept,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceConcept"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_Traduction_Process_WorkflowResources.ID_of_Step</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromID_of_Step, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromID_of_Step" })
+                    @Html.ValidationMessageFor(m => m.FromID_of_Step)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToID_of_Step, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToID_of_Step", @data_min = "txtAdvanceFromID_of_Step" })
+                    @Html.ValidationMessageFor(m => m.ToID_of_Step)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_Traduction_Process_WorkflowResources.Original_Text</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Original_TextFilter, filters, new { @class = "form-control", @id = "ddlOriginal_TextFilter" })
+                    @Html.TextBoxFor(m => m.Original_Text, new { @class = "form-control", @type = "text", @id = "txtOriginal_Text" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_Traduction_Process_WorkflowResources.Translated_Text</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Translated_TextFilter, filters, new { @class = "form-control", @id = "ddlTranslated_TextFilter" })
+                    @Html.TextBoxFor(m => m.Translated_Text, new { @class = "form-control", @type = "text", @id = "txtTranslated_Text" })
+                </div>
+
+                <div class="MarginBottom form-inline">
+                    <input type="submit" class="btn btn-primary" value="@Resources.Resources.Search"><a class="btn btn-primary" href="@Url.Content("~/Frontal/Spartan_Traduction_Process_Workflow/")" value=" ">@Resources.Resources.Cancelar</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function InitiateAdvanceSearch() {
+        var advanceSearch = {}, hasParameter = false;
+        if ($("#txtAdvanceFromClave").val() != "" || $("#txtAdvanceToClave").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Traduction_Process_WorkflowClaveFrom = $("#txtAdvanceFromClave").val();
+            advanceSearch.Spartan_Traduction_Process_WorkflowClaveTo = $("#txtAdvanceToClave").val();
+        }
+        advanceSearch.ConceptSearchType = 0;
+        if ($('#ddlAdvanceConcept').val().length > 0 || $("#txtAdvanceConcept").val() == "") {
+
+
+            if (isSpartan_Traduction_Process_WorkflowTextSearch) {
+                advanceSearch.ConceptName = $("#txtAdvanceConcept").val();
+                advanceSearch.ConceptNameSearchType = $("#ddlAdvanceConcept").val();
+                advanceSearch.ConceptSearchType = 1;
+            }
+            else {
+
+                advanceSearch.ConceptToSearch = $("#ddlAdvanceConcept").val();
+                advanceSearch.ConceptSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceFromID_of_Step").val() != "" || $("#txtAdvanceToID_of_Step").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Traduction_Process_WorkflowID_of_StepFrom = $("#txtAdvanceFromID_of_Step").val();
+            advanceSearch.Spartan_Traduction_Process_WorkflowID_of_StepTo = $("#txtAdvanceToID_of_Step").val();
+        }
+        if ($("#txtAdvanceOriginal_Text").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Traduction_Process_WorkflowOriginal_Text = $("#txtAdvanceOriginal_Text").val();
+            advanceSearch.Spartan_Traduction_Process_WorkflowOriginal_TextSearchType = $("#ddlAdvanceOriginal_TextFilter").val();
+        }
+        if ($("#txtAdvanceTranslated_Text").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Traduction_Process_WorkflowTranslated_Text = $("#txtAdvanceTranslated_Text").val();
+            advanceSearch.Spartan_Traduction_Process_WorkflowTranslated_TextSearchType = $("#ddlAdvanceTranslated_TextFilter").val();
+        }
+
+        advanceSearchQuery = hasParameter ? JSON.stringify(advanceSearch) : "";
+        $('#tblSpartan_Traduction_Process_Workflow').DataTable().draw();
+        return false;
+    }
+
+    var advanceSearchQuery = "", isSpartan_Traduction_Process_WorkflowTextSearch = true;
+
+    $(document).ready(function () {
+        $('.clockpicker').clockpicker();
+        $("#txtAdvanceConcept").keypress(function () {
+            isSpartan_Traduction_Process_WorkflowTextSearch = true;
+            $("#ddlAdvanceConcept").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceConcept").change(function () {
+            isSpartan_Traduction_Process_WorkflowTextSearch = false;
+            $("#txtAdvanceConcept").val('');
+        });
+
+    });
+</script>
+
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/chosen")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/clockpicker")
+
+
+    <script>
+        //Adding Rules
+        jQuery.validator.unobtrusive
+      .adapters.addSingleVal("isnumberafter", "propertyname");
+        jQuery.validator.unobtrusive
+    .adapters.addSingleVal("isdateafter", "propertyname");
+
+        //Number after method
+        jQuery.validator.addMethod("isnumberafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+                //if (Date.parse(val) <= Date.parse(otherVal)) {
+                if (Number(val) < Number(otherVal)) {
+                    return false;
+                }
+                        }
+            return true;
+        });
+
+        //Date after after method
+        jQuery.validator.addMethod("isdateafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+
+                if (GetDateObject(val) < GetDateObject(otherVal)) {
+
+                    return false;
+                    }
+                }
+            return true;
+            });
+
+
+        function GetDateObject(value) {
+            var delimiter = GetDelimiter(dateFormat);
+            var dateCollection = value.split(delimiter);
+            var formatCollection = dateFormat.split(delimiter);
+            var dateModel = GetDateModel(dateCollection, formatCollection);
+            return new Date(dateModel.Year, dateModel.Month - 1, dateModel.Day);
+        }
+        //Used to get the date model by parsing the date and the format
+        function GetDateModel(dateCollection,formatCollection) {
+            var day, month, year;
+            for (var i = 0; i < formatCollection.length; i++) {
+                switch (formatCollection[i][0].toUpperCase()) {
+                
+                    case "D":
+                        day = dateCollection[i];
+                        break;
+
+                    case "Y":
+                        year = dateCollection[i];
+                        break;
+
+                    case "M":
+                        month = dateCollection[i];
+                        break;
+                }
+            }
+
+            return {
+                Day:day,
+                Month:month,
+                Year:year
+            };
+        }
+
+        function GetDelimiter(format) {
+
+            for (var i = 0; i < format.length; i++) {
+                if (/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(format[i])) {
+                    return format[i];
+                }
+            }
+            return null;
+        }
+
+        var dateFormat = "@ConfigurationProperty.DateFormatDatePicker";
+
+        $(document).ready(function () {
+
+
+
+            $('.input-daterange').datepicker({
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                format: dateFormat,
+                message: 'The date is not a valid'
+            });
+
+            $(".chosen-select").chosen({ width: "22%", no_results_text: "Oops, nothing found!" });
+			if ($('#IsFilterModal').val() == 'true') {
+                $('.ShowAdvanceFilter #right-sidebar').css('display', 'none');
+                $('.ShowAdvanceFilter .navbar-default').css('display', 'none');
+                $('.ShowAdvanceFilter .border-bottom').css('display', 'none');
+                $('.ShowAdvanceFilter #page-wrapper').css('margin', '0 auto');
+                $('.ShowAdvanceFilter .btn-save').val('@Resources.Resources.Filter');
+                $('.ShowAdvanceFilter .btn-cancelar').attr('data-dismiss', 'modal');
+                $('.ShowAdvanceFilter .btn-cancelar').removeAttr('href');
+                $('#idFilter').val($('#IdReport').val());
+            }
+        });
+
+    </script>
+}
+

@@ -1,0 +1,342 @@
+﻿@using System.Collections.Generic
+@using Spartane.Web.Areas.Frontal.Models
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Detalle_Examenes_LaboratorioAdvanceSearchModel
+@{
+    List<SelectListItem> varIndicadores_Laboratorio_Indicador = null;
+    if (ViewBag.Indicadores_Laboratorios_Indicador != null)
+    { varIndicadores_Laboratorio_Indicador = (List<SelectListItem>)ViewBag.Indicadores_Laboratorios_Indicador; }
+
+    var filters = (List<SelectListItem>)ViewBag.Filter;
+}
+<style>
+    .input-validation-error {
+        background: rgb(251, 227, 228);
+        border: 1px solid #fbc2c4;
+        color: #8a1f11;
+    }
+
+    .MarginBottom {
+        margin-bottom: 1%;
+    }
+
+    #divAdvanceSearch input {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch button {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch select {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch h3 {
+        margin-top: 2%;
+    }
+
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins" id="divAdvanceSearch">
+        <div class="ibox-content">
+            @using (Html.BeginForm("ShowAdvanceFilter", "Detalle_Examenes_Laboratorio", FormMethod.Post, new { @id = "frmAdvanceSearch", @role = "form" }))
+            {
+				<input type="hidden" value="-1" name="idFilter" id="idFilter" />
+                <div class="MarginBottom ">
+                    <h3>@Resources.Detalle_Examenes_LaboratorioResources.Folio</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromFolio, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromFolio" })
+                    @Html.ValidationMessageFor(m => m.FromFolio)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToFolio, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToFolio", @data_min = "txtAdvanceFromFolio" })
+                    @Html.ValidationMessageFor(m => m.ToFolio)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Detalle_Examenes_LaboratorioResources.Indicador</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.IndicadorFilter, filters, new { @class = "form-control", @id = "ddlIndicadorFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceIndicador, new { @class = "form-control", @type = "text", @id = "txtAdvanceIndicador" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varIndicadores_Laboratorio_Indicador!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceIndicadorMultiple, varIndicadores_Laboratorio_Indicador,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceIndicador"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Detalle_Examenes_LaboratorioResources.Resultado</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromResultado, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromResultado" })
+                    @Html.ValidationMessageFor(m => m.FromResultado)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToResultado, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToResultado", @data_min = "txtAdvanceFromResultado" })
+                    @Html.ValidationMessageFor(m => m.ToResultado)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Detalle_Examenes_LaboratorioResources.Unidad</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.UnidadFilter, filters, new { @class = "form-control", @id = "ddlUnidadFilter" })
+                    @Html.TextBoxFor(m => m.Unidad, new { @class = "form-control", @type = "text", @id = "txtUnidad" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Detalle_Examenes_LaboratorioResources.Intervalo_de_Referencia</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Intervalo_de_ReferenciaFilter, filters, new { @class = "form-control", @id = "ddlIntervalo_de_ReferenciaFilter" })
+                    @Html.TextBoxFor(m => m.Intervalo_de_Referencia, new { @class = "form-control", @type = "text", @id = "txtIntervalo_de_Referencia" })
+                </div>
+        <div class="MarginBottom ">
+            <h3>@Resources.Detalle_Examenes_LaboratorioResources.Fecha_de_Resultado</h3>
+        </div>
+        <div class="MarginBottom form-inline">
+            <label class="">@Resources.Resources.From:</label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceFromFecha_de_Resultado" name="FromFecha_de_Resultado" type="text" value="@Model.FromFecha_de_Resultado" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+            <label class="">@Resources.Resources.To: </label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceToFecha_de_Resultado" name="ToFecha_de_Resultado" type="text" value="@Model.ToFecha_de_Resultado" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Detalle_Examenes_LaboratorioResources.Estatus_Indicador</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Estatus_IndicadorFilter, filters, new { @class = "form-control", @id = "ddlEstatus_IndicadorFilter" })
+                    @Html.TextBoxFor(m => m.Estatus_Indicador, new { @class = "form-control", @type = "text", @id = "txtEstatus_Indicador" })
+                </div>
+
+                <div class="MarginBottom form-inline">
+                    <input type="submit" class="btn btn-primary" value="@Resources.Resources.Search"><a class="btn btn-primary" href="@Url.Content("~/Frontal/Detalle_Examenes_Laboratorio/")" value=" ">@Resources.Resources.Cancelar</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function InitiateAdvanceSearch() {
+        var advanceSearch = {}, hasParameter = false;
+        if ($("#txtAdvanceFromFolio").val() != "" || $("#txtAdvanceToFolio").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Examenes_LaboratorioFolioFrom = $("#txtAdvanceFromFolio").val();
+            advanceSearch.Detalle_Examenes_LaboratorioFolioTo = $("#txtAdvanceToFolio").val();
+        }
+        advanceSearch.IndicadorSearchType = 0;
+        if ($('#ddlAdvanceIndicador').val().length > 0 || $("#txtAdvanceIndicador").val() == "") {
+
+
+            if (isDetalle_Examenes_LaboratorioTextSearch) {
+                advanceSearch.IndicadorName = $("#txtAdvanceIndicador").val();
+                advanceSearch.IndicadorNameSearchType = $("#ddlAdvanceIndicador").val();
+                advanceSearch.IndicadorSearchType = 1;
+            }
+            else {
+
+                advanceSearch.IndicadorToSearch = $("#ddlAdvanceIndicador").val();
+                advanceSearch.IndicadorSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceFromResultado").val() != "" || $("#txtAdvanceToResultado").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Examenes_LaboratorioResultadoFrom = $("#txtAdvanceFromResultado").val();
+            advanceSearch.Detalle_Examenes_LaboratorioResultadoTo = $("#txtAdvanceToResultado").val();
+        }
+        if ($("#txtAdvanceUnidad").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Examenes_LaboratorioUnidad = $("#txtAdvanceUnidad").val();
+            advanceSearch.Detalle_Examenes_LaboratorioUnidadSearchType = $("#ddlAdvanceUnidadFilter").val();
+        }
+        if ($("#txtAdvanceIntervalo_de_Referencia").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Examenes_LaboratorioIntervalo_de_Referencia = $("#txtAdvanceIntervalo_de_Referencia").val();
+            advanceSearch.Detalle_Examenes_LaboratorioIntervalo_de_ReferenciaSearchType = $("#ddlAdvanceIntervalo_de_ReferenciaFilter").val();
+        }
+        if ($("#txtAdvanceFromFecha_de_Resultado").val() != "" || $("#txtAdvanceToFecha_de_Resultado").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Examenes_LaboratorioFecha_de_ResultadoFrom = $("#txtAdvanceFromFecha_de_Resultado").val();
+            advanceSearch.Detalle_Examenes_LaboratorioFecha_de_ResultadoTo = $("#txtAdvanceToFecha_de_Resultado").val();
+        }
+        if ($("#txtAdvanceEstatus_Indicador").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Examenes_LaboratorioEstatus_Indicador = $("#txtAdvanceEstatus_Indicador").val();
+            advanceSearch.Detalle_Examenes_LaboratorioEstatus_IndicadorSearchType = $("#ddlAdvanceEstatus_IndicadorFilter").val();
+        }
+
+        advanceSearchQuery = hasParameter ? JSON.stringify(advanceSearch) : "";
+        $('#tblDetalle_Examenes_Laboratorio').DataTable().draw();
+        return false;
+    }
+
+    var advanceSearchQuery = "", isDetalle_Examenes_LaboratorioTextSearch = true;
+
+    $(document).ready(function () {
+        $('.clock').clockpicker();
+		$('.date').datepicker({
+			todayBtn: "linked",
+			keyboardNavigation: false,
+			forceParse: false,
+			calendarWeeks: true,
+			autoclose: true,
+			format: "@ConfigurationProperty.DateFormatDatePicker"
+		});
+        $("#txtAdvanceIndicador").keypress(function () {
+            isDetalle_Examenes_LaboratorioTextSearch = true;
+            $("#ddlAdvanceIndicador").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceIndicador").change(function () {
+            isDetalle_Examenes_LaboratorioTextSearch = false;
+            $("#txtAdvanceIndicador").val('');
+        });
+
+    });
+</script>
+
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/chosen")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/clockpicker")
+
+
+    <script>
+        //Adding Rules
+        jQuery.validator.unobtrusive
+      .adapters.addSingleVal("isnumberafter", "propertyname");
+        jQuery.validator.unobtrusive
+    .adapters.addSingleVal("isdateafter", "propertyname");
+
+        //Number after method
+        jQuery.validator.addMethod("isnumberafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+                //if (Date.parse(val) <= Date.parse(otherVal)) {
+                if (Number(val) < Number(otherVal)) {
+                    return false;
+                }
+                        }
+            return true;
+        });
+
+        //Date after after method
+        jQuery.validator.addMethod("isdateafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+
+                if (GetDateObject(val) < GetDateObject(otherVal)) {
+
+                    return false;
+                    }
+                }
+            return true;
+            });
+
+
+        function GetDateObject(value) {
+            var delimiter = GetDelimiter(dateFormat);
+            var dateCollection = value.split(delimiter);
+            var formatCollection = dateFormat.split(delimiter);
+            var dateModel = GetDateModel(dateCollection, formatCollection);
+            return new Date(dateModel.Year, dateModel.Month - 1, dateModel.Day);
+        }
+        //Used to get the date model by parsing the date and the format
+        function GetDateModel(dateCollection,formatCollection) {
+            var day, month, year;
+            for (var i = 0; i < formatCollection.length; i++) {
+                switch (formatCollection[i][0].toUpperCase()) {
+                
+                    case "D":
+                        day = dateCollection[i];
+                        break;
+
+                    case "Y":
+                        year = dateCollection[i];
+                        break;
+
+                    case "M":
+                        month = dateCollection[i];
+                        break;
+                }
+            }
+
+            return {
+                Day:day,
+                Month:month,
+                Year:year
+            };
+        }
+
+        function GetDelimiter(format) {
+
+            for (var i = 0; i < format.length; i++) {
+                if (/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(format[i])) {
+                    return format[i];
+                }
+            }
+            return null;
+        }
+
+        var dateFormat = "@ConfigurationProperty.DateFormatDatePicker";
+
+        $(document).ready(function () {
+            $('.input-daterange').datepicker({
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                format: dateFormat,
+                message: 'The date is not a valid'
+            });
+
+            $(".chosen-select").chosen({ width: "22%", no_results_text: "Oops, nothing found!" });
+			if ($('#IsFilterModal').val() == 'true') {
+                $('.ShowAdvanceFilter #right-sidebar').css('display', 'none');
+                $('.ShowAdvanceFilter .navbar-default').css('display', 'none');
+                $('.ShowAdvanceFilter .border-bottom').css('display', 'none');
+                $('.ShowAdvanceFilter #page-wrapper').css('margin', '0 auto');
+                $('.ShowAdvanceFilter .btn-save').val('@Resources.Resources.Filter');
+                $('.ShowAdvanceFilter .btn-cancelar').attr('data-dismiss', 'modal');
+                $('.ShowAdvanceFilter .btn-cancelar').removeAttr('href');
+                $('#idFilter').val($('#IdReport').val());
+            }
+        });
+
+    </script>
+}
+

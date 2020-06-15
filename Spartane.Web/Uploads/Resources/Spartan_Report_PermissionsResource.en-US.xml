@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_Report_Permissions" value="Report Permissions"></resource>
+  <resource culture="en-US" name="ReportPermissionId" value="ReportPermissionId"></resource>
+  <resource culture="en-US" name="User_Role" value="User Role"></resource>
+  <resource culture="en-US" name="Report" value="Report"></resource>
+  <resource culture="en-US" name="Permission_Type" value="Permission Type"></resource>
+
+</resources>

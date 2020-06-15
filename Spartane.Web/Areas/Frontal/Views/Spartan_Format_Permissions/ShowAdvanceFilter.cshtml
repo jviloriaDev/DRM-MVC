@@ -1,0 +1,332 @@
+﻿@using System.Collections.Generic
+@using Spartane.Web.Areas.Frontal.Models
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Spartan_Format_PermissionsAdvanceSearchModel
+@{
+    List<SelectListItem> varSpartan_Format = null;
+    if (ViewBag.Spartan_Formats != null)
+    { varSpartan_Format = (List<SelectListItem>)ViewBag.Spartan_Formats; }    
+    List<SelectListItem> varSpartan_Format_Permission_Type = null;
+    if (ViewBag.Spartan_Format_Permission_Types != null)
+    { varSpartan_Format_Permission_Type = (List<SelectListItem>)ViewBag.Spartan_Format_Permission_Types; }    
+
+    var filters = (List<SelectListItem>)ViewBag.Filter;
+}
+<style>
+    .input-validation-error {
+        background: rgb(251, 227, 228);
+        border: 1px solid #fbc2c4;
+        color: #8a1f11;
+    }
+
+    .MarginBottom {
+        margin-bottom: 1%;
+    }
+
+    #divAdvanceSearch input {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch button {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch select {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch h3 {
+        margin-top: 2%;
+    }
+
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins" id="divAdvanceSearch">
+        <div class="ibox-content">
+            @using (Html.BeginForm("ShowAdvanceFilter", "Spartan_Format_Permissions", FormMethod.Post, new { @id = "frmAdvanceSearch", @role = "form" }))
+            {
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_Format_PermissionsResources.PermissionId</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromPermissionId, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromPermissionId" })
+                    @Html.ValidationMessageFor(m => m.FromPermissionId)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToPermissionId, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToPermissionId", @data_min = "txtAdvanceFromPermissionId" })
+                    @Html.ValidationMessageFor(m => m.ToPermissionId)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_Format_PermissionsResources.Format</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.FormatFilter, filters, new { @class = "form-control", @id = "ddlFormatFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceFormat, new { @class = "form-control", @type = "text", @id = "txtAdvanceFormat" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSpartan_Format!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceFormatMultiple, varSpartan_Format,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceFormat"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_Format_PermissionsResources.Permission_Type</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Permission_TypeFilter, filters, new { @class = "form-control", @id = "ddlPermission_TypeFilter" })
+                    @Html.TextBoxFor(m => m.AdvancePermission_Type, new { @class = "form-control", @type = "text", @id = "txtAdvancePermission_Type" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSpartan_Format_Permission_Type!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvancePermission_TypeMultiple, varSpartan_Format_Permission_Type,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvancePermission_Type"
+                        });
+                    }
+                </div>
+		//Boolean Field
+                <div class="MarginBottom">
+                    <label class="">@Resources.Spartan_Format_PermissionsResources.Apply:</label>
+                    <div class="radio radio-inline">
+                        @Html.RadioButtonFor(m => m.Apply, RadioOptions.NoApply, new { @id = "rdoApplyNoApply" })
+                        <label for="rdoApplyNoApply"> @Resources.Resources.NoApply </label>
+                    </div>
+                    <div class="radio radio-inline">
+                        @Html.RadioButtonFor(m => m.Apply, RadioOptions.Yes, new { @id = "rdoApply1" })
+                        <label for="rdoApply1"> @Resources.Resources.Yes </label>
+                    </div>
+                    <div class="radio radio-inline">
+                        @Html.RadioButtonFor(m => m.Apply, RadioOptions.No, new { @id = "rdoApply2" })
+                        <label for="rdoApply2">@Resources.Resources.No </label>
+                    </div>
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_Format_PermissionsResources.Spartan_User_Role</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromSpartan_User_Role, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromSpartan_User_Role" })
+                    @Html.ValidationMessageFor(m => m.FromSpartan_User_Role)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToSpartan_User_Role, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToSpartan_User_Role", @data_min = "txtAdvanceFromSpartan_User_Role" })
+                    @Html.ValidationMessageFor(m => m.ToSpartan_User_Role)
+                </div>
+
+                <div class="MarginBottom form-inline">
+                    <input type="submit" class="btn btn-primary" value="@Resources.Resources.Search"><a class="btn btn-primary" href="@Url.Content("~/Frontal/Spartan_Format_Permissions/")" value=" ">@Resources.Resources.Cancelar</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function InitiateAdvanceSearch() {
+        var advanceSearch = {}, hasParameter = false;
+        if ($("#txtAdvanceFromPermissionId").val() != "" || $("#txtAdvanceToPermissionId").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Format_PermissionsPermissionIdFrom = $("#txtAdvanceFromPermissionId").val();
+            advanceSearch.Spartan_Format_PermissionsPermissionIdTo = $("#txtAdvanceToPermissionId").val();
+        }
+        advanceSearch.FormatSearchType = 0;
+        if ($('#ddlAdvanceFormat').val().length > 0 || $("#txtAdvanceFormat").val() == "") {
+
+
+            if (isSpartan_Format_PermissionsTextSearch) {
+                advanceSearch.FormatName = $("#txtAdvanceFormat").val();
+                advanceSearch.FormatNameSearchType = $("#ddlAdvanceFormat").val();
+                advanceSearch.FormatSearchType = 1;
+            }
+            else {
+
+                advanceSearch.FormatToSearch = $("#ddlAdvanceFormat").val();
+                advanceSearch.FormatSearchType = 2;
+            }
+        }
+        advanceSearch.Permission_TypeSearchType = 0;
+        if ($('#ddlAdvancePermission_Type').val().length > 0 || $("#txtAdvancePermission_Type").val() == "") {
+
+
+            if (isSpartan_Format_PermissionsTextSearch) {
+                advanceSearch.Permission_TypeName = $("#txtAdvancePermission_Type").val();
+                advanceSearch.Permission_TypeNameSearchType = $("#ddlAdvancePermission_Type").val();
+                advanceSearch.Permission_TypeSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Permission_TypeToSearch = $("#ddlAdvancePermission_Type").val();
+                advanceSearch.Permission_TypeSearchType = 2;
+            }
+        }
+        if ($("#ddlAdvanceApply").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Format_PermissionsApply = $("#ddlAdvanceApply").val();
+        }
+        if ($("#txtAdvanceFromSpartan_User_Role").val() != "" || $("#txtAdvanceToSpartan_User_Role").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Format_PermissionsSpartan_User_RoleFrom = $("#txtAdvanceFromSpartan_User_Role").val();
+            advanceSearch.Spartan_Format_PermissionsSpartan_User_RoleTo = $("#txtAdvanceToSpartan_User_Role").val();
+        }
+
+        advanceSearchQuery = hasParameter ? JSON.stringify(advanceSearch) : "";
+        $('#tblSpartan_Format_Permissions').DataTable().draw();
+        return false;
+    }
+
+    var advanceSearchQuery = "", isSpartan_Format_PermissionsTextSearch = true;
+
+    $(document).ready(function () {
+        $('.clockpicker').clockpicker();
+        $("#txtAdvanceFormat").keypress(function () {
+            isSpartan_Format_PermissionsTextSearch = true;
+            $("#ddlAdvanceFormat").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceFormat").change(function () {
+            isSpartan_Format_PermissionsTextSearch = false;
+            $("#txtAdvanceFormat").val('');
+        });
+        $("#txtAdvancePermission_Type").keypress(function () {
+            isSpartan_Format_PermissionsTextSearch = true;
+            $("#ddlAdvancePermission_Type").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvancePermission_Type").change(function () {
+            isSpartan_Format_PermissionsTextSearch = false;
+            $("#txtAdvancePermission_Type").val('');
+        });
+
+    });
+</script>
+
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/chosen")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/clockpicker")
+
+
+    <script>
+        //Adding Rules
+        jQuery.validator.unobtrusive
+      .adapters.addSingleVal("isnumberafter", "propertyname");
+        jQuery.validator.unobtrusive
+    .adapters.addSingleVal("isdateafter", "propertyname");
+
+        //Number after method
+        jQuery.validator.addMethod("isnumberafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+                //if (Date.parse(val) <= Date.parse(otherVal)) {
+                if (Number(val) < Number(otherVal)) {
+                    return false;
+                }
+                        }
+            return true;
+        });
+
+        //Date after after method
+        jQuery.validator.addMethod("isdateafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+
+                if (GetDateObject(val) < GetDateObject(otherVal)) {
+
+                    return false;
+                    }
+                }
+            return true;
+            });
+
+
+        function GetDateObject(value) {
+            var delimiter = GetDelimiter(dateFormat);
+            var dateCollection = value.split(delimiter);
+            var formatCollection = dateFormat.split(delimiter);
+            var dateModel = GetDateModel(dateCollection, formatCollection);
+            return new Date(dateModel.Year, dateModel.Month - 1, dateModel.Day);
+        }
+        //Used to get the date model by parsing the date and the format
+        function GetDateModel(dateCollection,formatCollection) {
+            var day, month, year;
+            for (var i = 0; i < formatCollection.length; i++) {
+                switch (formatCollection[i][0].toUpperCase()) {
+                
+                    case "D":
+                        day = dateCollection[i];
+                        break;
+
+                    case "Y":
+                        year = dateCollection[i];
+                        break;
+
+                    case "M":
+                        month = dateCollection[i];
+                        break;
+                }
+            }
+
+            return {
+                Day:day,
+                Month:month,
+                Year:year
+            };
+        }
+
+        function GetDelimiter(format) {
+
+            for (var i = 0; i < format.length; i++) {
+                if (/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(format[i])) {
+                    return format[i];
+                }
+            }
+            return null;
+        }
+
+        var dateFormat = "@ConfigurationProperty.DateFormatDatePicker";
+
+        $(document).ready(function () {
+
+
+
+            $('.input-daterange').datepicker({
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                format: dateFormat,
+                message: 'The date is not a valid'
+            });
+
+            $(".chosen-select").chosen({ width: "22%", no_results_text: "Oops, nothing found!" });
+
+        });
+
+    </script>
+}
+

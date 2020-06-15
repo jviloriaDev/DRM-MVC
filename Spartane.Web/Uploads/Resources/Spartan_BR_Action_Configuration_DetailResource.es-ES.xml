@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Spartan_BR_Action_Configuration_Detail" value="Business Rule Action Configuration Detail"></resource>
+  <resource culture="es-es" name="ActionConfigurationId" value="Id"></resource>
+  <resource culture="es-es" name="Parameter_Name" value="Parameter Name"></resource>
+  <resource culture="es-es" name="Parameter_Type" value="Parameter Type"></resource>
+
+</resources>

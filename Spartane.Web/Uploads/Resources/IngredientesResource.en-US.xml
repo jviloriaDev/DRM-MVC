@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Ingredientes" value="Ingredientes"></resource>
+  <resource culture="en-US" name="Clave" value="Clave"></resource>
+  <resource culture="en-US" name="Nombre_Ingrediente" value="Nombre Ingrediente"></resource>
+  <resource culture="en-US" name="Clasificacion" value="Clasificación"></resource>
+  <resource culture="en-US" name="Imagen" value="Imagen"></resource>
+  <resource culture="en-US" name="Subgrupo" value="Subgrupo"></resource>
+  <resource culture="en-US" name="Cantidad_sugerida" value="Cantidad sugerida"></resource>
+  <resource culture="en-US" name="Unidad" value="Unidad"></resource>
+  <resource culture="en-US" name="Peso_bruto_redondeado_g" value="Peso bruto redondeado (g)"></resource>
+  <resource culture="en-US" name="Peso_neto_g" value="Peso neto (g)"></resource>
+  <resource culture="en-US" name="Nombre_sistema_anterior" value="Nombre sistema anterior"></resource>
+  <resource culture="en-US" name="Caracteristicas_Ingrediente" value="Características Ingrediente"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

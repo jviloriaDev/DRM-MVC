@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es" name="UserName" value="Clave de Acceso"></resource>
+  <resource culture="es" name="get_UserName" value="Clave de Acceso"></resource>
+  <resource culture="es" name="Password" value="Contraseña"></resource>
+  <resource culture="es" name="RememberMe" value="Recordar Contraseña"></resource>
+  <resource culture="es" name="Login" value="Iniciar sesión"></resource>
+  <resource culture="es" name="WelcomeSpartan" value="Bienvenido a SPARTANE"></resource>
+  <resource culture="es" name="SpartanLogin" value="Acceso al Sistema"></resource>
+  <resource culture="es" name="SpartanLoginHeader" value="SE+"></resource>
+  <resource culture="es" name="Language" value="Idioma"></resource>
+  <resource culture="es" name="UserNameRequired" value="Clave de Acceso Requerida"></resource>
+  <resource culture="es" name="PasswordRequired" value="Contraseña Requerida"></resource>
+  <resource culture="es" name="Clave" value="Clave"></resource>
+  <resource culture="es" name="Nombre" value="Nombre"></resource>
+  <resource culture="es" name="Puesto" value="Puesto"></resource>
+  <resource culture="es" name="FechaNacimiento" value="FechaNacimiento"></resource>
+  <resource culture="es" name="HoraEntrada" value="HoraEntrada"></resource>
+  <resource culture="es" name="Antiguedad" value="Antiguedad"></resource>
+  <resource culture="es" name="Sueldo" value="Sueldo"></resource>
+  <resource culture="es" name="Baja" value="Baja"></resource>
+  <resource culture="es" name="Curriculum" value="Curriculum"></resource>
+  <resource culture="es" name="Edad" value="Edad"></resource>
+  <resource culture="es" name="DepartamentoNombre" value="DepartamentoNombre"></resource>
+  <resource culture="es" name="Empleados" value="Empleados"></resource>
+  <resource culture="es" name="Home" value="Home"></resource>
+  <resource culture="es" name="RecordsPerPage" value="Registros por Página"></resource>
+  <resource culture="es" name="Display" value="Mostrar"></resource>
+  <resource culture="es" name="NothingFound" value="No hay registros disponibles"></resource>
+  <resource culture="es" name="ShowingPages" value="Página"></resource>
+  <resource culture="es" name="of" value="de"></resource>
+  <resource culture="es" name="NoRecords" value="No hay registros disponibles"></resource>
+  <resource culture="es" name="FilteredFrom" value="nuestro filtro"></resource>
+  <resource culture="es" name="TotalRecords" value="el total de registros"></resource>
+  <resource culture="es" name="Copy" value="Copia"></resource>
+  <resource culture="es" name="CSV" value="CSV"></resource>
+  <resource culture="es" name="Excel" value="Sobresalir"></resource>
+  <resource culture="es" name="PDF" value="PDF"></resource>
+  <resource culture="es" name="Print" value="Impresión"></resource>
+  <resource culture="es" name="Previous" value="Anterior"></resource>
+  <resource culture="es" name="Next" value="Siguiente"></resource>
+  <resource culture="es" name="Imagen" value="Imagen"></resource>
+  <resource culture="es" name="History" value="Historia"></resource>
+  <resource culture="es" name="SelectDepartamento" value="Seleccione Departamento"></resource>
+  <resource culture="es" name="JobHistory" value="Historia laboral"></resource>
+  <resource culture="es" name="AddNewRow" value="Añadir una nueva fila"></resource>
+  <resource culture="es" name="Id" value="Idaho"></resource>
+  <resource culture="es" name="JobTitle" value="Título profesional"></resource>
+  <resource culture="es" name="ExitDate" value="Fecha de salida"></resource>
+  <resource culture="es" name="ExitHour" value="Hora de salida"></resource>
+  <resource culture="es" name="Years" value="Años"></resource>
+  <resource culture="es" name="Salary" value="Salario"></resource>
+  <resource culture="es" name="Height" value="Altura"></resource>
+  <resource culture="es" name="CurrentJob" value="Trabajo actual"></resource>
+  <resource culture="es" name="JobDescription" value="Descripción del trabajo"></resource>
+  <resource culture="es" name="Assignment" value="Asignación"></resource>
+  <resource culture="es" name="Status" value="estatus"></resource>
+  <resource culture="es" name="State" value="Estado"></resource>
+  <resource culture="es" name="City" value="Ciudad"></resource>
+  <resource culture="es" name="FileInfo" value="Información del archivo"></resource>
+  <resource culture="es" name="Actions" value="Acción"></resource>
+  <resource culture="es" name="Guardar" value="Guardar"></resource>
+  <resource culture="es" name="GuardarNuevo" value="Guardar y Nuevo"></resource>
+  <resource culture="es" name="GuardarCopia" value="Guardar y Copiar"></resource>
+  <resource culture="es" name="configure" value="Configurar"></resource>
+  <resource culture="es" name="Cancelar" value="Cancelar"></resource>
+  <resource culture="es" name="DeleteConfirm" value="Estás seguro que quieres eliminar esto"></resource>
+  <resource culture="es" name="ErrorContactingServer" value="servidor de ponerse en contacto con el error"></resource>
+  <resource culture="es" name="EmployeeSaveSuccess" value="información de los empleados guardado correctamente"></resource>
+  <resource culture="es" name="ErrorSaveJobHistory" value="Error al guardar la información del historial de trabajos"></resource>
+  <resource culture="es" name="ErrorSaveEmployee" value="Error al guardar la información de los empleados"></resource>
+  <resource culture="es" name="Search" value="Buscar"></resource>
+  <resource culture="es" name="Upload" value="Subir"></resource>
+  <resource culture="es" name="InvalidUserPassword" value="Usuario o contraseña invalido."></resource>
+  <resource culture="es" name="DeactivateAccount" value="Su acceso ha tenido en cuenta hacia abajo, por favor póngase en contacto con el Administrador."></resource>
+  <resource culture="es" name="SessionExpired" value="Su sesión de inicio de sesión se ha expirado, por favor, introduzca su contraseña para continuar con la aplicación."></resource>
+  <resource culture="es" name="InvalidPassword" value="Contraseña invalida."></resource>
+  <resource culture="es" name="Edit" value="Edit"></resource>
+  <resource culture="es" name="Delete" value="Borrar"></resource>
+  <resource culture="es" name="Consult" value="Consultar"></resource>
+  <resource culture="es" name="CreateEmployee" value="crear Empleado"></resource>
+  <resource culture="es" name="Index" value="Índice"></resource>
+  <resource culture="es" name="All" value="Todas"></resource>
+
+  <resource culture="es" name="ErrorSave" value="Error al guardar la información"></resource>
+  <resource culture="es" name="Create" value="Nuevo"></resource>
+  <resource culture="es" name="SaveSuccess" value="Información Guardada Correctamete"></resource>
+
+  <resource culture="es" name="Email" value="Email"></resource>
+  <resource culture="es" name="EmailRequired" value="correo electrónico es requerido"></resource>
+  <resource culture="es" name="InvalidEmailUserName" value="Clave de Acceso válido o correo electrónico."></resource>
+  <resource culture="es" name="InvalidEmail" value="Entrado correo electrónico no es válida."></resource>
+  <resource culture="es" name="ForgotPassword" value="He Olvidado mi contraseña"></resource>
+  <resource culture="es-es" name="ForgotPasswordButton" value="Enviar Contraseña"></resource>
+  <resource culture="es" name="ForgotPasswordSuccess" value="Hemos enviado un correo electrónico a {0} con la conexión detalles."></resource>
+  <resource culture="es" name="ForgotPasswordEmailSubject" value="Solicitud de Olvidé mi contraseña"></resource>
+  <resource culture="es" name="ForgotPasswordEmailError" value="Se produjo un error al enviar el correo electrónico"></resource>
+
+  <resource culture="es" name="ChangePassword" value="Cambia la contraseña"></resource>
+  <resource culture="es" name="CurrentPassword" value="Contraseña actual"></resource>
+  <resource culture="es" name="CharactersLong" value="El {0} debe haber al menos {2} caracteres de longitud."></resource>
+  <resource culture="es" name="NewPassword" value="Nueva contraseña"></resource>
+  <resource culture="es" name="ConfirmNewPassword" value="Confirmar nueva contraseña"></resource>
+  <resource culture="es" name="PasswordMatch" value="La nueva contraseña y la confirmación de la contraseña no coinciden."></resource>
+  <resource culture="es" name="PasswordChanged" value="tu contraseña ha sido cambiada exitosamente"></resource>
+  <resource culture="es" name="EnteredPasswordInCorrect" value="Introduzca la contraseña actual es incorrecta"></resource>
+  <resource culture="es" name="ErrorUpdatePassword" value="Se ha producido algún error al actualizar la contraseña"></resource>
+  <resource culture="es" name="ExpiredPassword" value="Su contraseña expiró, por favor ingrese una nueva contraseña"></resource>
+  <resource culture="es" name="Configure" value="Configurar"></resource>
+
+  <resource culture="es" name="PrintText" value="Print"></resource>
+
+  <!--new general-->
+  <resource culture="es" name="From" value="De"></resource>
+  <resource culture="es" name="To" value="A"></resource>
+  <resource culture="es" name="Filter" value="Filtrar"></resource>
+  <resource culture="es" name="Yes" value="Si"></resource>
+  <resource culture="es" name="No" value="No"></resource>
+  <resource culture="es" name="BeginWith" value="Empezar con"></resource>
+  <resource culture="es" name="EndWith" value="Terminar con"></resource>
+  <resource culture="es" name="Exact" value="Exacto"></resource>
+  <resource culture="es" name="HasAttachment" value="Tiene Archivo Adjunto"></resource>
+  <resource culture="es" name="EmployeeId" value="Empleado Id"></resource>
+  <resource culture="es" name="Department" value="Departamento"></resource>
+  <resource culture="es" name="OrSelect" value="o Seleccionar"></resource>
+  <resource culture="es" name="AdvanceSearch" value="Búsqueda avanzada"></resource>
+  <resource culture="es" name="ClearFilter" value="Limpiar Filtro"></resource>
+  <resource culture="es" name="GreaterThanZero" value="El texto debe ser el número y debe ser mayor que 0 ."></resource>
+  <resource culture="es" name="GreaterThanFrom" value="Para debe ser superior a partir de"></resource>
+  <resource culture="es" name="InvalidDate" value="Por favor introduzca una fecha valida"></resource>
+  <resource culture="es" name="Contains" value="contiene"></resource>
+  <resource culture="es" name="NoApply" value="sin Aplicar"></resource>
+
+
+  <!--Security Admin Module-->
+  <resource culture="es" name="SecurityAdministration" value="Administración de seguridad"></resource>
+  <resource culture="es" name="Modules" value="módulos"></resource>
+  <resource culture="es" name="Configuration" value="Configuración"></resource>
+  <resource culture="es" name="UserRole" value="Rol del usuario"></resource>
+  <resource culture="es" name="ObjectModule" value="Objetos del módulo:"></resource>
+  <resource culture="es" name="Object" value="Objeto:"></resource>
+  <resource culture="es" name="textMessagge1" value="Mostrar objetos que no han sido seleccionados"></resource>
+  <resource culture="es" name="textMessagge2" value="Los permisos para el módulo:"></resource>
+  <resource culture="es" name="allowall" value="Permitir todo"></resource>
+  <resource culture="es" name="consults" value="Consultas"></resource>
+  <resource culture="es" name="new" value="Nuevo"></resource>
+  <resource culture="es" name="export" value="Exportar"></resource>
+  <!--Security Admin Module-->
+  <resource culture="es" name="SelectStatus" value="Estatus"></resource>
+  <resource culture="es" name="Description" value="Descripción"></resource>
+  <resource culture="es" name="Save" value="Guardar"></resource>
+  <resource culture="es" name="Close" value="Cerrar"></resource>
+  <resource culture="es" name="Name" value="Nombre"></resource>
+
+
+  <resource culture="es" name="Hello" value="Hola"></resource>
+  <resource culture="es" name="textTemplateEmail1" value="Recibimos una solicitud para olvidar la contraseña de su cuenta"></resource>
+  <resource culture="es" name="textTemplateEmail2" value="Por favor, no responda a este mensaje. fue enviado desde una dirección de correo electrónico no monitoreada."></resource>
+
+  <resource culture="es" name="ErrorNewPassword"  value="La nueva contraseña debe ser diferente a la última contraseña utilizada"></resource>
+  <resource culture="es" name="PreviouslyAttachedFile" value="Archivo adjuntado previamente"></resource>
+</resources>
+

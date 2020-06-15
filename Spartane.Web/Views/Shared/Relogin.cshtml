@@ -1,0 +1,55 @@
+﻿@model Spartane.Web.Models.LoginViewModel
+
+@{
+    ViewBag.Title = Resources.LoginResources.SpartanLogin;
+}
+
+<div class="loading style-2" style="display:none;"><div class="loading-wheel"></div></div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                @using (Ajax.BeginForm("ReLogin", "Account", new { area = "" }, new AjaxOptions { HttpMethod = "Post", OnSuccess = "SessionAlive", OnFailure = "$('.loading').css('display', 'none');" }, new { }))
+                {
+
+                    <div class="row">
+                        <div class="col-sm-12 b-r">
+                            <h3 class="m-t-none m-b">@Resources.LoginResources.SessionExpired</h3>
+                            <p>@ViewBag.Title</p>
+                            @Html.ValidationSummary(true)
+
+                                <span class="field-validation-error">
+                                    <span class="InvalidPassword"></span>
+                                </span>
+
+                            <div class="form-group">
+                                @if ((User as Spartane.Web.AuthenticationExt.Authentication) != null)
+                                {
+                                var CurrentUser = (User as Spartane.Web.AuthenticationExt.Authentication).UserContext;
+                                Model.UserName = CurrentUser.CurrentUser.UserName;
+                                @Html.HiddenFor(m=> m.UserName)
+                                @Html.LabelFor(m => m.UserName)
+                                <span>@Html.Raw(Model.UserName)</span>
+                                }
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Password)
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = @Resources.LoginResources.Password })
+                                @Html.ValidationMessageFor(m => m.Password)
+                            </div>
+                            <input type="submit" onclick="$('.loading').css('display', 'block');" value="@Resources.LoginResources.Login" class="btn btn-primary block full-width m-b" />
+                        </div>
+                    </div>
+
+                }
+            </div>
+        </div>
+    </div>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js" type="text/javascript"></script>
+@*<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>*@
+
+@*<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>*@
+
+@*<script src="https://ajax.aspnetcdn.com/ajax/mvc/5.2/jquery.validate.unobtrusive.js" type="text/javascript"></script>*@

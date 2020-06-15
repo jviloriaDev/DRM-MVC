@@ -1,0 +1,24 @@
+﻿
+    @{
+        if (Model != null && Model.Count > 0)
+        {
+            <div class="col-xs-12 col-md-12">
+                <div class="list-group" style="overflow-y: scroll;height: 33vh;">
+                    <input type="hidden" name="DashboardEditFormTemplete" hidden />
+                    @foreach (Spartane.Core.Domain.Template_Dashboard_Editor.Template_Dashboard_Editor element in Model)
+                    {
+                        <div onclick="Select_Element_Dashboard(this,@element.Template_Id)"  data-Id="@element.Template_Id" class="dashboardwizarditem list-group-item list-group-item-action flex-column align-items-start m-t-xs" style="height:50px">
+                            <div class="d-flex justify-content-between">
+                                <h5 class="mb-1" style="display: inline">@element.Description.Trim()</h5>
+                                <img style="float: right;height:32px;width:32px" src="@Url.Content("~/Images/Dashboard/")@element.Template_Image_Thumbnail_Spartane_File.Description">
+                            </div>
+                        </div>
+                    }
+
+                </div>
+                <button class="btn btn-light btn-block nextBtn pull-right" type="button" id="button-step-2" disabled onclick="Dashboard_Config_Card_Create()">@Resources.Resources.Create</button>
+            </div>
+
+
+        }
+    }

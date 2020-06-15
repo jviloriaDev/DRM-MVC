@@ -1,0 +1,466 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Globalization
+@using Spartane.Core.Domain.Permission
+@using Spartane.Core.Domain.Spartane_File
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Spartan_Format_PermissionsModel
+@{
+
+
+    List<SelectListItem> varSpartan_Format = null;
+    if (ViewBag.Spartan_Formats != null)
+    { varSpartan_Format = (List<SelectListItem>)ViewBag.Spartan_Formats; }    
+    List<SelectListItem> varSpartan_Format_Permission_Type = null;
+    if (ViewBag.Spartan_Format_Permission_Types != null)
+    { varSpartan_Format_Permission_Type = (List<SelectListItem>)ViewBag.Spartan_Format_Permission_Types; }    
+
+
+    Permission permission = ViewBag.Permission;
+}
+
+<div class="modal fade in" id="dvAttributeValue" style="background-color:rgba(0, 0, 0, 0.7);">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" id="lblAttributeType">Value</label>
+                    <div class="col-sm-7">
+                        <input type="text" title="Value" class="form-control" id="txtAttributeValue" />
+                    </div>
+                    <div class="col-sm-2">
+                        <a class="btn btn-primary" onclick="SaveValue()">Submit</a>
+                    </div>
+                    <input type="hidden" id="hdnAttributType" />
+                    <input type="hidden" id="hdnAttributElement" />
+                    <input type="hidden" id="hdnAttributNumber" />
+                    <input type="hidden" id="hdnElementType" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row wrapper border-bottom white-bg page-heading">
+
+    <div class="row">
+        <div class="col-lg-10">
+            <h2>
+                Spartan Format Permissions
+                <button onclick="Spartan_Format_PermissionsGetBusinessRule('', 'Abrir Pantalla', '0')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Spartan_Format_PermissionsBusinessRule-form">
+                    <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+                        <i class="fa fa-cogs fa-spin"></i>
+                    </a>
+                </button>
+            </h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">@Resources.Resources.Home</a>
+                </li>
+                <li class="">
+                    <label>@Resources.Spartan_Format_PermissionsResources.Spartan_Format_Permissions</label>
+                </li>
+                <li class="active">
+                    <strong>@Resources.Resources.Create</strong>
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-2">
+
+            @{
+                if (Convert.ToInt32(Spartane.Web.SessionHelper.Role) == (int)Spartane.Core.Enums.SpartanRoleEnum.Admin)
+                {
+                    <h2>&nbsp;</h2>
+                    <button onclick="Spartan_Format_PermissionsDisplayBusinessRule()" type="button" class="btn btn-info btn-lg displayBusinessProperyButton">
+                        <i class="fa fa-cogs fa-spin"></i>
+                    </button>
+
+                    <div aria-hidden="true" class="modal fade in Spartan_Format_PermissionsPropertyBusinessModal" id="Spartan_Format_PermissionsPropertyBusinessModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">
+                                        Property & Business Rules
+                                        <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                                    </h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <a class="btn btn-primary full-width" data-dismiss="modal" data-toggle="modal" data-target="#PropertyModal-form" onclick="GetPropertyBag()">Properties</a>
+                                        </div>
+                                        <div class="clearfix col-sm-12">&nbsp;</div>
+                                        <div class="col-sm-12">
+                                            <a class="btn btn-primary full-width" data-dismiss="modal" data-toggle="modal" data-target="#Spartan_Format_PermissionsBusinessRule-form" onclick="Spartan_Format_PermissionsGetBusinessRule()">Business Rule</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     <div aria-hidden="true" data-backdrop="static" class="modal fade in PropertyModal" id="PropertyModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+					</div>
+					<div aria-hidden="true" data-backdrop="static" class="modal fade in Spartan_Format_PermissionsBusinessRuleModal" id="Spartan_Format_PermissionsBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+					</div>
+					<div aria-hidden="true" data-backdrop="static" class="modal fade in Spartan_Format_PermissionsAddBusinessRuleModal" id="AddBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+					</div>
+
+
+                }
+            }
+        </div>
+    </div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            @using (Html.BeginForm("Post", "Spartan_Format_Permissions", FormMethod.Post, new { id = "CreateSpartan_Format_Permissions", @readonly = "true", @class = "form-horizontal", enctype = "multipart/form-data" }))
+            {
+				<input type="hidden" id="hdnObjectId" name="hdnObjectId" value="@ViewBag.ObjectId" />
+                <span id="popupNotification"></span>
+                <div class="container-fluid Spartan_Format_PermissionsCreateForm" id="viewmodeledit">
+			<div class="tabs-container">
+                        	<ul class="nav nav-tabs">
+<li class="active"><a data-toggle="tab" href="#tabDatos_Generales"> Datos Generales</a></li>
+
+                        	</ul>
+	                	<div class="tab-content">
+                            <div id="tabDatos_Generales" class="tab-pane active">
+                                <div class="panel-body">
+                            <div class="form-group" id="divPermissionId">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Format_PermissionsResources.PermissionId</label>
+                                <div class="col-sm-8" data-field-id="PermissionId" data-attribute="157965" data-field-name="@Resources.Spartan_Format_PermissionsResources.PermissionId">
+                                    <label class="form-control" for="PermissionId" id="lblPermissionId">@Model.PermissionId</label>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divFormat">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Format_PermissionsResources.Format</label>
+                                <div class="col-sm-8" data-field-id="Format" data-attribute="157966" data-field-name="@Resources.Spartan_Format_PermissionsResources.Format">
+                                    <select class="form-control" data-val="true" data-val-number="The field Format must be a number." data-val-required="The Format field is required." id="Format" name="Format">
+                                        <option value=""></option>
+                                        @if (varSpartan_Format != null){ 
+                                            foreach (var itemFormat in varSpartan_Format)
+                                            {
+                                                if (itemFormat.Value == Convert.ToString(Model.Format))
+                                                {
+                                                    <option value="@itemFormat.Value" selected>@itemFormat.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemFormat.Value">@itemFormat.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Format" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divPermission_Type">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Format_PermissionsResources.Permission_Type</label>
+                                <div class="col-sm-8" data-field-id="Permission_Type" data-attribute="157969" data-field-name="@Resources.Spartan_Format_PermissionsResources.Permission_Type">
+                                    <select class="form-control" data-val="true" data-val-number="The field Permission Type must be a number." data-val-required="The Permission Type field is required." id="Permission_Type" name="Permission_Type">
+                                        <option value=""></option>
+                                        @if (varSpartan_Format_Permission_Type != null){ 
+                                            foreach (var itemPermission_Type in varSpartan_Format_Permission_Type)
+                                            {
+                                                if (itemPermission_Type.Value == Convert.ToString(Model.Permission_Type))
+                                                {
+                                                    <option value="@itemPermission_Type.Value" selected>@itemPermission_Type.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemPermission_Type.Value">@itemPermission_Type.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Permission_Type" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divApply">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Format_PermissionsResources.Apply</label>
+                                <div class="col-sm-8" data-field-id="Apply" data-attribute="157970" data-field-name="@Resources.Spartan_Format_PermissionsResources.Apply">
+                                    @Html.CheckBoxFor(m => m.Apply, new { @class = "i-checks" })
+                                </div>
+                            </div>
+                            <div class="form-group" id="divSpartan_User_Role">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Format_PermissionsResources.Spartan_User_Role</label>
+                                <div class="col-sm-8" data-field-id="Spartan_User_Role" data-attribute="157971" data-field-name="@Resources.Spartan_Format_PermissionsResources.Spartan_User_Role">
+                                    <input class="form-control inputNumber" id="Spartan_User_Role" name="Spartan_User_Role" type="text" value="@Model.Spartan_User_Role">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Spartan_User_Role" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            </div>
+                                </div>
+
+				</div>	
+			</div>
+                    <br />
+                            <div class="form-actions fluid">
+                                <input type="hidden" value="@Model.PermissionId" id="ReferencePermissionId" />
+                                <input type="hidden" value="@Model.PermissionId" name="PermissionId" id="PermissionIdId" />
+                                <input type="hidden" value="@ViewBag.Operation" name="Operation" id="Operation" />
+                                @if (!ViewBag.Consult)
+                                {
+                                    <input type="button" value="@Resources.Resources.Guardar" id="Spartan_Format_PermissionsGuardar" class="btn btn-w-m btn-primary" onclick="return checkClientValidate('Spartan_Format_PermissionsCreateForm');"  />
+									<button onclick="Spartan_Format_PermissionsGetBusinessRule('', 'Al Guardar', '2')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Spartan_Format_PermissionsBusinessRule-form">
+                                        <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleBeforeSave">
+                                            <i class="fa fa-cogs fa-spin"></i>
+                                        </a>
+                                    </button>
+                                    <button type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton">
+                                        <i class="fa fa-cogs fa-spin"></i>
+                                    </button>
+
+                                    <input type="button" value="@Resources.Resources.GuardarNuevo" id="Spartan_Format_PermissionsGuardarYNuevo" onclick="return checkClientValidate('Spartan_Format_PermissionsCreateForm');" data-bind="    click: saveAndNew" class="btn btn-w-m btn-success"  />
+                                    <input type="button" value="@Resources.Resources.GuardarCopia" id="Spartan_Format_PermissionsGuardarYCopia" onclick="return checkClientValidate('Spartan_Format_PermissionsCreateForm');" data-bind="    click: saveAndNew" class="btn btn-w-m btn-success"  />
+                                    <a title="@Resources.Resources.Configure" id="ConfigureSave" name="ConfigureSave" onclick="SaveElementAttributes()" class="btn btn-success">@Resources.Resources.Configure</a>
+                                }
+
+                                <input type="hidden" id="hdnConfigureType" />
+								<input type="hidden" id="hdnSpartan_Format_PermissionsBusinessRuleFieldId" />
+                                <input type="hidden" id="hdnSpartan_Format_PermissionsBusinessRuleFieldName" />
+                                <input type="hidden" id="hdnSpartan_Format_PermissionsBusinessRuleAttribute" />
+
+                                <input type="button" value="@Resources.Resources.Cancelar" id="Spartan_Format_PermissionsCancelar" name="Spartan_Format_PermissionsCancelar" class="btn btn-danger noConsult" data-bind="click: cancel" tabindex="16" />
+
+                                <button onclick="Spartan_Format_PermissionsGetBusinessRule('', 'Al Cancelar', '3')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Spartan_Format_PermissionsBusinessRule-form">
+                                    <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+                                        <i class="fa fa-cogs fa-spin"></i>
+                                    </a>
+                                </button>
+                            </div>
+                        </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+<input id="hdnApplicationDirectory" type="hidden" value="@Url.Content("~/")" />
+
+@section Styles {
+<link href="@Url.Content("~/Content/BootstrapDatePicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+    @Styles.Render("~/plugins/awesomeCheckboxStyles")
+    @Styles.Render("~/plugins/select2Styles")
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+    .select2-results{background-color:#fff;}
+    .select2-container .select2-dropdown{height:auto !important;}
+
+    div.dataTables_info {
+        display: inline-block;
+        float: right;
+    }
+        i {
+        font-size: 25px !important;
+        display: block;
+        color: #676a6c;
+        margin-left: 6px;
+        margin-right: 6px;
+    }
+
+    .fullWidth {
+        width: 100%;
+    }
+</style>
+}
+
+<script type="text/javascript" src="~/Uploads/Scripts/Spartan_Format_Permissions.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Scripts/Custom/Spartan_Format_PermissionsGeneral.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/Spartan_Format_PermissionsCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+
+@section Scripts {
+
+
+    <script type="text/javascript">
+        
+
+
+
+        $(document).ready(function () {
+
+
+
+            initiateUIControls();
+			$('a').tooltip();
+        });
+
+
+
+        function initiateUIControls() {
+             $('.gridDatePicker').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            //Time Picker
+            $('.gridTimePicker').clockpicker();
+
+        }
+
+    </script>
+
+<script type="text/javascript">
+
+        function SendSpartan_Format_PermissionsData(callBack) {
+            var formData = new FormData($("form#CreateSpartan_Format_Permissions")[0]);
+            if (checkClientValidate('Spartan_Format_PermissionsCreateForm')) {
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Spartan_Format_Permissions/Post?IsNew="+ViewBag.IsNew+"")',
+                    type: 'POST',
+                    data: formData,
+                    async: true,
+                    success: function (result) {
+                        if (result < 0) {
+                            showNotification("@Resources.Resources.ErrorSave", "error");
+                        } else {
+
+                            showNotification("@Resources.Resources.SaveSuccess", "success");
+                            callBack(result);
+                        }
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            }
+            return false;
+        };
+        function GetPropertyBag() {
+            $.get('@Url.Action("Spartan_Format_PermissionsPropertyBag", "Spartan_Format_Permissions")', function (data) {
+                $(".PropertyModal").html(data);
+            });
+        }
+        function Spartan_Format_PermissionsGetBusinessRule(FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null)
+			{
+				$('#hdnSpartan_Format_PermissionsBusinessRuleFieldId').val(FieldId);
+				$('#hdnSpartan_Format_PermissionsBusinessRuleFieldName').val(FieldName);
+				$('#hdnSpartan_Format_PermissionsBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("BusinessRule", "BussinessRule")', { FieldId: $('#hdnSpartan_Format_PermissionsBusinessRuleFieldId').val(), FieldName: $('#hdnSpartan_Format_PermissionsBusinessRuleFieldName').val(), ObjectId: $('#hdnObjectId').val(), Attribute: $('#hdnSpartan_Format_PermissionsBusinessRuleAttribute').val() }, function (data) {
+                $(".Spartan_Format_PermissionsBusinessRuleModal").html(data);
+            });
+        }
+        function GetAddBusinessRule(RuleId, FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null) {
+				$('#hdnSpartan_Format_PermissionsBusinessRuleFieldId').val(FieldId);
+				$('#hdnSpartan_Format_PermissionsBusinessRuleFieldName').val(FieldName);
+				$('#hdnSpartan_Format_PermissionsBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("AddBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnSpartan_Format_PermissionsBusinessRuleFieldId').val(), FieldName: $('#hdnSpartan_Format_PermissionsBusinessRuleFieldName').val(), ObjectId: $('#hdnObjectId').val(), Attribute: $('#hdnSpartan_Format_PermissionsBusinessRuleAttribute').val(), Screen: 'Spartan_Format_Permissions' }, function (data) {
+                $(".Spartan_Format_PermissionsAddBusinessRuleModal").html(data);
+                $(".datatable").DataTable();
+            });
+        }
+		function RemoveBusinessRule(RuleId) {
+			$.get('@Url.Action("RemoveBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnSpartan_Format_PermissionsBusinessRuleFieldId').val(), FieldName: $('#hdnSpartan_Format_PermissionsBusinessRuleFieldName').val(), ObjectId: $('#hdnObjectId').val(), Attribute: $('#hdnSpartan_Format_PermissionsBusinessRuleAttribute').val(), Screen: 'Spartan_Format_Permissions' }, function (data) {
+				$(".Spartan_Format_PermissionsBusinessRuleModal").html(data);
+			});
+		}
+
+    var permission = {
+        Consult: '@permission.Consult' == 'True',
+        New: '@permission.New' == 'True',
+        Edit: '@permission.Edit' == 'True',
+        Delete: '@permission.Delete' == 'True',
+        Export: '@permission.Export' == 'True',
+        Print: '@permission.Print' == 'True',
+        Configure: '@permission.Configure' == 'True',
+    };
+
+    
+    //MR-var statusItems;
+    //MR-var stateItems;
+    //MR-var cityItems = [];
+    var isConsultMode = "@ViewBag.Consult" == "True";
+    Consult(isConsultMode);
+        function Consult(val) {
+            if (val) {
+                $(':input').attr('readonly', 'readonly');
+                $(':input').attr('disabled', 'true');
+                $('.noConsult').removeAttr('readonly');
+                $('.noConsult').removeAttr('disabled');
+            }
+        }
+
+    function BackToGrid() {
+        location.href = "@Url.Content("~/Frontal/Spartan_Format_Permissions/")";
+    }
+	
+	function ReadScriptSettings(callback)
+    {
+        $.post("@Url.Content("~/Frontal/Spartan_Format_Permissions/ReadScriptSettings")", function (data) {
+            mainElementObject = JSON.parse(data.MainElement);
+			if (data.ChildElement != null) {
+                childElementObject = JSON.parse(data.ChildElement);
+            }
+            callback();
+        });
+    }
+
+    function SaveSettingsWithoutReload() {
+        $.post("@Url.Content("~/Frontal/Spartan_Format_Permissions/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+            //$('#hdnConfigureType').val("0");
+        }, "json");
+    }
+	
+        function SaveElementAttributes() {
+            if ($('#hdnConfigureType').val() == "1") {
+                $.post("@Url.Content("~/Frontal/Spartan_Format_Permissions/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+                    $('#hdnConfigureType').val("0");
+                    location.reload(true);
+                }, "json");
+            } else {
+                $.post("@Url.Content("~/Frontal/Spartan_Format_Permissions/ReadScriptSettings")", function (data) {
+                    mainElementObject = JSON.parse(data.MainElement);
+                    childElementObject = JSON.parse(data.ChildElement);
+
+                    for (var i = 0; i < mainElementObject.length; i++) {
+                        var mainElementAttributes = '<div class="col-sm-2">';
+                        mainElementAttributes += '<div class="displayAttributes requiredAttribute"><a class="requiredClick" title="' + (mainElementObject[i].IsRequired == true ? "Required" : "Not Required") + '" onclick="setRequired(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsRequired == true ? "@Url.Content("~/Images/Required.png")" : "@Url.Content("~/Images/Not-Required.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes visibleAttribute"><a class="visibleClick" title="' + (mainElementObject[i].IsVisible == true ? "Visible" : "In Visible") + '" onclick="setVisible(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsVisible == true ? "@Url.Content("~/Images/Visible.png")" : "@Url.Content("~/Images/InVisible.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes readOnlyAttribute"><a class="readOnlyClick" title="' + (mainElementObject[i].IsReadOnly == true ? "Disabled" : "Enabled") + '" onclick="setReadOnly(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsReadOnly == true ? "@Url.Content("~/Images/Disabled.png")" : "@Url.Content("~/Images/Enabled.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes defaultValueAttribute"><a id="hlDefaultValue_' + i.toString() + '" class="defaultValueClick" title="' + (mainElementObject[i].DefaultValue) + '" onclick="setDefaultValue(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].DefaultValue != '' && mainElementObject[i].DefaultValue != null ? "@Url.Content("~/Images/default-value.png")" : "@Url.Content("~/Images/Not-Default-Value.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes helpTextAttribute"><a id="hlHelpText_' + i.toString() + '" class="helpTextClick" title="' + (mainElementObject[i].HelpText) + '" onclick="setHelpText(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].HelpText != '' && mainElementObject[i].HelpText != null ? "@Url.Content("~/Images/green-help.png")" : "@Url.Content("~/Images/red-help.jpg")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '</div>';
+                        $('#' + mainElementObject[i].inputId).parent().closest('.form-group').show();
+
+                        $('#' + mainElementObject[i].inputId).closest('.col-sm-8').after(mainElementAttributes);
+                    }
+					if (childElementObject != null) {
+						for (var i = 0; i < childElementObject.length; i++) {
+							$('.' + childElementObject[i].inputId + 'Header').show();
+							$('.' + childElementObject[i].inputId).parent().show();
+							$('.' + childElementObject[i].inputId + 'Header').append(returnAttributeHTML(i));
+						}
+					}
+                    $('#ConfigureSave').text('Save Settings');
+                    $('#hdnConfigureType').val("1");
+                });
+            }
+        }
+		$('#CreateSpartan_Format_Permissions').on('click', '.btnPopupBusinessRules', function () {
+			var fieldId = $(this).data('field-id');
+			var fieldName = $(this).data('field-name');
+			var attribute = $(this).data('attribute');
+			$('#hdnSpartan_Format_PermissionsBusinessRuleFieldId').val(fieldId);
+			$('#hdnSpartan_Format_PermissionsBusinessRuleFieldName').val(fieldName);
+			$('#hdnSpartan_Format_PermissionsBusinessRuleAttribute').val(attribute);
+		});
+    </script>
+}

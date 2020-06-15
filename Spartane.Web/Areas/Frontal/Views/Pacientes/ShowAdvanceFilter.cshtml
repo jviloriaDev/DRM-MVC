@@ -1,0 +1,3138 @@
+﻿@using System.Collections.Generic
+@using Spartane.Web.Areas.Frontal.Models
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.PacientesAdvanceSearchModel
+@{
+    List<SelectListItem> varSpartan_User_Usuario_que_Registra = null;
+    if (ViewBag.Spartan_Users_Usuario_que_Registra != null)
+    { varSpartan_User_Usuario_que_Registra = (List<SelectListItem>)ViewBag.Spartan_Users_Usuario_que_Registra; }
+    List<SelectListItem> varTipo_de_Registro_Tipo_de_Registro = null;
+    if (ViewBag.Tipo_de_Registros_Tipo_de_Registro != null)
+    { varTipo_de_Registro_Tipo_de_Registro = (List<SelectListItem>)ViewBag.Tipo_de_Registros_Tipo_de_Registro; }
+    List<SelectListItem> varTipo_Paciente_Tipo_de_Paciente = null;
+    if (ViewBag.Tipo_Pacientes_Tipo_de_Paciente != null)
+    { varTipo_Paciente_Tipo_de_Paciente = (List<SelectListItem>)ViewBag.Tipo_Pacientes_Tipo_de_Paciente; }
+    List<SelectListItem> varSpartan_User_Usuario_Registrado = null;
+    if (ViewBag.Spartan_Users_Usuario_Registrado != null)
+    { varSpartan_User_Usuario_Registrado = (List<SelectListItem>)ViewBag.Spartan_Users_Usuario_Registrado; }
+    List<SelectListItem> varEmpresas_Empresa = null;
+    if (ViewBag.Empresass_Empresa != null)
+    { varEmpresas_Empresa = (List<SelectListItem>)ViewBag.Empresass_Empresa; }
+    List<SelectListItem> varPais_Pais_de_nacimiento = null;
+    if (ViewBag.Paiss_Pais_de_nacimiento != null)
+    { varPais_Pais_de_nacimiento = (List<SelectListItem>)ViewBag.Paiss_Pais_de_nacimiento; }
+    List<SelectListItem> varEstado_Lugar_de_nacimiento = null;
+    if (ViewBag.Estados_Lugar_de_nacimiento != null)
+    { varEstado_Lugar_de_nacimiento = (List<SelectListItem>)ViewBag.Estados_Lugar_de_nacimiento; }
+    List<SelectListItem> varSexo_Sexo = null;
+    if (ViewBag.Sexos_Sexo != null)
+    { varSexo_Sexo = (List<SelectListItem>)ViewBag.Sexos_Sexo; }
+    List<SelectListItem> varEstado_Civil_Estado_Civil = null;
+    if (ViewBag.Estado_Civils_Estado_Civil != null)
+    { varEstado_Civil_Estado_Civil = (List<SelectListItem>)ViewBag.Estado_Civils_Estado_Civil; }
+    List<SelectListItem> varPais_Pais = null;
+    if (ViewBag.Paiss_Pais != null)
+    { varPais_Pais = (List<SelectListItem>)ViewBag.Paiss_Pais; }
+    List<SelectListItem> varEstado_Estado = null;
+    if (ViewBag.Estados_Estado != null)
+    { varEstado_Estado = (List<SelectListItem>)ViewBag.Estados_Estado; }
+    List<SelectListItem> varObjetivos_Objetivo = null;
+    if (ViewBag.Objetivoss_Objetivo != null)
+    { varObjetivos_Objetivo = (List<SelectListItem>)ViewBag.Objetivoss_Objetivo; }
+    List<SelectListItem> varEstatus_por_Suscripcion_Estatus_Paciente = null;
+    if (ViewBag.Estatus_por_Suscripcions_Estatus_Paciente != null)
+    { varEstatus_por_Suscripcion_Estatus_Paciente = (List<SelectListItem>)ViewBag.Estatus_por_Suscripcions_Estatus_Paciente; }
+    List<SelectListItem> varRespuesta_Logica_Cuenta_con_padecimientos = null;
+    if (ViewBag.Respuesta_Logicas_Cuenta_con_padecimientos != null)
+    { varRespuesta_Logica_Cuenta_con_padecimientos = (List<SelectListItem>)ViewBag.Respuesta_Logicas_Cuenta_con_padecimientos; }
+    List<SelectListItem> varRespuesta_Logica_Esta_embarazada = null;
+    if (ViewBag.Respuesta_Logicas_Esta_embarazada != null)
+    { varRespuesta_Logica_Esta_embarazada = (List<SelectListItem>)ViewBag.Respuesta_Logicas_Esta_embarazada; }
+    List<SelectListItem> varRespuesta_Logica_Toma_anticonceptivos = null;
+    if (ViewBag.Respuesta_Logicas_Toma_anticonceptivos != null)
+    { varRespuesta_Logica_Toma_anticonceptivos = (List<SelectListItem>)ViewBag.Respuesta_Logicas_Toma_anticonceptivos; }
+    List<SelectListItem> varRespuesta_Logica_Climaterio = null;
+    if (ViewBag.Respuesta_Logicas_Climaterio != null)
+    { varRespuesta_Logica_Climaterio = (List<SelectListItem>)ViewBag.Respuesta_Logicas_Climaterio; }
+    List<SelectListItem> varRespuesta_Logica_Terapia_reemplazo_hormonal = null;
+    if (ViewBag.Respuesta_Logicas_Terapia_reemplazo_hormonal != null)
+    { varRespuesta_Logica_Terapia_reemplazo_hormonal = (List<SelectListItem>)ViewBag.Respuesta_Logicas_Terapia_reemplazo_hormonal; }
+    List<SelectListItem> varTipo_de_Dieta_Tipo_Dieta = null;
+    if (ViewBag.Tipo_de_Dietas_Tipo_Dieta != null)
+    { varTipo_de_Dieta_Tipo_Dieta = (List<SelectListItem>)ViewBag.Tipo_de_Dietas_Tipo_Dieta; }
+    List<SelectListItem> varSuplementos_Suplementos = null;
+    if (ViewBag.Suplementoss_Suplementos != null)
+    { varSuplementos_Suplementos = (List<SelectListItem>)ViewBag.Suplementoss_Suplementos; }
+    List<SelectListItem> varPreferencias_Sal_Consumo_de_sal = null;
+    if (ViewBag.Preferencias_Sals_Consumo_de_sal != null)
+    { varPreferencias_Sal_Consumo_de_sal = (List<SelectListItem>)ViewBag.Preferencias_Sals_Consumo_de_sal; }
+    List<SelectListItem> varPreferencias_Grasas_Grasas_Preferencias = null;
+    if (ViewBag.Preferencias_Grasass_Grasas_Preferencias != null)
+    { varPreferencias_Grasas_Grasas_Preferencias = (List<SelectListItem>)ViewBag.Preferencias_Grasass_Grasas_Preferencias; }
+    List<SelectListItem> varCantidad_Comidas_Comidas_cantidad = null;
+    if (ViewBag.Cantidad_Comidass_Comidas_cantidad != null)
+    { varCantidad_Comidas_Comidas_cantidad = (List<SelectListItem>)ViewBag.Cantidad_Comidass_Comidas_cantidad; }
+    List<SelectListItem> varPreferencias_Preparacion_Preparacion_Preferencias = null;
+    if (ViewBag.Preferencias_Preparacions_Preparacion_Preferencias != null)
+    { varPreferencias_Preparacion_Preparacion_Preferencias = (List<SelectListItem>)ViewBag.Preferencias_Preparacions_Preparacion_Preferencias; }
+    List<SelectListItem> varPreferencias_Entrecomidas_Entre_comidas = null;
+    if (ViewBag.Preferencias_Entrecomidass_Entre_comidas != null)
+    { varPreferencias_Entrecomidas_Entre_comidas = (List<SelectListItem>)ViewBag.Preferencias_Entrecomidass_Entre_comidas; }
+    List<SelectListItem> varNivel_de_Satisfaccion_Apetito = null;
+    if (ViewBag.Nivel_de_Satisfaccions_Apetito != null)
+    { varNivel_de_Satisfaccion_Apetito = (List<SelectListItem>)ViewBag.Nivel_de_Satisfaccions_Apetito; }
+    List<SelectListItem> varTipo_Modificacion_Alimentos_Habitos_Modificacion = null;
+    if (ViewBag.Tipo_Modificacion_Alimentoss_Habitos_Modificacion != null)
+    { varTipo_Modificacion_Alimentos_Habitos_Modificacion = (List<SelectListItem>)ViewBag.Tipo_Modificacion_Alimentoss_Habitos_Modificacion; }
+    List<SelectListItem> varPeriodo_del_dia_Horario_hambre = null;
+    if (ViewBag.Periodo_del_dias_Horario_hambre != null)
+    { varPeriodo_del_dia_Horario_hambre = (List<SelectListItem>)ViewBag.Periodo_del_dias_Horario_hambre; }
+    List<SelectListItem> varEstado_de_Animo_Cuando_cambia_mi_estado_de_animo = null;
+    if (ViewBag.Estado_de_Animos_Cuando_cambia_mi_estado_de_animo != null)
+    { varEstado_de_Animo_Cuando_cambia_mi_estado_de_animo = (List<SelectListItem>)ViewBag.Estado_de_Animos_Cuando_cambia_mi_estado_de_animo; }
+    List<SelectListItem> varRespuesta_Logica_Medicamentos_bajar_peso = null;
+    if (ViewBag.Respuesta_Logicas_Medicamentos_bajar_peso != null)
+    { varRespuesta_Logica_Medicamentos_bajar_peso = (List<SelectListItem>)ViewBag.Respuesta_Logicas_Medicamentos_bajar_peso; }
+    List<SelectListItem> varFrecuencia_Ejercicio_Frecuencia_Ejercicio = null;
+    if (ViewBag.Frecuencia_Ejercicios_Frecuencia_Ejercicio != null)
+    { varFrecuencia_Ejercicio_Frecuencia_Ejercicio = (List<SelectListItem>)ViewBag.Frecuencia_Ejercicios_Frecuencia_Ejercicio; }
+    List<SelectListItem> varDuracion_Ejercicio_Duracion_Ejercicio = null;
+    if (ViewBag.Duracion_Ejercicios_Duracion_Ejercicio != null)
+    { varDuracion_Ejercicio_Duracion_Ejercicio = (List<SelectListItem>)ViewBag.Duracion_Ejercicios_Duracion_Ejercicio; }
+    List<SelectListItem> varTipo_Ejercicio_Tipo_Ejercicio = null;
+    if (ViewBag.Tipo_Ejercicios_Tipo_Ejercicio != null)
+    { varTipo_Ejercicio_Tipo_Ejercicio = (List<SelectListItem>)ViewBag.Tipo_Ejercicios_Tipo_Ejercicio; }
+    List<SelectListItem> varAntiguedad_Ejercicios_Antiguedad_Ejercicio = null;
+    if (ViewBag.Antiguedad_Ejercicioss_Antiguedad_Ejercicio != null)
+    { varAntiguedad_Ejercicios_Antiguedad_Ejercicio = (List<SelectListItem>)ViewBag.Antiguedad_Ejercicioss_Antiguedad_Ejercicio; }
+    List<SelectListItem> varInterpretacion_IMC_Interpretacion_IMC = null;
+    if (ViewBag.Interpretacion_IMCs_Interpretacion_IMC != null)
+    { varInterpretacion_IMC_Interpretacion_IMC = (List<SelectListItem>)ViewBag.Interpretacion_IMCs_Interpretacion_IMC; }
+    List<SelectListItem> varInterpretacion_IMC_IMC_Pediatria = null;
+    if (ViewBag.Interpretacion_IMCs_IMC_Pediatria != null)
+    { varInterpretacion_IMC_IMC_Pediatria = (List<SelectListItem>)ViewBag.Interpretacion_IMCs_IMC_Pediatria; }
+    List<SelectListItem> varInterpretacion_corporal_Interpretacion_complexion_corporal = null;
+    if (ViewBag.Interpretacion_corporals_Interpretacion_complexion_corporal != null)
+    { varInterpretacion_corporal_Interpretacion_complexion_corporal = (List<SelectListItem>)ViewBag.Interpretacion_corporals_Interpretacion_complexion_corporal; }
+    List<SelectListItem> varInterpretacion_distribucion_grasa_corporal_Interpretacion_grasa_corporal = null;
+    if (ViewBag.Interpretacion_distribucion_grasa_corporals_Interpretacion_grasa_corporal != null)
+    { varInterpretacion_distribucion_grasa_corporal_Interpretacion_grasa_corporal = (List<SelectListItem>)ViewBag.Interpretacion_distribucion_grasa_corporals_Interpretacion_grasa_corporal; }
+    List<SelectListItem> varInterpretacion_indice_cintura__cadera_Interpretacion_indice = null;
+    if (ViewBag.Interpretacion_indice_cintura__caderas_Interpretacion_indice != null)
+    { varInterpretacion_indice_cintura__cadera_Interpretacion_indice = (List<SelectListItem>)ViewBag.Interpretacion_indice_cintura__caderas_Interpretacion_indice; }
+    List<SelectListItem> varInterpretacion_consumo_de_agua_Interpretacion_agua = null;
+    if (ViewBag.Interpretacion_consumo_de_aguas_Interpretacion_agua != null)
+    { varInterpretacion_consumo_de_agua_Interpretacion_agua = (List<SelectListItem>)ViewBag.Interpretacion_consumo_de_aguas_Interpretacion_agua; }
+    List<SelectListItem> varInterpretacion_Frecuencia_cardiaca_en_Esfuerzo_Interpretacion_frecuencia = null;
+    if (ViewBag.Interpretacion_Frecuencia_cardiaca_en_Esfuerzos_Interpretacion_frecuencia != null)
+    { varInterpretacion_Frecuencia_cardiaca_en_Esfuerzo_Interpretacion_frecuencia = (List<SelectListItem>)ViewBag.Interpretacion_Frecuencia_cardiaca_en_Esfuerzos_Interpretacion_frecuencia; }
+    List<SelectListItem> varInterpretacion_Dificultad_de_Rutina_de_Ejercicios_Interpretacion_dificultad = null;
+    if (ViewBag.Interpretacion_Dificultad_de_Rutina_de_Ejercicioss_Interpretacion_dificultad != null)
+    { varInterpretacion_Dificultad_de_Rutina_de_Ejercicios_Interpretacion_dificultad = (List<SelectListItem>)ViewBag.Interpretacion_Dificultad_de_Rutina_de_Ejercicioss_Interpretacion_dificultad; }
+    List<SelectListItem> varInterpretacion_Calorias_Interpretacion_calorias = null;
+    if (ViewBag.Interpretacion_Caloriass_Interpretacion_calorias != null)
+    { varInterpretacion_Calorias_Interpretacion_calorias = (List<SelectListItem>)ViewBag.Interpretacion_Caloriass_Interpretacion_calorias; }
+
+    var filters = (List<SelectListItem>)ViewBag.Filter;
+}
+<style>
+    .input-validation-error {
+        background: rgb(251, 227, 228);
+        border: 1px solid #fbc2c4;
+        color: #8a1f11;
+    }
+
+    .MarginBottom {
+        margin-bottom: 1%;
+    }
+
+    #divAdvanceSearch input {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch button {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch select {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch h3 {
+        margin-top: 2%;
+    }
+
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins" id="divAdvanceSearch">
+        <div class="ibox-content">
+            @using (Html.BeginForm("ShowAdvanceFilter", "Pacientes", FormMethod.Post, new { @id = "frmAdvanceSearch", @role = "form" }))
+            {
+				<input type="hidden" value="-1" name="idFilter" id="idFilter" />
+                <div class="MarginBottom ">
+                    <h3>@Resources.PacientesResources.Folio</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromFolio, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromFolio" })
+                    @Html.ValidationMessageFor(m => m.FromFolio)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToFolio, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToFolio", @data_min = "txtAdvanceFromFolio" })
+                    @Html.ValidationMessageFor(m => m.ToFolio)
+                </div>
+        <div class="MarginBottom ">
+            <h3>@Resources.PacientesResources.Fecha_de_Registro</h3>
+        </div>
+        <div class="MarginBottom form-inline">
+            <label class="">@Resources.Resources.From:</label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceFromFecha_de_Registro" name="FromFecha_de_Registro" type="text" value="@Model.FromFecha_de_Registro" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+            <label class="">@Resources.Resources.To: </label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceToFecha_de_Registro" name="ToFecha_de_Registro" type="text" value="@Model.ToFecha_de_Registro" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+        <div class="MarginBottom ">
+            <h3>@Resources.PacientesResources.Hora_de_Registro</h3>
+        </div>
+        <div class="MarginBottom form-inline">
+            <label class="">@Resources.Resources.From:</label>
+            <div class="input-group clock" data-autoclose="true">
+                <input class="form-control" id="txtAdvanceFromHora_de_Registro" name="FromHora_de_Registro" type="text" value="@Model.FromHora_de_Registro" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-time"></span>
+                </span>
+            </div>
+            <label class="">@Resources.Resources.To: </label>
+            <div class="input-group clock" data-autoclose="true">
+                <input class="form-control" id="txtAdvanceToHora_de_Registro" name="ToHora_de_Registro" type="text" value="@Model.ToHora_de_Registro" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-time"></span>
+                </span>
+            </div>
+        </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Usuario_que_Registra</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Usuario_que_RegistraFilter, filters, new { @class = "form-control", @id = "ddlUsuario_que_RegistraFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceUsuario_que_Registra, new { @class = "form-control", @type = "text", @id = "txtAdvanceUsuario_que_Registra" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSpartan_User_Usuario_que_Registra!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceUsuario_que_RegistraMultiple, varSpartan_User_Usuario_que_Registra,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceUsuario_que_Registra"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Tipo_de_Registro</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Tipo_de_RegistroFilter, filters, new { @class = "form-control", @id = "ddlTipo_de_RegistroFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceTipo_de_Registro, new { @class = "form-control", @type = "text", @id = "txtAdvanceTipo_de_Registro" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varTipo_de_Registro_Tipo_de_Registro!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceTipo_de_RegistroMultiple, varTipo_de_Registro_Tipo_de_Registro,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceTipo_de_Registro"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Tipo_de_Paciente</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Tipo_de_PacienteFilter, filters, new { @class = "form-control", @id = "ddlTipo_de_PacienteFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceTipo_de_Paciente, new { @class = "form-control", @type = "text", @id = "txtAdvanceTipo_de_Paciente" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varTipo_Paciente_Tipo_de_Paciente!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceTipo_de_PacienteMultiple, varTipo_Paciente_Tipo_de_Paciente,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceTipo_de_Paciente"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Usuario_Registrado</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Usuario_RegistradoFilter, filters, new { @class = "form-control", @id = "ddlUsuario_RegistradoFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceUsuario_Registrado, new { @class = "form-control", @type = "text", @id = "txtAdvanceUsuario_Registrado" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSpartan_User_Usuario_Registrado!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceUsuario_RegistradoMultiple, varSpartan_User_Usuario_Registrado,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceUsuario_Registrado"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Empresa</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.EmpresaFilter, filters, new { @class = "form-control", @id = "ddlEmpresaFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceEmpresa, new { @class = "form-control", @type = "text", @id = "txtAdvanceEmpresa" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varEmpresas_Empresa!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceEmpresaMultiple, varEmpresas_Empresa,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceEmpresa"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Numero_de_Empleado</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Numero_de_EmpleadoFilter, filters, new { @class = "form-control", @id = "ddlNumero_de_EmpleadoFilter" })
+                    @Html.TextBoxFor(m => m.Numero_de_Empleado, new { @class = "form-control", @type = "text", @id = "txtNumero_de_Empleado" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Nombres</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.NombresFilter, filters, new { @class = "form-control", @id = "ddlNombresFilter" })
+                    @Html.TextBoxFor(m => m.Nombres, new { @class = "form-control", @type = "text", @id = "txtNombres" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Apellido_Paterno</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Apellido_PaternoFilter, filters, new { @class = "form-control", @id = "ddlApellido_PaternoFilter" })
+                    @Html.TextBoxFor(m => m.Apellido_Paterno, new { @class = "form-control", @type = "text", @id = "txtApellido_Paterno" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Apellido_Materno</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Apellido_MaternoFilter, filters, new { @class = "form-control", @id = "ddlApellido_MaternoFilter" })
+                    @Html.TextBoxFor(m => m.Apellido_Materno, new { @class = "form-control", @type = "text", @id = "txtApellido_Materno" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Nombre_Completo</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Nombre_CompletoFilter, filters, new { @class = "form-control", @id = "ddlNombre_CompletoFilter" })
+                    @Html.TextBoxFor(m => m.Nombre_Completo, new { @class = "form-control", @type = "text", @id = "txtNombre_Completo" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Celular</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.CelularFilter, filters, new { @class = "form-control", @id = "ddlCelularFilter" })
+                    @Html.TextBoxFor(m => m.Celular, new { @class = "form-control", @type = "text", @id = "txtCelular" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Email</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.EmailFilter, filters, new { @class = "form-control", @id = "ddlEmailFilter" })
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @type = "text", @id = "txtEmail" })
+                </div>
+        <div class="MarginBottom ">
+            <h3>@Resources.PacientesResources.Fecha_de_nacimiento</h3>
+        </div>
+        <div class="MarginBottom form-inline">
+            <label class="">@Resources.Resources.From:</label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceFromFecha_de_nacimiento" name="FromFecha_de_nacimiento" type="text" value="@Model.FromFecha_de_nacimiento" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+            <label class="">@Resources.Resources.To: </label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceToFecha_de_nacimiento" name="ToFecha_de_nacimiento" type="text" value="@Model.ToFecha_de_nacimiento" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Nombre_del_Padre_o_Tutor</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Nombre_del_Padre_o_TutorFilter, filters, new { @class = "form-control", @id = "ddlNombre_del_Padre_o_TutorFilter" })
+                    @Html.TextBoxFor(m => m.Nombre_del_Padre_o_Tutor, new { @class = "form-control", @type = "text", @id = "txtNombre_del_Padre_o_Tutor" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Pais_de_nacimiento</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Pais_de_nacimientoFilter, filters, new { @class = "form-control", @id = "ddlPais_de_nacimientoFilter" })
+                    @Html.TextBoxFor(m => m.AdvancePais_de_nacimiento, new { @class = "form-control", @type = "text", @id = "txtAdvancePais_de_nacimiento" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varPais_Pais_de_nacimiento!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvancePais_de_nacimientoMultiple, varPais_Pais_de_nacimiento,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvancePais_de_nacimiento"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Lugar_de_nacimiento</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Lugar_de_nacimientoFilter, filters, new { @class = "form-control", @id = "ddlLugar_de_nacimientoFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceLugar_de_nacimiento, new { @class = "form-control", @type = "text", @id = "txtAdvanceLugar_de_nacimiento" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varEstado_Lugar_de_nacimiento!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceLugar_de_nacimientoMultiple, varEstado_Lugar_de_nacimiento,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceLugar_de_nacimiento"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Sexo</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.SexoFilter, filters, new { @class = "form-control", @id = "ddlSexoFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceSexo, new { @class = "form-control", @type = "text", @id = "txtAdvanceSexo" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSexo_Sexo!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceSexoMultiple, varSexo_Sexo,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceSexo"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Estado_Civil</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Estado_CivilFilter, filters, new { @class = "form-control", @id = "ddlEstado_CivilFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceEstado_Civil, new { @class = "form-control", @type = "text", @id = "txtAdvanceEstado_Civil" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varEstado_Civil_Estado_Civil!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceEstado_CivilMultiple, varEstado_Civil_Estado_Civil,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceEstado_Civil"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Calle</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.CalleFilter, filters, new { @class = "form-control", @id = "ddlCalleFilter" })
+                    @Html.TextBoxFor(m => m.Calle, new { @class = "form-control", @type = "text", @id = "txtCalle" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Numero_exterior</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Numero_exteriorFilter, filters, new { @class = "form-control", @id = "ddlNumero_exteriorFilter" })
+                    @Html.TextBoxFor(m => m.Numero_exterior, new { @class = "form-control", @type = "text", @id = "txtNumero_exterior" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Numero_interior</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Numero_interiorFilter, filters, new { @class = "form-control", @id = "ddlNumero_interiorFilter" })
+                    @Html.TextBoxFor(m => m.Numero_interior, new { @class = "form-control", @type = "text", @id = "txtNumero_interior" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Colonia</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.ColoniaFilter, filters, new { @class = "form-control", @id = "ddlColoniaFilter" })
+                    @Html.TextBoxFor(m => m.Colonia, new { @class = "form-control", @type = "text", @id = "txtColonia" })
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.PacientesResources.CP</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromCP, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromCP" })
+                    @Html.ValidationMessageFor(m => m.FromCP)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToCP, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToCP", @data_min = "txtAdvanceFromCP" })
+                    @Html.ValidationMessageFor(m => m.ToCP)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Ciudad</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.CiudadFilter, filters, new { @class = "form-control", @id = "ddlCiudadFilter" })
+                    @Html.TextBoxFor(m => m.Ciudad, new { @class = "form-control", @type = "text", @id = "txtCiudad" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Pais</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.PaisFilter, filters, new { @class = "form-control", @id = "ddlPaisFilter" })
+                    @Html.TextBoxFor(m => m.AdvancePais, new { @class = "form-control", @type = "text", @id = "txtAdvancePais" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varPais_Pais!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvancePaisMultiple, varPais_Pais,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvancePais"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Estado</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.EstadoFilter, filters, new { @class = "form-control", @id = "ddlEstadoFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceEstado, new { @class = "form-control", @type = "text", @id = "txtAdvanceEstado" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varEstado_Estado!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceEstadoMultiple, varEstado_Estado,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceEstado"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Ocupacion</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.OcupacionFilter, filters, new { @class = "form-control", @id = "ddlOcupacionFilter" })
+                    @Html.TextBoxFor(m => m.Ocupacion, new { @class = "form-control", @type = "text", @id = "txtOcupacion" })
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.PacientesResources.Cantidad_hijos</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromCantidad_hijos, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromCantidad_hijos" })
+                    @Html.ValidationMessageFor(m => m.FromCantidad_hijos)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToCantidad_hijos, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToCantidad_hijos", @data_min = "txtAdvanceFromCantidad_hijos" })
+                    @Html.ValidationMessageFor(m => m.ToCantidad_hijos)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Objetivo</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.ObjetivoFilter, filters, new { @class = "form-control", @id = "ddlObjetivoFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceObjetivo, new { @class = "form-control", @type = "text", @id = "txtAdvanceObjetivo" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varObjetivos_Objetivo!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceObjetivoMultiple, varObjetivos_Objetivo,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceObjetivo"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Estatus_Paciente</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Estatus_PacienteFilter, filters, new { @class = "form-control", @id = "ddlEstatus_PacienteFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceEstatus_Paciente, new { @class = "form-control", @type = "text", @id = "txtAdvanceEstatus_Paciente" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varEstatus_por_Suscripcion_Estatus_Paciente!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceEstatus_PacienteMultiple, varEstatus_por_Suscripcion_Estatus_Paciente,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceEstatus_Paciente"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Cuenta_con_padecimientos</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Cuenta_con_padecimientosFilter, filters, new { @class = "form-control", @id = "ddlCuenta_con_padecimientosFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceCuenta_con_padecimientos, new { @class = "form-control", @type = "text", @id = "txtAdvanceCuenta_con_padecimientos" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varRespuesta_Logica_Cuenta_con_padecimientos!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceCuenta_con_padecimientosMultiple, varRespuesta_Logica_Cuenta_con_padecimientos,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceCuenta_con_padecimientos"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.PacientesResources.Frecuencia_Cardiaca</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromFrecuencia_Cardiaca, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromFrecuencia_Cardiaca" })
+                    @Html.ValidationMessageFor(m => m.FromFrecuencia_Cardiaca)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToFrecuencia_Cardiaca, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToFrecuencia_Cardiaca", @data_min = "txtAdvanceFromFrecuencia_Cardiaca" })
+                    @Html.ValidationMessageFor(m => m.ToFrecuencia_Cardiaca)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.PacientesResources.Frecuencia_Respiratoria</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromFrecuencia_Respiratoria, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromFrecuencia_Respiratoria" })
+                    @Html.ValidationMessageFor(m => m.FromFrecuencia_Respiratoria)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToFrecuencia_Respiratoria, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToFrecuencia_Respiratoria", @data_min = "txtAdvanceFromFrecuencia_Respiratoria" })
+                    @Html.ValidationMessageFor(m => m.ToFrecuencia_Respiratoria)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.PacientesResources.Presion_sistolica</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromPresion_sistolica, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromPresion_sistolica" })
+                    @Html.ValidationMessageFor(m => m.FromPresion_sistolica)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToPresion_sistolica, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToPresion_sistolica", @data_min = "txtAdvanceFromPresion_sistolica" })
+                    @Html.ValidationMessageFor(m => m.ToPresion_sistolica)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.PacientesResources.Presion_diastolica</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromPresion_diastolica, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromPresion_diastolica" })
+                    @Html.ValidationMessageFor(m => m.FromPresion_diastolica)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToPresion_diastolica, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToPresion_diastolica", @data_min = "txtAdvanceFromPresion_diastolica" })
+                    @Html.ValidationMessageFor(m => m.ToPresion_diastolica)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.PacientesResources.Peso_actual</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromPeso_actual, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isDecimalKey(this, event);", @id = "txtAdvanceFromPeso_actual" })
+                    @Html.ValidationMessageFor(m => m.FromPeso_actual)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToPeso_actual, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isDecimalKey(this, event);", @id = "txtAdvanceToPeso_actual", @data_min = "txtAdvanceFromPeso_actual" })
+                    @Html.ValidationMessageFor(m => m.ToPeso_actual)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.PacientesResources.Estatura</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromEstatura, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isDecimalKey(this, event);", @id = "txtAdvanceFromEstatura" })
+                    @Html.ValidationMessageFor(m => m.FromEstatura)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToEstatura, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isDecimalKey(this, event);", @id = "txtAdvanceToEstatura", @data_min = "txtAdvanceFromEstatura" })
+                    @Html.ValidationMessageFor(m => m.ToEstatura)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.PacientesResources.Peso_habitual</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromPeso_habitual, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isDecimalKey(this, event);", @id = "txtAdvanceFromPeso_habitual" })
+                    @Html.ValidationMessageFor(m => m.FromPeso_habitual)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToPeso_habitual, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isDecimalKey(this, event);", @id = "txtAdvanceToPeso_habitual", @data_min = "txtAdvanceFromPeso_habitual" })
+                    @Html.ValidationMessageFor(m => m.ToPeso_habitual)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.PacientesResources.Circunferencia_de_cintura_cm</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromCircunferencia_de_cintura_cm, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromCircunferencia_de_cintura_cm" })
+                    @Html.ValidationMessageFor(m => m.FromCircunferencia_de_cintura_cm)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToCircunferencia_de_cintura_cm, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToCircunferencia_de_cintura_cm", @data_min = "txtAdvanceFromCircunferencia_de_cintura_cm" })
+                    @Html.ValidationMessageFor(m => m.ToCircunferencia_de_cintura_cm)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.PacientesResources.Circunferencia_de_cadera_cm</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromCircunferencia_de_cadera_cm, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromCircunferencia_de_cadera_cm" })
+                    @Html.ValidationMessageFor(m => m.FromCircunferencia_de_cadera_cm)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToCircunferencia_de_cadera_cm, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToCircunferencia_de_cadera_cm", @data_min = "txtAdvanceFromCircunferencia_de_cadera_cm" })
+                    @Html.ValidationMessageFor(m => m.ToCircunferencia_de_cadera_cm)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.PacientesResources.Anchura_de_muneca_mm</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromAnchura_de_muneca_mm, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromAnchura_de_muneca_mm" })
+                    @Html.ValidationMessageFor(m => m.FromAnchura_de_muneca_mm)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToAnchura_de_muneca_mm, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToAnchura_de_muneca_mm", @data_min = "txtAdvanceFromAnchura_de_muneca_mm" })
+                    @Html.ValidationMessageFor(m => m.ToAnchura_de_muneca_mm)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.PacientesResources.Circunferencia_de_brazo_cm</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromCircunferencia_de_brazo_cm, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromCircunferencia_de_brazo_cm" })
+                    @Html.ValidationMessageFor(m => m.FromCircunferencia_de_brazo_cm)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToCircunferencia_de_brazo_cm, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToCircunferencia_de_brazo_cm", @data_min = "txtAdvanceFromCircunferencia_de_brazo_cm" })
+                    @Html.ValidationMessageFor(m => m.ToCircunferencia_de_brazo_cm)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.PacientesResources.Pliegue_cutaneo_tricipital_mm</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromPliegue_cutaneo_tricipital_mm, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromPliegue_cutaneo_tricipital_mm" })
+                    @Html.ValidationMessageFor(m => m.FromPliegue_cutaneo_tricipital_mm)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToPliegue_cutaneo_tricipital_mm, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToPliegue_cutaneo_tricipital_mm", @data_min = "txtAdvanceFromPliegue_cutaneo_tricipital_mm" })
+                    @Html.ValidationMessageFor(m => m.ToPliegue_cutaneo_tricipital_mm)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.PacientesResources.Pliegue_cutaneo_bicipital_mm</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromPliegue_cutaneo_bicipital_mm, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromPliegue_cutaneo_bicipital_mm" })
+                    @Html.ValidationMessageFor(m => m.FromPliegue_cutaneo_bicipital_mm)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToPliegue_cutaneo_bicipital_mm, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToPliegue_cutaneo_bicipital_mm", @data_min = "txtAdvanceFromPliegue_cutaneo_bicipital_mm" })
+                    @Html.ValidationMessageFor(m => m.ToPliegue_cutaneo_bicipital_mm)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.PacientesResources.Pliegue_cutaneo_subescapular_mm</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromPliegue_cutaneo_subescapular_mm, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromPliegue_cutaneo_subescapular_mm" })
+                    @Html.ValidationMessageFor(m => m.FromPliegue_cutaneo_subescapular_mm)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToPliegue_cutaneo_subescapular_mm, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToPliegue_cutaneo_subescapular_mm", @data_min = "txtAdvanceFromPliegue_cutaneo_subescapular_mm" })
+                    @Html.ValidationMessageFor(m => m.ToPliegue_cutaneo_subescapular_mm)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.PacientesResources.Pliegue_cutaneo_supraespinal_mm</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromPliegue_cutaneo_supraespinal_mm, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromPliegue_cutaneo_supraespinal_mm" })
+                    @Html.ValidationMessageFor(m => m.FromPliegue_cutaneo_supraespinal_mm)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToPliegue_cutaneo_supraespinal_mm, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToPliegue_cutaneo_supraespinal_mm", @data_min = "txtAdvanceFromPliegue_cutaneo_supraespinal_mm" })
+                    @Html.ValidationMessageFor(m => m.ToPliegue_cutaneo_supraespinal_mm)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.PacientesResources.Edad_Metabolica</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromEdad_Metabolica, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromEdad_Metabolica" })
+                    @Html.ValidationMessageFor(m => m.FromEdad_Metabolica)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToEdad_Metabolica, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToEdad_Metabolica", @data_min = "txtAdvanceFromEdad_Metabolica" })
+                    @Html.ValidationMessageFor(m => m.ToEdad_Metabolica)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.PacientesResources.Agua_corporal</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromAgua_corporal, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromAgua_corporal" })
+                    @Html.ValidationMessageFor(m => m.FromAgua_corporal)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToAgua_corporal, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToAgua_corporal", @data_min = "txtAdvanceFromAgua_corporal" })
+                    @Html.ValidationMessageFor(m => m.ToAgua_corporal)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.PacientesResources.Grasa_Visceral</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromGrasa_Visceral, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromGrasa_Visceral" })
+                    @Html.ValidationMessageFor(m => m.FromGrasa_Visceral)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToGrasa_Visceral, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToGrasa_Visceral", @data_min = "txtAdvanceFromGrasa_Visceral" })
+                    @Html.ValidationMessageFor(m => m.ToGrasa_Visceral)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.PacientesResources.Grasa_Corporal</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromGrasa_Corporal, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromGrasa_Corporal" })
+                    @Html.ValidationMessageFor(m => m.FromGrasa_Corporal)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToGrasa_Corporal, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToGrasa_Corporal", @data_min = "txtAdvanceFromGrasa_Corporal" })
+                    @Html.ValidationMessageFor(m => m.ToGrasa_Corporal)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.PacientesResources.Grasa_Corporal_kg</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromGrasa_Corporal_kg, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromGrasa_Corporal_kg" })
+                    @Html.ValidationMessageFor(m => m.FromGrasa_Corporal_kg)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToGrasa_Corporal_kg, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToGrasa_Corporal_kg", @data_min = "txtAdvanceFromGrasa_Corporal_kg" })
+                    @Html.ValidationMessageFor(m => m.ToGrasa_Corporal_kg)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.PacientesResources.Masa_Muscular_kg</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromMasa_Muscular_kg, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromMasa_Muscular_kg" })
+                    @Html.ValidationMessageFor(m => m.FromMasa_Muscular_kg)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToMasa_Muscular_kg, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToMasa_Muscular_kg", @data_min = "txtAdvanceFromMasa_Muscular_kg" })
+                    @Html.ValidationMessageFor(m => m.ToMasa_Muscular_kg)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.PacientesResources.Masa_Muscular_</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromMasa_Muscular_, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromMasa_Muscular_" })
+                    @Html.ValidationMessageFor(m => m.FromMasa_Muscular_)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToMasa_Muscular_, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToMasa_Muscular_", @data_min = "txtAdvanceFromMasa_Muscular_" })
+                    @Html.ValidationMessageFor(m => m.ToMasa_Muscular_)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Esta_embarazada</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Esta_embarazadaFilter, filters, new { @class = "form-control", @id = "ddlEsta_embarazadaFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceEsta_embarazada, new { @class = "form-control", @type = "text", @id = "txtAdvanceEsta_embarazada" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varRespuesta_Logica_Esta_embarazada!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceEsta_embarazadaMultiple, varRespuesta_Logica_Esta_embarazada,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceEsta_embarazada"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.PacientesResources.Semana_de_gestacion</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromSemana_de_gestacion, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromSemana_de_gestacion" })
+                    @Html.ValidationMessageFor(m => m.FromSemana_de_gestacion)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToSemana_de_gestacion, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToSemana_de_gestacion", @data_min = "txtAdvanceFromSemana_de_gestacion" })
+                    @Html.ValidationMessageFor(m => m.ToSemana_de_gestacion)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.PacientesResources.Peso_pregestacional</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromPeso_pregestacional, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromPeso_pregestacional" })
+                    @Html.ValidationMessageFor(m => m.FromPeso_pregestacional)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToPeso_pregestacional, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToPeso_pregestacional", @data_min = "txtAdvanceFromPeso_pregestacional" })
+                    @Html.ValidationMessageFor(m => m.ToPeso_pregestacional)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Toma_anticonceptivos</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Toma_anticonceptivosFilter, filters, new { @class = "form-control", @id = "ddlToma_anticonceptivosFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceToma_anticonceptivos, new { @class = "form-control", @type = "text", @id = "txtAdvanceToma_anticonceptivos" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varRespuesta_Logica_Toma_anticonceptivos!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceToma_anticonceptivosMultiple, varRespuesta_Logica_Toma_anticonceptivos,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceToma_anticonceptivos"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Nombre_del_Anticonceptivo</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Nombre_del_AnticonceptivoFilter, filters, new { @class = "form-control", @id = "ddlNombre_del_AnticonceptivoFilter" })
+                    @Html.TextBoxFor(m => m.Nombre_del_Anticonceptivo, new { @class = "form-control", @type = "text", @id = "txtNombre_del_Anticonceptivo" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Dosis</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.DosisFilter, filters, new { @class = "form-control", @id = "ddlDosisFilter" })
+                    @Html.TextBoxFor(m => m.Dosis, new { @class = "form-control", @type = "text", @id = "txtDosis" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Climaterio</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.ClimaterioFilter, filters, new { @class = "form-control", @id = "ddlClimaterioFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceClimaterio, new { @class = "form-control", @type = "text", @id = "txtAdvanceClimaterio" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varRespuesta_Logica_Climaterio!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceClimaterioMultiple, varRespuesta_Logica_Climaterio,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceClimaterio"
+                        });
+                    }
+                </div>
+        <div class="MarginBottom ">
+            <h3>@Resources.PacientesResources.Fecha_Climaterio</h3>
+        </div>
+        <div class="MarginBottom form-inline">
+            <label class="">@Resources.Resources.From:</label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceFromFecha_Climaterio" name="FromFecha_Climaterio" type="text" value="@Model.FromFecha_Climaterio" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+            <label class="">@Resources.Resources.To: </label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceToFecha_Climaterio" name="ToFecha_Climaterio" type="text" value="@Model.ToFecha_Climaterio" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Terapia_reemplazo_hormonal</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Terapia_reemplazo_hormonalFilter, filters, new { @class = "form-control", @id = "ddlTerapia_reemplazo_hormonalFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceTerapia_reemplazo_hormonal, new { @class = "form-control", @type = "text", @id = "txtAdvanceTerapia_reemplazo_hormonal" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varRespuesta_Logica_Terapia_reemplazo_hormonal!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceTerapia_reemplazo_hormonalMultiple, varRespuesta_Logica_Terapia_reemplazo_hormonal,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceTerapia_reemplazo_hormonal"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Tipo_Dieta</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Tipo_DietaFilter, filters, new { @class = "form-control", @id = "ddlTipo_DietaFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceTipo_Dieta, new { @class = "form-control", @type = "text", @id = "txtAdvanceTipo_Dieta" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varTipo_de_Dieta_Tipo_Dieta!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceTipo_DietaMultiple, varTipo_de_Dieta_Tipo_Dieta,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceTipo_Dieta"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Suplementos</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.SuplementosFilter, filters, new { @class = "form-control", @id = "ddlSuplementosFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceSuplementos, new { @class = "form-control", @type = "text", @id = "txtAdvanceSuplementos" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSuplementos_Suplementos!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceSuplementosMultiple, varSuplementos_Suplementos,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceSuplementos"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Consumo_de_sal</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Consumo_de_salFilter, filters, new { @class = "form-control", @id = "ddlConsumo_de_salFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceConsumo_de_sal, new { @class = "form-control", @type = "text", @id = "txtAdvanceConsumo_de_sal" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varPreferencias_Sal_Consumo_de_sal!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceConsumo_de_salMultiple, varPreferencias_Sal_Consumo_de_sal,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceConsumo_de_sal"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Grasas_Preferencias</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Grasas_PreferenciasFilter, filters, new { @class = "form-control", @id = "ddlGrasas_PreferenciasFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceGrasas_Preferencias, new { @class = "form-control", @type = "text", @id = "txtAdvanceGrasas_Preferencias" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varPreferencias_Grasas_Grasas_Preferencias!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceGrasas_PreferenciasMultiple, varPreferencias_Grasas_Grasas_Preferencias,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceGrasas_Preferencias"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Comidas_cantidad</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Comidas_cantidadFilter, filters, new { @class = "form-control", @id = "ddlComidas_cantidadFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceComidas_cantidad, new { @class = "form-control", @type = "text", @id = "txtAdvanceComidas_cantidad" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varCantidad_Comidas_Comidas_cantidad!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceComidas_cantidadMultiple, varCantidad_Comidas_Comidas_cantidad,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceComidas_cantidad"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Preparacion_Preferencias</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Preparacion_PreferenciasFilter, filters, new { @class = "form-control", @id = "ddlPreparacion_PreferenciasFilter" })
+                    @Html.TextBoxFor(m => m.AdvancePreparacion_Preferencias, new { @class = "form-control", @type = "text", @id = "txtAdvancePreparacion_Preferencias" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varPreferencias_Preparacion_Preparacion_Preferencias!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvancePreparacion_PreferenciasMultiple, varPreferencias_Preparacion_Preparacion_Preferencias,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvancePreparacion_Preferencias"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Entre_comidas</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Entre_comidasFilter, filters, new { @class = "form-control", @id = "ddlEntre_comidasFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceEntre_comidas, new { @class = "form-control", @type = "text", @id = "txtAdvanceEntre_comidas" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varPreferencias_Entrecomidas_Entre_comidas!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceEntre_comidasMultiple, varPreferencias_Entrecomidas_Entre_comidas,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceEntre_comidas"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Apetito</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.ApetitoFilter, filters, new { @class = "form-control", @id = "ddlApetitoFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceApetito, new { @class = "form-control", @type = "text", @id = "txtAdvanceApetito" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varNivel_de_Satisfaccion_Apetito!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceApetitoMultiple, varNivel_de_Satisfaccion_Apetito,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceApetito"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Habitos_Modificacion</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Habitos_ModificacionFilter, filters, new { @class = "form-control", @id = "ddlHabitos_ModificacionFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceHabitos_Modificacion, new { @class = "form-control", @type = "text", @id = "txtAdvanceHabitos_Modificacion" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varTipo_Modificacion_Alimentos_Habitos_Modificacion!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceHabitos_ModificacionMultiple, varTipo_Modificacion_Alimentos_Habitos_Modificacion,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceHabitos_Modificacion"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Horario_hambre</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Horario_hambreFilter, filters, new { @class = "form-control", @id = "ddlHorario_hambreFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceHorario_hambre, new { @class = "form-control", @type = "text", @id = "txtAdvanceHorario_hambre" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varPeriodo_del_dia_Horario_hambre!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceHorario_hambreMultiple, varPeriodo_del_dia_Horario_hambre,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceHorario_hambre"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Cuando_cambia_mi_estado_de_animo</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Cuando_cambia_mi_estado_de_animoFilter, filters, new { @class = "form-control", @id = "ddlCuando_cambia_mi_estado_de_animoFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceCuando_cambia_mi_estado_de_animo, new { @class = "form-control", @type = "text", @id = "txtAdvanceCuando_cambia_mi_estado_de_animo" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varEstado_de_Animo_Cuando_cambia_mi_estado_de_animo!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceCuando_cambia_mi_estado_de_animoMultiple, varEstado_de_Animo_Cuando_cambia_mi_estado_de_animo,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceCuando_cambia_mi_estado_de_animo"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Medicamentos_bajar_peso</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Medicamentos_bajar_pesoFilter, filters, new { @class = "form-control", @id = "ddlMedicamentos_bajar_pesoFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceMedicamentos_bajar_peso, new { @class = "form-control", @type = "text", @id = "txtAdvanceMedicamentos_bajar_peso" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varRespuesta_Logica_Medicamentos_bajar_peso!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceMedicamentos_bajar_pesoMultiple, varRespuesta_Logica_Medicamentos_bajar_peso,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceMedicamentos_bajar_peso"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Cual_medicamento</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Cual_medicamentoFilter, filters, new { @class = "form-control", @id = "ddlCual_medicamentoFilter" })
+                    @Html.TextBoxFor(m => m.Cual_medicamento, new { @class = "form-control", @type = "text", @id = "txtCual_medicamento" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Frecuencia_Ejercicio</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Frecuencia_EjercicioFilter, filters, new { @class = "form-control", @id = "ddlFrecuencia_EjercicioFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceFrecuencia_Ejercicio, new { @class = "form-control", @type = "text", @id = "txtAdvanceFrecuencia_Ejercicio" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varFrecuencia_Ejercicio_Frecuencia_Ejercicio!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceFrecuencia_EjercicioMultiple, varFrecuencia_Ejercicio_Frecuencia_Ejercicio,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceFrecuencia_Ejercicio"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Duracion_Ejercicio</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Duracion_EjercicioFilter, filters, new { @class = "form-control", @id = "ddlDuracion_EjercicioFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceDuracion_Ejercicio, new { @class = "form-control", @type = "text", @id = "txtAdvanceDuracion_Ejercicio" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varDuracion_Ejercicio_Duracion_Ejercicio!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceDuracion_EjercicioMultiple, varDuracion_Ejercicio_Duracion_Ejercicio,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceDuracion_Ejercicio"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Tipo_Ejercicio</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Tipo_EjercicioFilter, filters, new { @class = "form-control", @id = "ddlTipo_EjercicioFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceTipo_Ejercicio, new { @class = "form-control", @type = "text", @id = "txtAdvanceTipo_Ejercicio" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varTipo_Ejercicio_Tipo_Ejercicio!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceTipo_EjercicioMultiple, varTipo_Ejercicio_Tipo_Ejercicio,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceTipo_Ejercicio"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Antiguedad_Ejercicio</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Antiguedad_EjercicioFilter, filters, new { @class = "form-control", @id = "ddlAntiguedad_EjercicioFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceAntiguedad_Ejercicio, new { @class = "form-control", @type = "text", @id = "txtAdvanceAntiguedad_Ejercicio" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varAntiguedad_Ejercicios_Antiguedad_Ejercicio!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceAntiguedad_EjercicioMultiple, varAntiguedad_Ejercicios_Antiguedad_Ejercicio,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceAntiguedad_Ejercicio"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.PacientesResources.IMC</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromIMC, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromIMC" })
+                    @Html.ValidationMessageFor(m => m.FromIMC)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToIMC, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToIMC", @data_min = "txtAdvanceFromIMC" })
+                    @Html.ValidationMessageFor(m => m.ToIMC)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Interpretacion_IMC</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Interpretacion_IMCFilter, filters, new { @class = "form-control", @id = "ddlInterpretacion_IMCFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceInterpretacion_IMC, new { @class = "form-control", @type = "text", @id = "txtAdvanceInterpretacion_IMC" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varInterpretacion_IMC_Interpretacion_IMC!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceInterpretacion_IMCMultiple, varInterpretacion_IMC_Interpretacion_IMC,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceInterpretacion_IMC"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.IMC_Pediatria</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.IMC_PediatriaFilter, filters, new { @class = "form-control", @id = "ddlIMC_PediatriaFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceIMC_Pediatria, new { @class = "form-control", @type = "text", @id = "txtAdvanceIMC_Pediatria" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varInterpretacion_IMC_IMC_Pediatria!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceIMC_PediatriaMultiple, varInterpretacion_IMC_IMC_Pediatria,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceIMC_Pediatria"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Complexion_corporal</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Complexion_corporalFilter, filters, new { @class = "form-control", @id = "ddlComplexion_corporalFilter" })
+                    @Html.TextBoxFor(m => m.Complexion_corporal, new { @class = "form-control", @type = "text", @id = "txtComplexion_corporal" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Interpretacion_complexion_corporal</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Interpretacion_complexion_corporalFilter, filters, new { @class = "form-control", @id = "ddlInterpretacion_complexion_corporalFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceInterpretacion_complexion_corporal, new { @class = "form-control", @type = "text", @id = "txtAdvanceInterpretacion_complexion_corporal" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varInterpretacion_corporal_Interpretacion_complexion_corporal!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceInterpretacion_complexion_corporalMultiple, varInterpretacion_corporal_Interpretacion_complexion_corporal,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceInterpretacion_complexion_corporal"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Distribucion_de_grasa_corporal</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Distribucion_de_grasa_corporalFilter, filters, new { @class = "form-control", @id = "ddlDistribucion_de_grasa_corporalFilter" })
+                    @Html.TextBoxFor(m => m.Distribucion_de_grasa_corporal, new { @class = "form-control", @type = "text", @id = "txtDistribucion_de_grasa_corporal" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Interpretacion_grasa_corporal</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Interpretacion_grasa_corporalFilter, filters, new { @class = "form-control", @id = "ddlInterpretacion_grasa_corporalFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceInterpretacion_grasa_corporal, new { @class = "form-control", @type = "text", @id = "txtAdvanceInterpretacion_grasa_corporal" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varInterpretacion_distribucion_grasa_corporal_Interpretacion_grasa_corporal!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceInterpretacion_grasa_corporalMultiple, varInterpretacion_distribucion_grasa_corporal_Interpretacion_grasa_corporal,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceInterpretacion_grasa_corporal"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Indice_cintura_cadera</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Indice_cintura_caderaFilter, filters, new { @class = "form-control", @id = "ddlIndice_cintura_caderaFilter" })
+                    @Html.TextBoxFor(m => m.Indice_cintura_cadera, new { @class = "form-control", @type = "text", @id = "txtIndice_cintura_cadera" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Interpretacion_indice</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Interpretacion_indiceFilter, filters, new { @class = "form-control", @id = "ddlInterpretacion_indiceFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceInterpretacion_indice, new { @class = "form-control", @type = "text", @id = "txtAdvanceInterpretacion_indice" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varInterpretacion_indice_cintura__cadera_Interpretacion_indice!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceInterpretacion_indiceMultiple, varInterpretacion_indice_cintura__cadera_Interpretacion_indice,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceInterpretacion_indice"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Consumo_de_agua_resultado</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Consumo_de_agua_resultadoFilter, filters, new { @class = "form-control", @id = "ddlConsumo_de_agua_resultadoFilter" })
+                    @Html.TextBoxFor(m => m.Consumo_de_agua_resultado, new { @class = "form-control", @type = "text", @id = "txtConsumo_de_agua_resultado" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Interpretacion_agua</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Interpretacion_aguaFilter, filters, new { @class = "form-control", @id = "ddlInterpretacion_aguaFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceInterpretacion_agua, new { @class = "form-control", @type = "text", @id = "txtAdvanceInterpretacion_agua" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varInterpretacion_consumo_de_agua_Interpretacion_agua!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceInterpretacion_aguaMultiple, varInterpretacion_consumo_de_agua_Interpretacion_agua,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceInterpretacion_agua"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.PacientesResources.Frecuencia_cardiaca_en_Esfuerzo</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromFrecuencia_cardiaca_en_Esfuerzo, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromFrecuencia_cardiaca_en_Esfuerzo" })
+                    @Html.ValidationMessageFor(m => m.FromFrecuencia_cardiaca_en_Esfuerzo)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToFrecuencia_cardiaca_en_Esfuerzo, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToFrecuencia_cardiaca_en_Esfuerzo", @data_min = "txtAdvanceFromFrecuencia_cardiaca_en_Esfuerzo" })
+                    @Html.ValidationMessageFor(m => m.ToFrecuencia_cardiaca_en_Esfuerzo)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Interpretacion_frecuencia</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Interpretacion_frecuenciaFilter, filters, new { @class = "form-control", @id = "ddlInterpretacion_frecuenciaFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceInterpretacion_frecuencia, new { @class = "form-control", @type = "text", @id = "txtAdvanceInterpretacion_frecuencia" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varInterpretacion_Frecuencia_cardiaca_en_Esfuerzo_Interpretacion_frecuencia!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceInterpretacion_frecuenciaMultiple, varInterpretacion_Frecuencia_cardiaca_en_Esfuerzo_Interpretacion_frecuencia,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceInterpretacion_frecuencia"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Dificultad_de_Rutina_de_Ejercicios</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Dificultad_de_Rutina_de_EjerciciosFilter, filters, new { @class = "form-control", @id = "ddlDificultad_de_Rutina_de_EjerciciosFilter" })
+                    @Html.TextBoxFor(m => m.Dificultad_de_Rutina_de_Ejercicios, new { @class = "form-control", @type = "text", @id = "txtDificultad_de_Rutina_de_Ejercicios" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Interpretacion_dificultad</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Interpretacion_dificultadFilter, filters, new { @class = "form-control", @id = "ddlInterpretacion_dificultadFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceInterpretacion_dificultad, new { @class = "form-control", @type = "text", @id = "txtAdvanceInterpretacion_dificultad" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varInterpretacion_Dificultad_de_Rutina_de_Ejercicios_Interpretacion_dificultad!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceInterpretacion_dificultadMultiple, varInterpretacion_Dificultad_de_Rutina_de_Ejercicios_Interpretacion_dificultad,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceInterpretacion_dificultad"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.PacientesResources.Calorias</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromCalorias, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromCalorias" })
+                    @Html.ValidationMessageFor(m => m.FromCalorias)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToCalorias, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToCalorias", @data_min = "txtAdvanceFromCalorias" })
+                    @Html.ValidationMessageFor(m => m.ToCalorias)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Interpretacion_calorias</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Interpretacion_caloriasFilter, filters, new { @class = "form-control", @id = "ddlInterpretacion_caloriasFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceInterpretacion_calorias, new { @class = "form-control", @type = "text", @id = "txtAdvanceInterpretacion_calorias" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varInterpretacion_Calorias_Interpretacion_calorias!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceInterpretacion_caloriasMultiple, varInterpretacion_Calorias_Interpretacion_calorias,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceInterpretacion_calorias"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PacientesResources.Observaciones</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.ObservacionesFilter, filters, new { @class = "form-control", @id = "ddlObservacionesFilter" })
+                    @Html.TextBoxFor(m => m.Observaciones, new { @class = "form-control", @type = "text", @id = "txtObservaciones" })
+                </div>
+
+                <div class="MarginBottom form-inline">
+                    <input type="submit" class="btn btn-primary" value="@Resources.Resources.Search"><a class="btn btn-primary" href="@Url.Content("~/Frontal/Pacientes/")" value=" ">@Resources.Resources.Cancelar</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function InitiateAdvanceSearch() {
+        var advanceSearch = {}, hasParameter = false;
+        if ($("#txtAdvanceFromFolio").val() != "" || $("#txtAdvanceToFolio").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesFolioFrom = $("#txtAdvanceFromFolio").val();
+            advanceSearch.PacientesFolioTo = $("#txtAdvanceToFolio").val();
+        }
+        if ($("#txtAdvanceFromFecha_de_Registro").val() != "" || $("#txtAdvanceToFecha_de_Registro").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesFecha_de_RegistroFrom = $("#txtAdvanceFromFecha_de_Registro").val();
+            advanceSearch.PacientesFecha_de_RegistroTo = $("#txtAdvanceToFecha_de_Registro").val();
+        }
+        if ($("#txtAdvanceHora_de_Registro").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesHora_de_Registro = $("#txtAdvanceHora_de_Registro").val();
+            advanceSearch.PacientesHora_de_RegistroSearchType = $("#ddlAdvanceHora_de_RegistroFilter").val();
+        }
+        advanceSearch.Usuario_que_RegistraSearchType = 0;
+        if ($('#ddlAdvanceUsuario_que_Registra').val().length > 0 || $("#txtAdvanceUsuario_que_Registra").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Usuario_que_RegistraName = $("#txtAdvanceUsuario_que_Registra").val();
+                advanceSearch.Usuario_que_RegistraNameSearchType = $("#ddlAdvanceUsuario_que_Registra").val();
+                advanceSearch.Usuario_que_RegistraSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Usuario_que_RegistraToSearch = $("#ddlAdvanceUsuario_que_Registra").val();
+                advanceSearch.Usuario_que_RegistraSearchType = 2;
+            }
+        }
+        advanceSearch.Tipo_de_RegistroSearchType = 0;
+        if ($('#ddlAdvanceTipo_de_Registro').val().length > 0 || $("#txtAdvanceTipo_de_Registro").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Tipo_de_RegistroName = $("#txtAdvanceTipo_de_Registro").val();
+                advanceSearch.Tipo_de_RegistroNameSearchType = $("#ddlAdvanceTipo_de_Registro").val();
+                advanceSearch.Tipo_de_RegistroSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Tipo_de_RegistroToSearch = $("#ddlAdvanceTipo_de_Registro").val();
+                advanceSearch.Tipo_de_RegistroSearchType = 2;
+            }
+        }
+        advanceSearch.Tipo_de_PacienteSearchType = 0;
+        if ($('#ddlAdvanceTipo_de_Paciente').val().length > 0 || $("#txtAdvanceTipo_de_Paciente").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Tipo_de_PacienteName = $("#txtAdvanceTipo_de_Paciente").val();
+                advanceSearch.Tipo_de_PacienteNameSearchType = $("#ddlAdvanceTipo_de_Paciente").val();
+                advanceSearch.Tipo_de_PacienteSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Tipo_de_PacienteToSearch = $("#ddlAdvanceTipo_de_Paciente").val();
+                advanceSearch.Tipo_de_PacienteSearchType = 2;
+            }
+        }
+        advanceSearch.Usuario_RegistradoSearchType = 0;
+        if ($('#ddlAdvanceUsuario_Registrado').val().length > 0 || $("#txtAdvanceUsuario_Registrado").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Usuario_RegistradoName = $("#txtAdvanceUsuario_Registrado").val();
+                advanceSearch.Usuario_RegistradoNameSearchType = $("#ddlAdvanceUsuario_Registrado").val();
+                advanceSearch.Usuario_RegistradoSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Usuario_RegistradoToSearch = $("#ddlAdvanceUsuario_Registrado").val();
+                advanceSearch.Usuario_RegistradoSearchType = 2;
+            }
+        }
+        advanceSearch.EmpresaSearchType = 0;
+        if ($('#ddlAdvanceEmpresa').val().length > 0 || $("#txtAdvanceEmpresa").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.EmpresaName = $("#txtAdvanceEmpresa").val();
+                advanceSearch.EmpresaNameSearchType = $("#ddlAdvanceEmpresa").val();
+                advanceSearch.EmpresaSearchType = 1;
+            }
+            else {
+
+                advanceSearch.EmpresaToSearch = $("#ddlAdvanceEmpresa").val();
+                advanceSearch.EmpresaSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceNumero_de_Empleado").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesNumero_de_Empleado = $("#txtAdvanceNumero_de_Empleado").val();
+            advanceSearch.PacientesNumero_de_EmpleadoSearchType = $("#ddlAdvanceNumero_de_EmpleadoFilter").val();
+        }
+        if ($("#txtAdvanceNombres").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesNombres = $("#txtAdvanceNombres").val();
+            advanceSearch.PacientesNombresSearchType = $("#ddlAdvanceNombresFilter").val();
+        }
+        if ($("#txtAdvanceApellido_Paterno").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesApellido_Paterno = $("#txtAdvanceApellido_Paterno").val();
+            advanceSearch.PacientesApellido_PaternoSearchType = $("#ddlAdvanceApellido_PaternoFilter").val();
+        }
+        if ($("#txtAdvanceApellido_Materno").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesApellido_Materno = $("#txtAdvanceApellido_Materno").val();
+            advanceSearch.PacientesApellido_MaternoSearchType = $("#ddlAdvanceApellido_MaternoFilter").val();
+        }
+        if ($("#txtAdvanceNombre_Completo").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesNombre_Completo = $("#txtAdvanceNombre_Completo").val();
+            advanceSearch.PacientesNombre_CompletoSearchType = $("#ddlAdvanceNombre_CompletoFilter").val();
+        }
+        if ($("#txtAdvanceCelular").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesCelular = $("#txtAdvanceCelular").val();
+            advanceSearch.PacientesCelularSearchType = $("#ddlAdvanceCelularFilter").val();
+        }
+        if ($("#txtAdvanceEmail").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesEmail = $("#txtAdvanceEmail").val();
+            advanceSearch.PacientesEmailSearchType = $("#ddlAdvanceEmailFilter").val();
+        }
+        if ($("#txtAdvanceFromFecha_de_nacimiento").val() != "" || $("#txtAdvanceToFecha_de_nacimiento").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesFecha_de_nacimientoFrom = $("#txtAdvanceFromFecha_de_nacimiento").val();
+            advanceSearch.PacientesFecha_de_nacimientoTo = $("#txtAdvanceToFecha_de_nacimiento").val();
+        }
+        if ($("#txtAdvanceNombre_del_Padre_o_Tutor").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesNombre_del_Padre_o_Tutor = $("#txtAdvanceNombre_del_Padre_o_Tutor").val();
+            advanceSearch.PacientesNombre_del_Padre_o_TutorSearchType = $("#ddlAdvanceNombre_del_Padre_o_TutorFilter").val();
+        }
+        advanceSearch.Pais_de_nacimientoSearchType = 0;
+        if ($('#ddlAdvancePais_de_nacimiento').val().length > 0 || $("#txtAdvancePais_de_nacimiento").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Pais_de_nacimientoName = $("#txtAdvancePais_de_nacimiento").val();
+                advanceSearch.Pais_de_nacimientoNameSearchType = $("#ddlAdvancePais_de_nacimiento").val();
+                advanceSearch.Pais_de_nacimientoSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Pais_de_nacimientoToSearch = $("#ddlAdvancePais_de_nacimiento").val();
+                advanceSearch.Pais_de_nacimientoSearchType = 2;
+            }
+        }
+        advanceSearch.Lugar_de_nacimientoSearchType = 0;
+        if ($('#ddlAdvanceLugar_de_nacimiento').val().length > 0 || $("#txtAdvanceLugar_de_nacimiento").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Lugar_de_nacimientoName = $("#txtAdvanceLugar_de_nacimiento").val();
+                advanceSearch.Lugar_de_nacimientoNameSearchType = $("#ddlAdvanceLugar_de_nacimiento").val();
+                advanceSearch.Lugar_de_nacimientoSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Lugar_de_nacimientoToSearch = $("#ddlAdvanceLugar_de_nacimiento").val();
+                advanceSearch.Lugar_de_nacimientoSearchType = 2;
+            }
+        }
+        advanceSearch.SexoSearchType = 0;
+        if ($('#ddlAdvanceSexo').val().length > 0 || $("#txtAdvanceSexo").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.SexoName = $("#txtAdvanceSexo").val();
+                advanceSearch.SexoNameSearchType = $("#ddlAdvanceSexo").val();
+                advanceSearch.SexoSearchType = 1;
+            }
+            else {
+
+                advanceSearch.SexoToSearch = $("#ddlAdvanceSexo").val();
+                advanceSearch.SexoSearchType = 2;
+            }
+        }
+        advanceSearch.Estado_CivilSearchType = 0;
+        if ($('#ddlAdvanceEstado_Civil').val().length > 0 || $("#txtAdvanceEstado_Civil").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Estado_CivilName = $("#txtAdvanceEstado_Civil").val();
+                advanceSearch.Estado_CivilNameSearchType = $("#ddlAdvanceEstado_Civil").val();
+                advanceSearch.Estado_CivilSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Estado_CivilToSearch = $("#ddlAdvanceEstado_Civil").val();
+                advanceSearch.Estado_CivilSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceCalle").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesCalle = $("#txtAdvanceCalle").val();
+            advanceSearch.PacientesCalleSearchType = $("#ddlAdvanceCalleFilter").val();
+        }
+        if ($("#txtAdvanceNumero_exterior").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesNumero_exterior = $("#txtAdvanceNumero_exterior").val();
+            advanceSearch.PacientesNumero_exteriorSearchType = $("#ddlAdvanceNumero_exteriorFilter").val();
+        }
+        if ($("#txtAdvanceNumero_interior").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesNumero_interior = $("#txtAdvanceNumero_interior").val();
+            advanceSearch.PacientesNumero_interiorSearchType = $("#ddlAdvanceNumero_interiorFilter").val();
+        }
+        if ($("#txtAdvanceColonia").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesColonia = $("#txtAdvanceColonia").val();
+            advanceSearch.PacientesColoniaSearchType = $("#ddlAdvanceColoniaFilter").val();
+        }
+        if ($("#txtAdvanceFromCP").val() != "" || $("#txtAdvanceToCP").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesCPFrom = $("#txtAdvanceFromCP").val();
+            advanceSearch.PacientesCPTo = $("#txtAdvanceToCP").val();
+        }
+        if ($("#txtAdvanceCiudad").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesCiudad = $("#txtAdvanceCiudad").val();
+            advanceSearch.PacientesCiudadSearchType = $("#ddlAdvanceCiudadFilter").val();
+        }
+        advanceSearch.PaisSearchType = 0;
+        if ($('#ddlAdvancePais').val().length > 0 || $("#txtAdvancePais").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.PaisName = $("#txtAdvancePais").val();
+                advanceSearch.PaisNameSearchType = $("#ddlAdvancePais").val();
+                advanceSearch.PaisSearchType = 1;
+            }
+            else {
+
+                advanceSearch.PaisToSearch = $("#ddlAdvancePais").val();
+                advanceSearch.PaisSearchType = 2;
+            }
+        }
+        advanceSearch.EstadoSearchType = 0;
+        if ($('#ddlAdvanceEstado').val().length > 0 || $("#txtAdvanceEstado").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.EstadoName = $("#txtAdvanceEstado").val();
+                advanceSearch.EstadoNameSearchType = $("#ddlAdvanceEstado").val();
+                advanceSearch.EstadoSearchType = 1;
+            }
+            else {
+
+                advanceSearch.EstadoToSearch = $("#ddlAdvanceEstado").val();
+                advanceSearch.EstadoSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceOcupacion").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesOcupacion = $("#txtAdvanceOcupacion").val();
+            advanceSearch.PacientesOcupacionSearchType = $("#ddlAdvanceOcupacionFilter").val();
+        }
+        if ($("#txtAdvanceFromCantidad_hijos").val() != "" || $("#txtAdvanceToCantidad_hijos").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesCantidad_hijosFrom = $("#txtAdvanceFromCantidad_hijos").val();
+            advanceSearch.PacientesCantidad_hijosTo = $("#txtAdvanceToCantidad_hijos").val();
+        }
+        advanceSearch.ObjetivoSearchType = 0;
+        if ($('#ddlAdvanceObjetivo').val().length > 0 || $("#txtAdvanceObjetivo").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.ObjetivoName = $("#txtAdvanceObjetivo").val();
+                advanceSearch.ObjetivoNameSearchType = $("#ddlAdvanceObjetivo").val();
+                advanceSearch.ObjetivoSearchType = 1;
+            }
+            else {
+
+                advanceSearch.ObjetivoToSearch = $("#ddlAdvanceObjetivo").val();
+                advanceSearch.ObjetivoSearchType = 2;
+            }
+        }
+        advanceSearch.Estatus_PacienteSearchType = 0;
+        if ($('#ddlAdvanceEstatus_Paciente').val().length > 0 || $("#txtAdvanceEstatus_Paciente").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Estatus_PacienteName = $("#txtAdvanceEstatus_Paciente").val();
+                advanceSearch.Estatus_PacienteNameSearchType = $("#ddlAdvanceEstatus_Paciente").val();
+                advanceSearch.Estatus_PacienteSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Estatus_PacienteToSearch = $("#ddlAdvanceEstatus_Paciente").val();
+                advanceSearch.Estatus_PacienteSearchType = 2;
+            }
+        }
+        advanceSearch.Cuenta_con_padecimientosSearchType = 0;
+        if ($('#ddlAdvanceCuenta_con_padecimientos').val().length > 0 || $("#txtAdvanceCuenta_con_padecimientos").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Cuenta_con_padecimientosName = $("#txtAdvanceCuenta_con_padecimientos").val();
+                advanceSearch.Cuenta_con_padecimientosNameSearchType = $("#ddlAdvanceCuenta_con_padecimientos").val();
+                advanceSearch.Cuenta_con_padecimientosSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Cuenta_con_padecimientosToSearch = $("#ddlAdvanceCuenta_con_padecimientos").val();
+                advanceSearch.Cuenta_con_padecimientosSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceFromFrecuencia_Cardiaca").val() != "" || $("#txtAdvanceToFrecuencia_Cardiaca").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesFrecuencia_CardiacaFrom = $("#txtAdvanceFromFrecuencia_Cardiaca").val();
+            advanceSearch.PacientesFrecuencia_CardiacaTo = $("#txtAdvanceToFrecuencia_Cardiaca").val();
+        }
+        if ($("#txtAdvanceFromFrecuencia_Respiratoria").val() != "" || $("#txtAdvanceToFrecuencia_Respiratoria").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesFrecuencia_RespiratoriaFrom = $("#txtAdvanceFromFrecuencia_Respiratoria").val();
+            advanceSearch.PacientesFrecuencia_RespiratoriaTo = $("#txtAdvanceToFrecuencia_Respiratoria").val();
+        }
+        if ($("#txtAdvanceFromPresion_sistolica").val() != "" || $("#txtAdvanceToPresion_sistolica").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesPresion_sistolicaFrom = $("#txtAdvanceFromPresion_sistolica").val();
+            advanceSearch.PacientesPresion_sistolicaTo = $("#txtAdvanceToPresion_sistolica").val();
+        }
+        if ($("#txtAdvanceFromPresion_diastolica").val() != "" || $("#txtAdvanceToPresion_diastolica").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesPresion_diastolicaFrom = $("#txtAdvanceFromPresion_diastolica").val();
+            advanceSearch.PacientesPresion_diastolicaTo = $("#txtAdvanceToPresion_diastolica").val();
+        }
+        if ($("#txtAdvanceFromPeso_actual").val() != "" || $("#txtAdvanceToPeso_actual").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesPeso_actualFrom = $("#txtAdvanceFromPeso_actual").val();
+            advanceSearch.PacientesPeso_actualTo = $("#txtAdvanceToPeso_actual").val();
+        }
+        if ($("#txtAdvanceFromEstatura").val() != "" || $("#txtAdvanceToEstatura").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesEstaturaFrom = $("#txtAdvanceFromEstatura").val();
+            advanceSearch.PacientesEstaturaTo = $("#txtAdvanceToEstatura").val();
+        }
+        if ($("#txtAdvanceFromPeso_habitual").val() != "" || $("#txtAdvanceToPeso_habitual").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesPeso_habitualFrom = $("#txtAdvanceFromPeso_habitual").val();
+            advanceSearch.PacientesPeso_habitualTo = $("#txtAdvanceToPeso_habitual").val();
+        }
+        if ($("#txtAdvanceFromCircunferencia_de_cintura_cm").val() != "" || $("#txtAdvanceToCircunferencia_de_cintura_cm").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesCircunferencia_de_cintura_cmFrom = $("#txtAdvanceFromCircunferencia_de_cintura_cm").val();
+            advanceSearch.PacientesCircunferencia_de_cintura_cmTo = $("#txtAdvanceToCircunferencia_de_cintura_cm").val();
+        }
+        if ($("#txtAdvanceFromCircunferencia_de_cadera_cm").val() != "" || $("#txtAdvanceToCircunferencia_de_cadera_cm").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesCircunferencia_de_cadera_cmFrom = $("#txtAdvanceFromCircunferencia_de_cadera_cm").val();
+            advanceSearch.PacientesCircunferencia_de_cadera_cmTo = $("#txtAdvanceToCircunferencia_de_cadera_cm").val();
+        }
+        if ($("#txtAdvanceFromAnchura_de_muneca_mm").val() != "" || $("#txtAdvanceToAnchura_de_muneca_mm").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesAnchura_de_muneca_mmFrom = $("#txtAdvanceFromAnchura_de_muneca_mm").val();
+            advanceSearch.PacientesAnchura_de_muneca_mmTo = $("#txtAdvanceToAnchura_de_muneca_mm").val();
+        }
+        if ($("#txtAdvanceFromCircunferencia_de_brazo_cm").val() != "" || $("#txtAdvanceToCircunferencia_de_brazo_cm").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesCircunferencia_de_brazo_cmFrom = $("#txtAdvanceFromCircunferencia_de_brazo_cm").val();
+            advanceSearch.PacientesCircunferencia_de_brazo_cmTo = $("#txtAdvanceToCircunferencia_de_brazo_cm").val();
+        }
+        if ($("#txtAdvanceFromPliegue_cutaneo_tricipital_mm").val() != "" || $("#txtAdvanceToPliegue_cutaneo_tricipital_mm").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesPliegue_cutaneo_tricipital_mmFrom = $("#txtAdvanceFromPliegue_cutaneo_tricipital_mm").val();
+            advanceSearch.PacientesPliegue_cutaneo_tricipital_mmTo = $("#txtAdvanceToPliegue_cutaneo_tricipital_mm").val();
+        }
+        if ($("#txtAdvanceFromPliegue_cutaneo_bicipital_mm").val() != "" || $("#txtAdvanceToPliegue_cutaneo_bicipital_mm").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesPliegue_cutaneo_bicipital_mmFrom = $("#txtAdvanceFromPliegue_cutaneo_bicipital_mm").val();
+            advanceSearch.PacientesPliegue_cutaneo_bicipital_mmTo = $("#txtAdvanceToPliegue_cutaneo_bicipital_mm").val();
+        }
+        if ($("#txtAdvanceFromPliegue_cutaneo_subescapular_mm").val() != "" || $("#txtAdvanceToPliegue_cutaneo_subescapular_mm").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesPliegue_cutaneo_subescapular_mmFrom = $("#txtAdvanceFromPliegue_cutaneo_subescapular_mm").val();
+            advanceSearch.PacientesPliegue_cutaneo_subescapular_mmTo = $("#txtAdvanceToPliegue_cutaneo_subescapular_mm").val();
+        }
+        if ($("#txtAdvanceFromPliegue_cutaneo_supraespinal_mm").val() != "" || $("#txtAdvanceToPliegue_cutaneo_supraespinal_mm").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesPliegue_cutaneo_supraespinal_mmFrom = $("#txtAdvanceFromPliegue_cutaneo_supraespinal_mm").val();
+            advanceSearch.PacientesPliegue_cutaneo_supraespinal_mmTo = $("#txtAdvanceToPliegue_cutaneo_supraespinal_mm").val();
+        }
+        if ($("#txtAdvanceFromEdad_Metabolica").val() != "" || $("#txtAdvanceToEdad_Metabolica").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesEdad_MetabolicaFrom = $("#txtAdvanceFromEdad_Metabolica").val();
+            advanceSearch.PacientesEdad_MetabolicaTo = $("#txtAdvanceToEdad_Metabolica").val();
+        }
+        if ($("#txtAdvanceFromAgua_corporal").val() != "" || $("#txtAdvanceToAgua_corporal").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesAgua_corporalFrom = $("#txtAdvanceFromAgua_corporal").val();
+            advanceSearch.PacientesAgua_corporalTo = $("#txtAdvanceToAgua_corporal").val();
+        }
+        if ($("#txtAdvanceFromGrasa_Visceral").val() != "" || $("#txtAdvanceToGrasa_Visceral").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesGrasa_VisceralFrom = $("#txtAdvanceFromGrasa_Visceral").val();
+            advanceSearch.PacientesGrasa_VisceralTo = $("#txtAdvanceToGrasa_Visceral").val();
+        }
+        if ($("#txtAdvanceFromGrasa_Corporal").val() != "" || $("#txtAdvanceToGrasa_Corporal").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesGrasa_CorporalFrom = $("#txtAdvanceFromGrasa_Corporal").val();
+            advanceSearch.PacientesGrasa_CorporalTo = $("#txtAdvanceToGrasa_Corporal").val();
+        }
+        if ($("#txtAdvanceFromGrasa_Corporal_kg").val() != "" || $("#txtAdvanceToGrasa_Corporal_kg").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesGrasa_Corporal_kgFrom = $("#txtAdvanceFromGrasa_Corporal_kg").val();
+            advanceSearch.PacientesGrasa_Corporal_kgTo = $("#txtAdvanceToGrasa_Corporal_kg").val();
+        }
+        if ($("#txtAdvanceFromMasa_Muscular_kg").val() != "" || $("#txtAdvanceToMasa_Muscular_kg").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesMasa_Muscular_kgFrom = $("#txtAdvanceFromMasa_Muscular_kg").val();
+            advanceSearch.PacientesMasa_Muscular_kgTo = $("#txtAdvanceToMasa_Muscular_kg").val();
+        }
+        if ($("#txtAdvanceFromMasa_Muscular_").val() != "" || $("#txtAdvanceToMasa_Muscular_").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesMasa_Muscular_From = $("#txtAdvanceFromMasa_Muscular_").val();
+            advanceSearch.PacientesMasa_Muscular_To = $("#txtAdvanceToMasa_Muscular_").val();
+        }
+        advanceSearch.Esta_embarazadaSearchType = 0;
+        if ($('#ddlAdvanceEsta_embarazada').val().length > 0 || $("#txtAdvanceEsta_embarazada").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Esta_embarazadaName = $("#txtAdvanceEsta_embarazada").val();
+                advanceSearch.Esta_embarazadaNameSearchType = $("#ddlAdvanceEsta_embarazada").val();
+                advanceSearch.Esta_embarazadaSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Esta_embarazadaToSearch = $("#ddlAdvanceEsta_embarazada").val();
+                advanceSearch.Esta_embarazadaSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceFromSemana_de_gestacion").val() != "" || $("#txtAdvanceToSemana_de_gestacion").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesSemana_de_gestacionFrom = $("#txtAdvanceFromSemana_de_gestacion").val();
+            advanceSearch.PacientesSemana_de_gestacionTo = $("#txtAdvanceToSemana_de_gestacion").val();
+        }
+        if ($("#txtAdvanceFromPeso_pregestacional").val() != "" || $("#txtAdvanceToPeso_pregestacional").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesPeso_pregestacionalFrom = $("#txtAdvanceFromPeso_pregestacional").val();
+            advanceSearch.PacientesPeso_pregestacionalTo = $("#txtAdvanceToPeso_pregestacional").val();
+        }
+        advanceSearch.Toma_anticonceptivosSearchType = 0;
+        if ($('#ddlAdvanceToma_anticonceptivos').val().length > 0 || $("#txtAdvanceToma_anticonceptivos").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Toma_anticonceptivosName = $("#txtAdvanceToma_anticonceptivos").val();
+                advanceSearch.Toma_anticonceptivosNameSearchType = $("#ddlAdvanceToma_anticonceptivos").val();
+                advanceSearch.Toma_anticonceptivosSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Toma_anticonceptivosToSearch = $("#ddlAdvanceToma_anticonceptivos").val();
+                advanceSearch.Toma_anticonceptivosSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceNombre_del_Anticonceptivo").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesNombre_del_Anticonceptivo = $("#txtAdvanceNombre_del_Anticonceptivo").val();
+            advanceSearch.PacientesNombre_del_AnticonceptivoSearchType = $("#ddlAdvanceNombre_del_AnticonceptivoFilter").val();
+        }
+        if ($("#txtAdvanceDosis").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesDosis = $("#txtAdvanceDosis").val();
+            advanceSearch.PacientesDosisSearchType = $("#ddlAdvanceDosisFilter").val();
+        }
+        advanceSearch.ClimaterioSearchType = 0;
+        if ($('#ddlAdvanceClimaterio').val().length > 0 || $("#txtAdvanceClimaterio").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.ClimaterioName = $("#txtAdvanceClimaterio").val();
+                advanceSearch.ClimaterioNameSearchType = $("#ddlAdvanceClimaterio").val();
+                advanceSearch.ClimaterioSearchType = 1;
+            }
+            else {
+
+                advanceSearch.ClimaterioToSearch = $("#ddlAdvanceClimaterio").val();
+                advanceSearch.ClimaterioSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceFromFecha_Climaterio").val() != "" || $("#txtAdvanceToFecha_Climaterio").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesFecha_ClimaterioFrom = $("#txtAdvanceFromFecha_Climaterio").val();
+            advanceSearch.PacientesFecha_ClimaterioTo = $("#txtAdvanceToFecha_Climaterio").val();
+        }
+        advanceSearch.Terapia_reemplazo_hormonalSearchType = 0;
+        if ($('#ddlAdvanceTerapia_reemplazo_hormonal').val().length > 0 || $("#txtAdvanceTerapia_reemplazo_hormonal").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Terapia_reemplazo_hormonalName = $("#txtAdvanceTerapia_reemplazo_hormonal").val();
+                advanceSearch.Terapia_reemplazo_hormonalNameSearchType = $("#ddlAdvanceTerapia_reemplazo_hormonal").val();
+                advanceSearch.Terapia_reemplazo_hormonalSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Terapia_reemplazo_hormonalToSearch = $("#ddlAdvanceTerapia_reemplazo_hormonal").val();
+                advanceSearch.Terapia_reemplazo_hormonalSearchType = 2;
+            }
+        }
+        advanceSearch.Tipo_DietaSearchType = 0;
+        if ($('#ddlAdvanceTipo_Dieta').val().length > 0 || $("#txtAdvanceTipo_Dieta").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Tipo_DietaName = $("#txtAdvanceTipo_Dieta").val();
+                advanceSearch.Tipo_DietaNameSearchType = $("#ddlAdvanceTipo_Dieta").val();
+                advanceSearch.Tipo_DietaSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Tipo_DietaToSearch = $("#ddlAdvanceTipo_Dieta").val();
+                advanceSearch.Tipo_DietaSearchType = 2;
+            }
+        }
+        advanceSearch.SuplementosSearchType = 0;
+        if ($('#ddlAdvanceSuplementos').val().length > 0 || $("#txtAdvanceSuplementos").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.SuplementosName = $("#txtAdvanceSuplementos").val();
+                advanceSearch.SuplementosNameSearchType = $("#ddlAdvanceSuplementos").val();
+                advanceSearch.SuplementosSearchType = 1;
+            }
+            else {
+
+                advanceSearch.SuplementosToSearch = $("#ddlAdvanceSuplementos").val();
+                advanceSearch.SuplementosSearchType = 2;
+            }
+        }
+        advanceSearch.Consumo_de_salSearchType = 0;
+        if ($('#ddlAdvanceConsumo_de_sal').val().length > 0 || $("#txtAdvanceConsumo_de_sal").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Consumo_de_salName = $("#txtAdvanceConsumo_de_sal").val();
+                advanceSearch.Consumo_de_salNameSearchType = $("#ddlAdvanceConsumo_de_sal").val();
+                advanceSearch.Consumo_de_salSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Consumo_de_salToSearch = $("#ddlAdvanceConsumo_de_sal").val();
+                advanceSearch.Consumo_de_salSearchType = 2;
+            }
+        }
+        advanceSearch.Grasas_PreferenciasSearchType = 0;
+        if ($('#ddlAdvanceGrasas_Preferencias').val().length > 0 || $("#txtAdvanceGrasas_Preferencias").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Grasas_PreferenciasName = $("#txtAdvanceGrasas_Preferencias").val();
+                advanceSearch.Grasas_PreferenciasNameSearchType = $("#ddlAdvanceGrasas_Preferencias").val();
+                advanceSearch.Grasas_PreferenciasSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Grasas_PreferenciasToSearch = $("#ddlAdvanceGrasas_Preferencias").val();
+                advanceSearch.Grasas_PreferenciasSearchType = 2;
+            }
+        }
+        advanceSearch.Comidas_cantidadSearchType = 0;
+        if ($('#ddlAdvanceComidas_cantidad').val().length > 0 || $("#txtAdvanceComidas_cantidad").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Comidas_cantidadName = $("#txtAdvanceComidas_cantidad").val();
+                advanceSearch.Comidas_cantidadNameSearchType = $("#ddlAdvanceComidas_cantidad").val();
+                advanceSearch.Comidas_cantidadSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Comidas_cantidadToSearch = $("#ddlAdvanceComidas_cantidad").val();
+                advanceSearch.Comidas_cantidadSearchType = 2;
+            }
+        }
+        advanceSearch.Preparacion_PreferenciasSearchType = 0;
+        if ($('#ddlAdvancePreparacion_Preferencias').val().length > 0 || $("#txtAdvancePreparacion_Preferencias").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Preparacion_PreferenciasName = $("#txtAdvancePreparacion_Preferencias").val();
+                advanceSearch.Preparacion_PreferenciasNameSearchType = $("#ddlAdvancePreparacion_Preferencias").val();
+                advanceSearch.Preparacion_PreferenciasSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Preparacion_PreferenciasToSearch = $("#ddlAdvancePreparacion_Preferencias").val();
+                advanceSearch.Preparacion_PreferenciasSearchType = 2;
+            }
+        }
+        advanceSearch.Entre_comidasSearchType = 0;
+        if ($('#ddlAdvanceEntre_comidas').val().length > 0 || $("#txtAdvanceEntre_comidas").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Entre_comidasName = $("#txtAdvanceEntre_comidas").val();
+                advanceSearch.Entre_comidasNameSearchType = $("#ddlAdvanceEntre_comidas").val();
+                advanceSearch.Entre_comidasSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Entre_comidasToSearch = $("#ddlAdvanceEntre_comidas").val();
+                advanceSearch.Entre_comidasSearchType = 2;
+            }
+        }
+        advanceSearch.ApetitoSearchType = 0;
+        if ($('#ddlAdvanceApetito').val().length > 0 || $("#txtAdvanceApetito").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.ApetitoName = $("#txtAdvanceApetito").val();
+                advanceSearch.ApetitoNameSearchType = $("#ddlAdvanceApetito").val();
+                advanceSearch.ApetitoSearchType = 1;
+            }
+            else {
+
+                advanceSearch.ApetitoToSearch = $("#ddlAdvanceApetito").val();
+                advanceSearch.ApetitoSearchType = 2;
+            }
+        }
+        advanceSearch.Habitos_ModificacionSearchType = 0;
+        if ($('#ddlAdvanceHabitos_Modificacion').val().length > 0 || $("#txtAdvanceHabitos_Modificacion").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Habitos_ModificacionName = $("#txtAdvanceHabitos_Modificacion").val();
+                advanceSearch.Habitos_ModificacionNameSearchType = $("#ddlAdvanceHabitos_Modificacion").val();
+                advanceSearch.Habitos_ModificacionSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Habitos_ModificacionToSearch = $("#ddlAdvanceHabitos_Modificacion").val();
+                advanceSearch.Habitos_ModificacionSearchType = 2;
+            }
+        }
+        advanceSearch.Horario_hambreSearchType = 0;
+        if ($('#ddlAdvanceHorario_hambre').val().length > 0 || $("#txtAdvanceHorario_hambre").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Horario_hambreName = $("#txtAdvanceHorario_hambre").val();
+                advanceSearch.Horario_hambreNameSearchType = $("#ddlAdvanceHorario_hambre").val();
+                advanceSearch.Horario_hambreSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Horario_hambreToSearch = $("#ddlAdvanceHorario_hambre").val();
+                advanceSearch.Horario_hambreSearchType = 2;
+            }
+        }
+        advanceSearch.Cuando_cambia_mi_estado_de_animoSearchType = 0;
+        if ($('#ddlAdvanceCuando_cambia_mi_estado_de_animo').val().length > 0 || $("#txtAdvanceCuando_cambia_mi_estado_de_animo").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Cuando_cambia_mi_estado_de_animoName = $("#txtAdvanceCuando_cambia_mi_estado_de_animo").val();
+                advanceSearch.Cuando_cambia_mi_estado_de_animoNameSearchType = $("#ddlAdvanceCuando_cambia_mi_estado_de_animo").val();
+                advanceSearch.Cuando_cambia_mi_estado_de_animoSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Cuando_cambia_mi_estado_de_animoToSearch = $("#ddlAdvanceCuando_cambia_mi_estado_de_animo").val();
+                advanceSearch.Cuando_cambia_mi_estado_de_animoSearchType = 2;
+            }
+        }
+        advanceSearch.Medicamentos_bajar_pesoSearchType = 0;
+        if ($('#ddlAdvanceMedicamentos_bajar_peso').val().length > 0 || $("#txtAdvanceMedicamentos_bajar_peso").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Medicamentos_bajar_pesoName = $("#txtAdvanceMedicamentos_bajar_peso").val();
+                advanceSearch.Medicamentos_bajar_pesoNameSearchType = $("#ddlAdvanceMedicamentos_bajar_peso").val();
+                advanceSearch.Medicamentos_bajar_pesoSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Medicamentos_bajar_pesoToSearch = $("#ddlAdvanceMedicamentos_bajar_peso").val();
+                advanceSearch.Medicamentos_bajar_pesoSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceCual_medicamento").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesCual_medicamento = $("#txtAdvanceCual_medicamento").val();
+            advanceSearch.PacientesCual_medicamentoSearchType = $("#ddlAdvanceCual_medicamentoFilter").val();
+        }
+        advanceSearch.Frecuencia_EjercicioSearchType = 0;
+        if ($('#ddlAdvanceFrecuencia_Ejercicio').val().length > 0 || $("#txtAdvanceFrecuencia_Ejercicio").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Frecuencia_EjercicioName = $("#txtAdvanceFrecuencia_Ejercicio").val();
+                advanceSearch.Frecuencia_EjercicioNameSearchType = $("#ddlAdvanceFrecuencia_Ejercicio").val();
+                advanceSearch.Frecuencia_EjercicioSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Frecuencia_EjercicioToSearch = $("#ddlAdvanceFrecuencia_Ejercicio").val();
+                advanceSearch.Frecuencia_EjercicioSearchType = 2;
+            }
+        }
+        advanceSearch.Duracion_EjercicioSearchType = 0;
+        if ($('#ddlAdvanceDuracion_Ejercicio').val().length > 0 || $("#txtAdvanceDuracion_Ejercicio").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Duracion_EjercicioName = $("#txtAdvanceDuracion_Ejercicio").val();
+                advanceSearch.Duracion_EjercicioNameSearchType = $("#ddlAdvanceDuracion_Ejercicio").val();
+                advanceSearch.Duracion_EjercicioSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Duracion_EjercicioToSearch = $("#ddlAdvanceDuracion_Ejercicio").val();
+                advanceSearch.Duracion_EjercicioSearchType = 2;
+            }
+        }
+        advanceSearch.Tipo_EjercicioSearchType = 0;
+        if ($('#ddlAdvanceTipo_Ejercicio').val().length > 0 || $("#txtAdvanceTipo_Ejercicio").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Tipo_EjercicioName = $("#txtAdvanceTipo_Ejercicio").val();
+                advanceSearch.Tipo_EjercicioNameSearchType = $("#ddlAdvanceTipo_Ejercicio").val();
+                advanceSearch.Tipo_EjercicioSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Tipo_EjercicioToSearch = $("#ddlAdvanceTipo_Ejercicio").val();
+                advanceSearch.Tipo_EjercicioSearchType = 2;
+            }
+        }
+        advanceSearch.Antiguedad_EjercicioSearchType = 0;
+        if ($('#ddlAdvanceAntiguedad_Ejercicio').val().length > 0 || $("#txtAdvanceAntiguedad_Ejercicio").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Antiguedad_EjercicioName = $("#txtAdvanceAntiguedad_Ejercicio").val();
+                advanceSearch.Antiguedad_EjercicioNameSearchType = $("#ddlAdvanceAntiguedad_Ejercicio").val();
+                advanceSearch.Antiguedad_EjercicioSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Antiguedad_EjercicioToSearch = $("#ddlAdvanceAntiguedad_Ejercicio").val();
+                advanceSearch.Antiguedad_EjercicioSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceFromIMC").val() != "" || $("#txtAdvanceToIMC").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesIMCFrom = $("#txtAdvanceFromIMC").val();
+            advanceSearch.PacientesIMCTo = $("#txtAdvanceToIMC").val();
+        }
+        advanceSearch.Interpretacion_IMCSearchType = 0;
+        if ($('#ddlAdvanceInterpretacion_IMC').val().length > 0 || $("#txtAdvanceInterpretacion_IMC").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Interpretacion_IMCName = $("#txtAdvanceInterpretacion_IMC").val();
+                advanceSearch.Interpretacion_IMCNameSearchType = $("#ddlAdvanceInterpretacion_IMC").val();
+                advanceSearch.Interpretacion_IMCSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Interpretacion_IMCToSearch = $("#ddlAdvanceInterpretacion_IMC").val();
+                advanceSearch.Interpretacion_IMCSearchType = 2;
+            }
+        }
+        advanceSearch.IMC_PediatriaSearchType = 0;
+        if ($('#ddlAdvanceIMC_Pediatria').val().length > 0 || $("#txtAdvanceIMC_Pediatria").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.IMC_PediatriaName = $("#txtAdvanceIMC_Pediatria").val();
+                advanceSearch.IMC_PediatriaNameSearchType = $("#ddlAdvanceIMC_Pediatria").val();
+                advanceSearch.IMC_PediatriaSearchType = 1;
+            }
+            else {
+
+                advanceSearch.IMC_PediatriaToSearch = $("#ddlAdvanceIMC_Pediatria").val();
+                advanceSearch.IMC_PediatriaSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceComplexion_corporal").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesComplexion_corporal = $("#txtAdvanceComplexion_corporal").val();
+            advanceSearch.PacientesComplexion_corporalSearchType = $("#ddlAdvanceComplexion_corporalFilter").val();
+        }
+        advanceSearch.Interpretacion_complexion_corporalSearchType = 0;
+        if ($('#ddlAdvanceInterpretacion_complexion_corporal').val().length > 0 || $("#txtAdvanceInterpretacion_complexion_corporal").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Interpretacion_complexion_corporalName = $("#txtAdvanceInterpretacion_complexion_corporal").val();
+                advanceSearch.Interpretacion_complexion_corporalNameSearchType = $("#ddlAdvanceInterpretacion_complexion_corporal").val();
+                advanceSearch.Interpretacion_complexion_corporalSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Interpretacion_complexion_corporalToSearch = $("#ddlAdvanceInterpretacion_complexion_corporal").val();
+                advanceSearch.Interpretacion_complexion_corporalSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceDistribucion_de_grasa_corporal").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesDistribucion_de_grasa_corporal = $("#txtAdvanceDistribucion_de_grasa_corporal").val();
+            advanceSearch.PacientesDistribucion_de_grasa_corporalSearchType = $("#ddlAdvanceDistribucion_de_grasa_corporalFilter").val();
+        }
+        advanceSearch.Interpretacion_grasa_corporalSearchType = 0;
+        if ($('#ddlAdvanceInterpretacion_grasa_corporal').val().length > 0 || $("#txtAdvanceInterpretacion_grasa_corporal").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Interpretacion_grasa_corporalName = $("#txtAdvanceInterpretacion_grasa_corporal").val();
+                advanceSearch.Interpretacion_grasa_corporalNameSearchType = $("#ddlAdvanceInterpretacion_grasa_corporal").val();
+                advanceSearch.Interpretacion_grasa_corporalSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Interpretacion_grasa_corporalToSearch = $("#ddlAdvanceInterpretacion_grasa_corporal").val();
+                advanceSearch.Interpretacion_grasa_corporalSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceIndice_cintura_cadera").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesIndice_cintura_cadera = $("#txtAdvanceIndice_cintura_cadera").val();
+            advanceSearch.PacientesIndice_cintura_caderaSearchType = $("#ddlAdvanceIndice_cintura_caderaFilter").val();
+        }
+        advanceSearch.Interpretacion_indiceSearchType = 0;
+        if ($('#ddlAdvanceInterpretacion_indice').val().length > 0 || $("#txtAdvanceInterpretacion_indice").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Interpretacion_indiceName = $("#txtAdvanceInterpretacion_indice").val();
+                advanceSearch.Interpretacion_indiceNameSearchType = $("#ddlAdvanceInterpretacion_indice").val();
+                advanceSearch.Interpretacion_indiceSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Interpretacion_indiceToSearch = $("#ddlAdvanceInterpretacion_indice").val();
+                advanceSearch.Interpretacion_indiceSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceConsumo_de_agua_resultado").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesConsumo_de_agua_resultado = $("#txtAdvanceConsumo_de_agua_resultado").val();
+            advanceSearch.PacientesConsumo_de_agua_resultadoSearchType = $("#ddlAdvanceConsumo_de_agua_resultadoFilter").val();
+        }
+        advanceSearch.Interpretacion_aguaSearchType = 0;
+        if ($('#ddlAdvanceInterpretacion_agua').val().length > 0 || $("#txtAdvanceInterpretacion_agua").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Interpretacion_aguaName = $("#txtAdvanceInterpretacion_agua").val();
+                advanceSearch.Interpretacion_aguaNameSearchType = $("#ddlAdvanceInterpretacion_agua").val();
+                advanceSearch.Interpretacion_aguaSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Interpretacion_aguaToSearch = $("#ddlAdvanceInterpretacion_agua").val();
+                advanceSearch.Interpretacion_aguaSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceFromFrecuencia_cardiaca_en_Esfuerzo").val() != "" || $("#txtAdvanceToFrecuencia_cardiaca_en_Esfuerzo").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesFrecuencia_cardiaca_en_EsfuerzoFrom = $("#txtAdvanceFromFrecuencia_cardiaca_en_Esfuerzo").val();
+            advanceSearch.PacientesFrecuencia_cardiaca_en_EsfuerzoTo = $("#txtAdvanceToFrecuencia_cardiaca_en_Esfuerzo").val();
+        }
+        advanceSearch.Interpretacion_frecuenciaSearchType = 0;
+        if ($('#ddlAdvanceInterpretacion_frecuencia').val().length > 0 || $("#txtAdvanceInterpretacion_frecuencia").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Interpretacion_frecuenciaName = $("#txtAdvanceInterpretacion_frecuencia").val();
+                advanceSearch.Interpretacion_frecuenciaNameSearchType = $("#ddlAdvanceInterpretacion_frecuencia").val();
+                advanceSearch.Interpretacion_frecuenciaSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Interpretacion_frecuenciaToSearch = $("#ddlAdvanceInterpretacion_frecuencia").val();
+                advanceSearch.Interpretacion_frecuenciaSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceDificultad_de_Rutina_de_Ejercicios").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesDificultad_de_Rutina_de_Ejercicios = $("#txtAdvanceDificultad_de_Rutina_de_Ejercicios").val();
+            advanceSearch.PacientesDificultad_de_Rutina_de_EjerciciosSearchType = $("#ddlAdvanceDificultad_de_Rutina_de_EjerciciosFilter").val();
+        }
+        advanceSearch.Interpretacion_dificultadSearchType = 0;
+        if ($('#ddlAdvanceInterpretacion_dificultad').val().length > 0 || $("#txtAdvanceInterpretacion_dificultad").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Interpretacion_dificultadName = $("#txtAdvanceInterpretacion_dificultad").val();
+                advanceSearch.Interpretacion_dificultadNameSearchType = $("#ddlAdvanceInterpretacion_dificultad").val();
+                advanceSearch.Interpretacion_dificultadSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Interpretacion_dificultadToSearch = $("#ddlAdvanceInterpretacion_dificultad").val();
+                advanceSearch.Interpretacion_dificultadSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceFromCalorias").val() != "" || $("#txtAdvanceToCalorias").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesCaloriasFrom = $("#txtAdvanceFromCalorias").val();
+            advanceSearch.PacientesCaloriasTo = $("#txtAdvanceToCalorias").val();
+        }
+        advanceSearch.Interpretacion_caloriasSearchType = 0;
+        if ($('#ddlAdvanceInterpretacion_calorias').val().length > 0 || $("#txtAdvanceInterpretacion_calorias").val() == "") {
+
+
+            if (isPacientesTextSearch) {
+                advanceSearch.Interpretacion_caloriasName = $("#txtAdvanceInterpretacion_calorias").val();
+                advanceSearch.Interpretacion_caloriasNameSearchType = $("#ddlAdvanceInterpretacion_calorias").val();
+                advanceSearch.Interpretacion_caloriasSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Interpretacion_caloriasToSearch = $("#ddlAdvanceInterpretacion_calorias").val();
+                advanceSearch.Interpretacion_caloriasSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceObservaciones").val() != "") {
+            hasParameter = true;
+            advanceSearch.PacientesObservaciones = $("#txtAdvanceObservaciones").val();
+            advanceSearch.PacientesObservacionesSearchType = $("#ddlAdvanceObservacionesFilter").val();
+        }
+
+        advanceSearchQuery = hasParameter ? JSON.stringify(advanceSearch) : "";
+        $('#tblPacientes').DataTable().draw();
+        return false;
+    }
+
+    var advanceSearchQuery = "", isPacientesTextSearch = true;
+
+    $(document).ready(function () {
+        $('.clock').clockpicker();
+		$('.date').datepicker({
+			todayBtn: "linked",
+			keyboardNavigation: false,
+			forceParse: false,
+			calendarWeeks: true,
+			autoclose: true,
+			format: "@ConfigurationProperty.DateFormatDatePicker"
+		});
+        $("#txtAdvanceUsuario_que_Registra").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceUsuario_que_Registra").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceUsuario_que_Registra").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceUsuario_que_Registra").val('');
+        });
+        $("#txtAdvanceTipo_de_Registro").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceTipo_de_Registro").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceTipo_de_Registro").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceTipo_de_Registro").val('');
+        });
+        $("#txtAdvanceTipo_de_Paciente").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceTipo_de_Paciente").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceTipo_de_Paciente").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceTipo_de_Paciente").val('');
+        });
+        $("#txtAdvanceUsuario_Registrado").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceUsuario_Registrado").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceUsuario_Registrado").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceUsuario_Registrado").val('');
+        });
+        $("#txtAdvanceEmpresa").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceEmpresa").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceEmpresa").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceEmpresa").val('');
+        });
+        $("#txtAdvancePais_de_nacimiento").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvancePais_de_nacimiento").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvancePais_de_nacimiento").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvancePais_de_nacimiento").val('');
+        });
+        $("#txtAdvanceLugar_de_nacimiento").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceLugar_de_nacimiento").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceLugar_de_nacimiento").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceLugar_de_nacimiento").val('');
+        });
+        $("#txtAdvanceSexo").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceSexo").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceSexo").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceSexo").val('');
+        });
+        $("#txtAdvanceEstado_Civil").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceEstado_Civil").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceEstado_Civil").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceEstado_Civil").val('');
+        });
+        $("#txtAdvancePais").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvancePais").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvancePais").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvancePais").val('');
+        });
+        $("#txtAdvanceEstado").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceEstado").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceEstado").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceEstado").val('');
+        });
+        $("#txtAdvanceObjetivo").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceObjetivo").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceObjetivo").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceObjetivo").val('');
+        });
+        $("#txtAdvanceEstatus_Paciente").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceEstatus_Paciente").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceEstatus_Paciente").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceEstatus_Paciente").val('');
+        });
+        $("#txtAdvanceCuenta_con_padecimientos").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceCuenta_con_padecimientos").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceCuenta_con_padecimientos").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceCuenta_con_padecimientos").val('');
+        });
+        $("#txtAdvanceEsta_embarazada").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceEsta_embarazada").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceEsta_embarazada").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceEsta_embarazada").val('');
+        });
+        $("#txtAdvanceToma_anticonceptivos").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceToma_anticonceptivos").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceToma_anticonceptivos").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceToma_anticonceptivos").val('');
+        });
+        $("#txtAdvanceClimaterio").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceClimaterio").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceClimaterio").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceClimaterio").val('');
+        });
+        $("#txtAdvanceTerapia_reemplazo_hormonal").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceTerapia_reemplazo_hormonal").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceTerapia_reemplazo_hormonal").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceTerapia_reemplazo_hormonal").val('');
+        });
+        $("#txtAdvanceTipo_Dieta").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceTipo_Dieta").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceTipo_Dieta").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceTipo_Dieta").val('');
+        });
+        $("#txtAdvanceSuplementos").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceSuplementos").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceSuplementos").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceSuplementos").val('');
+        });
+        $("#txtAdvanceConsumo_de_sal").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceConsumo_de_sal").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceConsumo_de_sal").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceConsumo_de_sal").val('');
+        });
+        $("#txtAdvanceGrasas_Preferencias").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceGrasas_Preferencias").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceGrasas_Preferencias").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceGrasas_Preferencias").val('');
+        });
+        $("#txtAdvanceComidas_cantidad").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceComidas_cantidad").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceComidas_cantidad").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceComidas_cantidad").val('');
+        });
+        $("#txtAdvancePreparacion_Preferencias").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvancePreparacion_Preferencias").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvancePreparacion_Preferencias").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvancePreparacion_Preferencias").val('');
+        });
+        $("#txtAdvanceEntre_comidas").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceEntre_comidas").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceEntre_comidas").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceEntre_comidas").val('');
+        });
+        $("#txtAdvanceApetito").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceApetito").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceApetito").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceApetito").val('');
+        });
+        $("#txtAdvanceHabitos_Modificacion").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceHabitos_Modificacion").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceHabitos_Modificacion").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceHabitos_Modificacion").val('');
+        });
+        $("#txtAdvanceHorario_hambre").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceHorario_hambre").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceHorario_hambre").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceHorario_hambre").val('');
+        });
+        $("#txtAdvanceCuando_cambia_mi_estado_de_animo").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceCuando_cambia_mi_estado_de_animo").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceCuando_cambia_mi_estado_de_animo").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceCuando_cambia_mi_estado_de_animo").val('');
+        });
+        $("#txtAdvanceMedicamentos_bajar_peso").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceMedicamentos_bajar_peso").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceMedicamentos_bajar_peso").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceMedicamentos_bajar_peso").val('');
+        });
+        $("#txtAdvanceFrecuencia_Ejercicio").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceFrecuencia_Ejercicio").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceFrecuencia_Ejercicio").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceFrecuencia_Ejercicio").val('');
+        });
+        $("#txtAdvanceDuracion_Ejercicio").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceDuracion_Ejercicio").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceDuracion_Ejercicio").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceDuracion_Ejercicio").val('');
+        });
+        $("#txtAdvanceTipo_Ejercicio").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceTipo_Ejercicio").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceTipo_Ejercicio").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceTipo_Ejercicio").val('');
+        });
+        $("#txtAdvanceAntiguedad_Ejercicio").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceAntiguedad_Ejercicio").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceAntiguedad_Ejercicio").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceAntiguedad_Ejercicio").val('');
+        });
+        $("#txtAdvanceInterpretacion_IMC").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceInterpretacion_IMC").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceInterpretacion_IMC").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceInterpretacion_IMC").val('');
+        });
+        $("#txtAdvanceIMC_Pediatria").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceIMC_Pediatria").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceIMC_Pediatria").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceIMC_Pediatria").val('');
+        });
+        $("#txtAdvanceInterpretacion_complexion_corporal").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceInterpretacion_complexion_corporal").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceInterpretacion_complexion_corporal").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceInterpretacion_complexion_corporal").val('');
+        });
+        $("#txtAdvanceInterpretacion_grasa_corporal").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceInterpretacion_grasa_corporal").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceInterpretacion_grasa_corporal").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceInterpretacion_grasa_corporal").val('');
+        });
+        $("#txtAdvanceInterpretacion_indice").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceInterpretacion_indice").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceInterpretacion_indice").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceInterpretacion_indice").val('');
+        });
+        $("#txtAdvanceInterpretacion_agua").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceInterpretacion_agua").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceInterpretacion_agua").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceInterpretacion_agua").val('');
+        });
+        $("#txtAdvanceInterpretacion_frecuencia").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceInterpretacion_frecuencia").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceInterpretacion_frecuencia").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceInterpretacion_frecuencia").val('');
+        });
+        $("#txtAdvanceInterpretacion_dificultad").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceInterpretacion_dificultad").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceInterpretacion_dificultad").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceInterpretacion_dificultad").val('');
+        });
+        $("#txtAdvanceInterpretacion_calorias").keypress(function () {
+            isPacientesTextSearch = true;
+            $("#ddlAdvanceInterpretacion_calorias").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceInterpretacion_calorias").change(function () {
+            isPacientesTextSearch = false;
+            $("#txtAdvanceInterpretacion_calorias").val('');
+        });
+
+    });
+</script>
+
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/chosen")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/clockpicker")
+
+
+    <script>
+        //Adding Rules
+        jQuery.validator.unobtrusive
+      .adapters.addSingleVal("isnumberafter", "propertyname");
+        jQuery.validator.unobtrusive
+    .adapters.addSingleVal("isdateafter", "propertyname");
+
+        //Number after method
+        jQuery.validator.addMethod("isnumberafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+                //if (Date.parse(val) <= Date.parse(otherVal)) {
+                if (Number(val) < Number(otherVal)) {
+                    return false;
+                }
+                        }
+            return true;
+        });
+
+        //Date after after method
+        jQuery.validator.addMethod("isdateafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+
+                if (GetDateObject(val) < GetDateObject(otherVal)) {
+
+                    return false;
+                    }
+                }
+            return true;
+            });
+
+
+        function GetDateObject(value) {
+            var delimiter = GetDelimiter(dateFormat);
+            var dateCollection = value.split(delimiter);
+            var formatCollection = dateFormat.split(delimiter);
+            var dateModel = GetDateModel(dateCollection, formatCollection);
+            return new Date(dateModel.Year, dateModel.Month - 1, dateModel.Day);
+        }
+        //Used to get the date model by parsing the date and the format
+        function GetDateModel(dateCollection,formatCollection) {
+            var day, month, year;
+            for (var i = 0; i < formatCollection.length; i++) {
+                switch (formatCollection[i][0].toUpperCase()) {
+                
+                    case "D":
+                        day = dateCollection[i];
+                        break;
+
+                    case "Y":
+                        year = dateCollection[i];
+                        break;
+
+                    case "M":
+                        month = dateCollection[i];
+                        break;
+                }
+            }
+
+            return {
+                Day:day,
+                Month:month,
+                Year:year
+            };
+        }
+
+        function GetDelimiter(format) {
+
+            for (var i = 0; i < format.length; i++) {
+                if (/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(format[i])) {
+                    return format[i];
+                }
+            }
+            return null;
+        }
+
+        var dateFormat = "@ConfigurationProperty.DateFormatDatePicker";
+
+        $(document).ready(function () {
+            $('.input-daterange').datepicker({
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                format: dateFormat,
+                message: 'The date is not a valid'
+            });
+
+            $(".chosen-select").chosen({ width: "22%", no_results_text: "Oops, nothing found!" });
+			if ($('#IsFilterModal').val() == 'true') {
+                $('.ShowAdvanceFilter #right-sidebar').css('display', 'none');
+                $('.ShowAdvanceFilter .navbar-default').css('display', 'none');
+                $('.ShowAdvanceFilter .border-bottom').css('display', 'none');
+                $('.ShowAdvanceFilter #page-wrapper').css('margin', '0 auto');
+                $('.ShowAdvanceFilter .btn-save').val('@Resources.Resources.Filter');
+                $('.ShowAdvanceFilter .btn-cancelar').attr('data-dismiss', 'modal');
+                $('.ShowAdvanceFilter .btn-cancelar').removeAttr('href');
+                $('#idFilter').val($('#IdReport').val());
+            }
+        });
+
+    </script>
+}
+

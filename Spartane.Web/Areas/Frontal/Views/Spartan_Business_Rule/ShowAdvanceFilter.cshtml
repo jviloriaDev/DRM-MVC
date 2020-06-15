@@ -1,0 +1,316 @@
+﻿@using System.Collections.Generic
+@using Spartane.Web.Areas.Frontal.Models
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Spartan_Business_RuleAdvanceSearchModel
+@{
+
+    var filters = (List<SelectListItem>)ViewBag.Filter;
+}
+<style>
+    .input-validation-error {
+        background: rgb(251, 227, 228);
+        border: 1px solid #fbc2c4;
+        color: #8a1f11;
+    }
+
+    .MarginBottom {
+        margin-bottom: 1%;
+    }
+
+    #divAdvanceSearch input {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch button {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch select {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch h3 {
+        margin-top: 2%;
+    }
+
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins" id="divAdvanceSearch">
+        <div class="ibox-content">
+            @using (Html.BeginForm("ShowAdvanceFilter", "Spartan_Business_Rule", FormMethod.Post, new { @id = "frmAdvanceSearch", @role = "form" }))
+            {
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_Business_RuleResources.BusinessRuleId</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromBusinessRuleId, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromBusinessRuleId" })
+                    @Html.ValidationMessageFor(m => m.FromBusinessRuleId)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToBusinessRuleId, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToBusinessRuleId", @data_min = "txtAdvanceFromBusinessRuleId" })
+                    @Html.ValidationMessageFor(m => m.ToBusinessRuleId)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_Business_RuleResources.Registration_Date</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <div class="input-daterange input-group" id="datepicker">
+                        <span class="input-group-addon">@Resources.Resources.From</span>
+                        @Html.TextBoxFor(m => m.FromRegistration_Date, new { @class = "input-sm form-control", @type = "text", @id = "txtAdvanceFromRegistration_Date" })
+                        @Html.ValidationMessageFor(m => m.FromRegistration_Date)
+                        <span class="input-group-addon">@Resources.Resources.To</span>
+                        @Html.TextBoxFor(m => m.ToRegistration_Date, new { @class = "input-sm form-control", @type = "text", @id = "txtAdvanceToRegistration_Date" })
+                        @Html.ValidationMessageFor(m => m.ToRegistration_Date)
+                    </div>
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_Business_RuleResources.Registration_Hour</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    <div class="input-group clockpicker" data-autoclose="true">
+                        @Html.TextBoxFor(m => m.FromRegistration_Hour, new { @class = "form-control", @id = "txtAdvanceFromRegistration_Hour" })
+                        <span class="input-group-addon">
+                            <span class="fa fa-clock-o"></span>
+                        </span>
+                    </div>
+                    <label class="">@Resources.Resources.To: </label>
+                    <div class="input-group clockpicker" data-autoclose="true">
+                        @Html.TextBoxFor(m => m.ToRegistration_Hour, new { @class = "form-control greaterThanTime", @id = "txtAdvanceToRegistration_Hour", @data_min = "txtAdvanceFromRegistration_Hour" })
+                        <span class="input-group-addon">
+                            <span class="fa fa-clock-o"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_Business_RuleResources.User_who_registers</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromUser_who_registers, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromUser_who_registers" })
+                    @Html.ValidationMessageFor(m => m.FromUser_who_registers)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToUser_who_registers, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToUser_who_registers", @data_min = "txtAdvanceFromUser_who_registers" })
+                    @Html.ValidationMessageFor(m => m.ToUser_who_registers)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_Business_RuleResources.Description</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.DescriptionFilter, filters, new { @class = "form-control", @id = "ddlDescriptionFilter" })
+                    @Html.TextBoxFor(m => m.Description, new { @class = "form-control", @type = "text", @id = "txtDescription" })
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_Business_RuleResources.Object</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromObject, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromObject" })
+                    @Html.ValidationMessageFor(m => m.FromObject)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToObject, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToObject", @data_min = "txtAdvanceFromObject" })
+                    @Html.ValidationMessageFor(m => m.ToObject)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_Business_RuleResources.Attribute</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromAttribute, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromAttribute" })
+                    @Html.ValidationMessageFor(m => m.FromAttribute)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToAttribute, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToAttribute", @data_min = "txtAdvanceFromAttribute" })
+                    @Html.ValidationMessageFor(m => m.ToAttribute)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_Business_RuleResources.Implementation_Code</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Implementation_CodeFilter, filters, new { @class = "form-control", @id = "ddlImplementation_CodeFilter" })
+                    @Html.TextBoxFor(m => m.Implementation_Code, new { @class = "form-control", @type = "text", @id = "txtImplementation_Code" })
+                </div>
+
+                <div class="MarginBottom form-inline">
+                    <input type="submit" class="btn btn-primary" value="@Resources.Resources.Search"><a class="btn btn-primary" href="@Url.Content("~/Frontal/Spartan_Business_Rule/")" value=" ">@Resources.Resources.Cancelar</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function InitiateAdvanceSearch() {
+        var advanceSearch = {}, hasParameter = false;
+        if ($("#txtAdvanceFromBusinessRuleId").val() != "" || $("#txtAdvanceToBusinessRuleId").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Business_RuleBusinessRuleIdFrom = $("#txtAdvanceFromBusinessRuleId").val();
+            advanceSearch.Spartan_Business_RuleBusinessRuleIdTo = $("#txtAdvanceToBusinessRuleId").val();
+        }
+        if ($("#txtAdvanceFromRegistration_Date").val() != "" || $("#txtAdvanceToRegistration_Date").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Business_RuleRegistration_DateFrom = $("#txtAdvanceFromRegistration_Date").val();
+            advanceSearch.Spartan_Business_RuleRegistration_DateTo = $("#txtAdvanceToRegistration_Date").val();
+        }
+        if ($("#txtAdvanceRegistration_Hour").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Business_RuleRegistration_Hour = $("#txtAdvanceRegistration_Hour").val();
+            advanceSearch.Spartan_Business_RuleRegistration_HourSearchType = $("#ddlAdvanceRegistration_HourFilter").val();
+        }
+        if ($("#txtAdvanceFromUser_who_registers").val() != "" || $("#txtAdvanceToUser_who_registers").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Business_RuleUser_who_registersFrom = $("#txtAdvanceFromUser_who_registers").val();
+            advanceSearch.Spartan_Business_RuleUser_who_registersTo = $("#txtAdvanceToUser_who_registers").val();
+        }
+        if ($("#txtAdvanceDescription").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Business_RuleDescription = $("#txtAdvanceDescription").val();
+            advanceSearch.Spartan_Business_RuleDescriptionSearchType = $("#ddlAdvanceDescriptionFilter").val();
+        }
+        if ($("#txtAdvanceFromObject").val() != "" || $("#txtAdvanceToObject").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Business_RuleObjectFrom = $("#txtAdvanceFromObject").val();
+            advanceSearch.Spartan_Business_RuleObjectTo = $("#txtAdvanceToObject").val();
+        }
+        if ($("#txtAdvanceFromAttribute").val() != "" || $("#txtAdvanceToAttribute").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Business_RuleAttributeFrom = $("#txtAdvanceFromAttribute").val();
+            advanceSearch.Spartan_Business_RuleAttributeTo = $("#txtAdvanceToAttribute").val();
+        }
+        if ($("#txtAdvanceImplementation_Code").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Business_RuleImplementation_Code = $("#txtAdvanceImplementation_Code").val();
+            advanceSearch.Spartan_Business_RuleImplementation_CodeSearchType = $("#ddlAdvanceImplementation_CodeFilter").val();
+        }
+
+        advanceSearchQuery = hasParameter ? JSON.stringify(advanceSearch) : "";
+        $('#tblSpartan_Business_Rule').DataTable().draw();
+        return false;
+    }
+
+    var advanceSearchQuery = "", isSpartan_Business_RuleTextSearch = true;
+
+    $(document).ready(function () {
+        $('.clockpicker').clockpicker();
+
+    });
+</script>
+
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/chosen")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/clockpicker")
+
+
+    <script>
+        //Adding Rules
+        jQuery.validator.unobtrusive
+      .adapters.addSingleVal("isnumberafter", "propertyname");
+        jQuery.validator.unobtrusive
+    .adapters.addSingleVal("isdateafter", "propertyname");
+
+        //Number after method
+        jQuery.validator.addMethod("isnumberafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+                //if (Date.parse(val) <= Date.parse(otherVal)) {
+                if (Number(val) < Number(otherVal)) {
+                    return false;
+                }
+                        }
+            return true;
+        });
+
+        //Date after after method
+        jQuery.validator.addMethod("isdateafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+
+                if (GetDateObject(val) < GetDateObject(otherVal)) {
+
+                    return false;
+                    }
+                }
+            return true;
+            });
+
+
+        function GetDateObject(value) {
+            var delimiter = GetDelimiter(dateFormat);
+            var dateCollection = value.split(delimiter);
+            var formatCollection = dateFormat.split(delimiter);
+            var dateModel = GetDateModel(dateCollection, formatCollection);
+            return new Date(dateModel.Year, dateModel.Month - 1, dateModel.Day);
+        }
+        //Used to get the date model by parsing the date and the format
+        function GetDateModel(dateCollection,formatCollection) {
+            var day, month, year;
+            for (var i = 0; i < formatCollection.length; i++) {
+                switch (formatCollection[i][0].toUpperCase()) {
+                
+                    case "D":
+                        day = dateCollection[i];
+                        break;
+
+                    case "Y":
+                        year = dateCollection[i];
+                        break;
+
+                    case "M":
+                        month = dateCollection[i];
+                        break;
+                }
+            }
+
+            return {
+                Day:day,
+                Month:month,
+                Year:year
+            };
+        }
+
+        function GetDelimiter(format) {
+
+            for (var i = 0; i < format.length; i++) {
+                if (/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(format[i])) {
+                    return format[i];
+                }
+            }
+            return null;
+        }
+
+        var dateFormat = "@ConfigurationProperty.DateFormatDatePicker";
+
+        $(document).ready(function () {
+
+
+
+            $('.input-daterange').datepicker({
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                format: dateFormat,
+                message: 'The date is not a valid'
+            });
+
+            $(".chosen-select").chosen({ width: "22%", no_results_text: "Oops, nothing found!" });
+
+        });
+
+    </script>
+}
+

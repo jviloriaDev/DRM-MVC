@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Spartan_BR_Operator_Type" value="Business Rule Operator Type"></resource>
+  <resource culture="es-es" name="OperatorTypeId" value="Id"></resource>
+  <resource culture="es-es" name="Description" value="Description"></resource>
+  <resource culture="es-es" name="Presentation_Control_Type" value="Presentation Control Type"></resource>
+  <resource culture="es-es" name="Query_for_Fill_Condition" value="Query for Fill Condition"></resource>
+  <resource culture="es-es" name="Code_for_Fill_Condition" value="Code for Fill Condition"></resource>
+  <resource culture="es-es" name="Implementation_Code" value="Implementation Code"></resource>
+  <resource name="Description.1" control="Description" value="Query" culture="es-es" />
+  <resource name="Description.2" control="Description" value="Valor" culture="es-es" />
+  <resource name="Description.3" control="Description" value="Valor del Campo" culture="es-es" />
+  <resource name="Description.4" control="Description" value="Texto del Campo" culture="es-es" />
+
+</resources>

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Template_Dashboard_Detail" value="Spartan Template Dashboard Detail"></resource>
+  <resource culture="en-US" name="Detail_Id" value="Detail Id"></resource>
+  <resource culture="en-US" name="Row_Number" value="Row Number"></resource>
+  <resource culture="en-US" name="Columns" value="Columns"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

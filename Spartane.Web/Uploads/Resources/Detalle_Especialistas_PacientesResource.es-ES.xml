@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Detalle_Especialistas_Pacientes" value="Detalle Especialistas Pacientes"></resource>
+  <resource culture="es-es" name="Folio" value="Folio"></resource>
+  <resource culture="es-es" name="Especialista" value="Especialista"></resource>
+  <resource culture="es-es" name="Especialidad" value="Especialidad"></resource>
+  <resource culture="es-es" name="Fecha_inicio" value="Fecha inicio"></resource>
+  <resource culture="es-es" name="Fecha_fin" value="Fecha fin"></resource>
+  <resource culture="es-es" name="Cantidad_consultas" value="Cantidad consultas"></resource>
+  <resource culture="es-es" name="Principal" value="Principal"></resource>
+  <resource culture="es-es" name="Estatus" value="Estatus"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

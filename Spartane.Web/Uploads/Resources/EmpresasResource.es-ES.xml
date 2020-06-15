@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Empresas" value="Empresas"></resource>
+  <resource culture="es-es" name="Folio" value="Folio"></resource>
+  <resource culture="es-es" name="Fecha_de_Registro" value="Fecha de Registro"></resource>
+  <resource culture="es-es" name="Hora_de_Registro" value="Hora de Registro"></resource>
+  <resource culture="es-es" name="Usuario_que_Registra" value="Usuario que Registra"></resource>
+  <resource culture="es-es" name="Nombre_de_la_Empresa" value="Nombre de la Empresa"></resource>
+  <resource culture="es-es" name="Tipo_de_Empresa" value="Tipo de Empresa"></resource>
+  <resource culture="es-es" name="Email" value="Email"></resource>
+  <resource culture="es-es" name="Telefono" value="Teléfono"></resource>
+  <resource culture="es-es" name="Calle" value="Calle"></resource>
+  <resource culture="es-es" name="Numero_exterior" value="Número exterior"></resource>
+  <resource culture="es-es" name="Numero_interior" value="Número interior"></resource>
+  <resource culture="es-es" name="Colonia" value="Colonia"></resource>
+  <resource culture="es-es" name="CP" value="C.P."></resource>
+  <resource culture="es-es" name="Ciudad" value="Ciudad"></resource>
+  <resource culture="es-es" name="Estado" value="Estado"></resource>
+  <resource culture="es-es" name="Pais" value="País"></resource>
+  <resource culture="es-es" name="Estatus" value="Estatus"></resource>
+  <resource culture="es-es" name="Contactos" value="Contactos"></resource>
+  <resource culture="es-es" name="Regimen_Fiscal" value="Régimen Fiscal"></resource>
+  <resource culture="es-es" name="Nombre_o_Razon_Social" value="Razón Social"></resource>
+  <resource culture="es-es" name="RFC" value="RFC"></resource>
+  <resource culture="es-es" name="Calle_Fiscal" value="Calle Fiscal"></resource>
+  <resource culture="es-es" name="Numero_exterior_Fiscal" value="Número exterior Fiscal"></resource>
+  <resource culture="es-es" name="Numero_interior_Fiscal" value="Número interior Fiscal"></resource>
+  <resource culture="es-es" name="Colonia_Fiscal" value="Colonia Fiscal"></resource>
+  <resource culture="es-es" name="CP_Fiscal" value="C.P. Fiscal"></resource>
+  <resource culture="es-es" name="Ciudad_Fiscal" value="Ciudad Fiscal"></resource>
+  <resource culture="es-es" name="Estado_Fiscal" value="Estado Fiscal"></resource>
+  <resource culture="es-es" name="Pais_Fiscal" value="País Fiscal"></resource>
+  <resource culture="es-es" name="Telefono_Fiscal" value="Teléfono Fiscal"></resource>
+  <resource culture="es-es" name="Fax" value="Fax"></resource>
+  <resource culture="es-es" name="Nombres_del_Representante_Legal" value="Nombre(s) del Representante Legal"></resource>
+  <resource culture="es-es" name="Apellido_Paterno_del_Representante_Legal" value="Apellido Paterno del Representante Legal"></resource>
+  <resource culture="es-es" name="Apellido_Materno_del_Representante_Legal" value="Apellido Materno del Representante Legal"></resource>
+  <resource culture="es-es" name="Nombre_Completo_del_Representante_Legal" value="Nombre Completo del Representante Legal"></resource>
+  <resource culture="es-es" name="Suscripciones" value="Suscripciones"></resource>
+  <resource culture="es-es" name="Pagos" value="Pagos"></resource>
+  <resource culture="es-es" name="Beneficiarios" value="Beneficiarios"></resource>
+  <resource culture="es-es" name="Cedula_Fiscal" value="Cédula Fiscal"></resource>
+  <resource culture="es-es" name="Contratos" value="Contratos"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+<resource culture="es-es" name="TabDatos_de_Contacto" value="Datos de Contacto"></resource>
+<resource culture="es-es" name="TabDatos_Fiscales" value="Datos Fiscales"></resource>
+<resource culture="es-es" name="TabSuscripcion" value="Suscripción"></resource>
+<resource culture="es-es" name="TabDocumentacion" value="Documentación"></resource>
+
+</resources>

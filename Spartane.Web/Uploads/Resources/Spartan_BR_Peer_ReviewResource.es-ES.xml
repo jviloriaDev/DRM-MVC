@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Spartan_BR_Peer_Review" value="Revisión de Pares"></resource>
+  <resource culture="es-es" name="Key_Peer_Review" value="Clave"></resource>
+  <resource culture="es-es" name="User_that_reviewed" value="Usuario que revisó"></resource>
+  <resource culture="es-es" name="Acceptance_Criteria" value="Criterio de Aceptación"></resource>
+  <resource culture="es-es" name="It_worked" value="Funcionó?"></resource>
+  <resource culture="es-es" name="Rejection_reason" value="Motivo de Rechazo"></resource>
+  <resource culture="es-es" name="Comments" value="Comentarios"></resource>
+  <resource culture="es-es" name="Evidence" value="Evidencia"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

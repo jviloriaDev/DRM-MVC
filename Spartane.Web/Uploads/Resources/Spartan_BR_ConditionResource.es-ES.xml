@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Spartan_BR_Condition" value="Condiciones de Reglas de Negocio"></resource>
+  <resource culture="es-es" name="ConditionId" value="Clave"></resource>
+  <resource culture="es-es" name="Description" value="Descripción"></resource>
+  <resource culture="es-es" name="Implementation_Code" value="Código de Implementación"></resource>
+
+</resources>

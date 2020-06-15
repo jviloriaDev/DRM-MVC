@@ -1,0 +1,2189 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Globalization
+@using Spartane.Core.Domain.Permission
+@using Spartane.Core.Domain.Spartane_File
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.VendedoresModel
+@{
+
+/*
+    string Fecha_de_Registro = "";
+    if (Model.Fecha_de_Registro == "")
+    { Model.Fecha_de_Registro = DateTime.Now.ToString(ConfigurationProperty.DateFormat); }
+    string Fecha_de_nacimiento = "";
+    if (Model.Fecha_de_nacimiento == "")
+    { Model.Fecha_de_nacimiento = DateTime.Now.ToString(ConfigurationProperty.DateFormat); }
+
+*/
+    List<SelectListItem> varSpartan_User_Usuario_que_Registra = null;
+    if (ViewBag.Spartan_Users_Usuario_que_Registra != null)
+    { varSpartan_User_Usuario_que_Registra = (List<SelectListItem>)ViewBag.Spartan_Users_Usuario_que_Registra; }
+    List<SelectListItem> varSpartan_User_Usuario_Registrado = null;
+    if (ViewBag.Spartan_Users_Usuario_Registrado != null)
+    { varSpartan_User_Usuario_Registrado = (List<SelectListItem>)ViewBag.Spartan_Users_Usuario_Registrado; }
+    List<SelectListItem> varPais_Pais_de_nacimiento = null;
+    if (ViewBag.Paiss_Pais_de_nacimiento != null)
+    { varPais_Pais_de_nacimiento = (List<SelectListItem>)ViewBag.Paiss_Pais_de_nacimiento; }
+    List<SelectListItem> varEstado_Entidad_de_nacimiento = null;
+    if (ViewBag.Estados_Entidad_de_nacimiento != null)
+    { varEstado_Entidad_de_nacimiento = (List<SelectListItem>)ViewBag.Estados_Entidad_de_nacimiento; }
+    List<SelectListItem> varSexo_Sexo = null;
+    if (ViewBag.Sexos_Sexo != null)
+    { varSexo_Sexo = (List<SelectListItem>)ViewBag.Sexos_Sexo; }
+    List<SelectListItem> varEstatus_Estatus = null;
+    if (ViewBag.Estatuss_Estatus != null)
+    { varEstatus_Estatus = (List<SelectListItem>)ViewBag.Estatuss_Estatus; }
+    List<SelectListItem> varBancos_Banco = null;
+    if (ViewBag.Bancoss_Banco != null)
+    { varBancos_Banco = (List<SelectListItem>)ViewBag.Bancoss_Banco; }
+
+    Permission permissionDetalle_Codigos_de_Referencia_Vendedores = ViewBag.PermissionDetalle_Codigos_de_Referencia_Vendedores;
+    Permission permissionDetalle_Facturacion_Vendedores = ViewBag.PermissionDetalle_Facturacion_Vendedores;
+
+    Permission permission = ViewBag.Permission;
+	
+	if (ViewBag.IsPartial)
+   { 
+       Layout = "~/Areas/Frontal/Views/Shared/_LayoutPopup.cshtml";
+   }
+}
+<div class="loading style-2"><div class="loading-wheel"></div></div>
+<div class="modal fade in" id="dvAttributeValue" style="background-color:rgba(0, 0, 0, 0.7);">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" id="lblAttributeType">@Resources.Resources.Value</label>
+                    <div class="col-sm-7">
+                        <input type="text" title="Value" class="form-control" id="txtAttributeValue" />
+                    </div>
+                    <div class="col-sm-2">
+                        <a class="btn btn-primary" onclick="SaveValue()">@Resources.Resources.Submit</a>
+                    </div>
+                    <input type="hidden" id="hdnAttributType" />
+                    <input type="hidden" id="hdnAttributElement" />
+                    <input type="hidden" id="hdnAttributNumber" />
+                    <input type="hidden" id="hdnElementType" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row wrapper border-bottom white-bg page-heading">
+
+    <div class="row">
+        <div class="col-lg-10">
+            <h2>
+                @Resources.VendedoresResources.Vendedores
+                <button onclick="VendedoresGetBusinessRule('', 'Al Abrir Pantalla', '0')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#VendedoresBusinessRule-form">
+                    <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+                        <i class="fa fa-cogs fa-spin"></i>
+                    </a>
+                </button>
+            </h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">@Resources.Resources.Home</a>
+                </li>
+                <li class="active">
+                @if (Session["PhaseName"] != null)
+                {
+                    <strong>@Session["PhaseName"].ToString()</strong>
+                }
+                else
+                {
+                    <strong>@Resources.VendedoresResources.Vendedores</strong>
+                }
+                
+            </li>
+                <li class="active">
+                    <strong>@Resources.Resources.Create</strong>
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-2">
+
+            @{
+                if (Convert.ToInt32(Spartane.Web.SessionHelper.Role) == (int)Spartane.Core.Enums.SpartanRoleEnum.Admin)
+                {
+                    <h2>&nbsp;</h2>
+                    <button onclick="VendedoresDisplayBusinessRule()" type="button" class="btn btn-info btn-lg displayBusinessProperyButton">
+                        <i class="fa fa-cogs fa-spin"></i>
+                    </button>
+
+                    <div aria-hidden="true" class="modal fade in VendedoresPropertyBusinessModal" id="VendedoresPropertyBusinessModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">
+                                          @Resources.Resources.titleBussinesRules
+                                        <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">@Resources.Resources.Close</span></button>
+                                    </h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <a class="btn btn-primary full-width" data-dismiss="modal" data-toggle="modal" data-target="#PropertyModal-form" onclick="GetPropertyBag()">@Resources.Resources.Property</a>
+                                        </div>
+                                        <div class="clearfix col-sm-12">&nbsp;</div>
+                                        <div class="col-sm-12">
+                                            <a class="btn btn-primary full-width" data-dismiss="modal" data-toggle="modal" data-target="#VendedoresBusinessRule-form" onclick="VendedoresGetBusinessRule()">Business Rule</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     <div aria-hidden="true" data-backdrop="static" class="modal fade in PropertyModal" id="PropertyModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+					</div>
+					<div aria-hidden="true" data-backdrop="static" class="modal fade in VendedoresBusinessRuleModal" id="VendedoresBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+					</div>
+
+
+                }
+            }
+                    <div aria-hidden="true" class="modal fade in AddDetalle_Codigos_de_Referencia_VendedoresModal" id="AddDetalle_Codigos_de_Referencia_Vendedores-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                    </div>
+
+                    <div aria-hidden="true" class="modal fade in AddDetalle_Facturacion_VendedoresModal" id="AddDetalle_Facturacion_Vendedores-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                    </div>
+
+
+        </div>
+    </div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            @using (Html.BeginForm("Post", "Vendedores", FormMethod.Post, new { id = "CreateVendedores", @readonly = "true", @class = "form-horizontal", enctype = "multipart/form-data" }))
+            {
+                                <input type="hidden" id="hdnIsNew" name="hdnIsNew" value="@ViewBag.IsNew.ToString()" />
+                <span id="popupNotification"></span>
+                <div class="container-fluid VendedoresCreateForm" id="viewmodeledit">
+				 <div class="alert alert-warning" id="controlsRequerid" style="display:none">
+                        <a href="#" class="close" onclick="$('#controlsRequerid').hide();">&times;</a>
+                        <span id="textRequired"></span>
+                 </div>
+			<div class="tabs-container">
+                        	<ul class="nav nav-tabs">
+<li class="active"><a data-toggle="tab" href="#tabDatos_Generales"> @Resources.VendedoresResources.TabDatos_Generales</a></li>
+<li class=""><a data-toggle="tab" href="#tabCodigos_de_Referencia"> @Resources.VendedoresResources.TabCodigos_de_Referencia</a></li>
+<li class=""><a data-toggle="tab" href="#tabDatos_Bancarios"> @Resources.VendedoresResources.TabDatos_Bancarios</a></li>
+<li class=""><a data-toggle="tab" href="#tabFacturacion"> @Resources.VendedoresResources.TabFacturacion</a></li>
+
+                        	</ul>
+	                	<div class="tab-content">
+                            <div id="tabDatos_Generales" class="tab-pane active">
+                                <div class="panel-body">
+                            <div class="form-group" id="divFolio">
+                                <label class="col-sm-2 control-label">@Resources.VendedoresResources.Folio</label>
+                                <div class="col-sm-8" data-field-id="Folio" data-attribute="259940" data-field-name="@Resources.VendedoresResources.Folio">
+                                    <label class="form-control" for="Folio" id="lblFolio">
+                                    @if (Model.Folio== 0)
+                                        {
+                                            <text>@Resources.Resources.ClaveDefault</text>
+                                        }
+                                        else
+                                        { 
+                                            <text>@Model.Folio</text>
+                                        }
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divFecha_de_Registro">
+                                <label class="col-sm-2 control-label">@Resources.VendedoresResources.Fecha_de_Registro</label>
+                                <div class="col-sm-8" data-field-id="Fecha_de_Registro" data-attribute="259941" data-field-name="@Resources.VendedoresResources.Fecha_de_Registro">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input class="form-control col-md-12 Datos_Generales" id="Fecha_de_Registro"  name="Fecha_de_Registro" type="text" value="@Model.Fecha_de_Registro">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divHora_de_Registro">
+                                <label class="col-sm-2 control-label">@Resources.VendedoresResources.Hora_de_Registro</label>
+                                <div class="col-sm-8" data-field-id="Hora_de_Registro" data-attribute="259942" data-field-name="@Resources.VendedoresResources.Hora_de_Registro">
+                                    <div class='input-group date' id='timePicker'>
+                                        <input class="form-control col-md-12 Datos_Generales" id="Hora_de_Registro"  name="Hora_de_Registro" type="text" data-autoclose="true" value="@Model.Hora_de_Registro">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-time"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divUsuario_que_Registra">
+                                <label class="col-sm-2 control-label">@Resources.VendedoresResources.Usuario_que_Registra</label>
+                                <div class="col-sm-8" data-field-id="Usuario_que_Registra" data-attribute="259943" data-field-name="@Resources.VendedoresResources.Usuario_que_Registra">
+                                    <select class="form-control Datos_Generales" data-val="true" data-val-number="The field Usuario que Registra must be a number." data-val-required="The Usuario que Registra field is required." id="Usuario_que_Registra" name="Usuario_que_Registra">
+                                        <option value=""></option>
+                                        @if (varSpartan_User_Usuario_que_Registra != null){ 
+                                            foreach (var itemUsuario_que_Registra in varSpartan_User_Usuario_que_Registra)
+                                            {
+                                                if (itemUsuario_que_Registra.Value == Convert.ToString(Model.Usuario_que_Registra))
+                                                {
+                                                    <option value="@itemUsuario_que_Registra.Value" selected>@itemUsuario_que_Registra.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemUsuario_que_Registra.Value">@itemUsuario_que_Registra.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Usuario_que_Registra" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 259943).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Spartan_User', 'Usuario_que_Registra');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divNombres">
+                                <label class="col-sm-2 control-label">@Resources.VendedoresResources.Nombres</label>
+                                <div class="col-sm-8" data-field-id="Nombres" data-attribute="259944" data-field-name="@Resources.VendedoresResources.Nombres">
+                                    <input class="form-control Datos_Generales" id="Nombres" name="Nombres" type="text" value="@Model.Nombres">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Nombres" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divApellido_Paterno">
+                                <label class="col-sm-2 control-label">@Resources.VendedoresResources.Apellido_Paterno</label>
+                                <div class="col-sm-8" data-field-id="Apellido_Paterno" data-attribute="259945" data-field-name="@Resources.VendedoresResources.Apellido_Paterno">
+                                    <input class="form-control Datos_Generales" id="Apellido_Paterno" name="Apellido_Paterno" type="text" value="@Model.Apellido_Paterno">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Apellido_Paterno" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divApellido_Materno">
+                                <label class="col-sm-2 control-label">@Resources.VendedoresResources.Apellido_Materno</label>
+                                <div class="col-sm-8" data-field-id="Apellido_Materno" data-attribute="259946" data-field-name="@Resources.VendedoresResources.Apellido_Materno">
+                                    <input class="form-control Datos_Generales" id="Apellido_Materno" name="Apellido_Materno" type="text" value="@Model.Apellido_Materno">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Apellido_Materno" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divNombre_Completo">
+                                <label class="col-sm-2 control-label">@Resources.VendedoresResources.Nombre_Completo</label>
+                                <div class="col-sm-8" data-field-id="Nombre_Completo" data-attribute="259947" data-field-name="@Resources.VendedoresResources.Nombre_Completo">
+                                    <textarea id="Nombre_Completo" name="Nombre_Completo" class="form-control Datos_Generales" rows="4" cols="50">@Model.Nombre_Completo</textarea>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Nombre_Completo" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divNombre_de_Usuario">
+                                <label class="col-sm-2 control-label">@Resources.VendedoresResources.Nombre_de_Usuario</label>
+                                <div class="col-sm-8" data-field-id="Nombre_de_Usuario" data-attribute="259948" data-field-name="@Resources.VendedoresResources.Nombre_de_Usuario">
+                                    <input class="form-control Datos_Generales" id="Nombre_de_Usuario" name="Nombre_de_Usuario" type="text" value="@Model.Nombre_de_Usuario">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Nombre_de_Usuario" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divUsuario_Registrado">
+                                <label class="col-sm-2 control-label">@Resources.VendedoresResources.Usuario_Registrado</label>
+                                <div class="col-sm-8" data-field-id="Usuario_Registrado" data-attribute="259949" data-field-name="@Resources.VendedoresResources.Usuario_Registrado">
+                                    <select class="form-control Datos_Generales" data-val="true" data-val-number="The field Usuario Registrado must be a number." data-val-required="The Usuario Registrado field is required." id="Usuario_Registrado" name="Usuario_Registrado">
+                                        <option value=""></option>
+                                        @if (varSpartan_User_Usuario_Registrado != null){ 
+                                            foreach (var itemUsuario_Registrado in varSpartan_User_Usuario_Registrado)
+                                            {
+                                                if (itemUsuario_Registrado.Value == Convert.ToString(Model.Usuario_Registrado))
+                                                {
+                                                    <option value="@itemUsuario_Registrado.Value" selected>@itemUsuario_Registrado.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemUsuario_Registrado.Value">@itemUsuario_Registrado.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Usuario_Registrado" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 259949).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Spartan_User', 'Usuario_Registrado');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divEmail">
+                                <label class="col-sm-2 control-label">@Resources.VendedoresResources.Email</label>
+                                <div class="col-sm-8" data-field-id="Email" data-attribute="259950" data-field-name="@Resources.VendedoresResources.Email">
+                                    <input class="form-control Datos_Generales" id="Email" name="Email" type="text" value="@Model.Email">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Email" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divCelular">
+                                <label class="col-sm-2 control-label">@Resources.VendedoresResources.Celular</label>
+                                <div class="col-sm-8" data-field-id="Celular" data-attribute="259951" data-field-name="@Resources.VendedoresResources.Celular">
+                                    <input class="form-control Datos_Generales" id="Celular" name="Celular" type="text" value="@Model.Celular">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Celular" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divFecha_de_nacimiento">
+                                <label class="col-sm-2 control-label">@Resources.VendedoresResources.Fecha_de_nacimiento</label>
+                                <div class="col-sm-8" data-field-id="Fecha_de_nacimiento" data-attribute="259952" data-field-name="@Resources.VendedoresResources.Fecha_de_nacimiento">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input class="form-control col-md-12 Datos_Generales" id="Fecha_de_nacimiento"  name="Fecha_de_nacimiento" type="text" value="@Model.Fecha_de_nacimiento">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divPais_de_nacimiento">
+                                <label class="col-sm-2 control-label">@Resources.VendedoresResources.Pais_de_nacimiento</label>
+                                <div class="col-sm-8" data-field-id="Pais_de_nacimiento" data-attribute="259953" data-field-name="@Resources.VendedoresResources.Pais_de_nacimiento">
+                                    <select class="form-control Datos_Generales" data-val="true" data-val-number="The field País de nacimiento must be a number." data-val-required="The País de nacimiento field is required." id="Pais_de_nacimiento" name="Pais_de_nacimiento">
+                                        <option value=""></option>
+                                        @if (varPais_Pais_de_nacimiento != null){ 
+                                            foreach (var itemPais_de_nacimiento in varPais_Pais_de_nacimiento)
+                                            {
+                                                if (itemPais_de_nacimiento.Value == Convert.ToString(Model.Pais_de_nacimiento))
+                                                {
+                                                    <option value="@itemPais_de_nacimiento.Value" selected>@itemPais_de_nacimiento.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemPais_de_nacimiento.Value">@itemPais_de_nacimiento.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Pais_de_nacimiento" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 259953).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Pais', 'Pais_de_nacimiento');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divEntidad_de_nacimiento">
+                                <label class="col-sm-2 control-label">@Resources.VendedoresResources.Entidad_de_nacimiento</label>
+                                <div class="col-sm-8" data-field-id="Entidad_de_nacimiento" data-attribute="259954" data-field-name="@Resources.VendedoresResources.Entidad_de_nacimiento">
+                                    <select class="form-control Datos_Generales" data-val="true" data-val-number="The field Entidad de nacimiento must be a number." data-val-required="The Entidad de nacimiento field is required." id="Entidad_de_nacimiento" name="Entidad_de_nacimiento">
+                                        <option value=""></option>
+                                        @if (varEstado_Entidad_de_nacimiento != null){ 
+                                            foreach (var itemEntidad_de_nacimiento in varEstado_Entidad_de_nacimiento)
+                                            {
+                                                if (itemEntidad_de_nacimiento.Value == Convert.ToString(Model.Entidad_de_nacimiento))
+                                                {
+                                                    <option value="@itemEntidad_de_nacimiento.Value" selected>@itemEntidad_de_nacimiento.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemEntidad_de_nacimiento.Value">@itemEntidad_de_nacimiento.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Entidad_de_nacimiento" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 259954).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Estado', 'Entidad_de_nacimiento');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divSexo">
+                                <label class="col-sm-2 control-label">@Resources.VendedoresResources.Sexo</label>
+                                <div class="col-sm-8" data-field-id="Sexo" data-attribute="259955" data-field-name="@Resources.VendedoresResources.Sexo">
+                                    <select class="form-control Datos_Generales" data-val="true" data-val-number="The field Sexo must be a number." data-val-required="The Sexo field is required." id="Sexo" name="Sexo">
+                                        <option value=""></option>
+                                        @if (varSexo_Sexo != null){ 
+                                            foreach (var itemSexo in varSexo_Sexo)
+                                            {
+                                                if (itemSexo.Value == Convert.ToString(Model.Sexo))
+                                                {
+                                                    <option value="@itemSexo.Value" selected>@itemSexo.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemSexo.Value">@itemSexo.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Sexo" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 259955).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Sexo', 'Sexo');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divEstatus">
+                                <label class="col-sm-2 control-label">@Resources.VendedoresResources.Estatus</label>
+                                <div class="col-sm-8" data-field-id="Estatus" data-attribute="259956" data-field-name="@Resources.VendedoresResources.Estatus">
+                                    <select class="form-control Datos_Generales" data-val="true" data-val-number="The field Estatus must be a number." data-val-required="The Estatus field is required." id="Estatus" name="Estatus">
+                                        <option value=""></option>
+                                        @if (varEstatus_Estatus != null){ 
+                                            foreach (var itemEstatus in varEstatus_Estatus)
+                                            {
+                                                if (itemEstatus.Value == Convert.ToString(Model.Estatus))
+                                                {
+                                                    <option value="@itemEstatus.Value" selected>@itemEstatus.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemEstatus.Value">@itemEstatus.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Estatus" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 259956).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Estatus', 'Estatus');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            </div>
+                                </div>
+
+
+                            <div id="tabCodigos_de_Referencia" class="tab-pane">
+                                <div class="panel-body">
+                            <div id="divCodigos_para_Referenciar_Pacientes">
+                            <div class="ibox-title">
+                                <h5>@Resources.VendedoresResources.Codigos_para_Referenciar_Pacientes</h5>
+                                <div class="ibox-tools">
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="">
+									@if (permissionDetalle_Codigos_de_Referencia_Vendedores.New && !ViewBag.Consult)
+                                    {
+                                        <a onclick="Detalle_Codigos_de_Referencia_VendedoresfnClickAddRow();" href="javascript:void(0);" title="@Resources.Resources.AddNewRow" class="Detalle_Codigos_de_Referencia_VendedoresAddRow btn btn-primary">
+                                            <i class="glyphicon glyphicon-plus"></i>
+                                        </a>
+                                    }
+                                    <button onclick="VendedoresGetBusinessRule('', 'Al Guardar o al Eliminar una Row', '259980')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#VendedoresBusinessRule-form">
+                                        <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToCreateGrid">
+                                            <i class="fa fa-cogs fa-spin"></i>
+                                        </a>
+                                    </button>
+									@if (permissionDetalle_Codigos_de_Referencia_Vendedores.New && !ViewBag.Consult)
+                                    {
+                                        <a onclick="Detalle_Codigos_de_Referencia_VendedoresfnOpenAddRowPopUp();" data-toggle="modal" title="@Resources.Resources.AddNewRow" data-target="#AddDetalle_Codigos_de_Referencia_Vendedores-form" data-backdrop="static" data-keyboard="false" class="btn_mrpopup btn btn-primary">
+                                            <i class="glyphicon glyphicon-new-window"></i>
+                                        </a>
+                                    }  
+                                </div>
+
+                                <br />
+
+                                <div style='overflow-x: auto;'>
+                                    <table class="table table-striped table-bordered table-hover childValidateTable" id="Detalle_Codigos_de_Referencia_VendedoresGrid">
+                                        <thead>
+                                            <tr>
+                                                <th class="ActionHeader"><span>@Resources.Resources.Actions</span></th>
+
+
+                                                <th class="Porcentaje_de_descuentoHeader"><span>
+<button type="button" data-attribute="259959" data-field-id="Detalle_Codigos_de_Referencia_VendedoresPorcentaje_de_descuento" data-field-name="@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Porcentaje_de_descuento" data-toggle="modal" data-target="#VendedoresBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Porcentaje_de_descuento">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>
+@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Porcentaje_de_descuento</span></th>
+                                                <th class="Fecha_inicio_vigenciaHeader"><span>
+<button type="button" data-attribute="259960" data-field-id="Detalle_Codigos_de_Referencia_VendedoresFecha_inicio_vigencia" data-field-name="@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Fecha_inicio_vigencia" data-toggle="modal" data-target="#VendedoresBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Fecha_inicio_vigencia">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Fecha_inicio_vigencia</span></th>
+                                                <th class="Fecha_fin_vigenciaHeader"><span>
+<button type="button" data-attribute="259961" data-field-id="Detalle_Codigos_de_Referencia_VendedoresFecha_fin_vigencia" data-field-name="@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Fecha_fin_vigencia" data-toggle="modal" data-target="#VendedoresBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Fecha_fin_vigencia">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Fecha_fin_vigencia</span></th>
+                                                <th class="Cantidad_maxima_de_referenciadosHeader"><span>
+<button type="button" data-attribute="259962" data-field-id="Detalle_Codigos_de_Referencia_VendedoresCantidad_maxima_de_referenciados" data-field-name="@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Cantidad_maxima_de_referenciados" data-toggle="modal" data-target="#VendedoresBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Cantidad_maxima_de_referenciados">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>
+@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Cantidad_maxima_de_referenciados</span></th>
+                                                <th class="Codigo_para_referenciadosHeader"><span>
+<button type="button" data-attribute="259963" data-field-id="Detalle_Codigos_de_Referencia_VendedoresCodigo_para_referenciados" data-field-name="@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Codigo_para_referenciados" data-toggle="modal" data-target="#VendedoresBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Codigo_para_referenciados">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Codigo_para_referenciados</span></th>
+                                                <th class="AutorizadoHeader"><span>
+<button type="button" data-attribute="259964" data-field-id="Detalle_Codigos_de_Referencia_VendedoresAutorizado" data-field-name="@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Autorizado" data-toggle="modal" data-target="#VendedoresBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Autorizado">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Autorizado</span></th>
+                                                <th class="Usuario_que_autorizaHeader"><span>
+<button type="button" data-attribute="259965" data-field-id="Detalle_Codigos_de_Referencia_VendedoresUsuario_que_autoriza" data-field-name="@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Usuario_que_autoriza" data-toggle="modal" data-target="#VendedoresBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Usuario_que_autoriza">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Usuario_que_autoriza</span></th>
+                                                <th class="Fecha_de_autorizacionHeader"><span>
+<button type="button" data-attribute="259966" data-field-id="Detalle_Codigos_de_Referencia_VendedoresFecha_de_autorizacion" data-field-name="@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Fecha_de_autorizacion" data-toggle="modal" data-target="#VendedoresBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Fecha_de_autorizacion">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Fecha_de_autorizacion</span></th>
+                                                <th class="Hora_de_autorizacionHeader"><span>
+<button type="button" data-attribute="259967" data-field-id="Detalle_Codigos_de_Referencia_VendedoresHora_de_autorizacion" data-field-name="@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Hora_de_autorizacion" data-toggle="modal" data-target="#VendedoresBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Hora_de_autorizacion">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Hora_de_autorizacion</span></th>
+                                                <th class="EstatusHeader"><span>
+<button type="button" data-attribute="259968" data-field-id="Detalle_Codigos_de_Referencia_VendedoresEstatus" data-field-name="@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Estatus" data-toggle="modal" data-target="#VendedoresBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Estatus">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Codigos_de_Referencia_VendedoresResources.Estatus</span></th>
+
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                                </div>
+
+
+                            <div id="tabDatos_Bancarios" class="tab-pane">
+                                <div class="panel-body">
+                            <div class="form-group" id="divBanco">
+                                <label class="col-sm-2 control-label">@Resources.VendedoresResources.Banco</label>
+                                <div class="col-sm-8" data-field-id="Banco" data-attribute="259981" data-field-name="@Resources.VendedoresResources.Banco">
+                                    <select class="form-control Datos_Bancarios" data-val="true" data-val-number="The field Banco must be a number." data-val-required="The Banco field is required." id="Banco" name="Banco">
+                                        <option value=""></option>
+                                        @if (varBancos_Banco != null){ 
+                                            foreach (var itemBanco in varBancos_Banco)
+                                            {
+                                                if (itemBanco.Value == Convert.ToString(Model.Banco))
+                                                {
+                                                    <option value="@itemBanco.Value" selected>@itemBanco.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemBanco.Value">@itemBanco.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Banco" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 259981).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Bancos', 'Banco');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divCLABE_Interbancaria">
+                                <label class="col-sm-2 control-label">@Resources.VendedoresResources.CLABE_Interbancaria</label>
+                                <div class="col-sm-8" data-field-id="CLABE_Interbancaria" data-attribute="259982" data-field-name="@Resources.VendedoresResources.CLABE_Interbancaria">
+                                    <input class="form-control Datos_Bancarios" id="CLABE_Interbancaria" name="CLABE_Interbancaria" type="text" value="@Model.CLABE_Interbancaria">
+                                    @*<span class="field-validation-valid" data-valmsg-for="CLABE_Interbancaria" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divNumero_de_Cuenta">
+                                <label class="col-sm-2 control-label">@Resources.VendedoresResources.Numero_de_Cuenta</label>
+                                <div class="col-sm-8" data-field-id="Numero_de_Cuenta" data-attribute="259983" data-field-name="@Resources.VendedoresResources.Numero_de_Cuenta">
+                                    <input class="form-control Datos_Bancarios" id="Numero_de_Cuenta" name="Numero_de_Cuenta" type="text" value="@Model.Numero_de_Cuenta">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Numero_de_Cuenta" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divNombre_del_Titular">
+                                <label class="col-sm-2 control-label">@Resources.VendedoresResources.Nombre_del_Titular</label>
+                                <div class="col-sm-8" data-field-id="Nombre_del_Titular" data-attribute="259984" data-field-name="@Resources.VendedoresResources.Nombre_del_Titular">
+                                    <textarea id="Nombre_del_Titular" name="Nombre_del_Titular" class="form-control Datos_Bancarios" rows="4" cols="50">@Model.Nombre_del_Titular</textarea>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Nombre_del_Titular" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            </div>
+                                </div>
+
+
+                            <div id="tabFacturacion" class="tab-pane">
+                                <div class="panel-body">
+                            <div id="divFacturas">
+                            <div class="ibox-title">
+                                <h5>@Resources.VendedoresResources.Facturas</h5>
+                                <div class="ibox-tools">
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="">
+									@if (permissionDetalle_Facturacion_Vendedores.New && !ViewBag.Consult)
+                                    {
+                                        <a onclick="Detalle_Facturacion_VendedoresfnClickAddRow();" href="javascript:void(0);" title="@Resources.Resources.AddNewRow" class="Detalle_Facturacion_VendedoresAddRow btn btn-primary">
+                                            <i class="glyphicon glyphicon-plus"></i>
+                                        </a>
+                                    }
+                                    <button onclick="VendedoresGetBusinessRule('', 'Al Guardar o al Eliminar una Row', '259985')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#VendedoresBusinessRule-form">
+                                        <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToCreateGrid">
+                                            <i class="fa fa-cogs fa-spin"></i>
+                                        </a>
+                                    </button>
+									@if (permissionDetalle_Facturacion_Vendedores.New && !ViewBag.Consult)
+                                    {
+                                        <a onclick="Detalle_Facturacion_VendedoresfnOpenAddRowPopUp();" data-toggle="modal" title="@Resources.Resources.AddNewRow" data-target="#AddDetalle_Facturacion_Vendedores-form" data-backdrop="static" data-keyboard="false" class="btn_mrpopup btn btn-primary">
+                                            <i class="glyphicon glyphicon-new-window"></i>
+                                        </a>
+                                    }  
+                                </div>
+
+                                <br />
+
+                                <div style='overflow-x: auto;'>
+                                    <table class="table table-striped table-bordered table-hover childValidateTable" id="Detalle_Facturacion_VendedoresGrid">
+                                        <thead>
+                                            <tr>
+                                                <th class="ActionHeader"><span>@Resources.Resources.Actions</span></th>
+
+                                                <th class="Fecha_de_RegistroHeader"><span>
+<button type="button" data-attribute="259971" data-field-id="Detalle_Facturacion_VendedoresFecha_de_Registro" data-field-name="@Resources.Detalle_Facturacion_VendedoresResources.Fecha_de_Registro" data-toggle="modal" data-target="#VendedoresBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Facturacion_VendedoresResources.Fecha_de_Registro">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Facturacion_VendedoresResources.Fecha_de_Registro</span></th>
+                                                <th class="Folio_FacturaHeader"><span>
+<button type="button" data-attribute="259972" data-field-id="Detalle_Facturacion_VendedoresFolio_Factura" data-field-name="@Resources.Detalle_Facturacion_VendedoresResources.Folio_Factura" data-toggle="modal" data-target="#VendedoresBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Facturacion_VendedoresResources.Folio_Factura">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Facturacion_VendedoresResources.Folio_Factura</span></th>
+                                                <th class="Periodo_FacturadoHeader"><span>
+<button type="button" data-attribute="259973" data-field-id="Detalle_Facturacion_VendedoresPeriodo_Facturado" data-field-name="@Resources.Detalle_Facturacion_VendedoresResources.Periodo_Facturado" data-toggle="modal" data-target="#VendedoresBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Facturacion_VendedoresResources.Periodo_Facturado">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Facturacion_VendedoresResources.Periodo_Facturado</span></th>
+                                                <th class="CantidadHeader"><span>
+<button type="button" data-attribute="259986" data-field-id="Detalle_Facturacion_VendedoresCantidad" data-field-name="@Resources.Detalle_Facturacion_VendedoresResources.Cantidad" data-toggle="modal" data-target="#VendedoresBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Facturacion_VendedoresResources.Cantidad">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Facturacion_VendedoresResources.Cantidad</span></th>
+                                                <th class="Archivo_XMLHeader"><span>
+<button type="button" data-attribute="259974" data-field-id="Detalle_Facturacion_VendedoresArchivo_XML" data-field-name="@Resources.Detalle_Facturacion_VendedoresResources.Archivo_XML" data-toggle="modal" data-target="#VendedoresBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Facturacion_VendedoresResources.Archivo_XML">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Facturacion_VendedoresResources.Archivo_XML</span></th>
+                                                <th class="Archivo_PDFHeader"><span>
+<button type="button" data-attribute="259975" data-field-id="Detalle_Facturacion_VendedoresArchivo_PDF" data-field-name="@Resources.Detalle_Facturacion_VendedoresResources.Archivo_PDF" data-toggle="modal" data-target="#VendedoresBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Facturacion_VendedoresResources.Archivo_PDF">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Facturacion_VendedoresResources.Archivo_PDF</span></th>
+                                                <th class="EstatusHeader"><span>
+<button type="button" data-attribute="259976" data-field-id="Detalle_Facturacion_VendedoresEstatus" data-field-name="@Resources.Detalle_Facturacion_VendedoresResources.Estatus" data-toggle="modal" data-target="#VendedoresBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Facturacion_VendedoresResources.Estatus">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Facturacion_VendedoresResources.Estatus</span></th>
+                                                <th class="Fecha_programada_de_PagoHeader"><span>
+<button type="button" data-attribute="259977" data-field-id="Detalle_Facturacion_VendedoresFecha_programada_de_Pago" data-field-name="@Resources.Detalle_Facturacion_VendedoresResources.Fecha_programada_de_Pago" data-toggle="modal" data-target="#VendedoresBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Facturacion_VendedoresResources.Fecha_programada_de_Pago">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Facturacion_VendedoresResources.Fecha_programada_de_Pago</span></th>
+                                                <th class="PagadaHeader"><span>
+<button type="button" data-attribute="259978" data-field-id="Detalle_Facturacion_VendedoresPagada" data-field-name="@Resources.Detalle_Facturacion_VendedoresResources.Pagada" data-toggle="modal" data-target="#VendedoresBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Facturacion_VendedoresResources.Pagada">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Facturacion_VendedoresResources.Pagada</span></th>
+                                                <th class="Fecha_de_PagoHeader"><span>
+<button type="button" data-attribute="259979" data-field-id="Detalle_Facturacion_VendedoresFecha_de_Pago" data-field-name="@Resources.Detalle_Facturacion_VendedoresResources.Fecha_de_Pago" data-toggle="modal" data-target="#VendedoresBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Facturacion_VendedoresResources.Fecha_de_Pago">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Facturacion_VendedoresResources.Fecha_de_Pago</span></th>
+
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                                </div>
+
+				</div>	
+                    <br />
+                            <div class="form-actions fluid">
+                                <input type="hidden" value="@Model.Folio" id="ReferenceFolio" />
+                                <input type="hidden" value="@Model.Folio" name="Folio" id="FolioId" />
+                                <input type="hidden" value="@ViewBag.Operation" name="Operation" id="Operation" />
+                                @if (!ViewBag.Consult)
+                                {
+                                    <input type="button" value="@Resources.Resources.Guardar" id="VendedoresGuardar" class="btn btn-w-m btn-primary btn_save" onclick="return checkClientValidate('VendedoresCreateForm');"  />
+									<button onclick="VendedoresGetBusinessRule('', 'Al Guardar o al Cerrar la Pantalla', '2')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#VendedoresBusinessRule-form">
+                                        <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleBeforeSave">
+                                            <i class="fa fa-cogs fa-spin"></i>
+                                        </a>
+                                    </button>                                    
+
+                                    <input type="button" value="@Resources.Resources.GuardarNuevo" id="VendedoresGuardarYNuevo" onclick="return checkClientValidate('VendedoresCreateForm');" data-bind="    click: saveAndNew" class="btn btn-w-m btn-success btn_saveandnew"  />
+                                    <input type="button" value="@Resources.Resources.GuardarCopia" id="VendedoresGuardarYCopia" onclick="return checkClientValidate('VendedoresCreateForm');" data-bind="    click: saveAndNew" class="btn btn-w-m btn-success btn_saveandcopy"  />
+                                    if (permission.Configure)
+                                    {
+                                        <a title="@Resources.Resources.Configure" id="ConfigureSave" name="ConfigureSave" onclick="SaveElementAttributes()" class="btn btn-success btn-configure">@Resources.Resources.Configure</a>
+                                    }
+                                }
+
+                                <input type="hidden" id="hdnConfigureType" />
+								<input type="hidden" id="hdnVendedoresBusinessRuleFieldId" />
+                                <input type="hidden" id="hdnVendedoresBusinessRuleFieldName" />
+                                <input type="hidden" id="hdnVendedoresBusinessRuleAttribute" />
+
+                                <input type="button" value="@Resources.Resources.Cancelar" id="VendedoresCancelar" name="VendedoresCancelar" class="btn btn-danger noConsult btn_cancelar" data-bind="click: cancel" tabindex="16" />
+
+                                <button onclick="VendedoresGetBusinessRule('', 'Al Cancelar', '4')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#VendedoresBusinessRule-form">
+                                    <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+                                        <i class="fa fa-cogs fa-spin"></i>
+                                    </a>
+                                </button>
+                            </div>
+						</div>
+					</div>
+                }
+        </div>
+    </div>
+</div>
+<input id="hdnApplicationDirectory" type="hidden" value="@Url.Content("~/")" />
+
+@section Styles {
+<link href="@Url.Content("~/Content/BootstrapDatePicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+    @Styles.Render("~/plugins/awesomeCheckboxStyles")
+    @Styles.Render("~/plugins/select2Styles")
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+    .select2-results{background-color:#fff;}
+    .select2-container .select2-dropdown{height:auto !important;}
+
+    div.dataTables_info {
+        display: inline-block;
+        float: right;
+    }
+        /*i {
+        font-size: 25px !important;
+        display: block;
+        color: #676a6c;
+        margin-left: 6px;
+        margin-right: 6px;
+    }*/
+
+    .fullWidth {
+        width: 100%;
+    }
+</style>
+}
+
+<script type="text/javascript" src="~/Uploads/Scripts/Vendedores.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Scripts/Custom/VendedoresGeneral.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/VendedoresCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
+
+@section Scripts {
+
+
+    <script type="text/javascript">
+        
+
+
+	function GetTraduction(text) {
+         switch (text.toLowerCase()) {
+            case 'edit':
+                return "@Resources.Resources.Edit";          
+            case 'delete':
+                return "@Resources.Resources.Delete";               
+            case 'required':
+                return "@Resources.Resources.Required";              
+            case 'notrequired':
+                return "@Resources.Resources.NotRequired";           
+            case 'enabled':
+                return "@Resources.Resources.Enabled";         
+            case 'disabled':
+                return "@Resources.Resources.Disabled";           
+            case 'visible':
+                return "@Resources.Resources.Visible";            
+            case 'botvisible':
+                return "@Resources.Resources.InVisible";
+            case 'messagednoinvisible':
+                return "@Resources.Resources.messagedNoInVisible";
+            case 'messagednoreadonly':
+                return "@Resources.Resources.messagedNoReadOnly";
+            case 'defaultvalue':
+                return "@Resources.Resources.DefaultValue";
+            case 'helptext':
+                return "@Resources.Resources.HelpText";                     
+            default:
+                return "";
+        }
+    }
+	
+	    var isPartial = ('@ViewBag.IsPartial' == 'True');
+        var isMR = ('@ViewBag.isMR' == 'True');
+        var nameMR = '@ViewBag.nameMR';
+		var nameAttribute = '@ViewBag.nameAttribute';
+		var Tab_Datos_Generales = true;
+
+		var Tab_Codigos_de_Referencia = true;
+
+		var Tab_Datos_Bancarios = true;
+
+		var Tab_Facturacion = true;
+
+
+        $(document).ready(function () {
+            $('#ObjectId').val('44586');
+		                 
+
+
+
+
+
+
+            GetDetalle_Codigos_de_Referencia_Vendedores_Spartan_UserItem();
+
+
+            GetDetalle_Codigos_de_Referencia_Vendedores_EstatusItem();
+           
+              showDetalle_Codigos_de_Referencia_VendedoresGrid(null);
+              
+
+
+
+
+
+
+            GetDetalle_Facturacion_Vendedores_Estatus_FacturasItem();
+
+
+
+           
+              showDetalle_Facturacion_VendedoresGrid(null);
+
+		   
+			
+             @if(ViewBag.IsNew)
+            { 
+                <text>$('input:checkbox').prop('checked', false);</text>
+            }
+			else
+            {
+                <text>
+				if (Tab_Datos_Generales)
+					Fill_Datos_Generales();
+
+				if (Tab_Codigos_de_Referencia)
+					Fill_Codigos_de_Referencia();
+
+				if (Tab_Datos_Bancarios)
+					Fill_Datos_Bancarios();
+
+				if (Tab_Facturacion)
+					Fill_Facturacion();
+
+
+                </text>
+             }
+             EjecutarValidacionesAlComienzo();
+                         $('#Fecha_de_Registro').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            $('#Hora_de_Registro').clockpicker();
+            $('#Fecha_de_nacimiento').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+
+
+            initiateUIControls();
+			$('a').tooltip();
+			$('.loading').css('display', 'none');
+			
+
+        });
+
+        var Detalle_Codigos_de_Referencia_VendedoresinsertRowCurrentIndex = -1;
+        var Detalle_Codigos_de_Referencia_VendedoresDataDataTable;
+        function getDetalle_Codigos_de_Referencia_VendedoresData() {
+            $.ajax({
+                url: "@Url.Content("~/Frontal/Vendedores/GetDetalle_Codigos_de_Referencia_Vendedores")" + "?draw=1&start=1&length=2147483647" + ($("#ReferenceFolio").val() != "" ? "&RelationId=" + $("#ReferenceFolio").val() : ""),
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    Detalle_Codigos_de_Referencia_VendedoresDataDataTable = result.data;
+                    showDetalle_Codigos_de_Referencia_VendedoresGrid(result.data);
+                    $('#Detalle_Codigos_de_Referencia_VendedoresGrid .inputMoney').inputmask("currency", { prefix: "$", rightAlign: false });
+                    $('#Detalle_Codigos_de_Referencia_VendedoresGrid .gridDatePicker').attr("readonly", "");
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+        function Detalle_Codigos_de_Referencia_VendedoresGetUpdateRowControls(data, nameOfTable, rowIndex) {
+
+            var columnData = [];
+            var counter = 0;
+            var inputData = "<input type='text' class='fullWidth form-control' />";
+
+            columnData[counter++] = $($($.parseHTML(inputData)).val(data.Porcentaje_de_descuento)).addClass('Porcentaje_de_descuento inputNumber').attr('id', nameOfTable + 'Porcentaje_de_descuento' + rowIndex).attr('data-field', 'Porcentaje_de_descuento');
+            columnData[counter++] = $($($.parseHTML(GetGridDatePicker())).val(data.Fecha_inicio_vigencia)).addClass('Fecha_inicio_vigencia').attr('id', nameOfTable + 'Fecha_inicio_vigencia' + rowIndex).attr('data-field', 'Fecha_inicio_vigencia');
+            columnData[counter++] = $($($.parseHTML(GetGridDatePicker())).val(data.Fecha_fin_vigencia)).addClass('Fecha_fin_vigencia').attr('id', nameOfTable + 'Fecha_fin_vigencia' + rowIndex).attr('data-field', 'Fecha_fin_vigencia');
+            columnData[counter++] = $($($.parseHTML(inputData)).val(data.Cantidad_maxima_de_referenciados)).addClass('Cantidad_maxima_de_referenciados inputNumber').attr('id', nameOfTable + 'Cantidad_maxima_de_referenciados' + rowIndex).attr('data-field', 'Cantidad_maxima_de_referenciados');
+            columnData[counter++] = $($($.parseHTML(inputData)).val(data.Codigo_para_referenciados)).addClass('Codigo_para_referenciados').attr('id', nameOfTable + 'Codigo_para_referenciados' + rowIndex).attr('data-field', 'Codigo_para_referenciados');
+              columnData[counter++] = $($($.parseHTML(GetGridCheckBox())).prop('checked', (data.Autorizado=="true" || data.Autorizado==true)? 'checked': ''? 'checked': '')).addClass('Autorizado').attr('id', nameOfTable + 'Autorizado' + rowIndex).attr('data-field', 'Autorizado');
+           columnData[counter++] = $($(GetDetalle_Codigos_de_Referencia_Vendedores_Spartan_UserDropDown()).val(data.Usuario_que_autoriza)).addClass('Usuario_que_autoriza inputNumber').attr('id', nameOfTable + 'Usuario_que_autoriza' + rowIndex).attr('data-field', 'Usuario_que_autoriza').after($.parseHTML(addNew('Detalle_Codigos_de_Referencia_Vendedores', 'Spartan_User','Usuario_que_autoriza', 259965)));
+            columnData[counter++] = $($($.parseHTML(GetGridDatePicker())).val(data.Fecha_de_autorizacion)).addClass('Fecha_de_autorizacion').attr('id', nameOfTable + 'Fecha_de_autorizacion' + rowIndex).attr('data-field', 'Fecha_de_autorizacion');
+            columnData[counter++] = $($($.parseHTML(GetGridTimePicker())).val(data.Hora_de_autorizacion)).addClass('Hora_de_autorizacion').attr('id', nameOfTable + 'Hora_de_autorizacion' + rowIndex).attr('data-field', 'Hora_de_autorizacion');
+           columnData[counter++] = $($(GetDetalle_Codigos_de_Referencia_Vendedores_EstatusDropDown()).val(data.Estatus)).addClass('Estatus inputNumber').attr('id', nameOfTable + 'Estatus' + rowIndex).attr('data-field', 'Estatus').after($.parseHTML(addNew('Detalle_Codigos_de_Referencia_Vendedores', 'Estatus','Estatus', 259968)));
+
+            return columnData;
+        }
+
+
+
+        function GetFileInfo(fileData, fileUploadData) {
+
+            var $div = $("<div>");
+            if (fileUploadData != null && fileUploadData.files.length > 0) {
+
+                $div.append("<label>" + fileUploadData.files[0].name + "</label>");
+                //<i class="fa fa-times-circle" id='removeFileAttachment'>
+                $div.append($("<i class='fa fa-times-circle' id='removeFileAttachment'>").click(function () {
+                    if (confirm(htmlDecode("@Resources.Resources.DeleteConfirm"))) {
+                        var parent = $(this).parent().parent();
+                        parent.empty();
+                        parent.append("<input type='file'>");
+                    }
+                }));
+                return $div;
+
+            } else if (fileUploadData != null) {
+                return $.parseHTML(GetFileUploader());
+            } else {
+                $div.append("<label>" + fileData.FileName + "</label>");
+                $div.append($("<i class='fa fa-times-circle' id='removeFileAttachment'>").click(function () {
+                    if (confirm(htmlDecode("@Resources.Resources.DeleteConfirm"))) {
+                        var parent = $(this).parent().parent();
+                        parent.empty();
+                        parent.append("<input type='file'>");
+                    }
+                }));
+                return $div;
+            }
+        }
+
+        var removedDetalle_Codigos_de_Referencia_VendedoresData = [];
+        function Detalle_Codigos_de_Referencia_VendedoresDeleteRow(rowIndex, row) {
+            var rowIndexTable = Detalle_Codigos_de_Referencia_VendedoresTable.fnGetPosition($(row).parent().parent()[0]);
+            var permission = {            
+                 Delete: '@permissionDetalle_Codigos_de_Referencia_Vendedores.Delete' == 'True'
+            };
+            if (!permission.Delete || isConsultMode)
+                return;            
+            if (confirm(htmlDecode("@Resources.Resources.DeleteConfirm"))) {
+              if (EjecutarValidacionesAlEliminarMRDetalle_Codigos_de_Referencia_Vendedores('Detalle_Codigos_de_Referencia_Vendedores_', '_' + rowIndex)) {
+                var prevData = Detalle_Codigos_de_Referencia_VendedoresTable.fnGetData(rowIndexTable );
+                removedDetalle_Codigos_de_Referencia_VendedoresData.push(prevData);
+                Detalle_Codigos_de_Referencia_VendedoresTable.fnDeleteRow(rowIndexTable );
+				showDetalle_Codigos_de_Referencia_VendedoresGrid(Detalle_Codigos_de_Referencia_VendedoresTable.fnGetData());
+              }
+            }
+			initiateUIControls();
+        }
+
+        function Detalle_Codigos_de_Referencia_VendedoresrowCreationGrid(row, data, index) {
+            var permission =  {            
+                 Edit: '@permissionDetalle_Codigos_de_Referencia_Vendedores.Edit' == 'True',
+                 Delete: '@permissionDetalle_Codigos_de_Referencia_Vendedores.Delete' == 'True'
+            };
+            setDetalle_Codigos_de_Referencia_VendedoresValidation();
+            var Detalle_Codigos_de_Referencia_VendedoresRowElement = "Detalle_Codigos_de_Referencia_Vendedores_" + index.toString();
+            $(row).addClass(Detalle_Codigos_de_Referencia_VendedoresRowElement);
+            var nameOfTable='Detalle_Codigos_de_Referencia_Vendedores_';
+            var rowIndex = '_' + index;
+            Detalle_Codigos_de_Referencia_VendedoresinsertRowCurrentIndex = index;
+
+            row.innerHTML = "";
+
+            if (data.IsInsertRow) {
+
+                if (row.childNodes.length != 0) {
+                    for (var i = 0; i < row.childNodes.length; i++) {
+                        row.childNodes[i].remove();
+                    }
+                }
+                var controls = GetInsertDetalle_Codigos_de_Referencia_VendedoresRowControls(index);
+                var actionColInsert = $('<td>');
+
+                var abc = "if(dynamicFieldValidation('" + Detalle_Codigos_de_Referencia_VendedoresRowElement + "')){ Detalle_Codigos_de_Referencia_VendedoresInsertRow(" + index + "); }";
+                var insertRowHTML = '<a  data-toggle="tooltip" title="Confirmar Registro" onclick="' + abc + '">';
+                $('<i class="fa fa-check">').appendTo($(insertRowHTML).appendTo(actionColInsert));
+				$('<i class="fa fa-times">').appendTo($("<a data-toggle='tooltip' title='Cancelar Registro' onclick='Detalle_Codigos_de_Referencia_VendedoresCancelRow(" + index + ")'>").appendTo(actionColInsert));
+                actionColInsert.appendTo(row);
+
+                for (i = 0; i < controls.length; i++) {
+					var idHeader = $(controls[i]).data('field') + 'Header';
+					if($(controls[i]).length > 1){
+						idHeader = $($(controls[i])[1]).data('field') + 'Header';
+					}					
+
+					var classe = ($('#Detalle_Codigos_de_Referencia_VendedoresGrid .' + idHeader).hasClass('dt-right') ? "dt-right" : "") + $('#Detalle_Codigos_de_Referencia_VendedoresGrid .' + idHeader ).css('display') == 'none' ? " hide" : "";
+				   
+					if ($(controls[i]).next().length > 0) {
+					    var div = $(controls[i]).next();
+					    $('<td class="' + classe + '">').append($(controls[i])).append(div).appendTo(row);
+					}else
+					    $(controls[i]).appendTo($('<td class="' + classe + '">').appendTo(row));
+					
+                }
+                $('#Detalle_Codigos_de_Referencia_VendedoresGrid .inputMoney').inputmask("currency", { prefix: "$", rightAlign: false });
+                $('#Detalle_Codigos_de_Referencia_VendedoresGrid .gridDatePicker').attr("readonly", "");
+                return;
+            }
+
+            var actionCol = $('<td>');
+			var edit = "<a title='@Resources.Resources.Edit' class='edit-MR' onclick='Detalle_Codigos_de_Referencia_VendedoresEditRow(" + index + ", this)'>";
+            if (!permission.Edit || isConsultMode)
+                edit = "";
+            var editPopUp = "<a title='@Resources.Resources.Edit' class='edit-popup-MR' data-toggle='modal' data-target='#AddDetalle_Codigos_de_Referencia_Vendedores-form' onclick='Detalle_Codigos_de_Referencia_VendedoresEditRowPopup(" + index + ", this)'>";
+            if (!permission.Edit || isConsultMode)
+                editPopUp = "";
+            var eliminar = "<a title='@Resources.Resources.Delete' class='eliminar-MR' onclick='Detalle_Codigos_de_Referencia_VendedoresDeleteRow(" + index + ", this)'>";
+            if (!permission.Delete || isConsultMode)
+                eliminar = "";
+            $('<i class="fa fa-pencil">').appendTo($(edit).appendTo(actionCol));
+            //$('<i class="fa fa-edit">').appendTo($(editPopUp).appendTo(actionCol));
+            $('<i class="fa fa-trash-o">').appendTo($(eliminar).appendTo(actionCol));
+			if ($('.Action' + 'Header').css('display') != 'none')
+				actionCol.appendTo(row);
+
+            if ($('.Porcentaje_de_descuento' + 'Header').css('display') != 'none')
+                $('<td class="dt-right"  id="'+nameOfTable+'Porcentaje_de_descuento'+rowIndex+'">').text(data.Porcentaje_de_descuento).appendTo(row);
+            else 
+                 $('<td class="dt-right" style="display:none;"  id="'+nameOfTable+'Porcentaje_de_descuento'+rowIndex+'">').text(data.Porcentaje_de_descuento).appendTo(row);
+            if ($('.Fecha_inicio_vigencia' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Fecha_inicio_vigencia'+rowIndex+'">').text(data.Fecha_inicio_vigencia).appendTo(row);
+            else
+                $('<td style="display:none;" id="'+nameOfTable+'Fecha_inicio_vigencia'+rowIndex+'">').text(data.Fecha_inicio_vigencia).appendTo(row);
+            if ($('.Fecha_fin_vigencia' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Fecha_fin_vigencia'+rowIndex+'">').text(data.Fecha_fin_vigencia).appendTo(row);
+            else
+                $('<td style="display:none;" id="'+nameOfTable+'Fecha_fin_vigencia'+rowIndex+'">').text(data.Fecha_fin_vigencia).appendTo(row);
+            if ($('.Cantidad_maxima_de_referenciados' + 'Header').css('display') != 'none')
+                $('<td class="dt-right"  id="'+nameOfTable+'Cantidad_maxima_de_referenciados'+rowIndex+'">').text(data.Cantidad_maxima_de_referenciados).appendTo(row);
+            else 
+                 $('<td class="dt-right" style="display:none;"  id="'+nameOfTable+'Cantidad_maxima_de_referenciados'+rowIndex+'">').text(data.Cantidad_maxima_de_referenciados).appendTo(row);
+            if ($('.Codigo_para_referenciados' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Codigo_para_referenciados'+rowIndex+'">').text(data.Codigo_para_referenciados).appendTo(row);
+            else 
+                $('<td style="display:none;" id="'+nameOfTable+'Codigo_para_referenciados'+rowIndex+'">').text(data.Codigo_para_referenciados).appendTo(row);
+            if ($('.Autorizado' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Autorizado'+rowIndex+'">').text(data.Autorizado).appendTo(row);
+            else
+                $('<td style="display:none;" id="'+nameOfTable+'Autorizado'+rowIndex+'">').text(data.Autorizado).appendTo(row);
+            if ($('.Usuario_que_autoriza' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Usuario_que_autoriza'+rowIndex+'">').text(GetDetalle_Codigos_de_Referencia_Vendedores_Spartan_UserName(data.Usuario_que_autoriza)).appendTo(row);
+	    else 
+		$('<td style="display:none;" id="'+nameOfTable+'Usuario_que_autoriza'+rowIndex+'">').text(GetDetalle_Codigos_de_Referencia_Vendedores_Spartan_UserName(data.Usuario_que_autoriza)).appendTo(row);
+            if ($('.Fecha_de_autorizacion' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Fecha_de_autorizacion'+rowIndex+'">').text(data.Fecha_de_autorizacion).appendTo(row);
+            else
+                $('<td style="display:none;" id="'+nameOfTable+'Fecha_de_autorizacion'+rowIndex+'">').text(data.Fecha_de_autorizacion).appendTo(row);
+            if ($('.Hora_de_autorizacion' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Hora_de_autorizacion'+rowIndex+'">').text(data.Hora_de_autorizacion).appendTo(row);
+            else
+                $('<td style="display:none;" id="'+nameOfTable+'Hora_de_autorizacion'+rowIndex+'">').text(data.Hora_de_autorizacion).appendTo(row);
+            if ($('.Estatus' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Estatus'+rowIndex+'">').text(GetDetalle_Codigos_de_Referencia_Vendedores_EstatusName(data.Estatus)).appendTo(row);
+	    else 
+		$('<td style="display:none;" id="'+nameOfTable+'Estatus'+rowIndex+'">').text(GetDetalle_Codigos_de_Referencia_Vendedores_EstatusName(data.Estatus)).appendTo(row);
+
+        }
+
+        var Detalle_Codigos_de_Referencia_VendedoresTable;
+        function showDetalle_Codigos_de_Referencia_VendedoresGrid(dataSet) {
+            //removedDetalle_Codigos_de_Referencia_VendedoresData = [];
+            Detalle_Codigos_de_Referencia_VendedoresTable = $('#Detalle_Codigos_de_Referencia_VendedoresGrid').dataTable({
+                dom: '<"html5buttons"B>lTgitp',
+                buttons: [
+                ],
+                "createdRow": Detalle_Codigos_de_Referencia_VendedoresrowCreationGrid,
+                "lengthMenu": [[5, 10, 20, 50, -1], [5, 10, 20, 50, "All"]],
+                data: dataSet,
+                "columns": [
+                    { "data": null, 'visible': true, "orderable": false },
+
+                    { "data": "Porcentaje_de_descuento", "className": "dt-right", "orderable": false },
+                    { "data": "Fecha_inicio_vigencia", "orderable": false },
+                    { "data": "Fecha_fin_vigencia", "orderable": false },
+                    { "data": "Cantidad_maxima_de_referenciados", "className": "dt-right", "orderable": false },
+                    { "data": "Codigo_para_referenciados", "orderable": false },
+                    { "data": "Autorizado", "orderable": false },
+                    { "data": "Usuario_que_autoriza", "orderable": false },
+                    { "data": "Fecha_de_autorizacion", "orderable": false },
+                    { "data": "Hora_de_autorizacion", "orderable": false },
+                    { "data": "Estatus", "orderable": false },
+
+                ],
+                "order": [[0, "asc"]],
+                "language": {
+                    "lengthMenu": "@Resources.Resources.Display" + " _MENU_ " + "@Resources.Resources.RecordsPerPage",
+                    "zeroRecords": "@Resources.Resources.NothingFound",
+                    "info": "@Resources.Resources.ShowingPages" + " _PAGE_ " + "@Resources.Resources.of" + " _PAGES_",
+                    "infoEmpty": "@Resources.Resources.NoRecords",
+                    "infoFiltered": "(" + "@Resources.Resources.FilteredFrom" + " _MAX_ " + "@Resources.Resources.TotalRecords" + ")",
+                    "sSearch": "@Resources.Resources.Search",
+                    "paginate": {
+                        "previous": "@Resources.Resources.Previous",
+                        "next": "@Resources.Resources.Next"
+                    }
+                },
+				"bDestroy": true,
+                "fnDrawCallback": function (settings) {
+                    setDetalle_Codigos_de_Referencia_VendedoresValidation();
+                }
+            }).on('init.dt', function (e, data) {
+                $('a').tooltip();
+            }).on('draw.dt', function () {
+                $('#Detalle_Codigos_de_Referencia_VendedoresGrid .inputMoney').inputmask("currency", { prefix: "$", rightAlign: false });
+                $('.gridDatePicker').inputmask("99-99-9999", { "placeholder": "dd-mm-yyyy" });
+            });
+        }
+
+
+
+
+
+
+
+
+    var Detalle_Codigos_de_Referencia_Vendedores_Spartan_UserItems;
+        function GetDetalle_Codigos_de_Referencia_Vendedores_Spartan_UserItem() {
+            Detalle_Codigos_de_Referencia_Vendedores_Spartan_UserItems = null;
+            var ajaxUrl = "@Url.Content("~/Frontal/Vendedores/GetDetalle_Codigos_de_Referencia_Vendedores_Spartan_UserAll")";
+            $.ajax({
+                url: ajaxUrl,
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                global: false,
+                success: function (result) {
+                    Detalle_Codigos_de_Referencia_Vendedores_Spartan_UserItems = result;
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+
+
+    var Detalle_Codigos_de_Referencia_Vendedores_EstatusItems;
+        function GetDetalle_Codigos_de_Referencia_Vendedores_EstatusItem() {
+            Detalle_Codigos_de_Referencia_Vendedores_EstatusItems = null;
+            var ajaxUrl = "@Url.Content("~/Frontal/Vendedores/GetDetalle_Codigos_de_Referencia_Vendedores_EstatusAll")";
+            $.ajax({
+                url: ajaxUrl,
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                global: false,
+                success: function (result) {
+                    Detalle_Codigos_de_Referencia_Vendedores_EstatusItems = result;
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+
+        var Detalle_Codigos_de_Referencia_VendedoresData = [];
+        var Detalle_Codigos_de_Referencia_VendedoresdeletedItem = [];
+        var Detalle_Codigos_de_Referencia_VendedoresDataMain = [];
+        var Detalle_Codigos_de_Referencia_VendedoresDataMainPages = [];
+        var Detalle_Codigos_de_Referencia_VendedoresnewItemCount = 0;
+        var Detalle_Codigos_de_Referencia_VendedoresmaxItemIndex = 0;
+        var Detalle_Codigos_de_Referencia_VendedoresDataMainInitialized = false;
+
+        function SendDetalle_Codigos_de_Referencia_Vendedores(callBack, FolioId) {
+            Detalle_Codigos_de_Referencia_VendedoresData = GetDetalle_Codigos_de_Referencia_VendedoresFromDataTable();
+
+            if (Detalle_Codigos_de_Referencia_VendedoresData.length > 0 || $("#ReferenceFolio").val() != FolioId) {
+                if ($("#ReferenceFolio").val() != "0" && FolioId ==null)
+                    FolioId = $("#ReferenceFolio").val();                
+                if ($("#ReferenceFolio").val() == '')
+                    $("#ReferenceFolio").val('0');
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Vendedores/PostDetalle_Codigos_de_Referencia_Vendedores?MasterId=")' + FolioId + "&referenceId=" + $("#ReferenceFolio").val(),
+                    type: 'POST',
+                    data: GetDetalle_Codigos_de_Referencia_Vendedores(),
+                    async: true,
+                    success: function (result) {
+
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            } else {
+                //showNotification("@Resources.Resources.SaveSuccess", "success");
+                //callBack(FolioId);
+            }
+            return true;
+        }
+
+        function GetAddDetalle_Codigos_de_Referencia_VendedoresPopup(currentRowIndex, mode, id) {
+
+            $.ajax({
+                url: "@Url.Action("AddDetalle_Codigos_de_Referencia_Vendedores", "Detalle_Codigos_de_Referencia_Vendedores")",
+                type: "GET",
+                async: false,
+                data: { rowIndex: currentRowIndex, functionMode: mode, id: id },
+                success: function (data) {
+                    $(".AddDetalle_Codigos_de_Referencia_VendedoresModal").html(data);
+                },
+                error: function () {
+
+                }
+            });
+
+            @*$.get('@Url.Action("AddDetalle_Codigos_de_Referencia_Vendedores", "Detalle_Codigos_de_Referencia_Vendedores")', { rowIndex: currentRowIndex }, function (data) {
+                $(".AddDetalle_Codigos_de_Referencia_VendedoresModal").html(data);
+            });*@
+        }
+
+        function ShowMessagePendingRowDetalle_Codigos_de_Referencia_Vendedores()
+        {
+            //alert('@Html.Raw(string.Format(Resources.Resources.PendingRow, "Códigos para Referenciar Pacientes"))')
+	    showNotification('@Html.Raw(string.Format(Resources.Resources.PendingRow, "Códigos para Referenciar Pacientes"))', "warning");
+        }
+        var Detalle_Facturacion_VendedoresinsertRowCurrentIndex = -1;
+        var Detalle_Facturacion_VendedoresDataDataTable;
+        function getDetalle_Facturacion_VendedoresData() {
+            $.ajax({
+                url: "@Url.Content("~/Frontal/Vendedores/GetDetalle_Facturacion_Vendedores")" + "?draw=1&start=1&length=2147483647" + ($("#ReferenceFolio").val() != "" ? "&RelationId=" + $("#ReferenceFolio").val() : ""),
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    Detalle_Facturacion_VendedoresDataDataTable = result.data;
+                    showDetalle_Facturacion_VendedoresGrid(result.data);
+                    $('#Detalle_Facturacion_VendedoresGrid .inputMoney').inputmask("currency", { prefix: "$", rightAlign: false });
+                    $('#Detalle_Facturacion_VendedoresGrid .gridDatePicker').attr("readonly", "");
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+        function Detalle_Facturacion_VendedoresGetUpdateRowControls(data, nameOfTable, rowIndex) {
+
+            var columnData = [];
+            var counter = 0;
+            var inputData = "<input type='text' class='fullWidth form-control' />";
+
+            columnData[counter++] = $($($.parseHTML(GetGridDatePicker())).val(data.Fecha_de_Registro)).addClass('Fecha_de_Registro').attr('id', nameOfTable + 'Fecha_de_Registro' + rowIndex).attr('data-field', 'Fecha_de_Registro');
+            columnData[counter++] = $($($.parseHTML(inputData)).val(data.Folio_Factura)).addClass('Folio_Factura').attr('id', nameOfTable + 'Folio_Factura' + rowIndex).attr('data-field', 'Folio_Factura');
+            columnData[counter++] = $($($.parseHTML(inputData)).val(data.Periodo_Facturado)).addClass('Periodo_Facturado').attr('id', nameOfTable + 'Periodo_Facturado' + rowIndex).attr('data-field', 'Periodo_Facturado');
+            columnData[counter++] = $($($.parseHTML(inputData)).val(data.Cantidad)).addClass('Cantidad').attr('id', nameOfTable + 'Cantidad' + rowIndex).attr('data-field', 'Cantidad');
+            columnData[counter++] = data.Archivo_XMLDetail == null || (data.Archivo_XMLFileInfo.FileId == null || (data.Archivo_XMLFileInfo.FileId <= 0 && data.Archivo_XMLFileInfo.FileName  == '')) ? $($.parseHTML(GetFileUploader())).attr('id', nameOfTable + 'Archivo_XML' + rowIndex).attr('data-field', 'Archivo_XML','Spartane_File') : $(GetFileInfo(data.Archivo_XMLFileInfo, data.Archivo_XMLDetail)).attr('id', nameOfTable + 'Archivo_XML' + rowIndex).attr('data-field', 'Archivo_XML','Spartane_File');
+            columnData[counter++] = data.Archivo_PDFDetail == null || (data.Archivo_PDFFileInfo.FileId == null || (data.Archivo_PDFFileInfo.FileId <= 0 && data.Archivo_PDFFileInfo.FileName  == '')) ? $($.parseHTML(GetFileUploader())).attr('id', nameOfTable + 'Archivo_PDF' + rowIndex).attr('data-field', 'Archivo_PDF','Spartane_File') : $(GetFileInfo(data.Archivo_PDFFileInfo, data.Archivo_PDFDetail)).attr('id', nameOfTable + 'Archivo_PDF' + rowIndex).attr('data-field', 'Archivo_PDF','Spartane_File');
+           columnData[counter++] = $($(GetDetalle_Facturacion_Vendedores_Estatus_FacturasDropDown()).val(data.Estatus)).addClass('Estatus inputNumber').attr('id', nameOfTable + 'Estatus' + rowIndex).attr('data-field', 'Estatus').after($.parseHTML(addNew('Detalle_Facturacion_Vendedores', 'Estatus_Facturas','Estatus', 259976)));
+            columnData[counter++] = $($($.parseHTML(GetGridDatePicker())).val(data.Fecha_programada_de_Pago)).addClass('Fecha_programada_de_Pago').attr('id', nameOfTable + 'Fecha_programada_de_Pago' + rowIndex).attr('data-field', 'Fecha_programada_de_Pago');
+              columnData[counter++] = $($($.parseHTML(GetGridCheckBox())).prop('checked', (data.Pagada=="true" || data.Pagada==true)? 'checked': ''? 'checked': '')).addClass('Pagada').attr('id', nameOfTable + 'Pagada' + rowIndex).attr('data-field', 'Pagada');
+            columnData[counter++] = $($($.parseHTML(GetGridDatePicker())).val(data.Fecha_de_Pago)).addClass('Fecha_de_Pago').attr('id', nameOfTable + 'Fecha_de_Pago' + rowIndex).attr('data-field', 'Fecha_de_Pago');
+
+            return columnData;
+        }
+
+
+
+        function GetFileInfo(fileData, fileUploadData) {
+
+            var $div = $("<div>");
+            if (fileUploadData != null && fileUploadData.files.length > 0) {
+
+                $div.append("<label>" + fileUploadData.files[0].name + "</label>");
+                //<i class="fa fa-times-circle" id='removeFileAttachment'>
+                $div.append($("<i class='fa fa-times-circle' id='removeFileAttachment'>").click(function () {
+                    if (confirm(htmlDecode("@Resources.Resources.DeleteConfirm"))) {
+                        var parent = $(this).parent().parent();
+                        parent.empty();
+                        parent.append("<input type='file'>");
+                    }
+                }));
+                return $div;
+
+            } else if (fileUploadData != null) {
+                return $.parseHTML(GetFileUploader());
+            } else {
+                $div.append("<label>" + fileData.FileName + "</label>");
+                $div.append($("<i class='fa fa-times-circle' id='removeFileAttachment'>").click(function () {
+                    if (confirm(htmlDecode("@Resources.Resources.DeleteConfirm"))) {
+                        var parent = $(this).parent().parent();
+                        parent.empty();
+                        parent.append("<input type='file'>");
+                    }
+                }));
+                return $div;
+            }
+        }
+
+        var removedDetalle_Facturacion_VendedoresData = [];
+        function Detalle_Facturacion_VendedoresDeleteRow(rowIndex, row) {
+            var rowIndexTable = Detalle_Facturacion_VendedoresTable.fnGetPosition($(row).parent().parent()[0]);
+            var permission = {            
+                 Delete: '@permissionDetalle_Facturacion_Vendedores.Delete' == 'True'
+            };
+            if (!permission.Delete || isConsultMode)
+                return;            
+            if (confirm(htmlDecode("@Resources.Resources.DeleteConfirm"))) {
+              if (EjecutarValidacionesAlEliminarMRDetalle_Facturacion_Vendedores('Detalle_Facturacion_Vendedores_', '_' + rowIndex)) {
+                var prevData = Detalle_Facturacion_VendedoresTable.fnGetData(rowIndexTable );
+                removedDetalle_Facturacion_VendedoresData.push(prevData);
+                Detalle_Facturacion_VendedoresTable.fnDeleteRow(rowIndexTable );
+				showDetalle_Facturacion_VendedoresGrid(Detalle_Facturacion_VendedoresTable.fnGetData());
+              }
+            }
+			initiateUIControls();
+        }
+
+        function Detalle_Facturacion_VendedoresrowCreationGrid(row, data, index) {
+            var permission =  {            
+                 Edit: '@permissionDetalle_Facturacion_Vendedores.Edit' == 'True',
+                 Delete: '@permissionDetalle_Facturacion_Vendedores.Delete' == 'True'
+            };
+            setDetalle_Facturacion_VendedoresValidation();
+            var Detalle_Facturacion_VendedoresRowElement = "Detalle_Facturacion_Vendedores_" + index.toString();
+            $(row).addClass(Detalle_Facturacion_VendedoresRowElement);
+            var nameOfTable='Detalle_Facturacion_Vendedores_';
+            var rowIndex = '_' + index;
+            Detalle_Facturacion_VendedoresinsertRowCurrentIndex = index;
+
+            row.innerHTML = "";
+
+            if (data.IsInsertRow) {
+
+                if (row.childNodes.length != 0) {
+                    for (var i = 0; i < row.childNodes.length; i++) {
+                        row.childNodes[i].remove();
+                    }
+                }
+                var controls = GetInsertDetalle_Facturacion_VendedoresRowControls(index);
+                var actionColInsert = $('<td>');
+
+                var abc = "if(dynamicFieldValidation('" + Detalle_Facturacion_VendedoresRowElement + "')){ Detalle_Facturacion_VendedoresInsertRow(" + index + "); }";
+                var insertRowHTML = '<a  data-toggle="tooltip" title="Confirmar Registro" onclick="' + abc + '">';
+                $('<i class="fa fa-check">').appendTo($(insertRowHTML).appendTo(actionColInsert));
+				$('<i class="fa fa-times">').appendTo($("<a data-toggle='tooltip' title='Cancelar Registro' onclick='Detalle_Facturacion_VendedoresCancelRow(" + index + ")'>").appendTo(actionColInsert));
+                actionColInsert.appendTo(row);
+
+                for (i = 0; i < controls.length; i++) {
+					var idHeader = $(controls[i]).data('field') + 'Header';
+					if($(controls[i]).length > 1){
+						idHeader = $($(controls[i])[1]).data('field') + 'Header';
+					}					
+
+					var classe = ($('#Detalle_Facturacion_VendedoresGrid .' + idHeader).hasClass('dt-right') ? "dt-right" : "") + $('#Detalle_Facturacion_VendedoresGrid .' + idHeader ).css('display') == 'none' ? " hide" : "";
+				   
+					if ($(controls[i]).next().length > 0) {
+					    var div = $(controls[i]).next();
+					    $('<td class="' + classe + '">').append($(controls[i])).append(div).appendTo(row);
+					}else
+					    $(controls[i]).appendTo($('<td class="' + classe + '">').appendTo(row));
+					
+                }
+                $('#Detalle_Facturacion_VendedoresGrid .inputMoney').inputmask("currency", { prefix: "$", rightAlign: false });
+                $('#Detalle_Facturacion_VendedoresGrid .gridDatePicker').attr("readonly", "");
+                return;
+            }
+
+            var actionCol = $('<td>');
+			var edit = "<a title='@Resources.Resources.Edit' class='edit-MR' onclick='Detalle_Facturacion_VendedoresEditRow(" + index + ", this)'>";
+            if (!permission.Edit || isConsultMode)
+                edit = "";
+            var editPopUp = "<a title='@Resources.Resources.Edit' class='edit-popup-MR' data-toggle='modal' data-target='#AddDetalle_Facturacion_Vendedores-form' onclick='Detalle_Facturacion_VendedoresEditRowPopup(" + index + ", this)'>";
+            if (!permission.Edit || isConsultMode)
+                editPopUp = "";
+            var eliminar = "<a title='@Resources.Resources.Delete' class='eliminar-MR' onclick='Detalle_Facturacion_VendedoresDeleteRow(" + index + ", this)'>";
+            if (!permission.Delete || isConsultMode)
+                eliminar = "";
+            $('<i class="fa fa-pencil">').appendTo($(edit).appendTo(actionCol));
+            //$('<i class="fa fa-edit">').appendTo($(editPopUp).appendTo(actionCol));
+            $('<i class="fa fa-trash-o">').appendTo($(eliminar).appendTo(actionCol));
+			if ($('.Action' + 'Header').css('display') != 'none')
+				actionCol.appendTo(row);
+
+            if ($('.Fecha_de_Registro' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Fecha_de_Registro'+rowIndex+'">').text(data.Fecha_de_Registro).appendTo(row);
+            else
+                $('<td style="display:none;" id="'+nameOfTable+'Fecha_de_Registro'+rowIndex+'">').text(data.Fecha_de_Registro).appendTo(row);
+            if ($('.Folio_Factura' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Folio_Factura'+rowIndex+'">').text(data.Folio_Factura).appendTo(row);
+            else 
+                $('<td style="display:none;" id="'+nameOfTable+'Folio_Factura'+rowIndex+'">').text(data.Folio_Factura).appendTo(row);
+            if ($('.Periodo_Facturado' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Periodo_Facturado'+rowIndex+'">').text(data.Periodo_Facturado).appendTo(row);
+            else 
+                $('<td style="display:none;" id="'+nameOfTable+'Periodo_Facturado'+rowIndex+'">').text(data.Periodo_Facturado).appendTo(row);
+            if ($('.Cantidad' + 'Header').css('display') != 'none')
+                $('<td class="dt-right"  id="'+nameOfTable+'Cantidad'+rowIndex+'">').text(data.Cantidad).appendTo(row);
+            else 
+                 $('<td style="display:none" class="dt-right"  id="'+nameOfTable+'Cantidad'+rowIndex+'">').text(data.Cantidad).appendTo(row);
+            if ($('.Archivo_XML' + 'Header').css('display') != 'none'){
+                var Archivo_XMLfileTd = $('<td>');
+            if (data.Archivo_XMLDetail != null && data.Archivo_XMLDetail.files != null) {
+                if (data.Archivo_XMLDetail.files.length > 0)
+                    $("<a >" + data.Archivo_XMLDetail.files[0].name + "</a>").appendTo(Archivo_XMLfileTd);
+            }
+            else if (data.Archivo_XMLFileInfo != null && data.Archivo_XMLFileInfo.FileId > 0) {
+                $("<a href='" + '@Url.Content("~/Frontal/Detalle_Facturacion_Vendedores/GetFile?id=")' + data.Archivo_XMLFileInfo.FileId + "' target='_blank'>" + data.Archivo_XMLFileInfo.FileName + "</a>").appendTo(Archivo_XMLfileTd);
+            } else if (data.Archivo_XMLFileInfo != null){
+                $("<a >" + data.Archivo_XMLFileInfo.FileName + "</a>").appendTo(Archivo_XMLfileTd);
+            }
+            Archivo_XMLfileTd.appendTo(row);
+}
+            if ($('.Archivo_PDF' + 'Header').css('display') != 'none'){
+                var Archivo_PDFfileTd = $('<td>');
+            if (data.Archivo_PDFDetail != null && data.Archivo_PDFDetail.files != null) {
+                if (data.Archivo_PDFDetail.files.length > 0)
+                    $("<a >" + data.Archivo_PDFDetail.files[0].name + "</a>").appendTo(Archivo_PDFfileTd);
+            }
+            else if (data.Archivo_PDFFileInfo != null && data.Archivo_PDFFileInfo.FileId > 0) {
+                $("<a href='" + '@Url.Content("~/Frontal/Detalle_Facturacion_Vendedores/GetFile?id=")' + data.Archivo_PDFFileInfo.FileId + "' target='_blank'>" + data.Archivo_PDFFileInfo.FileName + "</a>").appendTo(Archivo_PDFfileTd);
+            } else if (data.Archivo_PDFFileInfo != null){
+                $("<a >" + data.Archivo_PDFFileInfo.FileName + "</a>").appendTo(Archivo_PDFfileTd);
+            }
+            Archivo_PDFfileTd.appendTo(row);
+}
+            if ($('.Estatus' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Estatus'+rowIndex+'">').text(GetDetalle_Facturacion_Vendedores_Estatus_FacturasName(data.Estatus)).appendTo(row);
+	    else 
+		$('<td style="display:none;" id="'+nameOfTable+'Estatus'+rowIndex+'">').text(GetDetalle_Facturacion_Vendedores_Estatus_FacturasName(data.Estatus)).appendTo(row);
+            if ($('.Fecha_programada_de_Pago' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Fecha_programada_de_Pago'+rowIndex+'">').text(data.Fecha_programada_de_Pago).appendTo(row);
+            else
+                $('<td style="display:none;" id="'+nameOfTable+'Fecha_programada_de_Pago'+rowIndex+'">').text(data.Fecha_programada_de_Pago).appendTo(row);
+            if ($('.Pagada' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Pagada'+rowIndex+'">').text(data.Pagada).appendTo(row);
+            else
+                $('<td style="display:none;" id="'+nameOfTable+'Pagada'+rowIndex+'">').text(data.Pagada).appendTo(row);
+            if ($('.Fecha_de_Pago' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Fecha_de_Pago'+rowIndex+'">').text(data.Fecha_de_Pago).appendTo(row);
+            else
+                $('<td style="display:none;" id="'+nameOfTable+'Fecha_de_Pago'+rowIndex+'">').text(data.Fecha_de_Pago).appendTo(row);
+
+        }
+
+        var Detalle_Facturacion_VendedoresTable;
+        function showDetalle_Facturacion_VendedoresGrid(dataSet) {
+            //removedDetalle_Facturacion_VendedoresData = [];
+            Detalle_Facturacion_VendedoresTable = $('#Detalle_Facturacion_VendedoresGrid').dataTable({
+                dom: '<"html5buttons"B>lTgitp',
+                buttons: [
+                ],
+                "createdRow": Detalle_Facturacion_VendedoresrowCreationGrid,
+                "lengthMenu": [[5, 10, 20, 50, -1], [5, 10, 20, 50, "All"]],
+                data: dataSet,
+                "columns": [
+                    { "data": null, 'visible': true, "orderable": false },
+
+                    { "data": "Fecha_de_Registro", "orderable": false },
+                    { "data": "Folio_Factura", "orderable": false },
+                    { "data": "Periodo_Facturado", "orderable": false },
+                    { "data": "Cantidad","className": "dt-right", "orderable": false },
+                    { "data": "Archivo_XMLFileInfo", "orderable": false },
+                    { "data": "Archivo_PDFFileInfo", "orderable": false },
+                    { "data": "Estatus", "orderable": false },
+                    { "data": "Fecha_programada_de_Pago", "orderable": false },
+                    { "data": "Pagada", "orderable": false },
+                    { "data": "Fecha_de_Pago", "orderable": false },
+
+                ],
+                "order": [[0, "asc"]],
+                "language": {
+                    "lengthMenu": "@Resources.Resources.Display" + " _MENU_ " + "@Resources.Resources.RecordsPerPage",
+                    "zeroRecords": "@Resources.Resources.NothingFound",
+                    "info": "@Resources.Resources.ShowingPages" + " _PAGE_ " + "@Resources.Resources.of" + " _PAGES_",
+                    "infoEmpty": "@Resources.Resources.NoRecords",
+                    "infoFiltered": "(" + "@Resources.Resources.FilteredFrom" + " _MAX_ " + "@Resources.Resources.TotalRecords" + ")",
+                    "sSearch": "@Resources.Resources.Search",
+                    "paginate": {
+                        "previous": "@Resources.Resources.Previous",
+                        "next": "@Resources.Resources.Next"
+                    }
+                },
+				"bDestroy": true,
+                "fnDrawCallback": function (settings) {
+                    setDetalle_Facturacion_VendedoresValidation();
+                }
+            }).on('init.dt', function (e, data) {
+                $('a').tooltip();
+            }).on('draw.dt', function () {
+                $('#Detalle_Facturacion_VendedoresGrid .inputMoney').inputmask("currency", { prefix: "$", rightAlign: false });
+                $('.gridDatePicker').inputmask("99-99-9999", { "placeholder": "dd-mm-yyyy" });
+            });
+        }
+
+
+
+
+
+
+
+
+    var Detalle_Facturacion_Vendedores_Estatus_FacturasItems;
+        function GetDetalle_Facturacion_Vendedores_Estatus_FacturasItem() {
+            Detalle_Facturacion_Vendedores_Estatus_FacturasItems = null;
+            var ajaxUrl = "@Url.Content("~/Frontal/Vendedores/GetDetalle_Facturacion_Vendedores_Estatus_FacturasAll")";
+            $.ajax({
+                url: ajaxUrl,
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                global: false,
+                success: function (result) {
+                    Detalle_Facturacion_Vendedores_Estatus_FacturasItems = result;
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+
+
+
+
+        var Detalle_Facturacion_VendedoresData = [];
+        var Detalle_Facturacion_VendedoresdeletedItem = [];
+        var Detalle_Facturacion_VendedoresDataMain = [];
+        var Detalle_Facturacion_VendedoresDataMainPages = [];
+        var Detalle_Facturacion_VendedoresnewItemCount = 0;
+        var Detalle_Facturacion_VendedoresmaxItemIndex = 0;
+        var Detalle_Facturacion_VendedoresDataMainInitialized = false;
+
+        function SendDetalle_Facturacion_Vendedores(callBack, FolioId) {
+            Detalle_Facturacion_VendedoresData = GetDetalle_Facturacion_VendedoresFromDataTable();
+
+            if (Detalle_Facturacion_VendedoresData.length > 0 || $("#ReferenceFolio").val() != FolioId) {
+                if ($("#ReferenceFolio").val() != "0" && FolioId ==null)
+                    FolioId = $("#ReferenceFolio").val();                
+                if ($("#ReferenceFolio").val() == '')
+                    $("#ReferenceFolio").val('0');
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Vendedores/PostDetalle_Facturacion_Vendedores?MasterId=")' + FolioId + "&referenceId=" + $("#ReferenceFolio").val(),
+                    type: 'POST',
+                    data: GetDetalle_Facturacion_Vendedores(),
+                    async: true,
+                    success: function (result) {
+
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            } else {
+                //showNotification("@Resources.Resources.SaveSuccess", "success");
+                //callBack(FolioId);
+            }
+            return true;
+        }
+
+        function GetAddDetalle_Facturacion_VendedoresPopup(currentRowIndex, mode, id) {
+
+            $.ajax({
+                url: "@Url.Action("AddDetalle_Facturacion_Vendedores", "Detalle_Facturacion_Vendedores")",
+                type: "GET",
+                async: false,
+                data: { rowIndex: currentRowIndex, functionMode: mode, id: id },
+                success: function (data) {
+                    $(".AddDetalle_Facturacion_VendedoresModal").html(data);
+                },
+                error: function () {
+
+                }
+            });
+
+            @*$.get('@Url.Action("AddDetalle_Facturacion_Vendedores", "Detalle_Facturacion_Vendedores")', { rowIndex: currentRowIndex }, function (data) {
+                $(".AddDetalle_Facturacion_VendedoresModal").html(data);
+            });*@
+        }
+
+        function ShowMessagePendingRowDetalle_Facturacion_Vendedores()
+        {
+            //alert('@Html.Raw(string.Format(Resources.Resources.PendingRow, "Facturas"))')
+	    showNotification('@Html.Raw(string.Format(Resources.Resources.PendingRow, "Facturas"))', "warning");
+        }
+
+
+        function initiateUIControls() {
+             $('.gridDatePicker').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            //Time Picker
+            $('.gridTimePicker').clockpicker();
+            $('.inputMoney').inputmask("currency", { greedy: false, prefix: "", rightAlign: false });
+			$('td.inputMoney').inputmask("currency", { greedy: false, prefix: "$ ", rightAlign: false });
+			$('td input.inputMoney').inputmask("currency", { greedy: false, prefix: "$ ", rightAlign: false });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+
+    </script>
+
+<script type="text/javascript">
+
+
+   function GetCatalogPopup(catalog, nameAttribute, isMR, nameMR) {
+        if (!isMR)
+            var url = "@Url.Action("Create", "Catalog", new { Module_Id = "1", isPartial = true, nameAttribute = "AttributoNombre" })";
+        else
+            var url = "@Url.Action("Create", "Catalog", new { Module_Id = "1", isPartial = true, isMR = true, nameMR = "Multirenglon",nameAttribute= "AttributoNombre" })";
+
+        url = url.replace("Catalog", catalog).replace("Multirenglon", nameMR).replace("AttributoNombre", nameAttribute);
+
+        window.open(htmlDecode(url), '_blank', 'left=200,top=100,width=850,height=550,toolbar=0,resizable=0');
+    }
+
+    function RefreshCatalog(catalog, control) {
+
+	 if ($('#' + control).hasClass('AutoComplete'))   {
+		   if ($('#' + control).attr("data-isfilter") == "true") {
+				eval(GetReglaFilter(control, $('#ObjectId').val()));
+				return;
+			}
+		}
+			
+			var url = '@Url.Content("~/Frontal/Vendedores/GetCatalogAll")';
+			url = url.replace(/Catalog/g, catalog);
+
+			$.ajax({
+				url: url,
+				async: true,
+				success:function(result)
+				{
+					addItemsToSelect($('#' + control), result);
+				},
+				error: function (result)
+				{
+					showNotification("@Resources.Resources.ErrorContactingServer", "error");
+				}
+			});
+		
+    }
+
+
+        function SendVendedoresData(callBack) {
+			
+					
+		 var arr = []; 
+		 $("form#CreateVendedores").find(':input').each(function( index ) {		 
+			if ($(this).prop('disabled')==true|| $(this).prop('disabled')=="disabled")
+			{		
+				arr.push($(this).attr('id')); 
+				$(this).prop('disabled', false);  	
+			}
+	    });
+		
+             var formData = new FormData($("form#CreateVendedores")[0]);
+			$.each( arr, function( key, value ) {
+			  $('#' +value).prop('disabled', true);
+			});
+			var id = $("#ReferenceFolio").val();
+            var isNew = $('#hdnIsNew').val();
+           
+			if (Tab_Datos_Generales && !checkClientValidate('VendedoresCreateForm', 'Datos_Generales')) {
+				return false;
+			}						
+
+			if (Tab_Codigos_de_Referencia && !checkClientValidate('VendedoresCreateForm', 'Codigos_de_Referencia')) {
+				return false;
+			}						
+
+			if (Tab_Datos_Bancarios && !checkClientValidate('VendedoresCreateForm', 'Datos_Bancarios')) {
+				return false;
+			}						
+
+			if (Tab_Facturacion && !checkClientValidate('VendedoresCreateForm', 'Facturacion')) {
+				return false;
+			}						
+
+
+			
+			if (isNew == "True")
+            {
+                id = CreateID();
+            }
+			
+			
+			if (Tab_Datos_Generales)
+				Save_Datos_Generales(id);
+
+			if (Tab_Codigos_de_Referencia)
+				Save_Codigos_de_Referencia(id);
+
+			if (Tab_Datos_Bancarios)
+				Save_Datos_Bancarios(id);
+
+			if (Tab_Facturacion)
+				Save_Facturacion(id);
+
+
+			showNotification("@Resources.Resources.SaveSuccess", "success");
+			callBack(id);
+            return true;
+        };
+		function CreateID()
+		{
+			var newId = 0;
+			$.ajax({
+				url: '@Url.Content("~/Frontal/Vendedores/CreateID")',
+				type: 'GET',
+				async: false,
+				success: function (result) {
+					if (result < 0) {
+						showNotification("@Resources.Resources.ErrorSave", "error");
+					} else {
+						newId = result;
+					}
+				},
+				error: function (result) {
+					showNotification("@Resources.Resources.ErrorContactingServer", "error");
+				},
+				cache: false,
+				contentType: false,
+				processData: false
+			});
+			return newId;
+		}
+		
+		function OpenRules()
+		{
+			$.get('@Url.Action("Index", "Business_Rule_Creation")', {}, function (data) {
+				$(".VendedoresBusinessRuleModal").html(data);
+			});
+		}
+                function VendedoresGetBusinessRule(FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null)
+			{
+			        $('#FieldId').val(FieldId);
+				$('#FieldName').val(FieldName);
+				$('#Attribute').val(Attribute);
+			}
+			$('#ObjectId').val('44586');
+			$('#Screen').val('Vendedores');
+			OpenRules();
+               }
+
+    var permission = {
+        Consult: '@permission.Consult' == 'True',
+        New: '@permission.New' == 'True',
+        Edit: '@permission.Edit' == 'True',
+        Delete: '@permission.Delete' == 'True',
+        Export: '@permission.Export' == 'True',
+        Print: '@permission.Print' == 'True',
+        Configure: '@permission.Configure' == 'True',
+    };
+
+    
+    //MR-var statusItems;
+    //MR-var stateItems;
+    //MR-var cityItems = [];
+    var isConsultMode = "@ViewBag.Consult" == "True";
+    Consult(isConsultMode);
+        function Consult(val) {
+            if (val) {
+                $(':input').attr('readonly', 'readonly');
+                $(':input').attr('disabled', 'true');
+                $('.noConsult').removeAttr('readonly');
+                $('.noConsult').removeAttr('disabled');
+            }
+        }
+
+    function VendedoresBackToGrid() {
+        		if (isPartial)
+			window.close('', '_parent', '');
+        else
+			location.href = "@Url.Content("~/Frontal/Vendedores/")";
+    }
+	
+	function ReadScriptSettings(callback)
+    {
+        $.post("@Url.Content("~/Frontal/Vendedores/ReadScriptSettings")", function (data) {
+            mainElementObject = JSON.parse(data.MainElement);
+			if (data.ChildElement != null) {
+                childElementObject = JSON.parse(data.ChildElement);
+            }
+            callback();
+        });
+    }
+
+    function SaveSettingsWithoutReload() {
+        $.post("@Url.Content("~/Frontal/Vendedores/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+            //$('#hdnConfigureType').val("0");
+        }, "json");
+    }
+	
+        function SaveElementAttributes() {
+            if ($('#hdnConfigureType').val() == "1") {
+                $.post("@Url.Content("~/Frontal/Vendedores/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+                    $('#hdnConfigureType').val("0");
+                    location.reload(true);
+                }, "json");
+            } else {
+                $.post("@Url.Content("~/Frontal/Vendedores/ReadScriptSettings")", function (data) {
+                    mainElementObject = JSON.parse(data.MainElement);
+                    childElementObject = JSON.parse(data.ChildElement);
+
+                    for (var i = 0; i < mainElementObject.length; i++) {
+							var mainElementAttributes = '<div class="col-sm-2">';
+							mainElementAttributes += '<div class="displayAttributes requiredAttribute"><a class="requiredClick" title="' + (mainElementObject[i].IsRequired == true ? "@Resources.Resources.Required" : "@Resources.Resources.NotRequired") + '" onclick="setRequired(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsRequired == true ? "@Url.Content("~/Images/Required.png")" : "@Url.Content("~/Images/Not-Required.png")") + '" alt="" /></a></div>';
+							mainElementAttributes += '<div class="displayAttributes visibleAttribute"><a class="visibleClick" title="' + (mainElementObject[i].IsVisible == true ? "@Resources.Resources.Visible" : "@Resources.Resources.InVisible") + '" onclick="setVisible(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsVisible == true ? "@Url.Content("~/Images/Visible.png")" : "@Url.Content("~/Images/InVisible.png")") + '" alt="" /></a></div>';
+							mainElementAttributes += '<div class="displayAttributes readOnlyAttribute"><a class="readOnlyClick" title="' + (mainElementObject[i].IsReadOnly == true ? "@Resources.Resources.Disabled" : "@Resources.Resources.Enabled") + '" onclick="setReadOnly(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsReadOnly == true ? "@Url.Content("~/Images/Disabled.png")" : "@Url.Content("~/Images/Enabled.png")") + '" alt="" /></a></div>';
+							mainElementAttributes += '<div class="displayAttributes defaultValueAttribute"><a id="hlDefaultValue_' + i.toString() + '" class="defaultValueClick" title="' + (mainElementObject[i].DefaultValue) + '" onclick="setDefaultValue(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].DefaultValue != '' && mainElementObject[i].DefaultValue != null ? "@Url.Content("~/Images/default-value.png")" : "@Url.Content("~/Images/Not-Default-Value.png")") + '" alt="" /></a></div>';
+							mainElementAttributes += '<div class="displayAttributes helpTextAttribute"><a id="hlHelpText_' + i.toString() + '" class="helpTextClick" title="' + (mainElementObject[i].HelpText) + '" onclick="setHelpText(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].HelpText != '' && mainElementObject[i].HelpText != null ? "@Url.Content("~/Images/green-help.png")" : "@Url.Content("~/Images/red-help.jpg")") + '" alt="" /></a></div>';
+							mainElementAttributes += '</div>';
+							$('#' + mainElementObject[i].inputId).parent().closest('.form-group').show();
+
+							$('#' + mainElementObject[i].inputId).closest('.col-sm-8').after(mainElementAttributes);
+                  }
+					 if (childElementObject != null) {
+                        for (var j = 0; j < childElementObject.length; j++) {
+                            var table = childElementObject[j].table.trim();
+                            var grid = '#' + table + 'Grid';
+                            $(grid).find("thead").find("tr").find("th").each(function () {
+                                for (var i = 0; i < childElementObject[j].elements.length; i++) {
+                                    if ($(this).hasClass(childElementObject[j].elements[i].inputId + 'Header')) {
+                                        $(this).show();
+                                        $(this).parent().show();
+                                        $(this).append(returnAttributeHTML(childElementObject[j].elements[i], table, i));
+                                    }
+                                }
+                            });
+                        }
+
+                    }
+                     $('#ConfigureSave').text('@Html.Raw(Resources.Resources.Save  +" "+ Resources.Resources.Settings)');
+                    $('#hdnConfigureType').val("1");
+                });
+            }
+        }
+		$('#CreateVendedores').on('click', '.btnPopupBusinessRules', function () {
+			var fieldId = $(this).data('field-id');
+			var fieldName = $(this).data('field-name');
+			var attribute = $(this).data('attribute');
+			$('#FieldId').val(fieldId);
+			$('#FieldName').val(fieldName);
+			$('#Attribute').val(attribute);
+                        VendedoresGetBusinessRule();
+		});
+		//Initialize HTML Editors            
+  var filebrowserBrowseUrl = '../../ckfinder/ckfinder.html';
+  var filebrowserImageBrowseUrl = '../../ckfinder/ckfinder.html?type=Images';
+  var filebrowserUploadUrl = '../../ckfinder/connector?command=QuickUpload&type=Files';
+  var filebrowserImageUploadUrl = '../../ckfinder/connector?command=QuickUpload&type=Images';
+		
+		
+		function Fill_Datos_Generales()
+        {
+            $.ajax({
+                url: "@Url.Content("~/Frontal/Vendedores/Get_Datos_Generales")?Id=" + $("#ReferenceFolio").val(),
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                                        $('#Folio').val(result.data.Folio);
+                    $('#Fecha_de_Registro').val(result.data.Fecha_de_Registro);
+                    $('#Hora_de_Registro').val(result.data.Hora_de_Registro);
+                    $('#Usuario_que_Registra').val(result.data.Usuario_que_Registra);
+                    $('#Nombres').val(result.data.Nombres);
+                    $('#Apellido_Paterno').val(result.data.Apellido_Paterno);
+                    $('#Apellido_Materno').val(result.data.Apellido_Materno);
+                    $('#Nombre_Completo').val(result.data.Nombre_Completo);
+                    $('#Nombre_de_Usuario').val(result.data.Nombre_de_Usuario);
+                    $('#Usuario_Registrado').val(result.data.Usuario_Registrado);
+                    $('#Email').val(result.data.Email);
+                    $('#Celular').val(result.data.Celular);
+                    $('#Fecha_de_nacimiento').val(result.data.Fecha_de_nacimiento);
+                    $('#Pais_de_nacimiento').val(result.data.Pais_de_nacimiento);
+                    $('#Entidad_de_nacimiento').val(result.data.Entidad_de_nacimiento);
+                    $('#Sexo').val(result.data.Sexo);
+                    $('#Estatus').val(result.data.Estatus);
+
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+		
+		function Save_Datos_Generales(newId) {
+			var data = new FormData();
+			data.append('Folio', newId);
+			                data.append('Fecha_de_Registro', $('#Fecha_de_Registro').val());
+                data.append('Hora_de_Registro', $('#Hora_de_Registro').val());
+                data.append('Usuario_que_Registra', $('#Usuario_que_Registra').val());
+                data.append('Nombres', $('#Nombres').val());
+                data.append('Apellido_Paterno', $('#Apellido_Paterno').val());
+                data.append('Apellido_Materno', $('#Apellido_Materno').val());
+                data.append('Nombre_Completo', $('#Nombre_Completo').val());
+                data.append('Nombre_de_Usuario', $('#Nombre_de_Usuario').val());
+                data.append('Usuario_Registrado', $('#Usuario_Registrado').val());
+                data.append('Email', $('#Email').val());
+                data.append('Celular', $('#Celular').val());
+                data.append('Fecha_de_nacimiento', $('#Fecha_de_nacimiento').val());
+                data.append('Pais_de_nacimiento', $('#Pais_de_nacimiento').val());
+                data.append('Entidad_de_nacimiento', $('#Entidad_de_nacimiento').val());
+                data.append('Sexo', $('#Sexo').val());
+                data.append('Estatus', $('#Estatus').val());
+
+			$.ajax({
+				url: '@Url.Content("~/Frontal/Vendedores/Post_Datos_Generales")',
+				type: 'POST',
+				data: data,
+				async: false,
+				dataType: "json",
+				contentType: false,
+				processData: false,
+				success: function (result) {
+					if (result < 0) {
+						showNotification("@Resources.Resources.ErrorSave", "Error al guardar Datos_Generales");
+					} else {
+						newId = result;
+                    
+					}
+				},
+				error: function (result) {
+					showNotification("@Resources.Resources.ErrorContactingServer", "Error al guardar Datos_Generales");
+				},
+				cache: false
+			});
+		}
+
+		function Fill_Codigos_de_Referencia()
+        {
+            $.ajax({
+                url: "@Url.Content("~/Frontal/Vendedores/Get_Codigos_de_Referencia")?Id=" + $("#ReferenceFolio").val(),
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                                        $('#Folio').val(result.data.Folio);
+                    Detalle_Codigos_de_Referencia_VendedoresDataDataTable = result.Codigos_para_Referenciar_Pacientes;
+                    showDetalle_Codigos_de_Referencia_VendedoresGrid(result.Codigos_para_Referenciar_Pacientes);
+                    $('#Detalle_Codigos_de_Referencia_VendedoresGrid .inputMoney').inputmask("currency", { prefix: "$", rightAlign: false });
+                    $('#Detalle_Codigos_de_Referencia_VendedoresGrid .gridDatePicker').attr("readonly", "");
+
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+		
+		function Save_Codigos_de_Referencia(newId) {
+			var data = new FormData();
+			data.append('Folio', newId);
+			
+			$.ajax({
+				url: '@Url.Content("~/Frontal/Vendedores/Post_Codigos_de_Referencia")',
+				type: 'POST',
+				data: data,
+				async: false,
+				dataType: "json",
+				contentType: false,
+				processData: false,
+				success: function (result) {
+					if (result < 0) {
+						showNotification("@Resources.Resources.ErrorSave", "Error al guardar Codigos_de_Referencia");
+					} else {
+						newId = result;
+                    					    SendDetalle_Codigos_de_Referencia_Vendedores(null, newId);
+
+					}
+				},
+				error: function (result) {
+					showNotification("@Resources.Resources.ErrorContactingServer", "Error al guardar Codigos_de_Referencia");
+				},
+				cache: false
+			});
+		}
+
+		function Fill_Datos_Bancarios()
+        {
+            $.ajax({
+                url: "@Url.Content("~/Frontal/Vendedores/Get_Datos_Bancarios")?Id=" + $("#ReferenceFolio").val(),
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                                        $('#Folio').val(result.data.Folio);
+                    $('#Banco').val(result.data.Banco);
+                    $('#CLABE_Interbancaria').val(result.data.CLABE_Interbancaria);
+                    $('#Numero_de_Cuenta').val(result.data.Numero_de_Cuenta);
+                    $('#Nombre_del_Titular').val(result.data.Nombre_del_Titular);
+
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+		
+		function Save_Datos_Bancarios(newId) {
+			var data = new FormData();
+			data.append('Folio', newId);
+			                data.append('Banco', $('#Banco').val());
+                data.append('CLABE_Interbancaria', $('#CLABE_Interbancaria').val());
+                data.append('Numero_de_Cuenta', $('#Numero_de_Cuenta').val());
+                data.append('Nombre_del_Titular', $('#Nombre_del_Titular').val());
+
+			$.ajax({
+				url: '@Url.Content("~/Frontal/Vendedores/Post_Datos_Bancarios")',
+				type: 'POST',
+				data: data,
+				async: false,
+				dataType: "json",
+				contentType: false,
+				processData: false,
+				success: function (result) {
+					if (result < 0) {
+						showNotification("@Resources.Resources.ErrorSave", "Error al guardar Datos_Bancarios");
+					} else {
+						newId = result;
+                    
+					}
+				},
+				error: function (result) {
+					showNotification("@Resources.Resources.ErrorContactingServer", "Error al guardar Datos_Bancarios");
+				},
+				cache: false
+			});
+		}
+
+		function Fill_Facturacion()
+        {
+            $.ajax({
+                url: "@Url.Content("~/Frontal/Vendedores/Get_Facturacion")?Id=" + $("#ReferenceFolio").val(),
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                                        $('#Folio').val(result.data.Folio);
+                    Detalle_Facturacion_VendedoresDataDataTable = result.Facturas;
+                    showDetalle_Facturacion_VendedoresGrid(result.Facturas);
+                    $('#Detalle_Facturacion_VendedoresGrid .inputMoney').inputmask("currency", { prefix: "$", rightAlign: false });
+                    $('#Detalle_Facturacion_VendedoresGrid .gridDatePicker').attr("readonly", "");
+
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+		
+		function Save_Facturacion(newId) {
+			var data = new FormData();
+			data.append('Folio', newId);
+			
+			$.ajax({
+				url: '@Url.Content("~/Frontal/Vendedores/Post_Facturacion")',
+				type: 'POST',
+				data: data,
+				async: false,
+				dataType: "json",
+				contentType: false,
+				processData: false,
+				success: function (result) {
+					if (result < 0) {
+						showNotification("@Resources.Resources.ErrorSave", "Error al guardar Facturacion");
+					} else {
+						newId = result;
+                    					    SendDetalle_Facturacion_Vendedores(null, newId);
+
+					}
+				},
+				error: function (result) {
+					showNotification("@Resources.Resources.ErrorContactingServer", "Error al guardar Facturacion");
+				},
+				cache: false
+			});
+		}
+
+
+    </script>
+}
+    <input type="hidden" id="FieldId" name="FieldId" value="" />
+    <input type="hidden" id="FieldName" name="FieldName" value="" />
+    <input type="hidden" id="ObjectId" name="ObjectId" value="" />
+    <input type="hidden" id="Attribute" name="Attribute" value="" />
+    <input type="hidden" id="Screen" name="Screen" value="" />
+     <input type="hidden" id="Vendedores_cmbLabelSelect" name="Vendedores_cmbLabelSelect" value="@Resources.Resources.CmbSelect" />
+

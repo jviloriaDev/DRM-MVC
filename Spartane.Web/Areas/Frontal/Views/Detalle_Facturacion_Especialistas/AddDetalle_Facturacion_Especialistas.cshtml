@@ -1,0 +1,565 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Globalization
+@using Spartane.Core.Domain.Permission
+@using Spartane.Core.Domain.Spartane_File
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Detalle_Facturacion_EspecialistasModel
+@{
+    Spartane_File attachedFileArchivo_XML = (Spartane_File)ViewBag.Archivo_XMLSpartane_File;
+    Spartane_File attachedFileArchivo_PDF = (Spartane_File)ViewBag.Archivo_PDFSpartane_File;
+
+    string Fecha_de_Registro = "";
+    if (Model.Fecha_de_Registro == "")
+    { Model.Fecha_de_Registro = DateTime.Now.ToString(ConfigurationProperty.DateFormat); }
+    string Fecha_programada_de_Pago = "";
+    if (Model.Fecha_programada_de_Pago == "")
+    { Model.Fecha_programada_de_Pago = DateTime.Now.ToString(ConfigurationProperty.DateFormat); }
+    string Fecha_de_pago = "";
+    if (Model.Fecha_de_pago == "")
+    { Model.Fecha_de_pago = DateTime.Now.ToString(ConfigurationProperty.DateFormat); }
+
+
+
+    Permission permission = ViewBag.Permission;
+}
+<div class="modal-dialog" style="width:95%;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">
+                Add Detalle Facturación Especialistas
+                <button data-dismiss="modal" class="close" type="button" onclick="@(ViewBag.functionMode == 0 ? "Detalle_Facturacion_EspecialistasRemoveAddRow("+ ViewBag.currentRowIndex +")" : "")"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            </h4>
+        </div>
+        <div class="modal-body scroll_content">
+            <div class="form-horizontal Detalle_Facturacion_EspecialistasPop_@ViewBag.currentRowIndex">
+				<div class="modal fade in" id="dvAttributeValue" style="background-color:rgba(0, 0, 0, 0.7);">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-body">
+								<div class="form-group">
+									<label class="col-sm-3 control-label" id="lblAttributeType">Value</label>
+									<div class="col-sm-7">
+										<input type="text" title="Value" class="form-control" id="txtAttributeValue" />
+									</div>
+									<div class="col-sm-2">
+										<a class="btn btn-primary" onclick="SaveValue()">Submit</a>
+									</div>
+									<input type="hidden" id="hdnAttributType" />
+									<input type="hidden" id="hdnAttributElement" />
+									<input type="hidden" id="hdnAttributNumber" />
+									<input type="hidden" id="hdnElementType" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row wrapper border-bottom white-bg page-heading">
+
+					<div class="row">
+						<div class="col-lg-10">
+							<h2>
+								Detalle Facturación Especialistas
+								<button onclick="Detalle_Facturacion_EspecialistasGetBusinessRule('', 'Abrir Pantalla', '0')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Detalle_Facturacion_EspecialistasBusinessRule-form">
+									<a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+										<i class="fa fa-cogs fa-spin"></i>
+									</a>
+								</button>
+							</h2>
+							<ol class="breadcrumb">
+								<li>
+									<a href="@Url.Action("Index", "Home")">@Resources.Resources.Home</a>
+								</li>
+								<li class="">
+									<label>@Resources.Detalle_Facturacion_EspecialistasResources.Detalle_Facturacion_Especialistas</label>
+								</li>
+								<li class="active">
+									<strong>@Resources.Resources.Create</strong>
+								</li>
+							</ol>
+						</div>
+						<div class="col-lg-2">
+
+							@{
+								if (Convert.ToInt32(Spartane.Web.SessionHelper.Role) == (int)Spartane.Core.Enums.SpartanRoleEnum.Admin)
+								{
+									<h2>&nbsp;</h2>
+									<button onclick="Detalle_Facturacion_EspecialistasDisplayBusinessRule()" type="button" class="btn btn-info btn-lg displayBusinessProperyButton">
+										<i class="fa fa-cogs fa-spin"></i>
+									</button>
+
+									<div aria-hidden="true" class="modal fade in Detalle_Facturacion_EspecialistasPropertyBusinessModal" id="Detalle_Facturacion_EspecialistasPropertyBusinessModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h4 class="modal-title">
+														Property & Business Rules
+														<button class="close" type="button" onclick="$(this).parent().parent().parent().parent().parent().modal('hide');"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+													</h4>
+												</div>
+												<div class="modal-body">
+													<div class="row">
+														<div class="col-sm-12">
+															<a class="btn btn-primary full-width" data-toggle="modal" data-target="#PropertyModal-form" onclick="GetPropertyBag()">Properties</a>
+														</div>
+														<div class="clearfix col-sm-12">&nbsp;</div>
+														<div class="col-sm-12">
+															<a class="btn btn-primary full-width" data-toggle="modal" data-target="#Detalle_Facturacion_EspecialistasBusinessRule-form" onclick="Detalle_Facturacion_EspecialistasGetBusinessRule()">Business Rule</a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									 <div aria-hidden="true" data-backdrop="static" class="modal fade in Detalle_Facturacion_EspecialistasPropertyModal" id="Detalle_Facturacion_EspecialistasPropertyModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+									</div>
+									<div aria-hidden="true" data-backdrop="static" class="modal fade in Detalle_Facturacion_EspecialistasBusinessRuleModal" id="Detalle_Facturacion_EspecialistasBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+									</div>
+                                    <div aria-hidden="true" data-backdrop="static" class="modal fade in Detalle_Facturacion_EspecialistasAddBusinessRuleModal" id="Detalle_Facturacion_EspecialistasAddBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                                    </div>
+
+				
+								}
+							}
+						</div>
+					</div>
+
+				<div class="wrapper wrapper-content animated fadeInRight">
+					<div class="ibox float-e-margins">
+						<div class="ibox-content">
+							@using (Html.BeginForm("Post", "Detalle_Facturacion_Especialistas", FormMethod.Post, new { id = "CreateDetalle_Facturacion_Especialistas", @readonly = "true", @class = "form-horizontal", enctype = "multipart/form-data" }))
+							{
+								<span id="popupNotification"></span>
+								<div class="container-fluid Detalle_Facturacion_EspecialistasCreateForm" id="viewmodeledit">
+							<div class="tabs-container">
+											<ul class="nav nav-tabs">
+				@@groupers@@
+											</ul>
+										<div class="tab-content">
+				<div class="form-group" id="divFolio">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Facturacion_EspecialistasResources.Folio</label>
+                                <div class="col-sm-8" data-field-id="Folio" data-attribute="258866" data-field-name="@Resources.Detalle_Facturacion_EspecialistasResources.Folio">
+                                    <label class="form-control" for="Detalle_Facturacion_EspecialistasFolio" id="Detalle_Facturacion_EspecialistasFolio">@Model.Folio</label>
+                                </div>
+                            </div>
+<div class="form-group" id="divFecha_de_Registro">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Facturacion_EspecialistasResources.Fecha_de_Registro</label>
+                                <div class="col-sm-8" data-field-id="Fecha_de_Registro" data-attribute="258868" data-field-name="@Resources.Detalle_Facturacion_EspecialistasResources.Fecha_de_Registro">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input class="form-control col-md-12" id="Detalle_Facturacion_EspecialistasFecha_de_Registro" readonly="readonly" name="Detalle_Facturacion_EspecialistasFecha_de_Registro" type="text" value="@Model.Fecha_de_Registro">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+<div class="form-group" id="divFolio_Factura">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Facturacion_EspecialistasResources.Folio_Factura</label>
+                                <div class="col-sm-8" data-field-id="Folio_Factura" data-attribute="258869" data-field-name="@Resources.Detalle_Facturacion_EspecialistasResources.Folio_Factura">
+                                    <input class="form-control" id="Detalle_Facturacion_EspecialistasFolio_Factura" name="Detalle_Facturacion_EspecialistasFolio_Factura" type="text" value="@Model.Folio_Factura">
+                                </div>
+                            </div>
+<div class="form-group" id="divPeriodo_Facturado">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Facturacion_EspecialistasResources.Periodo_Facturado</label>
+                                <div class="col-sm-8" data-field-id="Periodo_Facturado" data-attribute="258870" data-field-name="@Resources.Detalle_Facturacion_EspecialistasResources.Periodo_Facturado">
+                                    <input class="form-control" id="Detalle_Facturacion_EspecialistasPeriodo_Facturado" name="Detalle_Facturacion_EspecialistasPeriodo_Facturado" type="text" value="@Model.Periodo_Facturado">
+                                </div>
+                            </div>
+<div class="form-group" id="divCantidad">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Facturacion_EspecialistasResources.Cantidad</label>
+                                <div class="col-sm-8" data-field-id="Cantidad" data-attribute="258871" data-field-name="@Resources.Detalle_Facturacion_EspecialistasResources.Cantidad">
+                                    <input class="form-control col-md-12 inputNumber" id="Detalle_Facturacion_EspecialistasCantidad" name="Detalle_Facturacion_EspecialistasCantidad" type="text" min="0.00" max="999999.99" value="@Model.Cantidad.ToString()">
+                                </div>
+                            </div>
+@if (attachedFileArchivo_XML != null && attachedFileArchivo_XML.File_Id > 0)
+                            {
+                                <div class="form-group" id="divAttachmentArchivo_XML">
+                                    <label class="col-sm-2 control-label">Previously Attached File</label>
+                                    <div class="col-sm-8" data-field-id="Archivo_XML" data-attribute="258872" data-field-name="@Resources.Detalle_Facturacion_EspecialistasResources.Archivo_XML">
+                                        <a href="@Url.Content("~/Frontal/Detalle_Facturacion_Especialistas/GetFile")?id=@attachedFileArchivo_XML.File_Id" target="_blank">@attachedFileArchivo_XML.Description</a>
+                                        <img src="@Url.Content("~/Content/Images/RemoveAttachment.png")" onclick="RemoveAttachmentMainArchivo_XML('@attachedFileArchivo_XML.File_Id')" />
+                                    </div>
+                                    <input id="hdnRemoveArchivo_XML" name="RemoveArchivo_XML" value="0" type="hidden" />
+                                    <input class="form-control col-md-12" id="hdnAttachedArchivo_XML" type="hidden" name="Archivo_XML" value="@Model.Archivo_XML">
+                                </div>
+                            }
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Facturacion_EspecialistasResources.Archivo_XML</label>
+                                <div class="col-sm-8" data-field-id="Archivo_XML" data-attribute="258872" data-field-name="@Resources.Detalle_Facturacion_EspecialistasResources.Archivo_XML">
+                                    <input type="file" name="Detalle_Facturacion_EspecialistasArchivo_XMLFile" id="Detalle_Facturacion_EspecialistasArchivo_XMLFile" class="form-control" />
+                                </div>
+                            </div>
+@if (attachedFileArchivo_PDF != null && attachedFileArchivo_PDF.File_Id > 0)
+                            {
+                                <div class="form-group" id="divAttachmentArchivo_PDF">
+                                    <label class="col-sm-2 control-label">Previously Attached File</label>
+                                    <div class="col-sm-8" data-field-id="Archivo_PDF" data-attribute="258873" data-field-name="@Resources.Detalle_Facturacion_EspecialistasResources.Archivo_PDF">
+                                        <a href="@Url.Content("~/Frontal/Detalle_Facturacion_Especialistas/GetFile")?id=@attachedFileArchivo_PDF.File_Id" target="_blank">@attachedFileArchivo_PDF.Description</a>
+                                        <img src="@Url.Content("~/Content/Images/RemoveAttachment.png")" onclick="RemoveAttachmentMainArchivo_PDF('@attachedFileArchivo_PDF.File_Id')" />
+                                    </div>
+                                    <input id="hdnRemoveArchivo_PDF" name="RemoveArchivo_PDF" value="0" type="hidden" />
+                                    <input class="form-control col-md-12" id="hdnAttachedArchivo_PDF" type="hidden" name="Archivo_PDF" value="@Model.Archivo_PDF">
+                                </div>
+                            }
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Facturacion_EspecialistasResources.Archivo_PDF</label>
+                                <div class="col-sm-8" data-field-id="Archivo_PDF" data-attribute="258873" data-field-name="@Resources.Detalle_Facturacion_EspecialistasResources.Archivo_PDF">
+                                    <input type="file" name="Detalle_Facturacion_EspecialistasArchivo_PDFFile" id="Detalle_Facturacion_EspecialistasArchivo_PDFFile" class="form-control" />
+                                </div>
+                            </div>
+<div class="form-group" id="divEstatus">
+	<label class="col-sm-2 control-label">@Resources.Detalle_Facturacion_EspecialistasResources.Estatus</label>
+	<div class="col-sm-8" data-field-id="Estatus" data-attribute="258874" data-field-name="@Resources.Detalle_Facturacion_EspecialistasResources.Estatus">
+		<input class="form-control inputNumber" id="Detalle_Facturacion_EspecialistasEstatus" name="Detalle_Facturacion_EspecialistasEstatus" type="text" value="@Model.Estatus">
+	</div>
+</div>
+<div class="form-group" id="divFecha_programada_de_Pago">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Facturacion_EspecialistasResources.Fecha_programada_de_Pago</label>
+                                <div class="col-sm-8" data-field-id="Fecha_programada_de_Pago" data-attribute="258875" data-field-name="@Resources.Detalle_Facturacion_EspecialistasResources.Fecha_programada_de_Pago">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input class="form-control col-md-12" id="Detalle_Facturacion_EspecialistasFecha_programada_de_Pago" readonly="readonly" name="Detalle_Facturacion_EspecialistasFecha_programada_de_Pago" type="text" value="@Model.Fecha_programada_de_Pago">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+<div class="form-group" id="divPagada">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Facturacion_EspecialistasResources.Pagada</label>
+                                <div class="col-sm-8" data-field-id="Pagada" data-attribute="258876" data-field-name="@Resources.Detalle_Facturacion_EspecialistasResources.Pagada">
+                                    @Html.CheckBoxFor(m => m.Pagada, new { @class = "i-checks" })
+                                </div>
+                            </div>
+<div class="form-group" id="divFecha_de_pago">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Facturacion_EspecialistasResources.Fecha_de_pago</label>
+                                <div class="col-sm-8" data-field-id="Fecha_de_pago" data-attribute="258877" data-field-name="@Resources.Detalle_Facturacion_EspecialistasResources.Fecha_de_pago">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input class="form-control col-md-12" id="Detalle_Facturacion_EspecialistasFecha_de_pago" readonly="readonly" name="Detalle_Facturacion_EspecialistasFecha_de_pago" type="text" value="@Model.Fecha_de_pago">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+								</div>	
+							</div>
+									<br />
+											<div class="form-actions fluid">
+												<input type="hidden" value="@Model.Folio" id="ReferenceFolio" />
+												<input type="hidden" value="@Model.Folio" name="Folio" id="FolioId" />
+												@if (!ViewBag.Consult)
+												{
+													<div id="dvSaveJob" style="display:inline-block"></div>
+
+													<button type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton">
+														<i class="fa fa-cogs fa-spin"></i>
+													</button>
+													<a title="@Resources.Resources.Configure" id="Detalle_Facturacion_EspecialistasConfigureSave" name="Detalle_Facturacion_EspecialistasConfigureSave" onclick="SaveElementAttributes()" class="btn btn-success">@Resources.Resources.Configure</a>
+												}
+
+												<input type="hidden" id="hdnDetalle_Facturacion_EspecialistasConfigureType" />
+												<input type="hidden" id="hdnDetalle_Facturacion_EspecialistasBusinessRuleFieldId" />
+												<input type="hidden" id="hdnDetalle_Facturacion_EspecialistasBusinessRuleFieldName" />
+												<input type="hidden" id="hdnDetalle_Facturacion_EspecialistasBusinessRuleAttribute" />
+
+												<input data-dismiss="modal" type="button" value="@Resources.Resources.Cancelar" class="btn btn-danger noConsult" data-bind="click: cancel" tabindex="16" />
+
+												<button onclick="Detalle_Facturacion_EspecialistasGetBusinessRule('', 'Al Cancelar', '3')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Detalle_Facturacion_EspecialistasBusinessRule-form">
+													<a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+														<i class="fa fa-cogs fa-spin"></i>
+													</a>
+												</button>
+											</div>
+										</div>
+								}
+
+							</div>
+						</div>
+					</div>
+				</div>
+					<input id="hdnApplicationDirectory" type="hidden" value="@Url.Content("~/")" />
+				</div>
+			</div>
+		</div>
+</div>
+@section Styles {
+<link href="@Url.Content("~/Content/BootstrapDatePicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+    @Styles.Render("~/plugins/awesomeCheckboxStyles")
+    @Styles.Render("~/plugins/select2Styles")
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+    .select2-results{background-color:#fff;}
+    .select2-container .select2-dropdown{height:auto !important;}
+
+    div.dataTables_info {
+        display: inline-block;
+        float: right;
+    }
+        i {
+        font-size: 25px !important;
+        display: block;
+        color: #676a6c;
+        margin-left: 6px;
+        margin-right: 6px;
+    }
+
+    .fullWidth {
+        width: 100%;
+    }
+</style>
+}
+
+<script type="text/javascript" src="~/Uploads/Scripts/Detalle_Facturacion_Especialistas.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Scripts/Custom/Detalle_Facturacion_EspecialistasGeneral.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/Detalle_Facturacion_EspecialistasCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/MedicosCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
+
+    <script type="text/javascript">
+        
+        function RemoveAttachmentMainArchivo_XML () {
+            $("#hdnRemoveArchivo_XML").val("1");
+            $("#divAttachmentArchivo_XML").hide();
+        }
+        function RemoveAttachmentMainArchivo_PDF () {
+            $("#hdnRemoveArchivo_PDF").val("1");
+            $("#divAttachmentArchivo_PDF").hide();
+        }
+
+
+
+        $(document).ready(function () {
+			var currentIndex = @ViewBag.currentRowIndex
+
+            var Detalle_Facturacion_EspecialistasRowElement = "Detalle_Facturacion_EspecialistasPop_" + currentIndex.toString();
+            var abc = "if(dynamicFieldValidation('" + Detalle_Facturacion_EspecialistasRowElement + "')){ Detalle_Facturacion_EspecialistasInsertRowFromPopup(" + currentIndex + "); }";
+            var insertRowHTML = '<a class="btn btn-primary m-b" onclick="' + abc + '">Save</a>';
+            $('#dvSaveJob').html(insertRowHTML);
+			
+            $('#Detalle_Facturacion_EspecialistasFecha_de_Registro').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            $('#Detalle_Facturacion_EspecialistasFecha_programada_de_Pago').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            $('#Detalle_Facturacion_EspecialistasFecha_de_pago').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+
+
+            initiateUIControls();
+            EjecutarValidacionesAlComienzo();
+			$('a').tooltip();
+        });
+
+
+
+        function initiateUIControls() {
+            $('.gridDatePicker').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            //Time Picker
+            $('.gridTimePicker').clockpicker();
+
+        }
+		
+		function SendDetalle_Facturacion_EspecialistasData(callBack) {
+			
+					
+		 var arr = []; 
+		 $("form#CreateDetalle_Facturacion_Especialistas").find(':input').each(function( index ) {		 
+			if ($(this).prop('disabled')==true|| $(this).prop('disabled')=="disabled")
+			{		
+				arr.push($(this).attr('id')); 
+				$(this).prop('disabled', false);  	
+			}
+	    });
+		
+             var formData = new FormData($("form#CreateDetalle_Facturacion_Especialistas")[0]);
+			$.each( arr, function( key, value ) {
+			  $('#' +value).prop('disabled', true);
+			});
+
+            var isNew = $('#hdnIsNew').val();
+           
+            if (checkClientValidate('Detalle_Facturacion_EspecialistasCreateForm')) {
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Detalle_Facturacion_Especialistas/Post?IsNew=")' + isNew,
+                    type: 'POST',
+                    data: formData,
+                    async: true,
+                    success: function (result) {
+                        if (result < 0) {
+                            showNotification("@Resources.Resources.ErrorSave", "error");
+                        } else {
+
+                            showNotification("@Resources.Resources.SaveSuccess", "success");
+                            callBack(result);
+                        }
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            }
+            return false;
+        };
+		
+        function GetPropertyBag() {
+            $.get('@Url.Action("Detalle_Facturacion_EspecialistasPropertyBag", "Detalle_Facturacion_Especialistas")', function (data) {
+                $(".PropertyModal").html(data);
+            });
+        }
+        function Detalle_Facturacion_EspecialistasGetBusinessRule(FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null)
+			{
+				$('#hdnDetalle_Facturacion_EspecialistasBusinessRuleFieldId').val(FieldId);
+				$('#hdnDetalle_Facturacion_EspecialistasBusinessRuleFieldName').val(FieldName);
+				$('#hdnDetalle_Facturacion_EspecialistasBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("BusinessRule", "BussinessRule")', { FieldId: $('#hdnDetalle_Facturacion_EspecialistasBusinessRuleFieldId').val(), FieldName: $('#hdnDetalle_Facturacion_EspecialistasBusinessRuleFieldName').val(), ObjectId: '44447', Attribute: $('#hdnDetalle_Facturacion_EspecialistasBusinessRuleAttribute').val(), Screen: 'Detalle_Facturacion_Especialistas' }, function (data) {
+                $(".Detalle_Facturacion_EspecialistasBusinessRuleModal").html(data);
+            });
+        }
+        function Detalle_Facturacion_EspecialistasGetAddBusinessRule(RuleId, FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null) {
+				$('#hdnDetalle_Facturacion_EspecialistasBusinessRuleFieldId').val(FieldId);
+				$('#hdnDetalle_Facturacion_EspecialistasBusinessRuleFieldName').val(FieldName);
+				$('#hdnDetalle_Facturacion_EspecialistasBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("AddBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnDetalle_Facturacion_EspecialistasBusinessRuleFieldId').val(), FieldName: $('#hdnDetalle_Facturacion_EspecialistasBusinessRuleFieldName').val(), ObjectId: '44447', Attribute: $('#hdnDetalle_Facturacion_EspecialistasBusinessRuleAttribute').val(), Screen: 'Detalle_Facturacion_Especialistas' }, function (data) {
+                $(".Detalle_Facturacion_EspecialistasAddBusinessRuleModal").html(data);
+                $(".datatable").DataTable();
+            });
+        }
+		function RemoveBusinessRule(RuleId) {
+			$.get('@Url.Action("RemoveBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnDetalle_Facturacion_EspecialistasBusinessRuleFieldId').val(), FieldName: $('#hdnDetalle_Facturacion_EspecialistasBusinessRuleFieldName').val(), ObjectId: '44447', Attribute: $('#hdnDetalle_Facturacion_EspecialistasBusinessRuleAttribute').val(), Screen: 'Detalle_Facturacion_Especialistas' }, function (data) {
+				$(".Detalle_Facturacion_EspecialistasBusinessRuleModal").html(data);
+			});
+		}
+
+    var permission = {
+        Consult: '@permission.Consult' == 'True',
+        New: '@permission.New' == 'True',
+        Edit: '@permission.Edit' == 'True',
+        Delete: '@permission.Delete' == 'True',
+        Export: '@permission.Export' == 'True',
+        Print: '@permission.Print' == 'True',
+        Configure: '@permission.Configure' == 'True',
+    };
+
+    
+    //MR-var statusItems;
+    //MR-var stateItems;
+    //MR-var cityItems = [];
+    var isConsultMode = "@ViewBag.Consult" == "True";
+    Consult(isConsultMode);
+        function Consult(val) {
+            if (val) {
+                $(':input').attr('readonly', 'readonly');
+                $(':input').attr('disabled', 'true');
+                $('.noConsult').removeAttr('readonly');
+                $('.noConsult').removeAttr('disabled');
+            }
+        }
+
+    function BackToGrid() {
+        location.href = "@Url.Content("~/Frontal/Detalle_Facturacion_Especialistas/")";
+    }
+	
+	function ReadScriptSettings(callback)
+    {
+        $.post("@Url.Content("~/Frontal/Detalle_Facturacion_Especialistas/ReadScriptSettings")", function (data) {
+            mainElementObject = JSON.parse(data.MainElement);
+			if (data.ChildElement != null) {
+                childElementObject = JSON.parse(data.ChildElement);
+            }
+            callback();
+        });
+    }
+
+    function SaveSettingsWithoutReload() {
+        $.post("@Url.Content("~/Frontal/Detalle_Facturacion_Especialistas/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+            //$('#hdnDetalle_Facturacion_EspecialistasConfigureType').val("0");
+        }, "json");
+    }
+	
+        function SaveElementAttributes() {
+            if ($('#hdnDetalle_Facturacion_EspecialistasConfigureType').val() == "1") {
+                $.post("@Url.Content("~/Frontal/Detalle_Facturacion_Especialistas/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+                    $('#hdnDetalle_Facturacion_EspecialistasConfigureType').val("0");
+                    location.reload(true);
+                }, "json");
+            } else {
+                $.post("@Url.Content("~/Frontal/Detalle_Facturacion_Especialistas/ReadScriptSettings")", function (data) {
+                    mainElementObject = JSON.parse(data.MainElement);
+                    childElementObject = JSON.parse(data.ChildElement);
+
+                    for (var i = 0; i < mainElementObject.length; i++) {
+                        var mainElementAttributes = '<div class="col-sm-2">';
+                        mainElementAttributes += '<div class="displayAttributes requiredAttribute"><a class="requiredClick" title="' + (mainElementObject[i].IsRequired == true ? "Required" : "Not Required") + '" onclick="setRequired(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsRequired == true ? "@Url.Content("~/Images/Required.png")" : "@Url.Content("~/Images/Not-Required.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes visibleAttribute"><a class="visibleClick" title="' + (mainElementObject[i].IsVisible == true ? "Visible" : "In Visible") + '" onclick="setVisible(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsVisible == true ? "@Url.Content("~/Images/Visible.png")" : "@Url.Content("~/Images/InVisible.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes readOnlyAttribute"><a class="readOnlyClick" title="' + (mainElementObject[i].IsReadOnly == true ? "Disabled" : "Enabled") + '" onclick="setReadOnly(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsReadOnly == true ? "@Url.Content("~/Images/Disabled.png")" : "@Url.Content("~/Images/Enabled.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes defaultValueAttribute"><a id="hlDefaultValue_' + i.toString() + '" class="defaultValueClick" title="' + (mainElementObject[i].DefaultValue) + '" onclick="setDefaultValue(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].DefaultValue != '' && mainElementObject[i].DefaultValue != null ? "@Url.Content("~/Images/default-value.png")" : "@Url.Content("~/Images/Not-Default-Value.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes helpTextAttribute"><a id="hlHelpText_' + i.toString() + '" class="helpTextClick" title="' + (mainElementObject[i].HelpText) + '" onclick="setHelpText(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].HelpText != '' && mainElementObject[i].HelpText != null ? "@Url.Content("~/Images/green-help.png")" : "@Url.Content("~/Images/red-help.jpg")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '</div>';
+                        $('#Detalle_Facturacion_Especialistas' + mainElementObject[i].inputId).parent().closest('.form-group').show();
+
+                        $('#Detalle_Facturacion_Especialistas' + mainElementObject[i].inputId).closest('.col-sm-8').after(mainElementAttributes);
+                    }
+					if (childElementObject != null) {
+						for (var i = 0; i < childElementObject.length; i++) {
+							$('.' + childElementObject[i].inputId + 'Header').show();
+							$('.' + childElementObject[i].inputId).parent().show();
+							$('.' + childElementObject[i].inputId + 'Header').append(returnAttributeHTML(i));
+						}
+					}
+                    $('#Detalle_Facturacion_EspecialistasConfigureSave').text('Save Settings');
+                    $('#hdnDetalle_Facturacion_EspecialistasConfigureType').val("1");
+                });
+            }
+        }
+		$('#CreateDetalle_Facturacion_Especialistas').on('click', '.btnPopupBusinessRules', function () {
+			var fieldId = $(this).data('field-id');
+			var fieldName = $(this).data('field-name');
+			var attribute = $(this).data('attribute');
+			$('#hdnDetalle_Facturacion_EspecialistasBusinessRuleFieldId').val(fieldId);
+			$('#hdnDetalle_Facturacion_EspecialistasBusinessRuleFieldName').val(fieldName);
+			$('#hdnDetalle_Facturacion_EspecialistasBusinessRuleAttribute').val(attribute);
+		});
+		//Initialize HTML Editors
+		
+    </script>

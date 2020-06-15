@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Spartan_Report_Function" value="Report Function"></resource>
+  <resource culture="es-es" name="FunctionId" value="FunctionId"></resource>
+  <resource culture="es-es" name="Description" value="Description"></resource>
+
+</resources>

@@ -1,0 +1,351 @@
+﻿@using System.Collections.Generic
+@using Spartane.Web.Areas.Frontal.Models
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Spartan_BR_Peer_ReviewAdvanceSearchModel
+@{
+    List<SelectListItem> varSpartan_User_User_that_reviewed = null;
+    if (ViewBag.Spartan_Users_User_that_reviewed != null)
+    { varSpartan_User_User_that_reviewed = (List<SelectListItem>)ViewBag.Spartan_Users_User_that_reviewed; }
+    List<SelectListItem> varSpartan_BR_Rejection_Reason_Rejection_reason = null;
+    if (ViewBag.Spartan_BR_Rejection_Reasons_Rejection_reason != null)
+    { varSpartan_BR_Rejection_Reason_Rejection_reason = (List<SelectListItem>)ViewBag.Spartan_BR_Rejection_Reasons_Rejection_reason; }
+
+    var filters = (List<SelectListItem>)ViewBag.Filter;
+}
+<style>
+    .input-validation-error {
+        background: rgb(251, 227, 228);
+        border: 1px solid #fbc2c4;
+        color: #8a1f11;
+    }
+
+    .MarginBottom {
+        margin-bottom: 1%;
+    }
+
+    #divAdvanceSearch input {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch button {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch select {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch h3 {
+        margin-top: 2%;
+    }
+
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins" id="divAdvanceSearch">
+        <div class="ibox-content">
+            @using (Html.BeginForm("ShowAdvanceFilter", "Spartan_BR_Peer_Review", FormMethod.Post, new { @id = "frmAdvanceSearch", @role = "form" }))
+            {
+				<input type="hidden" value="-1" name="idFilter" id="idFilter" />
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_BR_Peer_ReviewResources.Key_Peer_Review</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromKey_Peer_Review, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromKey_Peer_Review" })
+                    @Html.ValidationMessageFor(m => m.FromKey_Peer_Review)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToKey_Peer_Review, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToKey_Peer_Review", @data_min = "txtAdvanceFromKey_Peer_Review" })
+                    @Html.ValidationMessageFor(m => m.ToKey_Peer_Review)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_BR_Peer_ReviewResources.User_that_reviewed</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.User_that_reviewedFilter, filters, new { @class = "form-control", @id = "ddlUser_that_reviewedFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceUser_that_reviewed, new { @class = "form-control", @type = "text", @id = "txtAdvanceUser_that_reviewed" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSpartan_User_User_that_reviewed!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceUser_that_reviewedMultiple, varSpartan_User_User_that_reviewed,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceUser_that_reviewed"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_BR_Peer_ReviewResources.Acceptance_Criteria</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Acceptance_CriteriaFilter, filters, new { @class = "form-control", @id = "ddlAcceptance_CriteriaFilter" })
+                    @Html.TextBoxFor(m => m.Acceptance_Criteria, new { @class = "form-control", @type = "text", @id = "txtAcceptance_Criteria" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_BR_Peer_ReviewResources.Rejection_reason</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Rejection_reasonFilter, filters, new { @class = "form-control", @id = "ddlRejection_reasonFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceRejection_reason, new { @class = "form-control", @type = "text", @id = "txtAdvanceRejection_reason" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSpartan_BR_Rejection_Reason_Rejection_reason!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceRejection_reasonMultiple, varSpartan_BR_Rejection_Reason_Rejection_reason,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceRejection_reason"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_BR_Peer_ReviewResources.Comments</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.CommentsFilter, filters, new { @class = "form-control", @id = "ddlCommentsFilter" })
+                    @Html.TextBoxFor(m => m.Comments, new { @class = "form-control", @type = "text", @id = "txtComments" })
+                </div>
+
+                <div class="MarginBottom form-inline">
+                    <input type="submit" class="btn btn-primary" value="@Resources.Resources.Search"><a class="btn btn-primary" href="@Url.Content("~/Frontal/Spartan_BR_Peer_Review/")" value=" ">@Resources.Resources.Cancelar</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function InitiateAdvanceSearch() {
+        var advanceSearch = {}, hasParameter = false;
+        if ($("#txtAdvanceFromKey_Peer_Review").val() != "" || $("#txtAdvanceToKey_Peer_Review").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_BR_Peer_ReviewKey_Peer_ReviewFrom = $("#txtAdvanceFromKey_Peer_Review").val();
+            advanceSearch.Spartan_BR_Peer_ReviewKey_Peer_ReviewTo = $("#txtAdvanceToKey_Peer_Review").val();
+        }
+        advanceSearch.User_that_reviewedSearchType = 0;
+        if ($('#ddlAdvanceUser_that_reviewed').val().length > 0 || $("#txtAdvanceUser_that_reviewed").val() == "") {
+
+
+            if (isSpartan_BR_Peer_ReviewTextSearch) {
+                advanceSearch.User_that_reviewedName = $("#txtAdvanceUser_that_reviewed").val();
+                advanceSearch.User_that_reviewedNameSearchType = $("#ddlAdvanceUser_that_reviewed").val();
+                advanceSearch.User_that_reviewedSearchType = 1;
+            }
+            else {
+
+                advanceSearch.User_that_reviewedToSearch = $("#ddlAdvanceUser_that_reviewed").val();
+                advanceSearch.User_that_reviewedSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceAcceptance_Criteria").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_BR_Peer_ReviewAcceptance_Criteria = $("#txtAdvanceAcceptance_Criteria").val();
+            advanceSearch.Spartan_BR_Peer_ReviewAcceptance_CriteriaSearchType = $("#ddlAdvanceAcceptance_CriteriaFilter").val();
+        }
+        if ($("#ddlAdvanceIt_worked").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_BR_Peer_ReviewIt_worked = $("#ddlAdvanceIt_worked").val();
+        }
+        advanceSearch.Rejection_reasonSearchType = 0;
+        if ($('#ddlAdvanceRejection_reason').val().length > 0 || $("#txtAdvanceRejection_reason").val() == "") {
+
+
+            if (isSpartan_BR_Peer_ReviewTextSearch) {
+                advanceSearch.Rejection_reasonName = $("#txtAdvanceRejection_reason").val();
+                advanceSearch.Rejection_reasonNameSearchType = $("#ddlAdvanceRejection_reason").val();
+                advanceSearch.Rejection_reasonSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Rejection_reasonToSearch = $("#ddlAdvanceRejection_reason").val();
+                advanceSearch.Rejection_reasonSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceComments").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_BR_Peer_ReviewComments = $("#txtAdvanceComments").val();
+            advanceSearch.Spartan_BR_Peer_ReviewCommentsSearchType = $("#ddlAdvanceCommentsFilter").val();
+        }
+        advanceSearch.EvidenceSearchType = 0;
+        if ($('#ddlAdvanceEvidence').val().length > 0 || $("#txtAdvanceEvidence").val() == "") {
+
+
+            if (isSpartan_BR_Peer_ReviewTextSearch) {
+                advanceSearch.EvidenceName = $("#txtAdvanceEvidence").val();
+                advanceSearch.EvidenceNameSearchType = $("#ddlAdvanceEvidence").val();
+                advanceSearch.EvidenceSearchType = 1;
+            }
+            else {
+
+                advanceSearch.EvidenceToSearch = $("#ddlAdvanceEvidence").val();
+                advanceSearch.EvidenceSearchType = 2;
+            }
+        }
+
+        advanceSearchQuery = hasParameter ? JSON.stringify(advanceSearch) : "";
+        $('#tblSpartan_BR_Peer_Review').DataTable().draw();
+        return false;
+    }
+
+    var advanceSearchQuery = "", isSpartan_BR_Peer_ReviewTextSearch = true;
+
+    $(document).ready(function () {
+        $('.clockpicker').clockpicker();
+        $("#txtAdvanceUser_that_reviewed").keypress(function () {
+            isSpartan_BR_Peer_ReviewTextSearch = true;
+            $("#ddlAdvanceUser_that_reviewed").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceUser_that_reviewed").change(function () {
+            isSpartan_BR_Peer_ReviewTextSearch = false;
+            $("#txtAdvanceUser_that_reviewed").val('');
+        });
+        $("#txtAdvanceRejection_reason").keypress(function () {
+            isSpartan_BR_Peer_ReviewTextSearch = true;
+            $("#ddlAdvanceRejection_reason").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceRejection_reason").change(function () {
+            isSpartan_BR_Peer_ReviewTextSearch = false;
+            $("#txtAdvanceRejection_reason").val('');
+        });
+
+    });
+</script>
+
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/chosen")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/clockpicker")
+
+
+    <script>
+        //Adding Rules
+        jQuery.validator.unobtrusive
+      .adapters.addSingleVal("isnumberafter", "propertyname");
+        jQuery.validator.unobtrusive
+    .adapters.addSingleVal("isdateafter", "propertyname");
+
+        //Number after method
+        jQuery.validator.addMethod("isnumberafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+                //if (Date.parse(val) <= Date.parse(otherVal)) {
+                if (Number(val) < Number(otherVal)) {
+                    return false;
+                }
+                        }
+            return true;
+        });
+
+        //Date after after method
+        jQuery.validator.addMethod("isdateafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+
+                if (GetDateObject(val) < GetDateObject(otherVal)) {
+
+                    return false;
+                    }
+                }
+            return true;
+            });
+
+
+        function GetDateObject(value) {
+            var delimiter = GetDelimiter(dateFormat);
+            var dateCollection = value.split(delimiter);
+            var formatCollection = dateFormat.split(delimiter);
+            var dateModel = GetDateModel(dateCollection, formatCollection);
+            return new Date(dateModel.Year, dateModel.Month - 1, dateModel.Day);
+        }
+        //Used to get the date model by parsing the date and the format
+        function GetDateModel(dateCollection,formatCollection) {
+            var day, month, year;
+            for (var i = 0; i < formatCollection.length; i++) {
+                switch (formatCollection[i][0].toUpperCase()) {
+                
+                    case "D":
+                        day = dateCollection[i];
+                        break;
+
+                    case "Y":
+                        year = dateCollection[i];
+                        break;
+
+                    case "M":
+                        month = dateCollection[i];
+                        break;
+                }
+            }
+
+            return {
+                Day:day,
+                Month:month,
+                Year:year
+            };
+        }
+
+        function GetDelimiter(format) {
+
+            for (var i = 0; i < format.length; i++) {
+                if (/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(format[i])) {
+                    return format[i];
+                }
+            }
+            return null;
+        }
+
+        var dateFormat = "@ConfigurationProperty.DateFormatDatePicker";
+
+        $(document).ready(function () {
+
+
+
+            $('.input-daterange').datepicker({
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                format: dateFormat,
+                message: 'The date is not a valid'
+            });
+
+            $(".chosen-select").chosen({ width: "22%", no_results_text: "Oops, nothing found!" });
+			if ($('#IsFilterModal').val() == 'true') {
+                $('.ShowAdvanceFilter #right-sidebar').css('display', 'none');
+                $('.ShowAdvanceFilter .navbar-default').css('display', 'none');
+                $('.ShowAdvanceFilter .border-bottom').css('display', 'none');
+                $('.ShowAdvanceFilter #page-wrapper').css('margin', '0 auto');
+                $('.ShowAdvanceFilter .btn-save').val('@Resources.Resources.Filter');
+                $('.ShowAdvanceFilter .btn-cancelar').attr('data-dismiss', 'modal');
+                $('.ShowAdvanceFilter .btn-cancelar').removeAttr('href');
+                $('#idFilter').val($('#IdReport').val());
+            }
+        });
+
+    </script>
+}
+

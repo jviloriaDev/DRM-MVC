@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Spartan_Bitacora_SQL" value="Spartan Bitacora SQL"></resource>
+  <resource culture="es-es" name="Folio" value="Folio"></resource>
+  <resource culture="es-es" name="Id_User" value="Id User"></resource>
+  <resource culture="es-es" name="Type_SQL" value="Type SQL"></resource>
+  <resource culture="es-es" name="Register_Date" value="Register Date"></resource>
+  <resource culture="es-es" name="Computer_Name" value="Computer Name"></resource>
+  <resource culture="es-es" name="Server_Name" value="Server Name"></resource>
+  <resource culture="es-es" name="Database_Name" value="Database Name"></resource>
+  <resource culture="es-es" name="System_Name" value="System Name"></resource>
+  <resource culture="es-es" name="System_Version" value="System Version"></resource>
+  <resource culture="es-es" name="Windows_Version" value="Windows Version"></resource>
+  <resource culture="es-es" name="Command_SQL" value="Command SQL"></resource>
+  <resource culture="es-es" name="Folio_SQL" value="Folio SQL"></resource>
+  <resource culture="es-es" name="Object_Id" value="Object Id"></resource>
+  <resource culture="es-es" name="IP" value="IP"></resource>
+  <resource culture="es-es" name="Json" value="Json"></resource>
+  <resource culture="es-es" name="Result" value="Result"></resource>
+  <resource culture="es-es" name="Error" value="Error"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

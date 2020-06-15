@@ -1,0 +1,109 @@
+﻿@model IList<Spartane.Web.Areas.Frontal.Models.Spartan_WorkFlow_StateGridModel>
+
+@{
+    var rowCounter = 0;
+}
+
+<style>
+    .table {
+        width: 100%;
+        border: 1px solid #cccccc;
+        font-family: "open sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+        /*border-collapse: separate !important;*/
+        font-size: 13px;
+    }
+
+        .table td {
+            padding: 2px;
+            border:1px solid #cccccc;
+        }
+
+    .table tr:nth-of-type(2n+1) {
+        background-color: #f9f9f9;
+    }
+
+        .table tr:nth-of-type(2n) {
+            background-color: #8da0c2;
+        }
+
+    .table-row-1 td, .table-row-1 th {
+    }
+
+    .table-row-2 td, .table-row-2 th, thead {
+    }
+
+    .tableHeaderRow {
+        font-weight: bold;
+        border: 1px solid #ff6a00;
+    }
+
+    .column1 {
+        width: 15%;
+    }
+
+    .column2 {
+        width: 15%;
+    }
+</style>
+<br />
+<table class="table" cellspacing="0" cellpadding="0" border="0">
+    <thead>
+        <tr>
+            <td class="column1">
+                @Resources.Spartan_WorkFlow_StateResources.StateId
+            </td>
+                        <td class="column1">
+                @Resources.Spartan_WorkFlow_StateResources.Phase
+            </td>
+            <td class="column1">
+                @Resources.Spartan_WorkFlow_StateResources.Attribute
+            </td>
+            <td class="column1">
+                @Resources.Spartan_WorkFlow_StateResources.State_Code
+            </td>
+            <td class="column1">
+                @Resources.Spartan_WorkFlow_StateResources.Name
+            </td>
+            <td class="column1">
+                @Resources.Spartan_WorkFlow_StateResources.Value
+            </td>
+            <td class="column1">
+                @Resources.Spartan_WorkFlow_StateResources.Text
+            </td>
+
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var item in Model)
+            {                
+                <tr>
+                    <td>
+                        @item.StateId
+                    </td>
+					                    <td>
+                        @item.PhaseName
+                    </td>
+                    <td>
+                        @item.Attribute
+                    </td>
+                    <td>
+                        @item.State_Code
+                    </td>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.Value
+                    </td>
+                    <td>
+                        @item.Text
+                    </td>
+
+                </tr>
+                rowCounter++;
+            }
+        }
+    </tbody>
+</table>
+

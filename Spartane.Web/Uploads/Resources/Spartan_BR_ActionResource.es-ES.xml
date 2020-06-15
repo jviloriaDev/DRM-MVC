@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Spartan_BR_Action" value="Business Rule Action"></resource>
+  <resource culture="es-es" name="ActionId" value="Id"></resource>
+  <resource culture="es-es" name="Description" value="Description"></resource>
+  <resource culture="es-es" name="Classification" value="Classification"></resource>
+  <resource culture="es-es" name="Implementation_Code" value="Implementation Code"></resource>
+  <resource culture="es-es" name="Configuration" value="Configuration"></resource>
+  <resource culture="es-es" name="Attribute_Restrictions" value="Attribute Restrictions"></resource>
+  <resource culture="es-es" name="Operation_Restrictions" value="Operation Restrictions"></resource>
+  <resource culture="es-es" name="Process_Event_Restrictions" value="Process Event Restrictions"></resource>
+
+  <resource name="Description.1" control="Description" value="Ejecutar Query" culture="es-es" />
+  <resource name="Description.3" control="Description" value="Crear variable de sesión" culture="es-es" />
+  <resource name="Description.4" control="Description" value="Enviar Email a lista de correos" culture="es-es" />
+  <resource name="Description.5" control="Description" value="Asignar valor" culture="es-es" />
+  <resource name="Description.6" control="Description" value="Asignar valor desde query" culture="es-es" />
+  <resource name="Description.7" control="Description" value="Asignar no requerido" culture="es-es" />
+  <resource name="Description.8" control="Description" value="Asignar requerido" culture="es-es" />
+  <resource name="Description.9" control="Description" value="Mostrar campo en MR" culture="es-es" />
+  <resource name="Description.10" control="Description" value="Ocultar campo en MR" culture="es-es" />
+  <resource name="Description.11" control="Description" value="Mostrar campo" culture="es-es" />
+  <resource name="Description.12" control="Description" value="Ocultar campo" culture="es-es" />
+  <resource name="Description.13" control="Description" value="Mostrar mensaje" culture="es-es" />
+  <resource name="Description.14" control="Description" value="Mostrar mensaje desde query" culture="es-es" />
+  <resource name="Description.15" control="Description" value="Llenar MR desde query" culture="es-es" />
+  <resource name="Description.50" control="Description" value="Ocultar carpeta" culture="es-es" />
+  <resource name="Description.51" control="Description" value="Mostrar carpeta" culture="es-es" />
+  <resource name="Description.52" control="Description" value="Deshabilitar carpeta" culture="es-es" />
+  <resource name="Description.53" control="Description" value="Habilitar carpeta" culture="es-es" />
+  <resource name="Description.55" control="Description" value="Deshabilitar control" culture="es-es" />
+  <resource name="Description.56" control="Description" value="Deshabilitar control en MR" culture="es-es" />
+  <resource name="Description.57" control="Description" value="Habilitar control de MR" culture="es-es" />
+  <resource name="Description.64" control="Description" value="Crear variable de sesión desde query" culture="es-es" />
+
+</resources>

@@ -1,0 +1,839 @@
+﻿@model Spartane.Web.Areas.Frontal.Models.BusinessRuleModel
+@{
+    ViewBag.Title = "AddBusinessRule";
+}
+
+<script type="text/javascript" src="~/Scripts/Custom/BusinessRule.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript">
+    $('.scroll_content').slimscroll({
+        height: '500px',
+        alwaysVisible: true
+    });
+</script>
+<div class="modal-dialog large-popup">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">
+                <!--CAMBIOS MANUALES-->
+                <button class="close" type="button" data-toggle="modal" data-target="#BusinessRule-form" onclick="@(Model.Screen)GetBusinessRule('@Model.FieldId', '@Model.FieldName', '@Model.Attribute');$(this).parent().parent().parent().parent().parent().modal('hide'); "><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                @if(!String.IsNullOrEmpty(Model.FieldId))
+                { 
+                    <div class="alert alert-warning" role="alert"><strong>¡Alerta!</strong> Ésta regla se ejecutará cuando ocurra un cambio en el campo <strong>@Model.FieldName</strong></div>
+                }
+                else
+                { 
+                    <div class="alert alert-warning" role="alert"><strong>¡Alerta!</strong> Ésta regla se ejecutará <strong>@Model.FieldName</strong></div>
+                }
+                @if (Model.BusinessRuleId > 0)
+                {
+                    <span class="text-right pull-right space-right">Business Rule ID: @Model.BusinessRuleId</span>
+                }
+
+            </h4>
+        </div>
+        <div class="modal-body scroll_content" style="height: calc(100vh - 100px);overflow-y: scroll;">
+
+            <form id="BusinessRules" class="form-horizontal">
+                <div class="row">
+                    <input type="hidden" id="hdnBussinessRuleId" value="@Model.BusinessRuleId" />
+                    <input type="hidden" id="hdnFieldId" value="@Model.FieldId" />
+                    <input type="hidden" id="hdnObjectId" value="@Model.ObjectId" />
+                    <input type="hidden" id="hdnAttribute" value="@Model.Attribute" />
+                    <input type="hidden" id="hdnScreen" value="@Model.Screen" />
+                    <div class="col-md-12 no-left-padding form-group">
+                        <div class="col-lg-4 no-left-padding override-right-padding">
+                            <label class="col-md-3 control-label no-left-padding override-right-padding">Scope : </label>
+                            <div class="col-md-9 no-left-padding">
+                                <select id="Scopes" class="form-control multiselectcombo" multiple="multiple"></select>
+                            </div>
+
+                        </div>
+                        @{
+                            string displayOpAndEv = "display: none;";
+                        }
+                        @if (String.IsNullOrEmpty(Model.FieldId) || Model.BusinessRuleId != 0)
+                        {
+                            displayOpAndEv = "display: block;";
+                        }
+                        <div id="divOperations" style="@displayOpAndEv" class="col-lg-4 no-left-padding override-right-padding">
+                            <label class="col-md-4 control-label no-left-padding override-right-padding">Operation : </label>
+                            <div class="col-sm-8 displayFull no-left-padding">
+                                <select id="Operations" class="form-control multiselectcombo" multiple="multiple"></select>
+                            </div>
+
+                        </div>
+                        <div id="divEvents" style="@displayOpAndEv" class="col-lg-4 no-left-padding override-right-padding">
+                            <label class="col-md-4 control-label no-left-padding override-right-padding">Event Process : </label>
+                            <div class="col-sm-8 displayFull no-left-padding">
+                                <select id="Events" class="form-control multiselectcombo" multiple="multiple"></select>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Business Rule Name</label>
+                        <div class="col-sm-10">
+                            <textarea id="DescriptionRule" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-info row">
+                    <div class="panel-heading">
+                        Condition
+                    </div>
+                    <div class="panel-body">
+
+                        <div class="col-ld-12 pull-right bottom-space">
+                            <a onclick="ConditionfnClickAddRow()" class="btn btn-primary">@Resources.Resources.AddNewRow</a>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-ld-12 display-scroll">
+                            <table id="tblConditionBusinessRule" class="table table-striped table-bordered table-hover dataTable childAction">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <label>Actions</label>
+                                        </th>
+                                        <th>
+                                            <label>Operator</label>
+                                        </th>
+                                        <th>
+                                            <label>Operator Type 1</label>
+                                        </th>
+                                        <th>
+                                            <label>Operator Value 1</label>
+                                        </th>
+                                        <th>
+                                            <label>Condition</label>
+                                        </th>
+                                        <th>
+                                            <label>Operator Type 2</label>
+                                        </th>
+                                        <th>
+                                            <label>Operator Value 2</label>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-success row">
+                    <div class="panel-heading">
+                        Actions If Full Fills
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-ld-12 pull-right bottom-space">
+                            <a onclick="ActionfnClickAddRow()" href="javascript:void(0);" class="btn btn-primary">@Resources.Resources.AddNewRow</a>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-ld-12 display-scroll">
+                            <table id="tblActionBusinessRule" class="table table-striped table-bordered table-hover dataTable childAction">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <label>Actions</label>
+                                        </th>
+                                        <th>
+                                            <label>Classification</label>
+                                        </th>
+                                        <th>
+                                            <label>Action</label>
+                                        </th>
+                                        <th>
+                                            <label>Action Result</label>
+                                        </th>
+                                        <th>
+                                            <label>Parameter 1</label>
+                                        </th>
+                                        <th>
+                                            <label>Parameter 2</label>
+                                        </th>
+                                        <th>
+                                            <label>Parameter 3</label>
+                                        </th>
+                                        <th>
+                                            <label>Parameter 4</label>
+                                        </th>
+                                        <th>
+                                            <label>Parameter 5</label>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-danger row">
+                    <div class="panel-heading">
+                        Actions If Not Full Fills
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-ld-12 pull-right bottom-space">
+                            <a onclick="ActionNotfnClickAddRow()" href="javascript:void(0);" class="btn btn-primary">@Resources.Resources.AddNewRow</a>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-ld-12 display-scroll">
+                            <table id="tblActionNotBusinessRule" class="table table-striped table-bordered table-hover dataTable childAction">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <label>Actions</label>
+                                        </th>
+                                        <th>
+                                            <label>Classification</label>
+                                        </th>
+                                        <th>
+                                            <label>Action</label>
+                                        </th>
+                                        <th>
+                                            <label>Action Result</label>
+                                        </th>
+                                        <th>
+                                            <label>Parameter 1</label>
+                                        </th>
+                                        <th>
+                                            <label>Parameter 2</label>
+                                        </th>
+                                        <th>
+                                            <label>Parameter 3</label>
+                                        </th>
+                                        <th>
+                                            <label>Parameter 4</label>
+                                        </th>
+                                        <th>
+                                            <label>Parameter 5</label>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-ld-12">
+                    <input type="button" title="Save & Copy" value="Save & Copy" class="btn btn-primary m-b" />
+                    <input type="button" id="Save" title="Save" value="Save" class="btn btn-success m-b" />
+                    <a title="@Resources.Resources.Cancelar" class="btn btn-danger m-b" data-dismiss="modal" data-toggle="modal" data-target="#BusinessRule-form" onclick="@(Model.Screen)GetBusinessRule('@Model.FieldId', '@Model.FieldName', '@Model.Attribute')">@Resources.Resources.Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        GetScopes();
+        GetOperations();
+        GetEventProcess();
+        if(@Model.BusinessRuleId != 0)
+        {
+            GetBusinessRuleData(@Model.BusinessRuleId);
+            GetConditionData(@Model.BusinessRuleId);
+            GetActionData(@Model.BusinessRuleId);
+            GetActionNotData(@Model.BusinessRuleId);
+        }
+        else
+        {
+            showConditionGrid(null);
+            showActionGrid(null);
+            showActionNotGrid(null);
+        }
+    });
+
+    var BusinessRuleDataDataTable;
+    function GetBusinessRuleData(businessRuleId) {
+        $.ajax({
+            url: "@Url.Content("~/Frontal/BussinessRule/GetBusinessRuleData")?BussinessRuleId=" + businessRuleId,
+            type: 'GET',
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                BusinessRuleDataDataTable = result;
+                showPrincipalData(result);
+            },
+            error: function (result) {
+                showNotification("@Resources.Resources.ErrorContactingServer", "error");
+            }
+        });
+    }
+    var ConditionsDataDataTable;
+    function GetConditionData(businessRuleId) {
+        $.ajax({
+            url: "@Url.Content("~/Frontal/BussinessRule/GetConditionsData")?BussinessRuleId=" + businessRuleId,
+            type: 'GET',
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                ConditionsDataDataTable = result;
+                showConditionGrid(result);
+            },
+            error: function (result) {
+                showNotification("@Resources.Resources.ErrorContactingServer", "error");
+            }
+        });
+    }
+
+
+    var ActionsDataDataTable;
+    function GetActionData(businessRuleId) {
+        $.ajax({
+            url: "@Url.Content("~/Frontal/BussinessRule/GetActionData")?BussinessRuleId=" + businessRuleId,
+            type: 'GET',
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                ActionsDataDataTable = result;
+                showActionGrid(result);
+            },
+            error: function (result) {
+                showNotification("@Resources.Resources.ErrorContactingServer", "error");
+            }
+        });
+    }
+
+
+    var ActionsNotDataDataTable;
+    function GetActionNotData(businessRuleId) {
+        $.ajax({
+            url: "@Url.Content("~/Frontal/BussinessRule/GetActionNotData")?BussinessRuleId=" + businessRuleId,
+            type: 'GET',
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                ActionsNotDataDataTable = result;
+                showActionNotGrid(result);
+            },
+            error: function (result) {
+                showNotification("@Resources.Resources.ErrorContactingServer", "error");
+            }
+        });
+    }
+
+    var ScopesItems;
+    function GetScopes() {
+        var scopes = $('#Scopes');
+        $.ajax({
+            url: "@Url.Content("~/Frontal/BussinessRule/GetScopeList")",
+            type: 'GET',
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                ScopesItems = result.aaData;
+                scopes.empty();
+                $.each(result.aaData, function (index, item) {
+                    scopes.append($('<option />').text(item.Description).val(item.ScopeId));
+                });
+                if ($('#hdnFieldId').val() != "") {
+                    $('#Scopes').val('1');
+                    $('#Scopes').attr('disabled', 'disabled');
+                }
+                else {
+                    $('#Scopes').val('2');
+                    $('#Scopes').attr('disabled', 'disabled');
+                }
+            },
+            error: function (result) {
+                showNotification("@Resources.Resources.ErrorContactingServer", "error");
+            }
+        });
+    }
+    var OperationsItems;
+    function GetOperations() {
+        var operations = $('#Operations');
+        $.ajax({
+            url: "@Url.Content("~/Frontal/BussinessRule/GetOperationList")",
+            type: 'GET',
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                OperationsItems = result.aaData;
+                operations.empty();
+                $.each(result.aaData, function (index, item) {
+                    operations.append($('<option />').text(item.Description).val(item.OperationId));
+                });
+                if ($('#hdnAttribute').val() == "3") {
+                    $('#Operations').val('4');
+                    $('#Operations').attr('disabled', 'disabled');
+                    //$('#divEvents').css('display', 'none');
+                }
+            },
+            error: function (result) {
+                showNotification("@Resources.Resources.ErrorContactingServer", "error");
+            }
+        });
+    }
+
+    var EventProcessItems;
+    function GetEventProcess() {
+        var events = $('#Events');
+        $.ajax({
+            url: "@Url.Content("~/Frontal/BussinessRule/GetEventProcessList")?Attribute=" + $('#hdnAttribute').val(),
+            type: 'GET',
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                EventProcessItems = result.aaData;
+                events.empty();
+                $.each(result.aaData, function (index, item) {
+                    events.append($('<option />').text(item.Description).val(item.ProcessEventId));
+                });
+            },
+            error: function (result) {
+                showNotification("@Resources.Resources.ErrorContactingServer", "error");
+            }
+        });
+    }
+    var ConditionsItems;
+    function GetConditions(dropDown) {
+        var conditions = $('#' + dropDown);
+        $.ajax({
+            url: "@Url.Content("~/Frontal/BussinessRule/GetConditionsList")",
+            type: 'GET',
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                ConditionsItems = result.aaData;
+                if(dropDown != null)
+                {
+                    conditions.empty();
+                    conditions.append($('<option value="">Seleccione Condición</option>'))
+                    $.each(result.aaData, function (index, item) {
+                        conditions.append($('<option />').text(item.Description).val(item.ConditionId));
+                    });
+                }
+            },
+            error: function (result) {
+                showNotification("@Resources.Resources.ErrorContactingServer", "error");
+            }
+        });
+    }
+    var OperatorTypesItems;
+    function GetOperatorTypes(dropDown) {
+        var operatorTypes = $('#' + dropDown);
+        $.ajax({
+            url: "@Url.Content("~/Frontal/BussinessRule/GetOperatorTypesList")",
+            type: 'GET',
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                OperatorTypesItems = result.aaData;
+                if(dropDown != null)
+                {
+                    operatorTypes.empty();
+                    operatorTypes.append($('<option value="">Seleccione Tipo de Operador</option>'))
+                    $.each(result.aaData, function (index, item) {
+                        operatorTypes.append($('<option />').text(item.Description).val(item.OperatorTypeId));
+                    });
+                }
+            },
+            error: function (result) {
+                showNotification("@Resources.Resources.ErrorContactingServer", "error");
+            }
+        });
+    }
+    var ConditionOperatorItems;
+    function GetConditionOperator(dropDown) {
+        var conditionOperator = $('#' + dropDown);
+        $.ajax({
+            url: "@Url.Content("~/Frontal/BussinessRule/GetConditionOperatorList")",
+            type: 'GET',
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                ConditionOperatorItems = result.aaData;
+                if(dropDown != null)
+                {
+                    conditionOperator.empty();
+                    conditionOperator.append($('<option value="">Seleccione Operador</option>'))
+                    $.each(result.aaData, function (index, item) {
+                        conditionOperator.append($('<option />').text(item.Description).val(item.ConditionOperatorId));
+                    });
+                }
+            },
+            error: function (result) {
+                showNotification("@Resources.Resources.ErrorContactingServer", "error");
+            }
+        });
+    }
+
+    var OperatorTypeItems;
+    function GetOperatorType(id, txt, ddl) {
+        $.ajax({
+            url: "@Url.Content("~/Frontal/BussinessRule/GetOperatorTypeById")?id=" + id + "&objectId=" + $('#hdnObjectId').val() + "&attributeId=" + $('#hdnAttribute').val(),
+            type: 'GET',
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                OperatorTypeItems = result.aaData;
+                if(txt != null)
+                {
+                    if (result.aaData == '') {
+                        $('#' + txt).css('display', 'block');
+                        $('#' + ddl).css('display', 'none');
+                    }
+                    else {
+
+                        $('#' + txt).css('display', 'none');
+                        $('#' + ddl).css('display', 'block');
+                        $('#' + ddl).empty();
+                        $('#' + ddl).append($('<option value="">Seleccione Field</option>'));
+                        $.each(result.aaData, function (val, des) {
+                            $('#' + ddl).append($('<option />').text(des).val(val));
+                        });
+                    }
+                }
+            },
+            error: function (result) {
+                showNotification("@Resources.Resources.ErrorContactingServer", "error");
+            }
+        });
+    }
+
+    var ActionClassificationItems;
+    function GetActionClassification(dropDown) {
+        var classification = $('#' + dropDown);
+        $.ajax({
+            url: "@Url.Content("~/Frontal/BussinessRule/GetActionClassificationList")",
+            type: 'GET',
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                ActionClassificationItems = result.aaData;
+                if(dropDown != null)
+                {
+                    classification.empty();
+                    classification.append($('<option value="">Seleccione Classification</option>'))
+                    $.each(result.aaData, function (index, item) {
+                        classification.append($('<option />').text(item.Description).val(item.ClassificationId));
+                    });
+                }
+            },
+            error: function (result) {
+                showNotification("@Resources.Resources.ErrorContactingServer", "error");
+            }
+        });
+    }
+
+    var ActionResultItems;
+    function GetActionResult(dropDown) {
+        var actionresult = $('#' + dropDown);
+        $.ajax({
+            url: "@Url.Content("~/Frontal/BussinessRule/GetActionResultList")",
+            type: 'GET',
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                ActionResultItems = result.aaData;
+                if(dropDown != null)
+                {
+                    actionresult.empty();
+                    actionresult.append($('<option value="">Seleccione Result</option>'))
+                    $.each(result.aaData, function (index, item) {
+                        actionresult.append($('<option />').text(item.Description).val(item.ActionResultId));
+                    });
+                }
+            },
+            error: function (result) {
+                showNotification("@Resources.Resources.ErrorContactingServer", "error");
+            }
+        });
+    }
+
+    var ActionItems;
+    function GetActionsByClassification(id, ddl) {
+        if (id != "") {
+            $.ajax({
+                url: "@Url.Content("~/Frontal/BussinessRule/GetActionListByClassification")?classificationId=" + id,
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    ActionItems = result.aaData;
+                    $('#' + ddl).empty();
+                    $('#' + ddl).append($('<option value="">Seleccione Action</option>'))
+                    $.each(result.aaData, function (index, item) {
+                        $('#' + ddl).append($('<option />').text(item.Description).val(item.ActionId));
+                    });
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+    }
+    var ParametersByActionID;
+    function GetParametersByActionId(id, idParameterGeneric) {
+        var idParameterField = '';
+        if (id != "") {
+            $.ajax({
+                url: "@Url.Content("~/Frontal/BussinessRule/GetParametersByActionId")?actionId=" + id + "&objectId=" + $('#hdnObjectId').val() + "&attributeId=" + $('#hdnAttribute').val(),
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    ParametersByActionID = result;
+                    if(idParameterGeneric != null)
+                    {
+                        $.each(result, function (index, item) {
+                            idParameterField = idParameterGeneric.replace('[NUMBER]', index + 1);
+                            $('#lbl' + idParameterField).remove();
+                            if (item.ControlType == 1) {
+                                $('#txt' + idParameterField).css('display', 'block');
+                                $('#ddl' + idParameterField).css('display', 'none');
+                                $('#txt' + idParameterField).val(item.ControlDataTextbox);
+                                $('<label id="lbl'+ idParameterField +'">' + item.ControlName + '</label>').insertBefore($('#ddl' + idParameterField));
+                            }
+                            else {
+
+                                $('<label id="lbl'+ idParameterField +'">' + item.ControlName + '</label>').insertBefore($('#ddl' + idParameterField));
+                                $('#txt' + idParameterField).css('display', 'none');
+                                $('#ddl' + idParameterField).css('display', 'block');
+                                $('#ddl' + idParameterField).empty();
+                                $('#ddl' + idParameterField).append($('<option value="">Seleccione ' + item.ControlName + '</option>'))
+
+                                $.each(item.ControlDataCombobox, function (val, des) {
+                                    $('#ddl' + idParameterField).append($('<option />').text(des).val(val));
+                                });
+                            }
+                        });
+                    }
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+    }
+
+    function showPrincipalData(dataSet)
+    {
+        $('#DescriptionRule').val(dataSet.Name);
+        $('#Scopes').val(dataSet.Scopes);
+        $('#Operations').val(dataSet.Operations);
+        $('#Events').val(dataSet.Events);
+    }
+
+    function showConditionGrid(dataSet) {
+        ConditionBusinessRuleTable = $("#tblConditionBusinessRule").dataTable({
+            dom: '<"html5buttons"B>lTgitp',
+            buttons: [
+            ],
+            "createdRow": ConditionBusinessRuleTableCreationGrid,
+            "lengthMenu": [[5, 10, 20, 50, -1], [5, 10, 20, 50, "All"]],
+            data: dataSet,
+            "columns": [
+                { "data": null, 'visible': true, "orderable": false },
+                { "data": "Operator", "orderable": false },
+                { "data": "OperatorType1", "orderable": false },
+                { "data": "OperatorValue1", "orderable": false },
+                { "data": "Condition", "orderable": false },
+                { "data": "OperatorType2", "orderable": false },
+                { "data": "OperatorValue2", "orderable": false }
+
+            ],
+            "order": [[0, "asc"]],
+            "language": {
+                "lengthMenu": "@Resources.Resources.Display" + " _MENU_ " + "@Resources.Resources.RecordsPerPage",
+                "zeroRecords": "@Resources.Resources.NothingFound",
+                "info": "@Resources.Resources.ShowingPages" + " _PAGE_ " + "@Resources.Resources.of" + " _PAGES_",
+                "infoEmpty": "@Resources.Resources.NoRecords",
+                "infoFiltered": "(" + "@Resources.Resources.FilteredFrom" + " _MAX_ " + "@Resources.Resources.TotalRecords" + ")",
+                "sSearch": "@Resources.Resources.Search",
+                "paginate": {
+                    "previous": "@Resources.Resources.Previous",
+                    "next": "@Resources.Resources.Next"
+                }
+            },
+            "fnDrawCallback": function (settings) {
+            }
+        });
+    }
+
+    function showActionGrid(dataSet) {
+        ActionBusinessRuleTable = $("#tblActionBusinessRule").dataTable({
+            dom: '<"html5buttons"B>lTgitp',
+            buttons: [
+            ],
+            "createdRow": ActionBusinessRuleTableCreationGrid,
+            "lengthMenu": [[5, 10, 20, 50, -1], [5, 10, 20, 50, "All"]],
+            data: dataSet,
+            "columns": [
+                { "data": null, 'visible': true, "orderable": false },
+                { "data": "ActionClassification", "orderable": false },
+                { "data": "Action", "orderable": false },
+                { "data": "ActionResult", "orderable": false },
+                { "data": "Parameter1", "orderable": false },
+                { "data": "Parameter2", "orderable": false },
+                { "data": "Parameter3", "orderable": false },
+                { "data": "Parameter4", "orderable": false },
+                { "data": "Parameter5", "orderable": false }
+
+            ],
+            "order": [[0, "asc"]],
+            "language": {
+                "lengthMenu": "@Resources.Resources.Display" + " _MENU_ " + "@Resources.Resources.RecordsPerPage",
+                "zeroRecords": "@Resources.Resources.NothingFound",
+                "info": "@Resources.Resources.ShowingPages" + " _PAGE_ " + "@Resources.Resources.of" + " _PAGES_",
+                "infoEmpty": "@Resources.Resources.NoRecords",
+                "infoFiltered": "(" + "@Resources.Resources.FilteredFrom" + " _MAX_ " + "@Resources.Resources.TotalRecords" + ")",
+                "sSearch": "@Resources.Resources.Search",
+                "paginate": {
+                    "previous": "@Resources.Resources.Previous",
+                    "next": "@Resources.Resources.Next"
+                }
+            },
+            "fnDrawCallback": function (settings) {
+            }
+        });
+    }
+
+    function showActionNotGrid(dataSet) {
+        ActionNotBusinessRuleTable = $("#tblActionNotBusinessRule").dataTable({
+            dom: '<"html5buttons"B>lTgitp',
+            buttons: [
+            ],
+            "createdRow": ActionNotBusinessRuleTableCreationGrid,
+            "lengthMenu": [[5, 10, 20, 50, -1], [5, 10, 20, 50, "All"]],
+            data: dataSet,
+            "columns": [
+                { "data": null, 'visible': true, "orderable": false },
+                { "data": "ActionClassification", "orderable": false },
+                { "data": "Action", "orderable": false },
+                { "data": "ActionResult", "orderable": false },
+                { "data": "Parameter1", "orderable": false },
+                { "data": "Parameter2", "orderable": false },
+                { "data": "Parameter3", "orderable": false },
+                { "data": "Parameter4", "orderable": false },
+                { "data": "Parameter5", "orderable": false }
+
+            ],
+            "order": [[0, "asc"]],
+            "language": {
+                "lengthMenu": "@Resources.Resources.Display" + " _MENU_ " + "@Resources.Resources.RecordsPerPage",
+                "zeroRecords": "@Resources.Resources.NothingFound",
+                "info": "@Resources.Resources.ShowingPages" + " _PAGE_ " + "@Resources.Resources.of" + " _PAGES_",
+                "infoEmpty": "@Resources.Resources.NoRecords",
+                "infoFiltered": "(" + "@Resources.Resources.FilteredFrom" + " _MAX_ " + "@Resources.Resources.TotalRecords" + ")",
+                "sSearch": "@Resources.Resources.Search",
+                "paginate": {
+                    "previous": "@Resources.Resources.Previous",
+                    "next": "@Resources.Resources.Next"
+                }
+            },
+            "fnDrawCallback": function (settings) {
+            }
+        });
+    }
+    $("form#BusinessRules").on('click', '#Save', function () {
+        SendBusinessRules();
+    });
+
+    function SendBusinessRules() {
+        var form_data = GetPrincipalData();
+        $.ajax({
+            url: '@Url.Content("~/Frontal/BussinessRule/Post/")',
+            type: 'POST',
+            data: form_data,
+            contentType: 'application/json; charset=utf-8',
+            async: true,
+            success: function (result) {
+                if (result < 0) {
+                    showNotification("@Resources.Resources.ErrorSave", "error");
+                } else {
+                    SendConditions(result);
+                    SendActions(result);
+                    SendActionsNot(result);
+                    $('.@(Model.Screen)AddBusinessRuleModal').modal('toggle');
+                    $(".@(Model.Screen)BusinessRuleModal").modal('show');
+                    @(Model.Screen)GetBusinessRule('@Model.FieldId', '@Model.FieldName', '@Model.Attribute');
+                }
+
+            },
+            error: function (result) {
+                showNotification("@Resources.Resources.ErrorContactingServer", "error");
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+        return false;
+    }
+
+    var ConditionsData;
+
+    function SendConditions(ClaveId) {
+        ConditionsData = GetConditionsFromDataTable();
+        var form_data = GetConditionsForSend();
+        $.ajax({
+            url: '@Url.Content("~/Frontal/BussinessRule/PostConditions?BussinessRuleId=")' + ClaveId,
+            type: 'POST',
+            data: form_data,
+            async: true,
+            success: function (result) {
+
+            },
+            error: function (result) {
+                showNotification("@Resources.Resources.ErrorContactingServer", "error");
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+        return true;
+    }
+
+    var ActionsData;
+
+    function SendActions(ClaveId) {
+        ActionsData = GetActionsFromDataTable();
+        var form_data = GetActionsForSend();
+        $.ajax({
+            url: '@Url.Content("~/Frontal/BussinessRule/PostActions?BussinessRuleId=")' + ClaveId,
+            type: 'POST',
+            data: form_data,
+            async: true,
+            success: function (result) {
+
+            },
+            error: function (result) {
+                showNotification("@Resources.Resources.ErrorContactingServer", "error");
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+        return true;
+    }
+
+    var ActionsNotData;
+
+    function SendActionsNot(ClaveId) {
+        ActionsNotData = GetActionsNotFromDataTable();
+        var form_data = GetActionsNotForSend();
+        $.ajax({
+            url: '@Url.Content("~/Frontal/BussinessRule/PostActionsNot?BussinessRuleId=")' + ClaveId,
+            type: 'POST',
+            data: form_data,
+            async: true,
+            success: function (result) {
+
+            },
+            error: function (result) {
+                showNotification("@Resources.Resources.ErrorContactingServer", "error");
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+        return true;
+    }
+</script>

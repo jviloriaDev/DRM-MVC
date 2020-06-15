@@ -1,0 +1,127 @@
+﻿@model IList<Spartane.Web.Areas.Frontal.Models.Spartan_ReportGridModel>
+
+@{
+    var rowCounter = 0;
+}
+
+<style>
+    .table {
+        width: 100%;
+        border: 1px solid #cccccc;
+        font-family: "open sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+        /*border-collapse: separate !important;*/
+        font-size: 13px;
+    }
+
+        .table td {
+            padding: 2px;
+            border:1px solid #cccccc;
+        }
+
+    .table tr:nth-of-type(2n+1) {
+        background-color: #f9f9f9;
+    }
+
+        .table tr:nth-of-type(2n) {
+            background-color: #8da0c2;
+        }
+
+    .table-row-1 td, .table-row-1 th {
+    }
+
+    .table-row-2 td, .table-row-2 th, thead {
+    }
+
+    .tableHeaderRow {
+        font-weight: bold;
+        border: 1px solid #ff6a00;
+    }
+
+    .column1 {
+        width: 15%;
+    }
+
+    .column2 {
+        width: 15%;
+    }
+</style>
+<br />
+<table class="table" cellspacing="0" cellpadding="0" border="0">
+    <thead>
+        <tr>
+            <td class="column1">
+                @Resources.Spartan_ReportResources.ReportId
+            </td>
+                        <td class="column1">
+                @Resources.Spartan_ReportResources.Report_Name
+            </td>
+            <td class="column1">
+                @Resources.Spartan_ReportResources.Registration_Date
+            </td>
+            <td class="column1">
+                @Resources.Spartan_ReportResources.Registration_Hour
+            </td>
+            <td class="column1">
+                @Resources.Spartan_ReportResources.Registration_User
+            </td>
+            <td class="column1">
+                @Resources.Spartan_ReportResources.Object
+            </td>
+            <td class="column1">
+                @Resources.Spartan_ReportResources.Presentation_Type
+            </td>
+            <td class="column1">
+                @Resources.Spartan_ReportResources.Presentation_View
+            </td>
+            <td class="column1">
+                @Resources.Spartan_ReportResources.Status
+            </td>
+            <td class="column1">
+                @Resources.Spartan_ReportResources.Query
+            </td>
+
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var item in Model)
+            {                
+                <tr>
+                    <td>
+                        @item.ReportId
+                    </td>
+					                    <td>
+                        @item.Report_Name
+                    </td>
+                    <td>
+                        @item.Registration_Date
+                    </td>
+                    <td>
+                        @item.Registration_Hour
+                    </td>
+                    <td>
+                        @item.Registration_UserName
+                    </td>
+                    <td>
+                        @item.ObjectName
+                    </td>
+                    <td>
+                        @item.Presentation_TypeDescription
+                    </td>
+                    <td>
+                        @item.Presentation_ViewDescription
+                    </td>
+                    <td>
+                        @item.StatusDescription
+                    </td>
+                    <td>
+                        @item.Query
+                    </td>
+
+                </tr>
+                rowCounter++;
+            }
+        }
+    </tbody>
+</table>
+

@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Registro_en_Evento" value="Registro en Evento"></resource>
+  <resource culture="es-es" name="Folio" value="Folio"></resource>
+  <resource culture="es-es" name="Fecha_de_Registro" value="Fecha de Registro"></resource>
+  <resource culture="es-es" name="Hora_de_Registro" value="Hora de Registro"></resource>
+  <resource culture="es-es" name="Usuario_que_Registra" value="Usuario que Registra"></resource>
+  <resource culture="es-es" name="Evento" value="Evento"></resource>
+  <resource culture="es-es" name="Descripcion" value="Descripción"></resource>
+  <resource culture="es-es" name="Fecha_inicio_del_Evento" value="Fecha inicio del Evento"></resource>
+  <resource culture="es-es" name="Fecha_fin_del_Evento" value="Fecha fin del Evento"></resource>
+  <resource culture="es-es" name="Lugar" value="Lugar"></resource>
+  <resource culture="es-es" name="Actividades_del_Evento" value="Actividades del Evento"></resource>
+  <resource culture="es-es" name="Inscripcion_en_Actividades" value="Inscripción en Actividades"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

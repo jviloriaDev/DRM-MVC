@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_WorkFlow_Type_Flow_Control" value="Spartan WorkFlow Type Flow Control"></resource>
+  <resource culture="en-US" name="Type_Flow_ControlId" value="Type Flow ControlId"></resource>
+  <resource culture="en-US" name="Description" value="Description"></resource>
+</resources>

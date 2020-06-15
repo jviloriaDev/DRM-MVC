@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Spartan_Report_Format" value="Report Format"></resource>
+  <resource culture="es-es" name="FormatId" value="FormatId"></resource>
+  <resource culture="es-es" name="Description" value="Description"></resource>
+  <resource culture="es-es" name="Format_Mask" value="Format Mask"></resource>
+
+</resources>

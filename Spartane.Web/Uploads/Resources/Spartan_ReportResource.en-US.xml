@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_Report" value="Spartan Report"></resource>
+  <resource culture="en-US" name="ReportId" value="ReportId"></resource>
+  <resource culture="en-US" name="Report_Name" value="Report Name"></resource>
+  <resource culture="en-US" name="Registration_Date" value="Registration Date"></resource>
+  <resource culture="en-US" name="Registration_Hour" value="Registration Hour"></resource>
+  <resource culture="en-US" name="Registration_User" value="Registration User"></resource>
+  <resource culture="en-US" name="Object" value="Object"></resource>
+  <resource culture="en-US" name="Presentation_Type" value="Presentation Type"></resource>
+  <resource culture="en-US" name="Presentation_View" value="Presentation View"></resource>
+  <resource culture="en-US" name="Status" value="Status"></resource>
+  <resource culture="en-US" name="Query" value="Query"></resource>
+  <resource culture="en-US" name="Report_Fields_Detail" value="Report Fields Detail"></resource>
+  <resource culture="en-US" name="Filters" value="Filters"></resource>
+  <resource culture="en-US" name="Header" value="Header"></resource>
+  <resource culture="en-US" name="Footer" value="Footer"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+<resource culture="en-US" name="TabData" value="Data"></resource>
+<resource culture="en-US" name="TabFilters" value="Filters"></resource>
+  <resource culture="en-US" name="TabDesign" value="Design"></resource>
+  
+ <resource culture="es-es" name="DetailedReport" value="Detailed Report"></resource>
+
+  <resource culture="es-es" name="dragFiledsToHere" value=" (Arrastre aquí los campos)"></resource>
+  <resource culture="es-es" name="Columns" value="Columnas"></resource>
+  <resource culture="es-es" name="Records" value="Filas"></resource>
+  <resource culture="es-es" name="Functions" value="Funciones"></resource>
+  <resource culture="es-es" name="TotalByColumns" value="Total por Columnas"></resource>
+  <resource culture="es-es" name="TotalByRecords" value="Total por Filas"></resource>
+  <resource culture="es-es" name="Resultado" value="Resultado"></resource>
+</resources>

@@ -1,0 +1,245 @@
+<?xml version="1.0" standalone="yes"?>
+<resources>
+
+  <resource culture="en-us" name="Value" value="Value"></resource>
+  <resource culture="en-us" name="Add" value="Add"></resource>
+  <resource culture="en-us" name="submit" value="Enviar"></resource>
+  <resource culture="en-us" name="titleBussinesRules" value="Property and Business Rules"></resource>
+  <resource culture="en-us" name="userBlockedMessage" value="Your user has been blocked, please contact the Administrator"></resource>
+  <resource culture="en-us" name="Property" value="Property"></resource>
+  <resource culture="en-us" name="UserName" value="UserName"></resource>
+  <resource culture="en-us" name="get_UserName" value="UserName"></resource>
+  <resource culture="en-us" name="Password" value="Password"></resource>
+  <resource culture="en-us" name="RememberMe" value="Remember Password"></resource>
+  <resource culture="en-us" name="Login" value="Login"></resource>
+  <resource culture="en-us" name="Version" value="Version"></resource>
+  <resource culture="en-us" name="WelcomeSpartan" value="Welcome to SPARTANE"></resource>
+  <resource culture="en-us" name="SpartanLogin" value="Login"></resource>
+  <resource culture="en-us" name="SpartanLoginHeader" value="SE+"></resource>
+  <resource culture="en-us" name="Language" value="Language"></resource>
+  <resource culture="en-us" name="UserNameRequired" value="UserName Required"></resource>
+  <resource culture="en-us" name="PasswordRequired" value="Password Required"></resource>
+  <resource culture="en-us" name="Clave" value="Key"></resource>
+  <resource culture="en-us" name="Nombre" value="Name"></resource>
+  <resource culture="en-us" name="Puesto" value="Puesto"></resource>
+  <resource culture="en-us" name="FechaNacimiento" value="BirthDate"></resource>
+  <resource culture="en-us" name="HoraEntrada" value="Entry Hour"></resource>
+  <resource culture="en-us" name="Antiguedad" value="Antiquity"></resource>
+  <resource culture="en-us" name="Sueldo" value="Salary"></resource>
+  <resource culture="en-us" name="Baja" value="Baja"></resource>
+  <resource culture="en-us" name="Curriculum" value="CV"></resource>
+  <resource culture="en-us" name="Edad" value="Age"></resource>
+  <resource culture="en-us" name="DepartamentoNombre" value="Department Name"></resource>
+  <resource culture="en-us" name="Empleados" value="Employees"></resource>
+  <resource culture="en-us" name="Home" value="Home"></resource>
+  <resource culture="es-es" name="NoDashboardsAvailable" value="There are no active dashboards"></resource>
+  <resource culture="en-us" name="RecordsPerPage" value="Records Per Page"></resource>
+  <resource culture="en-us" name="Display" value="Show"></resource>
+  <resource culture="en-us" name="NothingFound" value="No records available"></resource>
+  <resource culture="en-us" name="ShowingPages" value="Page"></resource>
+  <resource culture="en-us" name="of" value="of"></resource>
+  <resource culture="en-us" name="NoRecords" value="No records available"></resource>
+  <resource culture="en-us" name="FilteredFrom" value="Filtered drom"></resource>
+  <resource culture="en-us" name="TotalRecords" value="total records"></resource>
+  <resource culture="en-us" name="Copy" value="Copy"></resource>
+  <resource culture="en-us" name="CSV" value="CSV"></resource>
+  <resource culture="en-us" name="Excel" value="XLS"></resource>
+  <resource culture="en-us" name="PDF" value="PDF"></resource>
+  <resource culture="en-us" name="Print" value="Print"></resource>
+  <resource culture="en-us" name="Previous" value="Previous"></resource>
+  <resource culture="en-us" name="Next" value="Next"></resource>
+  <resource culture="en-us" name="Imagen" value="Image"></resource>
+  <resource culture="en-us" name="History" value="History"></resource>
+  <resource culture="en-us" name="SelectDepartamento" value="Select Department"></resource>
+  <resource culture="en-us" name="JobHistory" value="Historia laboral"></resource>
+  <resource culture="en-us" name="AddNewRow" value="Add new row"></resource>
+  <resource culture="en-us" name="Id" value="ID"></resource>
+  <resource culture="en-us" name="JobTitle" value="T韙ulo profesional"></resource>
+  <resource culture="en-us" name="ExitDate" value="Exit Date"></resource>
+  <resource culture="en-us" name="ExitHour" value="Exit Hour"></resource>
+  <resource culture="en-us" name="Years" value="Years"></resource>
+  <resource culture="en-us" name="Salary" value="Salary"></resource>
+  <resource culture="en-us" name="Height" value="Height"></resource>
+  <resource culture="en-us" name="CurrentJob" value="Trabajo actual"></resource>
+  <resource culture="en-us" name="JobDescription" value="Descripci贸n del trabajo"></resource>
+  <resource culture="en-us" name="Assignment" value="Asignaci贸n"></resource>
+  <resource culture="en-us" name="Status" value="Status"></resource>
+  <resource culture="en-us" name="State" value="State"></resource>
+  <resource culture="en-us" name="City" value="City"></resource>
+  <resource culture="en-us" name="FileInfo" value="FileInfo"></resource>
+  <resource culture="en-us" name="Actions" value="Actions"></resource>
+  <resource culture="en-us" name="Guardar" value="Save"></resource>
+  <resource culture="en-us" name="GuardarNuevo" value="Save and New"></resource>
+  <resource culture="en-us" name="GuardarCopia" value="Save and Copy"></resource>
+  <resource culture="en-us" name="configure" value="Configure"></resource>
+  <resource culture="en-us" name="Cancelar" value="Cancel"></resource>
+  <resource culture="en-us" name="DeleteConfirm" value="Are you sure you want to remove this?"></resource>
+  <resource culture="en-us" name="ErrorContactingServer" value="Please contact the administrator."></resource>
+  <resource culture="en-us" name="EmployeeSaveSuccess" value="informaci贸n de los empleados guardado correctamente"></resource>
+  <resource culture="en-us" name="ErrorSaveJobHistory" value="Error al guardar la informaci贸n del historial de trabajos"></resource>
+  <resource culture="en-us" name="ErrorSaveEmployee" value="Error al guardar la informaci贸n de los empleados"></resource>
+  <resource culture="en-us" name="Search" value="Search"></resource>
+  <resource culture="en-us" name="Upload" value="Upload"></resource>
+  <resource culture="en-us" name="InvalidUserPassword" value="Invalid user or password."></resource>
+  <resource culture="en-us" name="DeactivateAccount" value="Inactive account"></resource>
+  <resource culture="en-us" name="SessionExpired" value="Your login session has expired, please enter your password to continue with the application."></resource>
+  <resource culture="en-us" name="InvalidPassword" value="Invalid password"></resource>
+  <resource culture="en-us" name="Edit" value="Edit"></resource>
+  <resource culture="en-us" name="Delete" value="Delete"></resource>
+  <resource culture="en-us" name="Consult" value="Consult"></resource>
+  <resource culture="en-us" name="CreateEmployee" value="crear Empleado"></resource>
+  <resource culture="en-us" name="Index" value="Index"></resource>
+  <resource culture="en-us" name="All" value="All"></resource>
+  
+  <resource culture="en-us" name="Email" value="Email"></resource>
+  <resource culture="en-us" name="EmailRequired" value="Email is required"></resource>
+  <resource culture="en-us" name="InvalidEmailUserName" value="Invalid Email or UserName"></resource>
+  <resource culture="en-us" name="InvalidEmail" value="Invalid email"></resource>
+  <resource culture="en-us" name="ForgotPassword" value="I forgot my password"></resource>
+  <resource culture="en-us" name="ForgotPasswordButton" value="Send Password"></resource>
+  <resource culture="en-us" name="ForgotPasswordSuccess" value="We've sent an email to {0} with the user's password."></resource>
+  <resource culture="en-us" name="ForgotPasswordEmailSubject" value="Password request"></resource>
+  <resource culture="en-us" name="ForgotPasswordEmailError" value="Error sending email"></resource>
+
+  <resource culture="en-us" name="ChangePassword" value="Change Password"></resource>
+  <resource culture="en-us" name="CurrentPassword" value="Current Password"></resource>
+  <resource culture="en-us" name="CharactersLong" value="The {0} must be at least {2} characters in length."></resource>
+  <resource culture="en-us" name="NewPassword" value="New Password"></resource>
+  <resource culture="en-us" name="ConfirmNewPassword" value="Confirm New Password"></resource>
+  <resource culture="en-us" name="PasswordMatch" value="The new password and the password confirmation do not match."></resource>
+  <resource culture="en-us" name="PasswordChanged" value="Your password has been successfully changed"></resource>
+  <resource culture="en-us" name="EnteredPasswordInCorrect" value="The current password is incorrect"></resource>
+  <resource culture="en-us" name="ErrorUpdatePassword" value="There was an error updating the password"></resource>
+  <resource culture="en-us" name="ExpiredPassword" value="Your password has expired, please change your password"></resource>
+  <resource culture="en-us" name="Configure" value="Configure"></resource>
+
+  <resource culture="en-us" name="PrintText" value="Print"></resource>
+
+  <!--new general-->
+  <resource culture="en-us" name="From" value="From"></resource>
+  <resource culture="en-us" name="To" value="To"></resource>
+  <resource culture="en-us" name="Filter" value="Filter"></resource>
+  <resource culture="en-us" name="Yes" value="Yes"></resource>
+  <resource culture="en-us" name="No" value="No"></resource>
+  <resource culture="en-us" name="BeginWith" value="Begin With"></resource>
+  <resource culture="en-us" name="EndWith" value="End With"></resource>
+  <resource culture="en-us" name="Exact" value="Exact"></resource>
+  <resource culture="en-us" name="HasAttachment" value="Has Attachment"></resource>
+  <resource culture="en-us" name="EmployeeId" value="Empleado Id"></resource>
+  <resource culture="en-us" name="Department" value="Departamento"></resource>
+  <resource culture="en-us" name="OrSelect" value="Or Select"></resource>
+  <resource culture="en-us" name="AdvanceSearch" value="Advance Search"></resource>
+  <resource culture="en-us" name="ClearFilter" value="Clear Filter"></resource>
+  <resource culture="en-us" name="GreaterThanZero" value="The text must be a number and must be greater than 0."></resource>
+  <resource culture="en-us" name="GreaterThanFrom" value="The text must be a number and must be greater than value 'To'"></resource>
+  <resource culture="en-us" name="InvalidDate" value="Please introduce a valid date"></resource>
+  <resource culture="en-us" name="Contains" value="Contains"></resource>
+  <resource culture="en-us" name="NoApply" value="No Apply"></resource>
+  <resource culture="en-us" name="ErrorSave" value="Error saving information"></resource>
+  <resource culture="en-us" name="Create" value="New"></resource>
+  <resource culture="en-us" name="SaveSuccess" value="Information Saved Correctly"></resource>
+
+  <!--Security Admin Module-->
+  <resource culture="en-us" name="SecurityAdministration" value="Security Administrator"></resource>
+  <resource culture="en-us" name="Modules" value="Modules"></resource>
+  <resource culture="en-us" name="Configuration" value="Configuration"></resource>
+  <resource culture="en-us" name="UserRole" value="User Role"></resource>
+  <resource culture="en-us" name="ObjectModule" value="Object Module:"></resource>
+  <resource culture="en-us" name="Object" value="Object:"></resource>
+  <resource culture="en-us" name="textMessagge1" value="Show objects that have not been selected"></resource>
+  <resource culture="en-us" name="textMessagge2" value="The permissions for the module:"></resource>
+  <resource culture="en-us" name="allowall" value="Allow All"></resource>
+  <resource culture="en-us" name="consults" value="Consults"></resource>
+  <resource culture="en-us" name="new" value="New"></resource>
+  <resource culture="en-us" name="export" value="Export"></resource>
+  <resource culture="en-us" name="SelectStatus" value="Status"></resource>
+  <resource culture="en-us" name="Description" value="Description"></resource>
+  <resource culture="en-us" name="Save" value="Save"></resource>
+  <resource culture="en-us" name="Close" value="Close"></resource>
+  <resource culture="en-us" name="Name" value="Name"></resource>  
+  <!--Security Admin Module-->
+  <resource culture="en-us" name="BusinessRuleToBegin" value="Business rules that are executed before loading the screen."></resource>
+  <resource culture="en-us" name="BusinessRuleBeforeSave" value="Business Rules that are executed before saving."></resource>
+  <resource culture="en-us" name="BusinessRuleToCreateGrid" value="Business Rules that are executed before creating a row."></resource>
+  <resource culture="en-us" name="BusinessRuleFor" value="Business Rules for the field "></resource>
+  <resource culture="en-us" name="BusinessRuleToDelete" value="Business Rules that are executed to delete."></resource>
+  <resource culture="en-us" name="NoPermission" value="You do not have permissions to perform this action"></resource>
+
+  <!--Reportes-->
+  <resource culture="en-us" name="AdvanceFilter" value="Advanced Filters"></resource>
+
+  <resource culture="en-us" name="ClaveDefault" value="AUTO"></resource>
+
+  <resource culture="en-us" name="DeleteRecord" value="Are you sure you want to delete this record?"></resource>
+  <resource culture="en-us" name="DeleteSuccess" value="Record Deleted Successfully"></resource>
+  <resource culture="en-us" name="DeleteError" value="Some error occured while deleting this record"></resource>
+
+  <resource culture="en-us" name="SessionEnd" value="Session Expired"></resource>
+  <resource culture="en-us" name="PendingRow" value="You left a row without saving in {0}"></resource>
+
+  <!--PASSWORDS-->
+  <resource culture="en-us" name="SpecialCharacter" value="The Password must have at least one special character."></resource>
+  <resource culture="en-us" name="MinLengthPassword" value="The Password must have at least 8 characters"></resource>
+  <resource culture="en-us" name="RequiredPassword" value="The Password is required"></resource>
+  <resource culture="en-us" name="ConfirmPasswordEqual" value="The confirmation of Password does not match the Password."></resource>
+  <resource culture="en-us" name="PasswordUsed" value="The Password was previously used"></resource>
+  <resource culture="en-us" name="PasswordModifiedSuccess" value="The password was modified correctly. Please re-login"></resource>
+  <resource culture="en-us" name="AuthorizationChangePassword" value="Request authorization to change Password"></resource>
+  <resource culture="en-us" name="PendingAuthorizationChangePassword" value="You have a pending password change request"></resource>
+  <resource culture="en-us" name="NoAuthorizationChangePassword" value="You do not have authorization to change your Password"></resource>
+
+  <resource culture="en-us" name="LogOut" value="Logout"></resource>
+  <resource culture="en-us" name="SelectValue" value="Select value"></resource>
+  <resource culture="en-us" name="Select" value="Select"></resource>
+  <resource culture="en-us" name="Regenerate" value="Regenerate"></resource>
+  
+    <resource culture="en-us" name="AddGroup" value="Agregar Grupo"></resource>
+	<resource culture="en-us" name="And" value="Y"></resource>
+	<resource culture="en-us" name="Or" value="O"></resource>
+	<resource culture="en-us" name="messageRequiredField" value="The field {0} is required "></resource>
+	
+<resource culture="en-us" name="Export" value="Export"></resource>  
+<resource culture="en-us" name="ExportOptions" value="ExportOptions"></resource>
+<resource culture="en-us" name="ExporOnlyCurrent" value="Export only current page records"></resource>
+<resource culture="en-us" name="ExporAllRecords" value="Export all records"></resource>
+
+  <resource culture="en-us" name="Required" value="Required"></resource>  
+  <resource culture="en-us" name="Not Required" value="Not Required"></resource>  
+  <resource culture="en-us" name="Visible" value="Visible"></resource>  
+  <resource culture="en-us" name="InVisible" value="In Visible"></resource>  
+  <resource culture="en-us" name="Enabled" value="Enabled"></resource>  
+  <resource culture="en-us" name="Disabled" value="Disabled"></resource>  
+   <resource culture="en-us" name="messagedNoInVisible" value="can not set in visible, as this field is required and has no default value"></resource>  
+   <resource culture="en-us" name="messagedNoReadOnly" value="can not set readonly, as this field is required and has no default value"></resource>  
+<resource culture="en-us" name="DefaultValue"  value="Default Value"></resource>  
+  <resource culture="en-us" name="HelpText"  value="Help Text"></resource>  
+  
+    <resource culture="en-us" name="CopyToClipboard"  value="Copy To Clipboard"></resource>  
+	<resource culture="en-us" name="Copiedlines"  value="Copied lines"></resource>  
+	<resource culture="en-us" name="Copiedline"  value="Copied lines"></resource>  
+	<resource culture="en-us" name="Settings"  value="Settings"></resource>
+
+
+  <resource culture="en-us" name="Hello" value="Hello"></resource>
+  <resource culture="en-us" name="textTemplateEmail1" value="We received a request to forgot password for your account"></resource>
+  <resource culture="en-us" name="textTemplateEmail2" value="Please do not reply to this message. it was sent from an unmonitored email address."></resource>
+
+  <resource culture="en-us" name="ErrorNewPassword"  value="The new Password must be different to the last used"></resource>
+
+
+  <resource culture="en-us" name="PreviouslyAttachedFile" value="Previously Attached File"></resource>
+  <resource culture="en-us" name="NoFormatsFound" value="There are no Formats to Print"></resource>
+
+  <resource culture="en-us" name="Graphic" value="Graphic"></resource>
+  <resource culture="en-us" name="Graphics" value="Graphics"></resource>
+  <resource culture="en-us" name="Report" value="Report"></resource>
+  <resource culture="en-us" name="Reports" value="Reports"></resource>
+  <resource culture="en-us" name="Gauge" value="Gauge"></resource>
+  <resource culture="en-us" name="Gauges" value="Gauges"></resource>
+  <resource culture="en-us" name="SelectOption" value="Select option"></resource>
+  <resource culture="en-us" name="Finish" value="Finish"></resource>
+  <resource culture="en-us" name="TypeNotExist" value="The '{0}' type does not exist."></resource>
+  <resource culture="en-us" name="ItemsNotFound" value="There are no items."></resource>
+  <resource culture="en-us" name="NameDashboard" value="Dashboard Name"></resource>
+  <resource culture="en-us" name="RemoveReportFromDashboardConfirm" value="Are you sure you want to remove this report/graph from this dashboard?"></resource>
+</resources>

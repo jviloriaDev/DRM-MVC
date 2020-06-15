@@ -1,0 +1,169 @@
+﻿@model IList<Spartane.Web.Areas.Frontal.Models.Spartan_Bitacora_SQLGridModel>
+
+@{
+    var rowCounter = 0;
+}
+
+<style>
+    .table {
+        width: 100%;
+        border: 1px solid #cccccc;
+        font-family: "open sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+        /*border-collapse: separate !important;*/
+        font-size: 13px;
+    }
+
+        .table td {
+            padding: 2px;
+            border:1px solid #cccccc;
+        }
+
+    .table tr:nth-of-type(2n+1) {
+        background-color: #f9f9f9;
+    }
+
+        .table tr:nth-of-type(2n) {
+            background-color: #8da0c2;
+        }
+
+    .table-row-1 td, .table-row-1 th {
+    }
+
+    .table-row-2 td, .table-row-2 th, thead {
+    }
+
+    .tableHeaderRow {
+        font-weight: bold;
+        border: 1px solid #ff6a00;
+    }
+
+    .column1 {
+        width: 15%;
+    }
+
+    .column2 {
+        width: 15%;
+    }
+</style>
+<br />
+<table class="table" cellspacing="0" cellpadding="0" border="0">
+    <thead>
+        <tr>
+            <td class="column1">
+                @Resources.Spartan_Bitacora_SQLResources.Folio
+            </td>
+                        <td class="column1">
+                @Resources.Spartan_Bitacora_SQLResources.Id_User
+            </td>
+            <td class="column1">
+                @Resources.Spartan_Bitacora_SQLResources.Type_SQL
+            </td>
+            <td class="column1">
+                @Resources.Spartan_Bitacora_SQLResources.Register_Date
+            </td>
+            <td class="column1">
+                @Resources.Spartan_Bitacora_SQLResources.Computer_Name
+            </td>
+            <td class="column1">
+                @Resources.Spartan_Bitacora_SQLResources.Server_Name
+            </td>
+            <td class="column1">
+                @Resources.Spartan_Bitacora_SQLResources.Database_Name
+            </td>
+            <td class="column1">
+                @Resources.Spartan_Bitacora_SQLResources.System_Name
+            </td>
+            <td class="column1">
+                @Resources.Spartan_Bitacora_SQLResources.System_Version
+            </td>
+            <td class="column1">
+                @Resources.Spartan_Bitacora_SQLResources.Windows_Version
+            </td>
+            <td class="column1">
+                @Resources.Spartan_Bitacora_SQLResources.Command_SQL
+            </td>
+            <td class="column1">
+                @Resources.Spartan_Bitacora_SQLResources.Folio_SQL
+            </td>
+            <td class="column1">
+                @Resources.Spartan_Bitacora_SQLResources.Object_Id
+            </td>
+            <td class="column1">
+                @Resources.Spartan_Bitacora_SQLResources.IP
+            </td>
+            <td class="column1">
+                @Resources.Spartan_Bitacora_SQLResources.Json
+            </td>
+            <td class="column1">
+                @Resources.Spartan_Bitacora_SQLResources.Result
+            </td>
+            <td class="column1">
+                @Resources.Spartan_Bitacora_SQLResources.Error
+            </td>
+
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var item in Model)
+            {                
+                <tr>
+                    <td>
+                        @item.Folio
+                    </td>
+					                    <td>
+                        @item.Id_User
+                    </td>
+                    <td>
+                        @item.Type_SQL
+                    </td>
+                    <td>
+                        @item.Register_Date
+                    </td>
+                    <td>
+                        @item.Computer_Name
+                    </td>
+                    <td>
+                        @item.Server_Name
+                    </td>
+                    <td>
+                        @item.Database_Name
+                    </td>
+                    <td>
+                        @item.System_Name
+                    </td>
+                    <td>
+                        @item.System_Version
+                    </td>
+                    <td>
+                        @item.Windows_Version
+                    </td>
+                    <td>
+                        @item.Command_SQL
+                    </td>
+                    <td>
+                        @item.Folio_SQL
+                    </td>
+                    <td>
+                        @item.Object_Id
+                    </td>
+                    <td>
+                        @item.IP
+                    </td>
+                    <td>
+                        @item.Json
+                    </td>
+                    <td>
+                        @item.Result
+                    </td>
+                    <td>
+                        @item.Error
+                    </td>
+
+                </tr>
+                rowCounter++;
+            }
+        }
+    </tbody>
+</table>
+

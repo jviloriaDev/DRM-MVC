@@ -1,0 +1,554 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Globalization
+@using Spartane.Core.Domain.Permission
+@using Spartane.Core.Domain.Spartane_File
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Detalle_Titulos_MedicosModel
+@{
+    Spartane_File attachedFileTitulo = (Spartane_File)ViewBag.TituloSpartane_File;
+    Spartane_File attachedFileCedula_Frente = (Spartane_File)ViewBag.Cedula_FrenteSpartane_File;
+    Spartane_File attachedFileCedula_Reverso = (Spartane_File)ViewBag.Cedula_ReversoSpartane_File;
+
+    string Fecha_de_Titulacion = "";
+    if (Model.Fecha_de_Titulacion == "")
+    { Model.Fecha_de_Titulacion = DateTime.Now.ToString(ConfigurationProperty.DateFormat); }
+    string Fecha_de_Expedicion = "";
+    if (Model.Fecha_de_Expedicion == "")
+    { Model.Fecha_de_Expedicion = DateTime.Now.ToString(ConfigurationProperty.DateFormat); }
+
+
+
+    Permission permission = ViewBag.Permission;
+}
+<div class="modal-dialog" style="width:95%;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">
+                Add Detalle Títulos Médicos
+                <button data-dismiss="modal" class="close" type="button" onclick="@(ViewBag.functionMode == 0 ? "Detalle_Titulos_MedicosRemoveAddRow("+ ViewBag.currentRowIndex +")" : "")"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            </h4>
+        </div>
+        <div class="modal-body scroll_content">
+            <div class="form-horizontal Detalle_Titulos_MedicosPop_@ViewBag.currentRowIndex">
+				<div class="modal fade in" id="dvAttributeValue" style="background-color:rgba(0, 0, 0, 0.7);">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-body">
+								<div class="form-group">
+									<label class="col-sm-3 control-label" id="lblAttributeType">Value</label>
+									<div class="col-sm-7">
+										<input type="text" title="Value" class="form-control" id="txtAttributeValue" />
+									</div>
+									<div class="col-sm-2">
+										<a class="btn btn-primary" onclick="SaveValue()">Submit</a>
+									</div>
+									<input type="hidden" id="hdnAttributType" />
+									<input type="hidden" id="hdnAttributElement" />
+									<input type="hidden" id="hdnAttributNumber" />
+									<input type="hidden" id="hdnElementType" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row wrapper border-bottom white-bg page-heading">
+
+					<div class="row">
+						<div class="col-lg-10">
+							<h2>
+								Detalle Títulos Médicos
+								<button onclick="Detalle_Titulos_MedicosGetBusinessRule('', 'Abrir Pantalla', '0')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Detalle_Titulos_MedicosBusinessRule-form">
+									<a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+										<i class="fa fa-cogs fa-spin"></i>
+									</a>
+								</button>
+							</h2>
+							<ol class="breadcrumb">
+								<li>
+									<a href="@Url.Action("Index", "Home")">@Resources.Resources.Home</a>
+								</li>
+								<li class="">
+									<label>@Resources.Detalle_Titulos_MedicosResources.Detalle_Titulos_Medicos</label>
+								</li>
+								<li class="active">
+									<strong>@Resources.Resources.Create</strong>
+								</li>
+							</ol>
+						</div>
+						<div class="col-lg-2">
+
+							@{
+								if (Convert.ToInt32(Spartane.Web.SessionHelper.Role) == (int)Spartane.Core.Enums.SpartanRoleEnum.Admin)
+								{
+									<h2>&nbsp;</h2>
+									<button onclick="Detalle_Titulos_MedicosDisplayBusinessRule()" type="button" class="btn btn-info btn-lg displayBusinessProperyButton">
+										<i class="fa fa-cogs fa-spin"></i>
+									</button>
+
+									<div aria-hidden="true" class="modal fade in Detalle_Titulos_MedicosPropertyBusinessModal" id="Detalle_Titulos_MedicosPropertyBusinessModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h4 class="modal-title">
+														Property & Business Rules
+														<button class="close" type="button" onclick="$(this).parent().parent().parent().parent().parent().modal('hide');"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+													</h4>
+												</div>
+												<div class="modal-body">
+													<div class="row">
+														<div class="col-sm-12">
+															<a class="btn btn-primary full-width" data-toggle="modal" data-target="#PropertyModal-form" onclick="GetPropertyBag()">Properties</a>
+														</div>
+														<div class="clearfix col-sm-12">&nbsp;</div>
+														<div class="col-sm-12">
+															<a class="btn btn-primary full-width" data-toggle="modal" data-target="#Detalle_Titulos_MedicosBusinessRule-form" onclick="Detalle_Titulos_MedicosGetBusinessRule()">Business Rule</a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									 <div aria-hidden="true" data-backdrop="static" class="modal fade in Detalle_Titulos_MedicosPropertyModal" id="Detalle_Titulos_MedicosPropertyModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+									</div>
+									<div aria-hidden="true" data-backdrop="static" class="modal fade in Detalle_Titulos_MedicosBusinessRuleModal" id="Detalle_Titulos_MedicosBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+									</div>
+                                    <div aria-hidden="true" data-backdrop="static" class="modal fade in Detalle_Titulos_MedicosAddBusinessRuleModal" id="Detalle_Titulos_MedicosAddBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                                    </div>
+
+				
+								}
+							}
+						</div>
+					</div>
+
+				<div class="wrapper wrapper-content animated fadeInRight">
+					<div class="ibox float-e-margins">
+						<div class="ibox-content">
+							@using (Html.BeginForm("Post", "Detalle_Titulos_Medicos", FormMethod.Post, new { id = "CreateDetalle_Titulos_Medicos", @readonly = "true", @class = "form-horizontal", enctype = "multipart/form-data" }))
+							{
+								<span id="popupNotification"></span>
+								<div class="container-fluid Detalle_Titulos_MedicosCreateForm" id="viewmodeledit">
+							<div class="tabs-container">
+											<ul class="nav nav-tabs">
+				@@groupers@@
+											</ul>
+										<div class="tab-content">
+				<div class="form-group" id="divFolio">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Titulos_MedicosResources.Folio</label>
+                                <div class="col-sm-8" data-field-id="Folio" data-attribute="258458" data-field-name="@Resources.Detalle_Titulos_MedicosResources.Folio">
+                                    <label class="form-control" for="Detalle_Titulos_MedicosFolio" id="Detalle_Titulos_MedicosFolio">@Model.Folio</label>
+                                </div>
+                            </div>
+<div class="form-group" id="divNombre_del_Titulo">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Titulos_MedicosResources.Nombre_del_Titulo</label>
+                                <div class="col-sm-8" data-field-id="Nombre_del_Titulo" data-attribute="258460" data-field-name="@Resources.Detalle_Titulos_MedicosResources.Nombre_del_Titulo">
+                                    <input class="form-control" id="Detalle_Titulos_MedicosNombre_del_Titulo" name="Detalle_Titulos_MedicosNombre_del_Titulo" type="text" value="@Model.Nombre_del_Titulo">
+                                </div>
+                            </div>
+<div class="form-group" id="divInstitucion_Facultad">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Titulos_MedicosResources.Institucion_Facultad</label>
+                                <div class="col-sm-8" data-field-id="Institucion_Facultad" data-attribute="258467" data-field-name="@Resources.Detalle_Titulos_MedicosResources.Institucion_Facultad">
+                                    <input class="form-control" id="Detalle_Titulos_MedicosInstitucion_Facultad" name="Detalle_Titulos_MedicosInstitucion_Facultad" type="text" value="@Model.Institucion_Facultad">
+                                </div>
+                            </div>
+<div class="form-group" id="divFecha_de_Titulacion">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Titulos_MedicosResources.Fecha_de_Titulacion</label>
+                                <div class="col-sm-8" data-field-id="Fecha_de_Titulacion" data-attribute="258461" data-field-name="@Resources.Detalle_Titulos_MedicosResources.Fecha_de_Titulacion">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input class="form-control col-md-12" id="Detalle_Titulos_MedicosFecha_de_Titulacion" readonly="readonly" name="Detalle_Titulos_MedicosFecha_de_Titulacion" type="text" value="@Model.Fecha_de_Titulacion">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+@if (attachedFileTitulo != null && attachedFileTitulo.File_Id > 0)
+                            {
+                                <div class="form-group" id="divAttachmentTitulo">
+                                    <label class="col-sm-2 control-label">Previously Attached File</label>
+                                    <div class="col-sm-8" data-field-id="Titulo" data-attribute="258462" data-field-name="@Resources.Detalle_Titulos_MedicosResources.Titulo">
+                                        <a href="@Url.Content("~/Frontal/Detalle_Titulos_Medicos/GetFile")?id=@attachedFileTitulo.File_Id" target="_blank">@attachedFileTitulo.Description</a>
+                                        <img src="@Url.Content("~/Content/Images/RemoveAttachment.png")" onclick="RemoveAttachmentMainTitulo('@attachedFileTitulo.File_Id')" />
+                                    </div>
+                                    <input id="hdnRemoveTitulo" name="RemoveTitulo" value="0" type="hidden" />
+                                    <input class="form-control col-md-12" id="hdnAttachedTitulo" type="hidden" name="Titulo" value="@Model.Titulo">
+                                </div>
+                            }
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Titulos_MedicosResources.Titulo</label>
+                                <div class="col-sm-8" data-field-id="Titulo" data-attribute="258462" data-field-name="@Resources.Detalle_Titulos_MedicosResources.Titulo">
+                                    <input type="file" name="Detalle_Titulos_MedicosTituloFile" id="Detalle_Titulos_MedicosTituloFile" class="form-control" />
+                                </div>
+                            </div>
+<div class="form-group" id="divNumero_de_Cedula">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Titulos_MedicosResources.Numero_de_Cedula</label>
+                                <div class="col-sm-8" data-field-id="Numero_de_Cedula" data-attribute="258463" data-field-name="@Resources.Detalle_Titulos_MedicosResources.Numero_de_Cedula">
+                                    <input class="form-control" id="Detalle_Titulos_MedicosNumero_de_Cedula" name="Detalle_Titulos_MedicosNumero_de_Cedula" type="text" value="@Model.Numero_de_Cedula">
+                                </div>
+                            </div>
+<div class="form-group" id="divFecha_de_Expedicion">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Titulos_MedicosResources.Fecha_de_Expedicion</label>
+                                <div class="col-sm-8" data-field-id="Fecha_de_Expedicion" data-attribute="258464" data-field-name="@Resources.Detalle_Titulos_MedicosResources.Fecha_de_Expedicion">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input class="form-control col-md-12" id="Detalle_Titulos_MedicosFecha_de_Expedicion" readonly="readonly" name="Detalle_Titulos_MedicosFecha_de_Expedicion" type="text" value="@Model.Fecha_de_Expedicion">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+@if (attachedFileCedula_Frente != null && attachedFileCedula_Frente.File_Id > 0)
+                            {
+                                <div class="form-group" id="divAttachmentCedula_Frente">
+                                    <label class="col-sm-2 control-label">Previously Attached File</label>
+                                    <div class="col-sm-8" data-field-id="Cedula_Frente" data-attribute="258465" data-field-name="@Resources.Detalle_Titulos_MedicosResources.Cedula_Frente">
+                                        <a href="@Url.Content("~/Frontal/Detalle_Titulos_Medicos/GetFile")?id=@attachedFileCedula_Frente.File_Id" target="_blank">@attachedFileCedula_Frente.Description</a>
+                                        <img src="@Url.Content("~/Content/Images/RemoveAttachment.png")" onclick="RemoveAttachmentMainCedula_Frente('@attachedFileCedula_Frente.File_Id')" />
+                                    </div>
+                                    <input id="hdnRemoveCedula_Frente" name="RemoveCedula_Frente" value="0" type="hidden" />
+                                    <input class="form-control col-md-12" id="hdnAttachedCedula_Frente" type="hidden" name="Cedula_Frente" value="@Model.Cedula_Frente">
+                                </div>
+                            }
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Titulos_MedicosResources.Cedula_Frente</label>
+                                <div class="col-sm-8" data-field-id="Cedula_Frente" data-attribute="258465" data-field-name="@Resources.Detalle_Titulos_MedicosResources.Cedula_Frente">
+                                    <input type="file" name="Detalle_Titulos_MedicosCedula_FrenteFile" id="Detalle_Titulos_MedicosCedula_FrenteFile" class="form-control" />
+                                </div>
+                            </div>
+@if (attachedFileCedula_Reverso != null && attachedFileCedula_Reverso.File_Id > 0)
+                            {
+                                <div class="form-group" id="divAttachmentCedula_Reverso">
+                                    <label class="col-sm-2 control-label">Previously Attached File</label>
+                                    <div class="col-sm-8" data-field-id="Cedula_Reverso" data-attribute="258466" data-field-name="@Resources.Detalle_Titulos_MedicosResources.Cedula_Reverso">
+                                        <a href="@Url.Content("~/Frontal/Detalle_Titulos_Medicos/GetFile")?id=@attachedFileCedula_Reverso.File_Id" target="_blank">@attachedFileCedula_Reverso.Description</a>
+                                        <img src="@Url.Content("~/Content/Images/RemoveAttachment.png")" onclick="RemoveAttachmentMainCedula_Reverso('@attachedFileCedula_Reverso.File_Id')" />
+                                    </div>
+                                    <input id="hdnRemoveCedula_Reverso" name="RemoveCedula_Reverso" value="0" type="hidden" />
+                                    <input class="form-control col-md-12" id="hdnAttachedCedula_Reverso" type="hidden" name="Cedula_Reverso" value="@Model.Cedula_Reverso">
+                                </div>
+                            }
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Titulos_MedicosResources.Cedula_Reverso</label>
+                                <div class="col-sm-8" data-field-id="Cedula_Reverso" data-attribute="258466" data-field-name="@Resources.Detalle_Titulos_MedicosResources.Cedula_Reverso">
+                                    <input type="file" name="Detalle_Titulos_MedicosCedula_ReversoFile" id="Detalle_Titulos_MedicosCedula_ReversoFile" class="form-control" />
+                                </div>
+                            </div>
+
+								</div>	
+							</div>
+									<br />
+											<div class="form-actions fluid">
+												<input type="hidden" value="@Model.Folio" id="ReferenceFolio" />
+												<input type="hidden" value="@Model.Folio" name="Folio" id="FolioId" />
+												@if (!ViewBag.Consult)
+												{
+													<div id="dvSaveJob" style="display:inline-block"></div>
+
+													<button type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton">
+														<i class="fa fa-cogs fa-spin"></i>
+													</button>
+													<a title="@Resources.Resources.Configure" id="Detalle_Titulos_MedicosConfigureSave" name="Detalle_Titulos_MedicosConfigureSave" onclick="SaveElementAttributes()" class="btn btn-success">@Resources.Resources.Configure</a>
+												}
+
+												<input type="hidden" id="hdnDetalle_Titulos_MedicosConfigureType" />
+												<input type="hidden" id="hdnDetalle_Titulos_MedicosBusinessRuleFieldId" />
+												<input type="hidden" id="hdnDetalle_Titulos_MedicosBusinessRuleFieldName" />
+												<input type="hidden" id="hdnDetalle_Titulos_MedicosBusinessRuleAttribute" />
+
+												<input data-dismiss="modal" type="button" value="@Resources.Resources.Cancelar" class="btn btn-danger noConsult" data-bind="click: cancel" tabindex="16" />
+
+												<button onclick="Detalle_Titulos_MedicosGetBusinessRule('', 'Al Cancelar', '3')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Detalle_Titulos_MedicosBusinessRule-form">
+													<a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+														<i class="fa fa-cogs fa-spin"></i>
+													</a>
+												</button>
+											</div>
+										</div>
+								}
+
+							</div>
+						</div>
+					</div>
+				</div>
+					<input id="hdnApplicationDirectory" type="hidden" value="@Url.Content("~/")" />
+				</div>
+			</div>
+		</div>
+</div>
+@section Styles {
+<link href="@Url.Content("~/Content/BootstrapDatePicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+    @Styles.Render("~/plugins/awesomeCheckboxStyles")
+    @Styles.Render("~/plugins/select2Styles")
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+    .select2-results{background-color:#fff;}
+    .select2-container .select2-dropdown{height:auto !important;}
+
+    div.dataTables_info {
+        display: inline-block;
+        float: right;
+    }
+        i {
+        font-size: 25px !important;
+        display: block;
+        color: #676a6c;
+        margin-left: 6px;
+        margin-right: 6px;
+    }
+
+    .fullWidth {
+        width: 100%;
+    }
+</style>
+}
+
+<script type="text/javascript" src="~/Uploads/Scripts/Detalle_Titulos_Medicos.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Scripts/Custom/Detalle_Titulos_MedicosGeneral.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/Detalle_Titulos_MedicosCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/MedicosCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
+
+    <script type="text/javascript">
+        
+        function RemoveAttachmentMainTitulo () {
+            $("#hdnRemoveTitulo").val("1");
+            $("#divAttachmentTitulo").hide();
+        }
+        function RemoveAttachmentMainCedula_Frente () {
+            $("#hdnRemoveCedula_Frente").val("1");
+            $("#divAttachmentCedula_Frente").hide();
+        }
+        function RemoveAttachmentMainCedula_Reverso () {
+            $("#hdnRemoveCedula_Reverso").val("1");
+            $("#divAttachmentCedula_Reverso").hide();
+        }
+
+
+
+        $(document).ready(function () {
+			var currentIndex = @ViewBag.currentRowIndex
+
+            var Detalle_Titulos_MedicosRowElement = "Detalle_Titulos_MedicosPop_" + currentIndex.toString();
+            var abc = "if(dynamicFieldValidation('" + Detalle_Titulos_MedicosRowElement + "')){ Detalle_Titulos_MedicosInsertRowFromPopup(" + currentIndex + "); }";
+            var insertRowHTML = '<a class="btn btn-primary m-b" onclick="' + abc + '">Save</a>';
+            $('#dvSaveJob').html(insertRowHTML);
+			
+            $('#Detalle_Titulos_MedicosFecha_de_Titulacion').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            $('#Detalle_Titulos_MedicosFecha_de_Expedicion').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+
+
+            initiateUIControls();
+            EjecutarValidacionesAlComienzo();
+			$('a').tooltip();
+        });
+
+
+
+        function initiateUIControls() {
+            $('.gridDatePicker').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            //Time Picker
+            $('.gridTimePicker').clockpicker();
+
+        }
+		
+		function SendDetalle_Titulos_MedicosData(callBack) {
+			
+					
+		 var arr = []; 
+		 $("form#CreateDetalle_Titulos_Medicos").find(':input').each(function( index ) {		 
+			if ($(this).prop('disabled')==true|| $(this).prop('disabled')=="disabled")
+			{		
+				arr.push($(this).attr('id')); 
+				$(this).prop('disabled', false);  	
+			}
+	    });
+		
+             var formData = new FormData($("form#CreateDetalle_Titulos_Medicos")[0]);
+			$.each( arr, function( key, value ) {
+			  $('#' +value).prop('disabled', true);
+			});
+
+            var isNew = $('#hdnIsNew').val();
+           
+            if (checkClientValidate('Detalle_Titulos_MedicosCreateForm')) {
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Detalle_Titulos_Medicos/Post?IsNew=")' + isNew,
+                    type: 'POST',
+                    data: formData,
+                    async: true,
+                    success: function (result) {
+                        if (result < 0) {
+                            showNotification("@Resources.Resources.ErrorSave", "error");
+                        } else {
+
+                            showNotification("@Resources.Resources.SaveSuccess", "success");
+                            callBack(result);
+                        }
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            }
+            return false;
+        };
+		
+        function GetPropertyBag() {
+            $.get('@Url.Action("Detalle_Titulos_MedicosPropertyBag", "Detalle_Titulos_Medicos")', function (data) {
+                $(".PropertyModal").html(data);
+            });
+        }
+        function Detalle_Titulos_MedicosGetBusinessRule(FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null)
+			{
+				$('#hdnDetalle_Titulos_MedicosBusinessRuleFieldId').val(FieldId);
+				$('#hdnDetalle_Titulos_MedicosBusinessRuleFieldName').val(FieldName);
+				$('#hdnDetalle_Titulos_MedicosBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("BusinessRule", "BussinessRule")', { FieldId: $('#hdnDetalle_Titulos_MedicosBusinessRuleFieldId').val(), FieldName: $('#hdnDetalle_Titulos_MedicosBusinessRuleFieldName').val(), ObjectId: '44408', Attribute: $('#hdnDetalle_Titulos_MedicosBusinessRuleAttribute').val(), Screen: 'Detalle_Titulos_Medicos' }, function (data) {
+                $(".Detalle_Titulos_MedicosBusinessRuleModal").html(data);
+            });
+        }
+        function Detalle_Titulos_MedicosGetAddBusinessRule(RuleId, FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null) {
+				$('#hdnDetalle_Titulos_MedicosBusinessRuleFieldId').val(FieldId);
+				$('#hdnDetalle_Titulos_MedicosBusinessRuleFieldName').val(FieldName);
+				$('#hdnDetalle_Titulos_MedicosBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("AddBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnDetalle_Titulos_MedicosBusinessRuleFieldId').val(), FieldName: $('#hdnDetalle_Titulos_MedicosBusinessRuleFieldName').val(), ObjectId: '44408', Attribute: $('#hdnDetalle_Titulos_MedicosBusinessRuleAttribute').val(), Screen: 'Detalle_Titulos_Medicos' }, function (data) {
+                $(".Detalle_Titulos_MedicosAddBusinessRuleModal").html(data);
+                $(".datatable").DataTable();
+            });
+        }
+		function RemoveBusinessRule(RuleId) {
+			$.get('@Url.Action("RemoveBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnDetalle_Titulos_MedicosBusinessRuleFieldId').val(), FieldName: $('#hdnDetalle_Titulos_MedicosBusinessRuleFieldName').val(), ObjectId: '44408', Attribute: $('#hdnDetalle_Titulos_MedicosBusinessRuleAttribute').val(), Screen: 'Detalle_Titulos_Medicos' }, function (data) {
+				$(".Detalle_Titulos_MedicosBusinessRuleModal").html(data);
+			});
+		}
+
+    var permission = {
+        Consult: '@permission.Consult' == 'True',
+        New: '@permission.New' == 'True',
+        Edit: '@permission.Edit' == 'True',
+        Delete: '@permission.Delete' == 'True',
+        Export: '@permission.Export' == 'True',
+        Print: '@permission.Print' == 'True',
+        Configure: '@permission.Configure' == 'True',
+    };
+
+    
+    //MR-var statusItems;
+    //MR-var stateItems;
+    //MR-var cityItems = [];
+    var isConsultMode = "@ViewBag.Consult" == "True";
+    Consult(isConsultMode);
+        function Consult(val) {
+            if (val) {
+                $(':input').attr('readonly', 'readonly');
+                $(':input').attr('disabled', 'true');
+                $('.noConsult').removeAttr('readonly');
+                $('.noConsult').removeAttr('disabled');
+            }
+        }
+
+    function BackToGrid() {
+        location.href = "@Url.Content("~/Frontal/Detalle_Titulos_Medicos/")";
+    }
+	
+	function ReadScriptSettings(callback)
+    {
+        $.post("@Url.Content("~/Frontal/Detalle_Titulos_Medicos/ReadScriptSettings")", function (data) {
+            mainElementObject = JSON.parse(data.MainElement);
+			if (data.ChildElement != null) {
+                childElementObject = JSON.parse(data.ChildElement);
+            }
+            callback();
+        });
+    }
+
+    function SaveSettingsWithoutReload() {
+        $.post("@Url.Content("~/Frontal/Detalle_Titulos_Medicos/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+            //$('#hdnDetalle_Titulos_MedicosConfigureType').val("0");
+        }, "json");
+    }
+	
+        function SaveElementAttributes() {
+            if ($('#hdnDetalle_Titulos_MedicosConfigureType').val() == "1") {
+                $.post("@Url.Content("~/Frontal/Detalle_Titulos_Medicos/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+                    $('#hdnDetalle_Titulos_MedicosConfigureType').val("0");
+                    location.reload(true);
+                }, "json");
+            } else {
+                $.post("@Url.Content("~/Frontal/Detalle_Titulos_Medicos/ReadScriptSettings")", function (data) {
+                    mainElementObject = JSON.parse(data.MainElement);
+                    childElementObject = JSON.parse(data.ChildElement);
+
+                    for (var i = 0; i < mainElementObject.length; i++) {
+                        var mainElementAttributes = '<div class="col-sm-2">';
+                        mainElementAttributes += '<div class="displayAttributes requiredAttribute"><a class="requiredClick" title="' + (mainElementObject[i].IsRequired == true ? "Required" : "Not Required") + '" onclick="setRequired(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsRequired == true ? "@Url.Content("~/Images/Required.png")" : "@Url.Content("~/Images/Not-Required.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes visibleAttribute"><a class="visibleClick" title="' + (mainElementObject[i].IsVisible == true ? "Visible" : "In Visible") + '" onclick="setVisible(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsVisible == true ? "@Url.Content("~/Images/Visible.png")" : "@Url.Content("~/Images/InVisible.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes readOnlyAttribute"><a class="readOnlyClick" title="' + (mainElementObject[i].IsReadOnly == true ? "Disabled" : "Enabled") + '" onclick="setReadOnly(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsReadOnly == true ? "@Url.Content("~/Images/Disabled.png")" : "@Url.Content("~/Images/Enabled.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes defaultValueAttribute"><a id="hlDefaultValue_' + i.toString() + '" class="defaultValueClick" title="' + (mainElementObject[i].DefaultValue) + '" onclick="setDefaultValue(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].DefaultValue != '' && mainElementObject[i].DefaultValue != null ? "@Url.Content("~/Images/default-value.png")" : "@Url.Content("~/Images/Not-Default-Value.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes helpTextAttribute"><a id="hlHelpText_' + i.toString() + '" class="helpTextClick" title="' + (mainElementObject[i].HelpText) + '" onclick="setHelpText(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].HelpText != '' && mainElementObject[i].HelpText != null ? "@Url.Content("~/Images/green-help.png")" : "@Url.Content("~/Images/red-help.jpg")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '</div>';
+                        $('#Detalle_Titulos_Medicos' + mainElementObject[i].inputId).parent().closest('.form-group').show();
+
+                        $('#Detalle_Titulos_Medicos' + mainElementObject[i].inputId).closest('.col-sm-8').after(mainElementAttributes);
+                    }
+					if (childElementObject != null) {
+						for (var i = 0; i < childElementObject.length; i++) {
+							$('.' + childElementObject[i].inputId + 'Header').show();
+							$('.' + childElementObject[i].inputId).parent().show();
+							$('.' + childElementObject[i].inputId + 'Header').append(returnAttributeHTML(i));
+						}
+					}
+                    $('#Detalle_Titulos_MedicosConfigureSave').text('Save Settings');
+                    $('#hdnDetalle_Titulos_MedicosConfigureType').val("1");
+                });
+            }
+        }
+		$('#CreateDetalle_Titulos_Medicos').on('click', '.btnPopupBusinessRules', function () {
+			var fieldId = $(this).data('field-id');
+			var fieldName = $(this).data('field-name');
+			var attribute = $(this).data('attribute');
+			$('#hdnDetalle_Titulos_MedicosBusinessRuleFieldId').val(fieldId);
+			$('#hdnDetalle_Titulos_MedicosBusinessRuleFieldName').val(fieldName);
+			$('#hdnDetalle_Titulos_MedicosBusinessRuleAttribute').val(attribute);
+		});
+		//Initialize HTML Editors
+		
+    </script>

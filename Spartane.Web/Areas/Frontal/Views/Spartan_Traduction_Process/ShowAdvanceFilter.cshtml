@@ -1,0 +1,354 @@
+﻿@using System.Collections.Generic
+@using Spartane.Web.Areas.Frontal.Models
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Spartan_Traduction_ProcessAdvanceSearchModel
+@{
+    List<SelectListItem> varSpartan_Traduction_Language_LanguageT = null;
+    if (ViewBag.Spartan_Traduction_Languages_LanguageT != null)
+    { varSpartan_Traduction_Language_LanguageT = (List<SelectListItem>)ViewBag.Spartan_Traduction_Languages_LanguageT; }
+    List<SelectListItem> varSpartan_Traduction_Object_Type_Object_Type = null;
+    if (ViewBag.Spartan_Traduction_Object_Types_Object_Type != null)
+    { varSpartan_Traduction_Object_Type_Object_Type = (List<SelectListItem>)ViewBag.Spartan_Traduction_Object_Types_Object_Type; }
+    List<SelectListItem> varSpartanObject_ObjectT = null;
+    if (ViewBag.SpartanObjects_ObjectT != null)
+    { varSpartanObject_ObjectT = (List<SelectListItem>)ViewBag.SpartanObjects_ObjectT; }
+
+    var filters = (List<SelectListItem>)ViewBag.Filter;
+}
+<style>
+    .input-validation-error {
+        background: rgb(251, 227, 228);
+        border: 1px solid #fbc2c4;
+        color: #8a1f11;
+    }
+
+    .MarginBottom {
+        margin-bottom: 1%;
+    }
+
+    #divAdvanceSearch input {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch button {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch select {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch h3 {
+        margin-top: 2%;
+    }
+
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins" id="divAdvanceSearch">
+        <div class="ibox-content">
+            @using (Html.BeginForm("ShowAdvanceFilter", "Spartan_Traduction_Process", FormMethod.Post, new { @id = "frmAdvanceSearch", @role = "form" }))
+            {
+				<input type="hidden" value="-1" name="idFilter" id="idFilter" />
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_Traduction_ProcessResources.IdTraduction</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromIdTraduction, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromIdTraduction" })
+                    @Html.ValidationMessageFor(m => m.FromIdTraduction)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToIdTraduction, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToIdTraduction", @data_min = "txtAdvanceFromIdTraduction" })
+                    @Html.ValidationMessageFor(m => m.ToIdTraduction)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_Traduction_ProcessResources.LanguageT</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.LanguageTFilter, filters, new { @class = "form-control", @id = "ddlLanguageTFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceLanguageT, new { @class = "form-control", @type = "text", @id = "txtAdvanceLanguageT" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSpartan_Traduction_Language_LanguageT!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceLanguageTMultiple, varSpartan_Traduction_Language_LanguageT,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceLanguageT"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_Traduction_ProcessResources.Object_Type</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Object_TypeFilter, filters, new { @class = "form-control", @id = "ddlObject_TypeFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceObject_Type, new { @class = "form-control", @type = "text", @id = "txtAdvanceObject_Type" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSpartan_Traduction_Object_Type_Object_Type!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceObject_TypeMultiple, varSpartan_Traduction_Object_Type_Object_Type,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceObject_Type"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_Traduction_ProcessResources.ObjectT</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.ObjectTFilter, filters, new { @class = "form-control", @id = "ddlObjectTFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceObjectT, new { @class = "form-control", @type = "text", @id = "txtAdvanceObjectT" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSpartanObject_ObjectT!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceObjectTMultiple, varSpartanObject_ObjectT,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceObjectT"
+                        });
+                    }
+                </div>
+
+                <div class="MarginBottom form-inline">
+                    <input type="submit" class="btn btn-primary" value="@Resources.Resources.Search"><a class="btn btn-primary" href="@Url.Content("~/Frontal/Spartan_Traduction_Process/")" value=" ">@Resources.Resources.Cancelar</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function InitiateAdvanceSearch() {
+        var advanceSearch = {}, hasParameter = false;
+        if ($("#txtAdvanceFromIdTraduction").val() != "" || $("#txtAdvanceToIdTraduction").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_Traduction_ProcessIdTraductionFrom = $("#txtAdvanceFromIdTraduction").val();
+            advanceSearch.Spartan_Traduction_ProcessIdTraductionTo = $("#txtAdvanceToIdTraduction").val();
+        }
+        advanceSearch.LanguageTSearchType = 0;
+        if ($('#ddlAdvanceLanguageT').val().length > 0 || $("#txtAdvanceLanguageT").val() == "") {
+
+
+            if (isSpartan_Traduction_ProcessTextSearch) {
+                advanceSearch.LanguageTName = $("#txtAdvanceLanguageT").val();
+                advanceSearch.LanguageTNameSearchType = $("#ddlAdvanceLanguageT").val();
+                advanceSearch.LanguageTSearchType = 1;
+            }
+            else {
+
+                advanceSearch.LanguageTToSearch = $("#ddlAdvanceLanguageT").val();
+                advanceSearch.LanguageTSearchType = 2;
+            }
+        }
+        advanceSearch.Object_TypeSearchType = 0;
+        if ($('#ddlAdvanceObject_Type').val().length > 0 || $("#txtAdvanceObject_Type").val() == "") {
+
+
+            if (isSpartan_Traduction_ProcessTextSearch) {
+                advanceSearch.Object_TypeName = $("#txtAdvanceObject_Type").val();
+                advanceSearch.Object_TypeNameSearchType = $("#ddlAdvanceObject_Type").val();
+                advanceSearch.Object_TypeSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Object_TypeToSearch = $("#ddlAdvanceObject_Type").val();
+                advanceSearch.Object_TypeSearchType = 2;
+            }
+        }
+        advanceSearch.ObjectTSearchType = 0;
+        if ($('#ddlAdvanceObjectT').val().length > 0 || $("#txtAdvanceObjectT").val() == "") {
+
+
+            if (isSpartan_Traduction_ProcessTextSearch) {
+                advanceSearch.ObjectTName = $("#txtAdvanceObjectT").val();
+                advanceSearch.ObjectTNameSearchType = $("#ddlAdvanceObjectT").val();
+                advanceSearch.ObjectTSearchType = 1;
+            }
+            else {
+
+                advanceSearch.ObjectTToSearch = $("#ddlAdvanceObjectT").val();
+                advanceSearch.ObjectTSearchType = 2;
+            }
+        }
+
+        advanceSearchQuery = hasParameter ? JSON.stringify(advanceSearch) : "";
+        $('#tblSpartan_Traduction_Process').DataTable().draw();
+        return false;
+    }
+
+    var advanceSearchQuery = "", isSpartan_Traduction_ProcessTextSearch = true;
+
+    $(document).ready(function () {
+        $('.clockpicker').clockpicker();
+        $("#txtAdvanceLanguageT").keypress(function () {
+            isSpartan_Traduction_ProcessTextSearch = true;
+            $("#ddlAdvanceLanguageT").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceLanguageT").change(function () {
+            isSpartan_Traduction_ProcessTextSearch = false;
+            $("#txtAdvanceLanguageT").val('');
+        });
+        $("#txtAdvanceObject_Type").keypress(function () {
+            isSpartan_Traduction_ProcessTextSearch = true;
+            $("#ddlAdvanceObject_Type").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceObject_Type").change(function () {
+            isSpartan_Traduction_ProcessTextSearch = false;
+            $("#txtAdvanceObject_Type").val('');
+        });
+        $("#txtAdvanceObjectT").keypress(function () {
+            isSpartan_Traduction_ProcessTextSearch = true;
+            $("#ddlAdvanceObjectT").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceObjectT").change(function () {
+            isSpartan_Traduction_ProcessTextSearch = false;
+            $("#txtAdvanceObjectT").val('');
+        });
+
+    });
+</script>
+
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/chosen")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/clockpicker")
+
+
+    <script>
+        //Adding Rules
+        jQuery.validator.unobtrusive
+      .adapters.addSingleVal("isnumberafter", "propertyname");
+        jQuery.validator.unobtrusive
+    .adapters.addSingleVal("isdateafter", "propertyname");
+
+        //Number after method
+        jQuery.validator.addMethod("isnumberafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+                //if (Date.parse(val) <= Date.parse(otherVal)) {
+                if (Number(val) < Number(otherVal)) {
+                    return false;
+                }
+                        }
+            return true;
+        });
+
+        //Date after after method
+        jQuery.validator.addMethod("isdateafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+
+                if (GetDateObject(val) < GetDateObject(otherVal)) {
+
+                    return false;
+                    }
+                }
+            return true;
+            });
+
+
+        function GetDateObject(value) {
+            var delimiter = GetDelimiter(dateFormat);
+            var dateCollection = value.split(delimiter);
+            var formatCollection = dateFormat.split(delimiter);
+            var dateModel = GetDateModel(dateCollection, formatCollection);
+            return new Date(dateModel.Year, dateModel.Month - 1, dateModel.Day);
+        }
+        //Used to get the date model by parsing the date and the format
+        function GetDateModel(dateCollection,formatCollection) {
+            var day, month, year;
+            for (var i = 0; i < formatCollection.length; i++) {
+                switch (formatCollection[i][0].toUpperCase()) {
+                
+                    case "D":
+                        day = dateCollection[i];
+                        break;
+
+                    case "Y":
+                        year = dateCollection[i];
+                        break;
+
+                    case "M":
+                        month = dateCollection[i];
+                        break;
+                }
+            }
+
+            return {
+                Day:day,
+                Month:month,
+                Year:year
+            };
+        }
+
+        function GetDelimiter(format) {
+
+            for (var i = 0; i < format.length; i++) {
+                if (/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(format[i])) {
+                    return format[i];
+                }
+            }
+            return null;
+        }
+
+        var dateFormat = "@ConfigurationProperty.DateFormatDatePicker";
+
+        $(document).ready(function () {
+
+
+
+            $('.input-daterange').datepicker({
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                format: dateFormat,
+                message: 'The date is not a valid'
+            });
+
+            $(".chosen-select").chosen({ width: "22%", no_results_text: "Oops, nothing found!" });
+			if ($('#IsFilterModal').val() == 'true') {
+                $('.ShowAdvanceFilter #right-sidebar').css('display', 'none');
+                $('.ShowAdvanceFilter .navbar-default').css('display', 'none');
+                $('.ShowAdvanceFilter .border-bottom').css('display', 'none');
+                $('.ShowAdvanceFilter #page-wrapper').css('margin', '0 auto');
+                $('.ShowAdvanceFilter .btn-save').val('@Resources.Resources.Filter');
+                $('.ShowAdvanceFilter .btn-cancelar').attr('data-dismiss', 'modal');
+                $('.ShowAdvanceFilter .btn-cancelar').removeAttr('href');
+                $('#idFilter').val($('#IdReport').val());
+            }
+        });
+
+    </script>
+}
+

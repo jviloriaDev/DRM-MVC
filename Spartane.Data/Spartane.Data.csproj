@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{63F55CC4-7B31-4195-91EE-3A5C31B9C0FC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Spartane.Data</RootNamespace>
+    <AssemblyName>Spartane.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EF\EFDataProviderManager.cs" />
+    <Compile Include="EF\EFRepository.cs" />
+    <Compile Include="EF\IDbContext.cs" />
+    <Compile Include="EF\Mapping\TTArchivos\TTArchivosMap.cs" />
+    <Compile Include="EF\Mapping\Archivos\ArchivosMap.cs" />
+    <Compile Include="EF\Mapping\Columns\spTtVistasObligatories_X_ProcessAndUser_ResultMap.cs" />
+    <Compile Include="EF\Mapping\Columns\sp_selTTConfigurationAdvancedColumn_Relacion_TTProceso_ResultMap.cs" />
+    <Compile Include="EF\Mapping\Columns\TTConfigurationAdvancedColumnMap.cs" />
+    <Compile Include="EF\Mapping\Columns\TTConfigurationAdvancedColumn_DetalleMap.cs" />
+    <Compile Include="EF\Mapping\Filters\sp_selTTFiltro_Detalle_Relacion_TTDNT_ResultMap.cs" />
+    <Compile Include="EF\Mapping\Filters\sp_selTTFiltro_Detalle_Relacion_TTFiltro_ResultMap.cs" />
+    <Compile Include="EF\Mapping\Filters\sp_selTTFiltro_Detalle_Relacion_TTMes_ResultMap.cs" />
+    <Compile Include="EF\Mapping\Filters\sp_selTTFiltro_Detalle_Relacion_TTMetadata_ResultMap.cs" />
+    <Compile Include="EF\Mapping\Filters\sp_selTTFiltro_Detalle_Relacion_TTOperador_ResultMap.cs" />
+    <Compile Include="EF\Mapping\Filters\sp_selTTFiltro_Detalle_Relacion_TTSI_NO_ResultMap.cs" />
+    <Compile Include="EF\Mapping\Filters\sp_selTTFiltro_Relacion_TTProceso_ResultMap.cs" />
+    <Compile Include="EF\Mapping\Filters\TTDependentFilterMap.cs" />
+    <Compile Include="EF\Mapping\Filters\TTDetailFilterMap.cs" />
+    <Compile Include="EF\Mapping\Filters\TTFilterMap.cs" />
+    <Compile Include="EF\Mapping\Language\TTLanguageMap.cs" />
+    <Compile Include="EF\Mapping\Language\TTLanguageTraductionMap.cs" />
+    <Compile Include="EF\Mapping\Search\TTVistaMap.cs" />
+    <Compile Include="EF\Mapping\Search\TTVista_DetalleMap.cs" />
+    <Compile Include="EF\Mapping\Search\TTVista_ListaDependientesMap.cs" />
+    <Compile Include="EF\Mapping\Security\BinnacleSQLMap.cs" />
+    <Compile Include="EF\Mapping\Security\spTTSecurity_DashPermited_ResultMap.cs" />
+    <Compile Include="EF\Mapping\Security\spTTSecurity_ProcessPermited_ResultMap.cs" />
+    <Compile Include="EF\Mapping\Templates\sp_selTTTemplatePrintExcel_Campos_Relacion_TTDNT_ResultMap.cs" />
+    <Compile Include="EF\Mapping\Templates\sp_selTTTemplatePrintExcel_Campos_Relacion_TTMetadata_ResultMap.cs" />
+    <Compile Include="EF\Mapping\Templates\sp_SelTTTemplatePrintExcel_Relacion_TTProceso_ResultMap.cs" />
+    <Compile Include="EF\Mapping\Templates\TTTemplatePrintExcelFieldMap.cs" />
+    <Compile Include="EF\Mapping\Templates\TTTemplatePrintExcelMap.cs" />
+    <Compile Include="EF\Mapping\User\TTUsuarioMap.cs" />
+    <Compile Include="EF\Mapping\Security\ModulesDataMap.cs" />
+    <Compile Include="EF\Mapping\Security\DashBoardDataMap.cs" />
+    <Compile Include="EF\Mapping\Security\spTTSecurity_ModulesPermited_ResultMap.cs" />
+    <Compile Include="EF\SQLServerDataProvider.cs" />
+    <Compile Include="EF\TTObjectContext.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="ClassDiagram1.cd" />
+    <None Include="EF\App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Spartane.Core\Spartane.Core.csproj">
+      <Project>{f56309fb-9e43-42e5-a65d-4aaa70f95c9b}</Project>
+      <Name>Spartane.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

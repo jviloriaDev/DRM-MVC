@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Spartan_Traduction_Process_Workflow" value="Spartan Traduction Process Workflow"></resource>
+  <resource culture="es-es" name="Clave" value="Clave"></resource>
+  <resource culture="es-es" name="Concept" value="Concept"></resource>
+  <resource culture="es-es" name="ID_of_Step" value="ID of Step"></resource>
+  <resource culture="es-es" name="Original_Text" value="Original Text"></resource>
+  <resource culture="es-es" name="Translated_Text" value="Translated Text"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

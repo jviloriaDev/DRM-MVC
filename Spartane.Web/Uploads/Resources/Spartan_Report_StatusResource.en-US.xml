@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_Report_Status" value="Report Status"></resource>
+  <resource culture="en-US" name="StatusId" value="StatusId"></resource>
+  <resource culture="en-US" name="Description" value="Description"></resource>
+
+</resources>

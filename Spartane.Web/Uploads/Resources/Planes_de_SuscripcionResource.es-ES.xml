@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Planes_de_Suscripcion" value="Planes de Suscripción"></resource>
+  <resource culture="es-es" name="Folio" value="Folio"></resource>
+  <resource culture="es-es" name="Fecha_de_Registro" value="Fecha de Registro"></resource>
+  <resource culture="es-es" name="Hora_de_Registro" value="Hora de Registro"></resource>
+  <resource culture="es-es" name="Usuario_que_Registra" value="Usuario que Registra"></resource>
+  <resource culture="es-es" name="Tipo_de_Beneficiario" value="Tipo de Beneficiario"></resource>
+  <resource culture="es-es" name="Nombre" value="Tipo de Plan"></resource>
+  <resource culture="es-es" name="Nombre_del_Plan" value="Nombre del Plan"></resource>
+  <resource culture="es-es" name="Duracion_en_meses" value="Duración en meses"></resource>
+  <resource culture="es-es" name="Duracion" value="Duración en días"></resource>
+  <resource culture="es-es" name="Dietas_por_mes" value="Dietas por mes"></resource>
+  <resource culture="es-es" name="Rutinas_por_mes" value="Rutinas por mes"></resource>
+  <resource culture="es-es" name="Costo_mensual" value="Costo mensual"></resource>
+  <resource culture="es-es" name="Precio_Final" value="Precio Final"></resource>
+  <resource culture="es-es" name="Estatus" value="Estatus"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

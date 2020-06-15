@@ -1,0 +1,127 @@
+﻿@model IList<Spartane.Web.Areas.Frontal.Models.Spartan_WorkFlow_Matrix_of_StatesGridModel>
+
+@{
+    var rowCounter = 0;
+}
+
+<style>
+    .table {
+        width: 100%;
+        border: 1px solid #cccccc;
+        font-family: "open sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+        /*border-collapse: separate !important;*/
+        font-size: 13px;
+    }
+
+        .table td {
+            padding: 2px;
+            border:1px solid #cccccc;
+        }
+
+    .table tr:nth-of-type(2n+1) {
+        background-color: #f9f9f9;
+    }
+
+        .table tr:nth-of-type(2n) {
+            background-color: #8da0c2;
+        }
+
+    .table-row-1 td, .table-row-1 th {
+    }
+
+    .table-row-2 td, .table-row-2 th, thead {
+    }
+
+    .tableHeaderRow {
+        font-weight: bold;
+        border: 1px solid #ff6a00;
+    }
+
+    .column1 {
+        width: 15%;
+    }
+
+    .column2 {
+        width: 15%;
+    }
+</style>
+<br />
+<table class="table" cellspacing="0" cellpadding="0" border="0">
+    <thead>
+        <tr>
+            <td class="column1">
+                @Resources.Spartan_WorkFlow_Matrix_of_StatesResources.Matrix_of_StatesId
+            </td>
+                        <td class="column1">
+                @Resources.Spartan_WorkFlow_Matrix_of_StatesResources.Phase
+            </td>
+            <td class="column1">
+                @Resources.Spartan_WorkFlow_Matrix_of_StatesResources.State
+            </td>
+            <td class="column1">
+                @Resources.Spartan_WorkFlow_Matrix_of_StatesResources.Attribute
+            </td>
+            <td class="column1">
+                @Resources.Spartan_WorkFlow_Matrix_of_StatesResources.Visible
+            </td>
+            <td class="column1">
+                @Resources.Spartan_WorkFlow_Matrix_of_StatesResources.Required
+            </td>
+            <td class="column1">
+                @Resources.Spartan_WorkFlow_Matrix_of_StatesResources.Read_Only
+            </td>
+            <td class="column1">
+                @Resources.Spartan_WorkFlow_Matrix_of_StatesResources.Label
+            </td>
+            <td class="column1">
+                @Resources.Spartan_WorkFlow_Matrix_of_StatesResources.Default_Value
+            </td>
+            <td class="column1">
+                @Resources.Spartan_WorkFlow_Matrix_of_StatesResources.Help_Text
+            </td>
+
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var item in Model)
+            {                
+                <tr>
+                    <td>
+                        @item.Matrix_of_StatesId
+                    </td>
+					                    <td>
+                        @item.PhaseName
+                    </td>
+                    <td>
+                        @item.StateName
+                    </td>
+                    <td>
+                        @item.Attribute
+                    </td>
+                    <td>
+                        @item.Visible
+                    </td>
+                    <td>
+                        @item.Required
+                    </td>
+                    <td>
+                        @item.Read_Only
+                    </td>
+                    <td>
+                        @item.Label
+                    </td>
+                    <td>
+                        @item.Default_Value
+                    </td>
+                    <td>
+                        @item.Help_Text
+                    </td>
+
+                </tr>
+                rowCounter++;
+            }
+        }
+    </tbody>
+</table>
+

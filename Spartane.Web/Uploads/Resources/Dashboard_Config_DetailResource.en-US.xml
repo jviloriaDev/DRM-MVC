@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Dashboard_Config_Detail" value="Spartan Dashboard Config Detail"></resource>
+  <resource culture="en-US" name="Detail_Id" value="Detail Id"></resource>
+  <resource culture="en-US" name="Report_Id" value="Report Id"></resource>
+  <resource culture="en-US" name="Report_Name" value="Report Name"></resource>
+  <resource culture="en-US" name="ConfigRow" value="Row"></resource>
+  <resource culture="en-US" name="ConfigColumn" value="Column"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

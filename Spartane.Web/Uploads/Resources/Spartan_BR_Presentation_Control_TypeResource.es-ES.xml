@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Spartan_BR_Presentation_Control_Type" value="Business Rule Presentation Control Type"></resource>
+  <resource culture="es-es" name="PresentationControlTypeId" value="Id"></resource>
+  <resource culture="es-es" name="Description" value="Description"></resource>
+</resources>

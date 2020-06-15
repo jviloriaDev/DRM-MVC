@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Planes_Alimenticios" value="Planes Alimenticios"></resource>
+  <resource culture="en-US" name="Folio" value="Folio"></resource>
+  <resource culture="en-US" name="Fecha_de_Registro" value="Fecha de Registro"></resource>
+  <resource culture="en-US" name="Hora_de_Registro" value="Hora de Registro"></resource>
+  <resource culture="en-US" name="Usuario_que_Registra" value="Usuario que Registra"></resource>
+  <resource culture="en-US" name="Fecha_inicio_del_Plan" value="Fecha inicio del Plan"></resource>
+  <resource culture="en-US" name="Fecha_fin_del_Plan" value="Fecha fin del Plan"></resource>
+  <resource culture="en-US" name="Semana" value="Semana"></resource>
+  <resource culture="en-US" name="Paciente" value="Paciente"></resource>
+  <resource culture="en-US" name="Estatus" value="Estatus"></resource>
+  <resource culture="en-US" name="Platillos" value="Platillos"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

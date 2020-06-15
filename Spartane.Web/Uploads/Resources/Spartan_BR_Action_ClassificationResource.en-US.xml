@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_BR_Action_Classification" value="Business Rule Action Classification"></resource>
+  <resource culture="en-US" name="ClassificationId" value="Id"></resource>
+  <resource culture="en-US" name="Description" value="Description"></resource>
+  <resource name="1" value="Control properties" culture="en-US" />
+  <resource name="2" value="Database" culture="en-US" />
+
+</resources>

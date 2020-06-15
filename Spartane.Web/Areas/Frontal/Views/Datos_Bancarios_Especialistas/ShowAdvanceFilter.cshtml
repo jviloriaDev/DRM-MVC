@@ -1,0 +1,306 @@
+﻿@using System.Collections.Generic
+@using Spartane.Web.Areas.Frontal.Models
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Datos_Bancarios_EspecialistasAdvanceSearchModel
+@{
+    List<SelectListItem> varBancos_Banco = null;
+    if (ViewBag.Bancoss_Banco != null)
+    { varBancos_Banco = (List<SelectListItem>)ViewBag.Bancoss_Banco; }
+
+    var filters = (List<SelectListItem>)ViewBag.Filter;
+}
+<style>
+    .input-validation-error {
+        background: rgb(251, 227, 228);
+        border: 1px solid #fbc2c4;
+        color: #8a1f11;
+    }
+
+    .MarginBottom {
+        margin-bottom: 1%;
+    }
+
+    #divAdvanceSearch input {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch button {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch select {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch h3 {
+        margin-top: 2%;
+    }
+
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins" id="divAdvanceSearch">
+        <div class="ibox-content">
+            @using (Html.BeginForm("ShowAdvanceFilter", "Datos_Bancarios_Especialistas", FormMethod.Post, new { @id = "frmAdvanceSearch", @role = "form" }))
+            {
+				<input type="hidden" value="-1" name="idFilter" id="idFilter" />
+                <div class="MarginBottom ">
+                    <h3>@Resources.Datos_Bancarios_EspecialistasResources.Folio</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromFolio, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromFolio" })
+                    @Html.ValidationMessageFor(m => m.FromFolio)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToFolio, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToFolio", @data_min = "txtAdvanceFromFolio" })
+                    @Html.ValidationMessageFor(m => m.ToFolio)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Datos_Bancarios_EspecialistasResources.Banco</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.BancoFilter, filters, new { @class = "form-control", @id = "ddlBancoFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceBanco, new { @class = "form-control", @type = "text", @id = "txtAdvanceBanco" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varBancos_Banco!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceBancoMultiple, varBancos_Banco,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceBanco"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Datos_Bancarios_EspecialistasResources.CLABE_Interbancaria</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.CLABE_InterbancariaFilter, filters, new { @class = "form-control", @id = "ddlCLABE_InterbancariaFilter" })
+                    @Html.TextBoxFor(m => m.CLABE_Interbancaria, new { @class = "form-control", @type = "text", @id = "txtCLABE_Interbancaria" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Datos_Bancarios_EspecialistasResources.Num_Cuenta</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Num_CuentaFilter, filters, new { @class = "form-control", @id = "ddlNum_CuentaFilter" })
+                    @Html.TextBoxFor(m => m.Num_Cuenta, new { @class = "form-control", @type = "text", @id = "txtNum_Cuenta" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Datos_Bancarios_EspecialistasResources.Nombre_del_Titular</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Nombre_del_TitularFilter, filters, new { @class = "form-control", @id = "ddlNombre_del_TitularFilter" })
+                    @Html.TextBoxFor(m => m.Nombre_del_Titular, new { @class = "form-control", @type = "text", @id = "txtNombre_del_Titular" })
+                </div>
+
+                <div class="MarginBottom form-inline">
+                    <input type="submit" class="btn btn-primary" value="@Resources.Resources.Search"><a class="btn btn-primary" href="@Url.Content("~/Frontal/Datos_Bancarios_Especialistas/")" value=" ">@Resources.Resources.Cancelar</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function InitiateAdvanceSearch() {
+        var advanceSearch = {}, hasParameter = false;
+        if ($("#txtAdvanceFromFolio").val() != "" || $("#txtAdvanceToFolio").val() != "") {
+            hasParameter = true;
+            advanceSearch.Datos_Bancarios_EspecialistasFolioFrom = $("#txtAdvanceFromFolio").val();
+            advanceSearch.Datos_Bancarios_EspecialistasFolioTo = $("#txtAdvanceToFolio").val();
+        }
+        advanceSearch.BancoSearchType = 0;
+        if ($('#ddlAdvanceBanco').val().length > 0 || $("#txtAdvanceBanco").val() == "") {
+
+
+            if (isDatos_Bancarios_EspecialistasTextSearch) {
+                advanceSearch.BancoName = $("#txtAdvanceBanco").val();
+                advanceSearch.BancoNameSearchType = $("#ddlAdvanceBanco").val();
+                advanceSearch.BancoSearchType = 1;
+            }
+            else {
+
+                advanceSearch.BancoToSearch = $("#ddlAdvanceBanco").val();
+                advanceSearch.BancoSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceCLABE_Interbancaria").val() != "") {
+            hasParameter = true;
+            advanceSearch.Datos_Bancarios_EspecialistasCLABE_Interbancaria = $("#txtAdvanceCLABE_Interbancaria").val();
+            advanceSearch.Datos_Bancarios_EspecialistasCLABE_InterbancariaSearchType = $("#ddlAdvanceCLABE_InterbancariaFilter").val();
+        }
+        if ($("#txtAdvanceNum_Cuenta").val() != "") {
+            hasParameter = true;
+            advanceSearch.Datos_Bancarios_EspecialistasNum_Cuenta = $("#txtAdvanceNum_Cuenta").val();
+            advanceSearch.Datos_Bancarios_EspecialistasNum_CuentaSearchType = $("#ddlAdvanceNum_CuentaFilter").val();
+        }
+        if ($("#txtAdvanceNombre_del_Titular").val() != "") {
+            hasParameter = true;
+            advanceSearch.Datos_Bancarios_EspecialistasNombre_del_Titular = $("#txtAdvanceNombre_del_Titular").val();
+            advanceSearch.Datos_Bancarios_EspecialistasNombre_del_TitularSearchType = $("#ddlAdvanceNombre_del_TitularFilter").val();
+        }
+        if ($("#ddlAdvancePrincipal").val() != "") {
+            hasParameter = true;
+            advanceSearch.Datos_Bancarios_EspecialistasPrincipal = $("#ddlAdvancePrincipal").val();
+        }
+
+        advanceSearchQuery = hasParameter ? JSON.stringify(advanceSearch) : "";
+        $('#tblDatos_Bancarios_Especialistas').DataTable().draw();
+        return false;
+    }
+
+    var advanceSearchQuery = "", isDatos_Bancarios_EspecialistasTextSearch = true;
+
+    $(document).ready(function () {
+        $('.clock').clockpicker();
+		$('.date').datepicker({
+			todayBtn: "linked",
+			keyboardNavigation: false,
+			forceParse: false,
+			calendarWeeks: true,
+			autoclose: true,
+			format: "@ConfigurationProperty.DateFormatDatePicker"
+		});
+        $("#txtAdvanceBanco").keypress(function () {
+            isDatos_Bancarios_EspecialistasTextSearch = true;
+            $("#ddlAdvanceBanco").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceBanco").change(function () {
+            isDatos_Bancarios_EspecialistasTextSearch = false;
+            $("#txtAdvanceBanco").val('');
+        });
+
+    });
+</script>
+
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/chosen")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/clockpicker")
+
+
+    <script>
+        //Adding Rules
+        jQuery.validator.unobtrusive
+      .adapters.addSingleVal("isnumberafter", "propertyname");
+        jQuery.validator.unobtrusive
+    .adapters.addSingleVal("isdateafter", "propertyname");
+
+        //Number after method
+        jQuery.validator.addMethod("isnumberafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+                //if (Date.parse(val) <= Date.parse(otherVal)) {
+                if (Number(val) < Number(otherVal)) {
+                    return false;
+                }
+                        }
+            return true;
+        });
+
+        //Date after after method
+        jQuery.validator.addMethod("isdateafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+
+                if (GetDateObject(val) < GetDateObject(otherVal)) {
+
+                    return false;
+                    }
+                }
+            return true;
+            });
+
+
+        function GetDateObject(value) {
+            var delimiter = GetDelimiter(dateFormat);
+            var dateCollection = value.split(delimiter);
+            var formatCollection = dateFormat.split(delimiter);
+            var dateModel = GetDateModel(dateCollection, formatCollection);
+            return new Date(dateModel.Year, dateModel.Month - 1, dateModel.Day);
+        }
+        //Used to get the date model by parsing the date and the format
+        function GetDateModel(dateCollection,formatCollection) {
+            var day, month, year;
+            for (var i = 0; i < formatCollection.length; i++) {
+                switch (formatCollection[i][0].toUpperCase()) {
+                
+                    case "D":
+                        day = dateCollection[i];
+                        break;
+
+                    case "Y":
+                        year = dateCollection[i];
+                        break;
+
+                    case "M":
+                        month = dateCollection[i];
+                        break;
+                }
+            }
+
+            return {
+                Day:day,
+                Month:month,
+                Year:year
+            };
+        }
+
+        function GetDelimiter(format) {
+
+            for (var i = 0; i < format.length; i++) {
+                if (/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(format[i])) {
+                    return format[i];
+                }
+            }
+            return null;
+        }
+
+        var dateFormat = "@ConfigurationProperty.DateFormatDatePicker";
+
+        $(document).ready(function () {
+            $('.input-daterange').datepicker({
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                format: dateFormat,
+                message: 'The date is not a valid'
+            });
+
+            $(".chosen-select").chosen({ width: "22%", no_results_text: "Oops, nothing found!" });
+			if ($('#IsFilterModal').val() == 'true') {
+                $('.ShowAdvanceFilter #right-sidebar').css('display', 'none');
+                $('.ShowAdvanceFilter .navbar-default').css('display', 'none');
+                $('.ShowAdvanceFilter .border-bottom').css('display', 'none');
+                $('.ShowAdvanceFilter #page-wrapper').css('margin', '0 auto');
+                $('.ShowAdvanceFilter .btn-save').val('@Resources.Resources.Filter');
+                $('.ShowAdvanceFilter .btn-cancelar').attr('data-dismiss', 'modal');
+                $('.ShowAdvanceFilter .btn-cancelar').removeAttr('href');
+                $('#idFilter').val($('#IdReport').val());
+            }
+        });
+
+    </script>
+}
+

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Detalle_Contactos_Empresa" value="Detalle Contactos Empresa"></resource>
+  <resource culture="es-es" name="Folio" value="Folio"></resource>
+  <resource culture="es-es" name="Nombre_completo" value="Nombre completo"></resource>
+  <resource culture="es-es" name="Correo" value="Correo"></resource>
+  <resource culture="es-es" name="Telefono" value="Teléfono"></resource>
+  <resource culture="es-es" name="Contacto_Principal" value="Contacto Principal"></resource>
+  <resource culture="es-es" name="Area" value="Área"></resource>
+  <resource culture="es-es" name="Acceso_al_Sistema" value="Acceso al Sistema"></resource>
+  <resource culture="es-es" name="Nombre_de_usuario" value="Nombre de usuario"></resource>
+  <resource culture="es-es" name="Recibe_Alertas" value="Recibe Alertas"></resource>
+  <resource culture="es-es" name="Estatus" value="Estatus"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Detalle_Resultados_Consultas" value="Detalle Resultados Consultas"></resource>
+  <resource culture="en-US" name="Folio" value="Folio"></resource>
+  <resource culture="en-US" name="Folio_Pacientes" value="Paciente"></resource>
+  <resource culture="en-US" name="Fecha_de_Consulta" value="Fecha de Consulta"></resource>
+  <resource culture="en-US" name="Indicador" value="Indicador"></resource>
+  <resource culture="en-US" name="Resultado" value="Resultado"></resource>
+  <resource culture="en-US" name="Interpretacion" value="Interpretación"></resource>
+  <resource culture="en-US" name="IMC" value="IMC"></resource>
+  <resource culture="en-US" name="IMC_Pediatria" value="IMC Pediatría"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

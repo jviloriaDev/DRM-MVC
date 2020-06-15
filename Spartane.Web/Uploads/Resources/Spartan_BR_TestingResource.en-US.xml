@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_BR_Testing" value="Spartan BR Testing"></resource>
+  <resource culture="en-US" name="Key_Testing" value="Key Testing"></resource>
+  <resource culture="en-US" name="User_that_reviewed" value="User that reviewed"></resource>
+  <resource culture="en-US" name="Acceptance_Critera" value="Acceptance Critera"></resource>
+  <resource culture="en-US" name="It_worked" value="It worked"></resource>
+  <resource culture="en-US" name="Rejection_Reason" value="Rejection Reason"></resource>
+  <resource culture="en-US" name="Comments" value="Comments"></resource>
+  <resource culture="en-US" name="Evidence" value="Evidence"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="General Data"></resource>
+
+</resources>

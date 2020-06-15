@@ -1,0 +1,477 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Globalization
+@using Spartane.Core.Domain.Permission
+@using Spartane.Core.Domain.Spartane_File
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Detalle_Antecedentes_No_PatologicosModel
+@{
+
+
+    List<SelectListItem> varSustancias_Sustancia = null;
+    if (ViewBag.Sustanciass_Sustancia != null)
+    { varSustancias_Sustancia = (List<SelectListItem>)ViewBag.Sustanciass_Sustancia; }
+    List<SelectListItem> varFrecuencia_Sustancias_Frecuencia = null;
+    if (ViewBag.Frecuencia_Sustanciass_Frecuencia != null)
+    { varFrecuencia_Sustancias_Frecuencia = (List<SelectListItem>)ViewBag.Frecuencia_Sustanciass_Frecuencia; }
+
+
+    Permission permission = ViewBag.Permission;
+}
+<div class="modal-dialog" style="width:95%;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">
+                Add Detalle Antecedentes No Patológicos
+                <button data-dismiss="modal" class="close" type="button" onclick="@(ViewBag.functionMode == 0 ? "Detalle_Antecedentes_No_PatologicosRemoveAddRow("+ ViewBag.currentRowIndex +")" : "")"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            </h4>
+        </div>
+        <div class="modal-body scroll_content">
+            <div class="form-horizontal Detalle_Antecedentes_No_PatologicosPop_@ViewBag.currentRowIndex">
+				<div class="modal fade in" id="dvAttributeValue" style="background-color:rgba(0, 0, 0, 0.7);">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-body">
+								<div class="form-group">
+									<label class="col-sm-3 control-label" id="lblAttributeType">Value</label>
+									<div class="col-sm-7">
+										<input type="text" title="Value" class="form-control" id="txtAttributeValue" />
+									</div>
+									<div class="col-sm-2">
+										<a class="btn btn-primary" onclick="SaveValue()">Submit</a>
+									</div>
+									<input type="hidden" id="hdnAttributType" />
+									<input type="hidden" id="hdnAttributElement" />
+									<input type="hidden" id="hdnAttributNumber" />
+									<input type="hidden" id="hdnElementType" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row wrapper border-bottom white-bg page-heading">
+
+					<div class="row">
+						<div class="col-lg-10">
+							<h2>
+								Detalle Antecedentes No Patológicos
+								<button onclick="Detalle_Antecedentes_No_PatologicosGetBusinessRule('', 'Abrir Pantalla', '0')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Detalle_Antecedentes_No_PatologicosBusinessRule-form">
+									<a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+										<i class="fa fa-cogs fa-spin"></i>
+									</a>
+								</button>
+							</h2>
+							<ol class="breadcrumb">
+								<li>
+									<a href="@Url.Action("Index", "Home")">@Resources.Resources.Home</a>
+								</li>
+								<li class="">
+									<label>@Resources.Detalle_Antecedentes_No_PatologicosResources.Detalle_Antecedentes_No_Patologicos</label>
+								</li>
+								<li class="active">
+									<strong>@Resources.Resources.Create</strong>
+								</li>
+							</ol>
+						</div>
+						<div class="col-lg-2">
+
+							@{
+								if (Convert.ToInt32(Spartane.Web.SessionHelper.Role) == (int)Spartane.Core.Enums.SpartanRoleEnum.Admin)
+								{
+									<h2>&nbsp;</h2>
+									<button onclick="Detalle_Antecedentes_No_PatologicosDisplayBusinessRule()" type="button" class="btn btn-info btn-lg displayBusinessProperyButton">
+										<i class="fa fa-cogs fa-spin"></i>
+									</button>
+
+									<div aria-hidden="true" class="modal fade in Detalle_Antecedentes_No_PatologicosPropertyBusinessModal" id="Detalle_Antecedentes_No_PatologicosPropertyBusinessModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h4 class="modal-title">
+														Property & Business Rules
+														<button class="close" type="button" onclick="$(this).parent().parent().parent().parent().parent().modal('hide');"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+													</h4>
+												</div>
+												<div class="modal-body">
+													<div class="row">
+														<div class="col-sm-12">
+															<a class="btn btn-primary full-width" data-toggle="modal" data-target="#PropertyModal-form" onclick="GetPropertyBag()">Properties</a>
+														</div>
+														<div class="clearfix col-sm-12">&nbsp;</div>
+														<div class="col-sm-12">
+															<a class="btn btn-primary full-width" data-toggle="modal" data-target="#Detalle_Antecedentes_No_PatologicosBusinessRule-form" onclick="Detalle_Antecedentes_No_PatologicosGetBusinessRule()">Business Rule</a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									 <div aria-hidden="true" data-backdrop="static" class="modal fade in Detalle_Antecedentes_No_PatologicosPropertyModal" id="Detalle_Antecedentes_No_PatologicosPropertyModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+									</div>
+									<div aria-hidden="true" data-backdrop="static" class="modal fade in Detalle_Antecedentes_No_PatologicosBusinessRuleModal" id="Detalle_Antecedentes_No_PatologicosBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+									</div>
+                                    <div aria-hidden="true" data-backdrop="static" class="modal fade in Detalle_Antecedentes_No_PatologicosAddBusinessRuleModal" id="Detalle_Antecedentes_No_PatologicosAddBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                                    </div>
+
+				
+								}
+							}
+						</div>
+					</div>
+
+				<div class="wrapper wrapper-content animated fadeInRight">
+					<div class="ibox float-e-margins">
+						<div class="ibox-content">
+							@using (Html.BeginForm("Post", "Detalle_Antecedentes_No_Patologicos", FormMethod.Post, new { id = "CreateDetalle_Antecedentes_No_Patologicos", @readonly = "true", @class = "form-horizontal", enctype = "multipart/form-data" }))
+							{
+								<span id="popupNotification"></span>
+								<div class="container-fluid Detalle_Antecedentes_No_PatologicosCreateForm" id="viewmodeledit">
+							<div class="tabs-container">
+											<ul class="nav nav-tabs">
+				@@groupers@@
+											</ul>
+										<div class="tab-content">
+				<div class="form-group" id="divFolio">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Antecedentes_No_PatologicosResources.Folio</label>
+                                <div class="col-sm-8" data-field-id="Folio" data-attribute="257761" data-field-name="@Resources.Detalle_Antecedentes_No_PatologicosResources.Folio">
+                                    <label class="form-control" for="Detalle_Antecedentes_No_PatologicosFolio" id="Detalle_Antecedentes_No_PatologicosFolio">@Model.Folio</label>
+                                </div>
+                            </div>
+<div class="form-group" id="divSustancia">
+	<label class="col-sm-2 control-label">@Resources.Detalle_Antecedentes_No_PatologicosResources.Sustancia</label>
+	<div class="col-sm-8" data-field-id="Sustancia" data-attribute="257763" data-field-name="@Resources.Detalle_Antecedentes_No_PatologicosResources.Sustancia">
+		<select class="form-control" data-val="true" data-val-number="The field Sustancia must be a number." data-val-required="The Sustancia field is required." id="Detalle_Antecedentes_No_PatologicosSustancia" name="Detalle_Antecedentes_No_PatologicosSustancia">
+			<option value=""></option>
+			@if (varSustancias_Sustancia != null){ 
+				foreach (var itemSustancia in varSustancias_Sustancia)
+				{
+					if (itemSustancia.Value == Convert.ToString(Model.Sustancia))
+					{
+						<option value="@itemSustancia.Value" selected>@itemSustancia.Text</option>
+					}
+					else
+					{
+						<option value="@itemSustancia.Value">@itemSustancia.Text</option>
+					}
+				}
+			}
+		</select>
+	</div>
+</div>
+<div class="form-group" id="divFrecuencia">
+	<label class="col-sm-2 control-label">@Resources.Detalle_Antecedentes_No_PatologicosResources.Frecuencia</label>
+	<div class="col-sm-8" data-field-id="Frecuencia" data-attribute="257764" data-field-name="@Resources.Detalle_Antecedentes_No_PatologicosResources.Frecuencia">
+		<select class="form-control" data-val="true" data-val-number="The field Frecuencia must be a number." data-val-required="The Frecuencia field is required." id="Detalle_Antecedentes_No_PatologicosFrecuencia" name="Detalle_Antecedentes_No_PatologicosFrecuencia">
+			<option value=""></option>
+			@if (varFrecuencia_Sustancias_Frecuencia != null){ 
+				foreach (var itemFrecuencia in varFrecuencia_Sustancias_Frecuencia)
+				{
+					if (itemFrecuencia.Value == Convert.ToString(Model.Frecuencia))
+					{
+						<option value="@itemFrecuencia.Value" selected>@itemFrecuencia.Text</option>
+					}
+					else
+					{
+						<option value="@itemFrecuencia.Value">@itemFrecuencia.Text</option>
+					}
+				}
+			}
+		</select>
+	</div>
+</div>
+<div class="form-group" id="divCantidad">
+	<label class="col-sm-2 control-label">@Resources.Detalle_Antecedentes_No_PatologicosResources.Cantidad</label>
+	<div class="col-sm-8" data-field-id="Cantidad" data-attribute="257765" data-field-name="@Resources.Detalle_Antecedentes_No_PatologicosResources.Cantidad">
+		<input class="form-control inputNumber" id="Detalle_Antecedentes_No_PatologicosCantidad" name="Detalle_Antecedentes_No_PatologicosCantidad" type="text" value="@Model.Cantidad">
+	</div>
+</div>
+
+								</div>	
+							</div>
+									<br />
+											<div class="form-actions fluid">
+												<input type="hidden" value="@Model.Folio" id="ReferenceFolio" />
+												<input type="hidden" value="@Model.Folio" name="Folio" id="FolioId" />
+												@if (!ViewBag.Consult)
+												{
+													<div id="dvSaveJob" style="display:inline-block"></div>
+
+													<button type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton">
+														<i class="fa fa-cogs fa-spin"></i>
+													</button>
+													<a title="@Resources.Resources.Configure" id="Detalle_Antecedentes_No_PatologicosConfigureSave" name="Detalle_Antecedentes_No_PatologicosConfigureSave" onclick="SaveElementAttributes()" class="btn btn-success">@Resources.Resources.Configure</a>
+												}
+
+												<input type="hidden" id="hdnDetalle_Antecedentes_No_PatologicosConfigureType" />
+												<input type="hidden" id="hdnDetalle_Antecedentes_No_PatologicosBusinessRuleFieldId" />
+												<input type="hidden" id="hdnDetalle_Antecedentes_No_PatologicosBusinessRuleFieldName" />
+												<input type="hidden" id="hdnDetalle_Antecedentes_No_PatologicosBusinessRuleAttribute" />
+
+												<input data-dismiss="modal" type="button" value="@Resources.Resources.Cancelar" class="btn btn-danger noConsult" data-bind="click: cancel" tabindex="16" />
+
+												<button onclick="Detalle_Antecedentes_No_PatologicosGetBusinessRule('', 'Al Cancelar', '3')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Detalle_Antecedentes_No_PatologicosBusinessRule-form">
+													<a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+														<i class="fa fa-cogs fa-spin"></i>
+													</a>
+												</button>
+											</div>
+										</div>
+								}
+
+							</div>
+						</div>
+					</div>
+				</div>
+					<input id="hdnApplicationDirectory" type="hidden" value="@Url.Content("~/")" />
+				</div>
+			</div>
+		</div>
+</div>
+@section Styles {
+<link href="@Url.Content("~/Content/BootstrapDatePicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+    @Styles.Render("~/plugins/awesomeCheckboxStyles")
+    @Styles.Render("~/plugins/select2Styles")
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+    .select2-results{background-color:#fff;}
+    .select2-container .select2-dropdown{height:auto !important;}
+
+    div.dataTables_info {
+        display: inline-block;
+        float: right;
+    }
+        i {
+        font-size: 25px !important;
+        display: block;
+        color: #676a6c;
+        margin-left: 6px;
+        margin-right: 6px;
+    }
+
+    .fullWidth {
+        width: 100%;
+    }
+</style>
+}
+
+<script type="text/javascript" src="~/Uploads/Scripts/Detalle_Antecedentes_No_Patologicos.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Scripts/Custom/Detalle_Antecedentes_No_PatologicosGeneral.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/Detalle_Antecedentes_No_PatologicosCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/PacientesCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
+
+    <script type="text/javascript">
+        
+
+
+
+        $(document).ready(function () {
+			var currentIndex = @ViewBag.currentRowIndex
+
+            var Detalle_Antecedentes_No_PatologicosRowElement = "Detalle_Antecedentes_No_PatologicosPop_" + currentIndex.toString();
+            var abc = "if(dynamicFieldValidation('" + Detalle_Antecedentes_No_PatologicosRowElement + "')){ Detalle_Antecedentes_No_PatologicosInsertRowFromPopup(" + currentIndex + "); }";
+            var insertRowHTML = '<a class="btn btn-primary m-b" onclick="' + abc + '">Save</a>';
+            $('#dvSaveJob').html(insertRowHTML);
+			
+
+
+            initiateUIControls();
+            EjecutarValidacionesAlComienzo();
+			$('a').tooltip();
+        });
+
+
+
+        function initiateUIControls() {
+            $('.gridDatePicker').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            //Time Picker
+            $('.gridTimePicker').clockpicker();
+
+        }
+		
+		function SendDetalle_Antecedentes_No_PatologicosData(callBack) {
+			
+					
+		 var arr = []; 
+		 $("form#CreateDetalle_Antecedentes_No_Patologicos").find(':input').each(function( index ) {		 
+			if ($(this).prop('disabled')==true|| $(this).prop('disabled')=="disabled")
+			{		
+				arr.push($(this).attr('id')); 
+				$(this).prop('disabled', false);  	
+			}
+	    });
+		
+             var formData = new FormData($("form#CreateDetalle_Antecedentes_No_Patologicos")[0]);
+			$.each( arr, function( key, value ) {
+			  $('#' +value).prop('disabled', true);
+			});
+
+            var isNew = $('#hdnIsNew').val();
+           
+            if (checkClientValidate('Detalle_Antecedentes_No_PatologicosCreateForm')) {
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Detalle_Antecedentes_No_Patologicos/Post?IsNew=")' + isNew,
+                    type: 'POST',
+                    data: formData,
+                    async: true,
+                    success: function (result) {
+                        if (result < 0) {
+                            showNotification("@Resources.Resources.ErrorSave", "error");
+                        } else {
+
+                            showNotification("@Resources.Resources.SaveSuccess", "success");
+                            callBack(result);
+                        }
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            }
+            return false;
+        };
+		
+        function GetPropertyBag() {
+            $.get('@Url.Action("Detalle_Antecedentes_No_PatologicosPropertyBag", "Detalle_Antecedentes_No_Patologicos")', function (data) {
+                $(".PropertyModal").html(data);
+            });
+        }
+        function Detalle_Antecedentes_No_PatologicosGetBusinessRule(FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null)
+			{
+				$('#hdnDetalle_Antecedentes_No_PatologicosBusinessRuleFieldId').val(FieldId);
+				$('#hdnDetalle_Antecedentes_No_PatologicosBusinessRuleFieldName').val(FieldName);
+				$('#hdnDetalle_Antecedentes_No_PatologicosBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("BusinessRule", "BussinessRule")', { FieldId: $('#hdnDetalle_Antecedentes_No_PatologicosBusinessRuleFieldId').val(), FieldName: $('#hdnDetalle_Antecedentes_No_PatologicosBusinessRuleFieldName').val(), ObjectId: '44342', Attribute: $('#hdnDetalle_Antecedentes_No_PatologicosBusinessRuleAttribute').val(), Screen: 'Detalle_Antecedentes_No_Patologicos' }, function (data) {
+                $(".Detalle_Antecedentes_No_PatologicosBusinessRuleModal").html(data);
+            });
+        }
+        function Detalle_Antecedentes_No_PatologicosGetAddBusinessRule(RuleId, FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null) {
+				$('#hdnDetalle_Antecedentes_No_PatologicosBusinessRuleFieldId').val(FieldId);
+				$('#hdnDetalle_Antecedentes_No_PatologicosBusinessRuleFieldName').val(FieldName);
+				$('#hdnDetalle_Antecedentes_No_PatologicosBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("AddBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnDetalle_Antecedentes_No_PatologicosBusinessRuleFieldId').val(), FieldName: $('#hdnDetalle_Antecedentes_No_PatologicosBusinessRuleFieldName').val(), ObjectId: '44342', Attribute: $('#hdnDetalle_Antecedentes_No_PatologicosBusinessRuleAttribute').val(), Screen: 'Detalle_Antecedentes_No_Patologicos' }, function (data) {
+                $(".Detalle_Antecedentes_No_PatologicosAddBusinessRuleModal").html(data);
+                $(".datatable").DataTable();
+            });
+        }
+		function RemoveBusinessRule(RuleId) {
+			$.get('@Url.Action("RemoveBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnDetalle_Antecedentes_No_PatologicosBusinessRuleFieldId').val(), FieldName: $('#hdnDetalle_Antecedentes_No_PatologicosBusinessRuleFieldName').val(), ObjectId: '44342', Attribute: $('#hdnDetalle_Antecedentes_No_PatologicosBusinessRuleAttribute').val(), Screen: 'Detalle_Antecedentes_No_Patologicos' }, function (data) {
+				$(".Detalle_Antecedentes_No_PatologicosBusinessRuleModal").html(data);
+			});
+		}
+
+    var permission = {
+        Consult: '@permission.Consult' == 'True',
+        New: '@permission.New' == 'True',
+        Edit: '@permission.Edit' == 'True',
+        Delete: '@permission.Delete' == 'True',
+        Export: '@permission.Export' == 'True',
+        Print: '@permission.Print' == 'True',
+        Configure: '@permission.Configure' == 'True',
+    };
+
+    
+    //MR-var statusItems;
+    //MR-var stateItems;
+    //MR-var cityItems = [];
+    var isConsultMode = "@ViewBag.Consult" == "True";
+    Consult(isConsultMode);
+        function Consult(val) {
+            if (val) {
+                $(':input').attr('readonly', 'readonly');
+                $(':input').attr('disabled', 'true');
+                $('.noConsult').removeAttr('readonly');
+                $('.noConsult').removeAttr('disabled');
+            }
+        }
+
+    function BackToGrid() {
+        location.href = "@Url.Content("~/Frontal/Detalle_Antecedentes_No_Patologicos/")";
+    }
+	
+	function ReadScriptSettings(callback)
+    {
+        $.post("@Url.Content("~/Frontal/Detalle_Antecedentes_No_Patologicos/ReadScriptSettings")", function (data) {
+            mainElementObject = JSON.parse(data.MainElement);
+			if (data.ChildElement != null) {
+                childElementObject = JSON.parse(data.ChildElement);
+            }
+            callback();
+        });
+    }
+
+    function SaveSettingsWithoutReload() {
+        $.post("@Url.Content("~/Frontal/Detalle_Antecedentes_No_Patologicos/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+            //$('#hdnDetalle_Antecedentes_No_PatologicosConfigureType').val("0");
+        }, "json");
+    }
+	
+        function SaveElementAttributes() {
+            if ($('#hdnDetalle_Antecedentes_No_PatologicosConfigureType').val() == "1") {
+                $.post("@Url.Content("~/Frontal/Detalle_Antecedentes_No_Patologicos/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+                    $('#hdnDetalle_Antecedentes_No_PatologicosConfigureType').val("0");
+                    location.reload(true);
+                }, "json");
+            } else {
+                $.post("@Url.Content("~/Frontal/Detalle_Antecedentes_No_Patologicos/ReadScriptSettings")", function (data) {
+                    mainElementObject = JSON.parse(data.MainElement);
+                    childElementObject = JSON.parse(data.ChildElement);
+
+                    for (var i = 0; i < mainElementObject.length; i++) {
+                        var mainElementAttributes = '<div class="col-sm-2">';
+                        mainElementAttributes += '<div class="displayAttributes requiredAttribute"><a class="requiredClick" title="' + (mainElementObject[i].IsRequired == true ? "Required" : "Not Required") + '" onclick="setRequired(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsRequired == true ? "@Url.Content("~/Images/Required.png")" : "@Url.Content("~/Images/Not-Required.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes visibleAttribute"><a class="visibleClick" title="' + (mainElementObject[i].IsVisible == true ? "Visible" : "In Visible") + '" onclick="setVisible(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsVisible == true ? "@Url.Content("~/Images/Visible.png")" : "@Url.Content("~/Images/InVisible.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes readOnlyAttribute"><a class="readOnlyClick" title="' + (mainElementObject[i].IsReadOnly == true ? "Disabled" : "Enabled") + '" onclick="setReadOnly(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsReadOnly == true ? "@Url.Content("~/Images/Disabled.png")" : "@Url.Content("~/Images/Enabled.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes defaultValueAttribute"><a id="hlDefaultValue_' + i.toString() + '" class="defaultValueClick" title="' + (mainElementObject[i].DefaultValue) + '" onclick="setDefaultValue(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].DefaultValue != '' && mainElementObject[i].DefaultValue != null ? "@Url.Content("~/Images/default-value.png")" : "@Url.Content("~/Images/Not-Default-Value.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes helpTextAttribute"><a id="hlHelpText_' + i.toString() + '" class="helpTextClick" title="' + (mainElementObject[i].HelpText) + '" onclick="setHelpText(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].HelpText != '' && mainElementObject[i].HelpText != null ? "@Url.Content("~/Images/green-help.png")" : "@Url.Content("~/Images/red-help.jpg")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '</div>';
+                        $('#Detalle_Antecedentes_No_Patologicos' + mainElementObject[i].inputId).parent().closest('.form-group').show();
+
+                        $('#Detalle_Antecedentes_No_Patologicos' + mainElementObject[i].inputId).closest('.col-sm-8').after(mainElementAttributes);
+                    }
+					if (childElementObject != null) {
+						for (var i = 0; i < childElementObject.length; i++) {
+							$('.' + childElementObject[i].inputId + 'Header').show();
+							$('.' + childElementObject[i].inputId).parent().show();
+							$('.' + childElementObject[i].inputId + 'Header').append(returnAttributeHTML(i));
+						}
+					}
+                    $('#Detalle_Antecedentes_No_PatologicosConfigureSave').text('Save Settings');
+                    $('#hdnDetalle_Antecedentes_No_PatologicosConfigureType').val("1");
+                });
+            }
+        }
+		$('#CreateDetalle_Antecedentes_No_Patologicos').on('click', '.btnPopupBusinessRules', function () {
+			var fieldId = $(this).data('field-id');
+			var fieldName = $(this).data('field-name');
+			var attribute = $(this).data('attribute');
+			$('#hdnDetalle_Antecedentes_No_PatologicosBusinessRuleFieldId').val(fieldId);
+			$('#hdnDetalle_Antecedentes_No_PatologicosBusinessRuleFieldName').val(fieldName);
+			$('#hdnDetalle_Antecedentes_No_PatologicosBusinessRuleAttribute').val(attribute);
+		});
+		//Initialize HTML Editors
+		
+    </script>

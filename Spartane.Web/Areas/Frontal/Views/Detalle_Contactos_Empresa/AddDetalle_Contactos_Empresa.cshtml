@@ -1,0 +1,513 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Globalization
+@using Spartane.Core.Domain.Permission
+@using Spartane.Core.Domain.Spartane_File
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Detalle_Contactos_EmpresaModel
+@{
+
+
+    List<SelectListItem> varareas_Empresas_Area = null;
+    if (ViewBag.areas_Empresass_Area != null)
+    { varareas_Empresas_Area = (List<SelectListItem>)ViewBag.areas_Empresass_Area; }
+    List<SelectListItem> varEstatus_Estatus = null;
+    if (ViewBag.Estatuss_Estatus != null)
+    { varEstatus_Estatus = (List<SelectListItem>)ViewBag.Estatuss_Estatus; }
+
+
+    Permission permission = ViewBag.Permission;
+}
+<div class="modal-dialog" style="width:95%;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">
+                Add Detalle Contactos Empresa
+                <button data-dismiss="modal" class="close" type="button" onclick="@(ViewBag.functionMode == 0 ? "Detalle_Contactos_EmpresaRemoveAddRow("+ ViewBag.currentRowIndex +")" : "")"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            </h4>
+        </div>
+        <div class="modal-body scroll_content">
+            <div class="form-horizontal Detalle_Contactos_EmpresaPop_@ViewBag.currentRowIndex">
+				<div class="modal fade in" id="dvAttributeValue" style="background-color:rgba(0, 0, 0, 0.7);">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-body">
+								<div class="form-group">
+									<label class="col-sm-3 control-label" id="lblAttributeType">Value</label>
+									<div class="col-sm-7">
+										<input type="text" title="Value" class="form-control" id="txtAttributeValue" />
+									</div>
+									<div class="col-sm-2">
+										<a class="btn btn-primary" onclick="SaveValue()">Submit</a>
+									</div>
+									<input type="hidden" id="hdnAttributType" />
+									<input type="hidden" id="hdnAttributElement" />
+									<input type="hidden" id="hdnAttributNumber" />
+									<input type="hidden" id="hdnElementType" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row wrapper border-bottom white-bg page-heading">
+
+					<div class="row">
+						<div class="col-lg-10">
+							<h2>
+								Detalle Contactos Empresa
+								<button onclick="Detalle_Contactos_EmpresaGetBusinessRule('', 'Abrir Pantalla', '0')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Detalle_Contactos_EmpresaBusinessRule-form">
+									<a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+										<i class="fa fa-cogs fa-spin"></i>
+									</a>
+								</button>
+							</h2>
+							<ol class="breadcrumb">
+								<li>
+									<a href="@Url.Action("Index", "Home")">@Resources.Resources.Home</a>
+								</li>
+								<li class="">
+									<label>@Resources.Detalle_Contactos_EmpresaResources.Detalle_Contactos_Empresa</label>
+								</li>
+								<li class="active">
+									<strong>@Resources.Resources.Create</strong>
+								</li>
+							</ol>
+						</div>
+						<div class="col-lg-2">
+
+							@{
+								if (Convert.ToInt32(Spartane.Web.SessionHelper.Role) == (int)Spartane.Core.Enums.SpartanRoleEnum.Admin)
+								{
+									<h2>&nbsp;</h2>
+									<button onclick="Detalle_Contactos_EmpresaDisplayBusinessRule()" type="button" class="btn btn-info btn-lg displayBusinessProperyButton">
+										<i class="fa fa-cogs fa-spin"></i>
+									</button>
+
+									<div aria-hidden="true" class="modal fade in Detalle_Contactos_EmpresaPropertyBusinessModal" id="Detalle_Contactos_EmpresaPropertyBusinessModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h4 class="modal-title">
+														Property & Business Rules
+														<button class="close" type="button" onclick="$(this).parent().parent().parent().parent().parent().modal('hide');"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+													</h4>
+												</div>
+												<div class="modal-body">
+													<div class="row">
+														<div class="col-sm-12">
+															<a class="btn btn-primary full-width" data-toggle="modal" data-target="#PropertyModal-form" onclick="GetPropertyBag()">Properties</a>
+														</div>
+														<div class="clearfix col-sm-12">&nbsp;</div>
+														<div class="col-sm-12">
+															<a class="btn btn-primary full-width" data-toggle="modal" data-target="#Detalle_Contactos_EmpresaBusinessRule-form" onclick="Detalle_Contactos_EmpresaGetBusinessRule()">Business Rule</a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									 <div aria-hidden="true" data-backdrop="static" class="modal fade in Detalle_Contactos_EmpresaPropertyModal" id="Detalle_Contactos_EmpresaPropertyModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+									</div>
+									<div aria-hidden="true" data-backdrop="static" class="modal fade in Detalle_Contactos_EmpresaBusinessRuleModal" id="Detalle_Contactos_EmpresaBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+									</div>
+                                    <div aria-hidden="true" data-backdrop="static" class="modal fade in Detalle_Contactos_EmpresaAddBusinessRuleModal" id="Detalle_Contactos_EmpresaAddBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                                    </div>
+
+				
+								}
+							}
+						</div>
+					</div>
+
+				<div class="wrapper wrapper-content animated fadeInRight">
+					<div class="ibox float-e-margins">
+						<div class="ibox-content">
+							@using (Html.BeginForm("Post", "Detalle_Contactos_Empresa", FormMethod.Post, new { id = "CreateDetalle_Contactos_Empresa", @readonly = "true", @class = "form-horizontal", enctype = "multipart/form-data" }))
+							{
+								<span id="popupNotification"></span>
+								<div class="container-fluid Detalle_Contactos_EmpresaCreateForm" id="viewmodeledit">
+							<div class="tabs-container">
+											<ul class="nav nav-tabs">
+				@@groupers@@
+											</ul>
+										<div class="tab-content">
+				<div class="form-group" id="divFolio">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Contactos_EmpresaResources.Folio</label>
+                                <div class="col-sm-8" data-field-id="Folio" data-attribute="258500" data-field-name="@Resources.Detalle_Contactos_EmpresaResources.Folio">
+                                    <label class="form-control" for="Detalle_Contactos_EmpresaFolio" id="Detalle_Contactos_EmpresaFolio">@Model.Folio</label>
+                                </div>
+                            </div>
+<div class="form-group" id="divNombre_completo">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Contactos_EmpresaResources.Nombre_completo</label>
+                                <div class="col-sm-8" data-field-id="Nombre_completo" data-attribute="258502" data-field-name="@Resources.Detalle_Contactos_EmpresaResources.Nombre_completo">
+                                    <input class="form-control" id="Detalle_Contactos_EmpresaNombre_completo" name="Detalle_Contactos_EmpresaNombre_completo" type="text" value="@Model.Nombre_completo">
+                                </div>
+                            </div>
+<div class="form-group" id="divCorreo">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Contactos_EmpresaResources.Correo</label>
+                                <div class="col-sm-8" data-field-id="Correo" data-attribute="258503" data-field-name="@Resources.Detalle_Contactos_EmpresaResources.Correo">
+                                    <input class="form-control" id="Detalle_Contactos_EmpresaCorreo" name="Detalle_Contactos_EmpresaCorreo" type="text" value="@Model.Correo">
+                                </div>
+                            </div>
+<div class="form-group" id="divTelefono">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Contactos_EmpresaResources.Telefono</label>
+                                <div class="col-sm-8" data-field-id="Telefono" data-attribute="258504" data-field-name="@Resources.Detalle_Contactos_EmpresaResources.Telefono">
+                                    <input class="form-control" id="Detalle_Contactos_EmpresaTelefono" name="Detalle_Contactos_EmpresaTelefono" type="text" value="@Model.Telefono">
+                                </div>
+                            </div>
+<div class="form-group" id="divContacto_Principal">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Contactos_EmpresaResources.Contacto_Principal</label>
+                                <div class="col-sm-8" data-field-id="Contacto_Principal" data-attribute="258505" data-field-name="@Resources.Detalle_Contactos_EmpresaResources.Contacto_Principal">
+                                    @Html.CheckBoxFor(m => m.Contacto_Principal, new { @class = "i-checks" })
+                                </div>
+                            </div>
+<div class="form-group" id="divArea">
+	<label class="col-sm-2 control-label">@Resources.Detalle_Contactos_EmpresaResources.Area</label>
+	<div class="col-sm-8" data-field-id="Area" data-attribute="258506" data-field-name="@Resources.Detalle_Contactos_EmpresaResources.Area">
+		<select class="form-control" data-val="true" data-val-number="The field Área must be a number." data-val-required="The Área field is required." id="Detalle_Contactos_EmpresaArea" name="Detalle_Contactos_EmpresaArea">
+			<option value=""></option>
+			@if (varareas_Empresas_Area != null){ 
+				foreach (var itemArea in varareas_Empresas_Area)
+				{
+					if (itemArea.Value == Convert.ToString(Model.Area))
+					{
+						<option value="@itemArea.Value" selected>@itemArea.Text</option>
+					}
+					else
+					{
+						<option value="@itemArea.Value">@itemArea.Text</option>
+					}
+				}
+			}
+		</select>
+	</div>
+</div>
+<div class="form-group" id="divAcceso_al_Sistema">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Contactos_EmpresaResources.Acceso_al_Sistema</label>
+                                <div class="col-sm-8" data-field-id="Acceso_al_Sistema" data-attribute="258507" data-field-name="@Resources.Detalle_Contactos_EmpresaResources.Acceso_al_Sistema">
+                                    @Html.CheckBoxFor(m => m.Acceso_al_Sistema, new { @class = "i-checks" })
+                                </div>
+                            </div>
+<div class="form-group" id="divNombre_de_usuario">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Contactos_EmpresaResources.Nombre_de_usuario</label>
+                                <div class="col-sm-8" data-field-id="Nombre_de_usuario" data-attribute="258508" data-field-name="@Resources.Detalle_Contactos_EmpresaResources.Nombre_de_usuario">
+                                    <input class="form-control" id="Detalle_Contactos_EmpresaNombre_de_usuario" name="Detalle_Contactos_EmpresaNombre_de_usuario" type="text" value="@Model.Nombre_de_usuario">
+                                </div>
+                            </div>
+<div class="form-group" id="divRecibe_Alertas">
+                                <label class="col-sm-2 control-label">@Resources.Detalle_Contactos_EmpresaResources.Recibe_Alertas</label>
+                                <div class="col-sm-8" data-field-id="Recibe_Alertas" data-attribute="258509" data-field-name="@Resources.Detalle_Contactos_EmpresaResources.Recibe_Alertas">
+                                    @Html.CheckBoxFor(m => m.Recibe_Alertas, new { @class = "i-checks" })
+                                </div>
+                            </div>
+<div class="form-group" id="divEstatus">
+	<label class="col-sm-2 control-label">@Resources.Detalle_Contactos_EmpresaResources.Estatus</label>
+	<div class="col-sm-8" data-field-id="Estatus" data-attribute="258510" data-field-name="@Resources.Detalle_Contactos_EmpresaResources.Estatus">
+		<select class="form-control" data-val="true" data-val-number="The field Estatus must be a number." data-val-required="The Estatus field is required." id="Detalle_Contactos_EmpresaEstatus" name="Detalle_Contactos_EmpresaEstatus">
+			<option value=""></option>
+			@if (varEstatus_Estatus != null){ 
+				foreach (var itemEstatus in varEstatus_Estatus)
+				{
+					if (itemEstatus.Value == Convert.ToString(Model.Estatus))
+					{
+						<option value="@itemEstatus.Value" selected>@itemEstatus.Text</option>
+					}
+					else
+					{
+						<option value="@itemEstatus.Value">@itemEstatus.Text</option>
+					}
+				}
+			}
+		</select>
+	</div>
+</div>
+
+								</div>	
+							</div>
+									<br />
+											<div class="form-actions fluid">
+												<input type="hidden" value="@Model.Folio" id="ReferenceFolio" />
+												<input type="hidden" value="@Model.Folio" name="Folio" id="FolioId" />
+												@if (!ViewBag.Consult)
+												{
+													<div id="dvSaveJob" style="display:inline-block"></div>
+
+													<button type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton">
+														<i class="fa fa-cogs fa-spin"></i>
+													</button>
+													<a title="@Resources.Resources.Configure" id="Detalle_Contactos_EmpresaConfigureSave" name="Detalle_Contactos_EmpresaConfigureSave" onclick="SaveElementAttributes()" class="btn btn-success">@Resources.Resources.Configure</a>
+												}
+
+												<input type="hidden" id="hdnDetalle_Contactos_EmpresaConfigureType" />
+												<input type="hidden" id="hdnDetalle_Contactos_EmpresaBusinessRuleFieldId" />
+												<input type="hidden" id="hdnDetalle_Contactos_EmpresaBusinessRuleFieldName" />
+												<input type="hidden" id="hdnDetalle_Contactos_EmpresaBusinessRuleAttribute" />
+
+												<input data-dismiss="modal" type="button" value="@Resources.Resources.Cancelar" class="btn btn-danger noConsult" data-bind="click: cancel" tabindex="16" />
+
+												<button onclick="Detalle_Contactos_EmpresaGetBusinessRule('', 'Al Cancelar', '3')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Detalle_Contactos_EmpresaBusinessRule-form">
+													<a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+														<i class="fa fa-cogs fa-spin"></i>
+													</a>
+												</button>
+											</div>
+										</div>
+								}
+
+							</div>
+						</div>
+					</div>
+				</div>
+					<input id="hdnApplicationDirectory" type="hidden" value="@Url.Content("~/")" />
+				</div>
+			</div>
+		</div>
+</div>
+@section Styles {
+<link href="@Url.Content("~/Content/BootstrapDatePicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+    @Styles.Render("~/plugins/awesomeCheckboxStyles")
+    @Styles.Render("~/plugins/select2Styles")
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+    .select2-results{background-color:#fff;}
+    .select2-container .select2-dropdown{height:auto !important;}
+
+    div.dataTables_info {
+        display: inline-block;
+        float: right;
+    }
+        i {
+        font-size: 25px !important;
+        display: block;
+        color: #676a6c;
+        margin-left: 6px;
+        margin-right: 6px;
+    }
+
+    .fullWidth {
+        width: 100%;
+    }
+</style>
+}
+
+<script type="text/javascript" src="~/Uploads/Scripts/Detalle_Contactos_Empresa.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Scripts/Custom/Detalle_Contactos_EmpresaGeneral.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/Detalle_Contactos_EmpresaCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/EmpresasCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
+
+    <script type="text/javascript">
+        
+
+
+
+        $(document).ready(function () {
+			var currentIndex = @ViewBag.currentRowIndex
+
+            var Detalle_Contactos_EmpresaRowElement = "Detalle_Contactos_EmpresaPop_" + currentIndex.toString();
+            var abc = "if(dynamicFieldValidation('" + Detalle_Contactos_EmpresaRowElement + "')){ Detalle_Contactos_EmpresaInsertRowFromPopup(" + currentIndex + "); }";
+            var insertRowHTML = '<a class="btn btn-primary m-b" onclick="' + abc + '">Save</a>';
+            $('#dvSaveJob').html(insertRowHTML);
+			
+
+
+            initiateUIControls();
+            EjecutarValidacionesAlComienzo();
+			$('a').tooltip();
+        });
+
+
+
+        function initiateUIControls() {
+            $('.gridDatePicker').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            //Time Picker
+            $('.gridTimePicker').clockpicker();
+
+        }
+		
+		function SendDetalle_Contactos_EmpresaData(callBack) {
+			
+					
+		 var arr = []; 
+		 $("form#CreateDetalle_Contactos_Empresa").find(':input').each(function( index ) {		 
+			if ($(this).prop('disabled')==true|| $(this).prop('disabled')=="disabled")
+			{		
+				arr.push($(this).attr('id')); 
+				$(this).prop('disabled', false);  	
+			}
+	    });
+		
+             var formData = new FormData($("form#CreateDetalle_Contactos_Empresa")[0]);
+			$.each( arr, function( key, value ) {
+			  $('#' +value).prop('disabled', true);
+			});
+
+            var isNew = $('#hdnIsNew').val();
+           
+            if (checkClientValidate('Detalle_Contactos_EmpresaCreateForm')) {
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Detalle_Contactos_Empresa/Post?IsNew=")' + isNew,
+                    type: 'POST',
+                    data: formData,
+                    async: true,
+                    success: function (result) {
+                        if (result < 0) {
+                            showNotification("@Resources.Resources.ErrorSave", "error");
+                        } else {
+
+                            showNotification("@Resources.Resources.SaveSuccess", "success");
+                            callBack(result);
+                        }
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            }
+            return false;
+        };
+		
+        function GetPropertyBag() {
+            $.get('@Url.Action("Detalle_Contactos_EmpresaPropertyBag", "Detalle_Contactos_Empresa")', function (data) {
+                $(".PropertyModal").html(data);
+            });
+        }
+        function Detalle_Contactos_EmpresaGetBusinessRule(FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null)
+			{
+				$('#hdnDetalle_Contactos_EmpresaBusinessRuleFieldId').val(FieldId);
+				$('#hdnDetalle_Contactos_EmpresaBusinessRuleFieldName').val(FieldName);
+				$('#hdnDetalle_Contactos_EmpresaBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("BusinessRule", "BussinessRule")', { FieldId: $('#hdnDetalle_Contactos_EmpresaBusinessRuleFieldId').val(), FieldName: $('#hdnDetalle_Contactos_EmpresaBusinessRuleFieldName').val(), ObjectId: '44412', Attribute: $('#hdnDetalle_Contactos_EmpresaBusinessRuleAttribute').val(), Screen: 'Detalle_Contactos_Empresa' }, function (data) {
+                $(".Detalle_Contactos_EmpresaBusinessRuleModal").html(data);
+            });
+        }
+        function Detalle_Contactos_EmpresaGetAddBusinessRule(RuleId, FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null) {
+				$('#hdnDetalle_Contactos_EmpresaBusinessRuleFieldId').val(FieldId);
+				$('#hdnDetalle_Contactos_EmpresaBusinessRuleFieldName').val(FieldName);
+				$('#hdnDetalle_Contactos_EmpresaBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("AddBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnDetalle_Contactos_EmpresaBusinessRuleFieldId').val(), FieldName: $('#hdnDetalle_Contactos_EmpresaBusinessRuleFieldName').val(), ObjectId: '44412', Attribute: $('#hdnDetalle_Contactos_EmpresaBusinessRuleAttribute').val(), Screen: 'Detalle_Contactos_Empresa' }, function (data) {
+                $(".Detalle_Contactos_EmpresaAddBusinessRuleModal").html(data);
+                $(".datatable").DataTable();
+            });
+        }
+		function RemoveBusinessRule(RuleId) {
+			$.get('@Url.Action("RemoveBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnDetalle_Contactos_EmpresaBusinessRuleFieldId').val(), FieldName: $('#hdnDetalle_Contactos_EmpresaBusinessRuleFieldName').val(), ObjectId: '44412', Attribute: $('#hdnDetalle_Contactos_EmpresaBusinessRuleAttribute').val(), Screen: 'Detalle_Contactos_Empresa' }, function (data) {
+				$(".Detalle_Contactos_EmpresaBusinessRuleModal").html(data);
+			});
+		}
+
+    var permission = {
+        Consult: '@permission.Consult' == 'True',
+        New: '@permission.New' == 'True',
+        Edit: '@permission.Edit' == 'True',
+        Delete: '@permission.Delete' == 'True',
+        Export: '@permission.Export' == 'True',
+        Print: '@permission.Print' == 'True',
+        Configure: '@permission.Configure' == 'True',
+    };
+
+    
+    //MR-var statusItems;
+    //MR-var stateItems;
+    //MR-var cityItems = [];
+    var isConsultMode = "@ViewBag.Consult" == "True";
+    Consult(isConsultMode);
+        function Consult(val) {
+            if (val) {
+                $(':input').attr('readonly', 'readonly');
+                $(':input').attr('disabled', 'true');
+                $('.noConsult').removeAttr('readonly');
+                $('.noConsult').removeAttr('disabled');
+            }
+        }
+
+    function BackToGrid() {
+        location.href = "@Url.Content("~/Frontal/Detalle_Contactos_Empresa/")";
+    }
+	
+	function ReadScriptSettings(callback)
+    {
+        $.post("@Url.Content("~/Frontal/Detalle_Contactos_Empresa/ReadScriptSettings")", function (data) {
+            mainElementObject = JSON.parse(data.MainElement);
+			if (data.ChildElement != null) {
+                childElementObject = JSON.parse(data.ChildElement);
+            }
+            callback();
+        });
+    }
+
+    function SaveSettingsWithoutReload() {
+        $.post("@Url.Content("~/Frontal/Detalle_Contactos_Empresa/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+            //$('#hdnDetalle_Contactos_EmpresaConfigureType').val("0");
+        }, "json");
+    }
+	
+        function SaveElementAttributes() {
+            if ($('#hdnDetalle_Contactos_EmpresaConfigureType').val() == "1") {
+                $.post("@Url.Content("~/Frontal/Detalle_Contactos_Empresa/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+                    $('#hdnDetalle_Contactos_EmpresaConfigureType').val("0");
+                    location.reload(true);
+                }, "json");
+            } else {
+                $.post("@Url.Content("~/Frontal/Detalle_Contactos_Empresa/ReadScriptSettings")", function (data) {
+                    mainElementObject = JSON.parse(data.MainElement);
+                    childElementObject = JSON.parse(data.ChildElement);
+
+                    for (var i = 0; i < mainElementObject.length; i++) {
+                        var mainElementAttributes = '<div class="col-sm-2">';
+                        mainElementAttributes += '<div class="displayAttributes requiredAttribute"><a class="requiredClick" title="' + (mainElementObject[i].IsRequired == true ? "Required" : "Not Required") + '" onclick="setRequired(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsRequired == true ? "@Url.Content("~/Images/Required.png")" : "@Url.Content("~/Images/Not-Required.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes visibleAttribute"><a class="visibleClick" title="' + (mainElementObject[i].IsVisible == true ? "Visible" : "In Visible") + '" onclick="setVisible(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsVisible == true ? "@Url.Content("~/Images/Visible.png")" : "@Url.Content("~/Images/InVisible.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes readOnlyAttribute"><a class="readOnlyClick" title="' + (mainElementObject[i].IsReadOnly == true ? "Disabled" : "Enabled") + '" onclick="setReadOnly(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsReadOnly == true ? "@Url.Content("~/Images/Disabled.png")" : "@Url.Content("~/Images/Enabled.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes defaultValueAttribute"><a id="hlDefaultValue_' + i.toString() + '" class="defaultValueClick" title="' + (mainElementObject[i].DefaultValue) + '" onclick="setDefaultValue(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].DefaultValue != '' && mainElementObject[i].DefaultValue != null ? "@Url.Content("~/Images/default-value.png")" : "@Url.Content("~/Images/Not-Default-Value.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes helpTextAttribute"><a id="hlHelpText_' + i.toString() + '" class="helpTextClick" title="' + (mainElementObject[i].HelpText) + '" onclick="setHelpText(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].HelpText != '' && mainElementObject[i].HelpText != null ? "@Url.Content("~/Images/green-help.png")" : "@Url.Content("~/Images/red-help.jpg")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '</div>';
+                        $('#Detalle_Contactos_Empresa' + mainElementObject[i].inputId).parent().closest('.form-group').show();
+
+                        $('#Detalle_Contactos_Empresa' + mainElementObject[i].inputId).closest('.col-sm-8').after(mainElementAttributes);
+                    }
+					if (childElementObject != null) {
+						for (var i = 0; i < childElementObject.length; i++) {
+							$('.' + childElementObject[i].inputId + 'Header').show();
+							$('.' + childElementObject[i].inputId).parent().show();
+							$('.' + childElementObject[i].inputId + 'Header').append(returnAttributeHTML(i));
+						}
+					}
+                    $('#Detalle_Contactos_EmpresaConfigureSave').text('Save Settings');
+                    $('#hdnDetalle_Contactos_EmpresaConfigureType').val("1");
+                });
+            }
+        }
+		$('#CreateDetalle_Contactos_Empresa').on('click', '.btnPopupBusinessRules', function () {
+			var fieldId = $(this).data('field-id');
+			var fieldName = $(this).data('field-name');
+			var attribute = $(this).data('attribute');
+			$('#hdnDetalle_Contactos_EmpresaBusinessRuleFieldId').val(fieldId);
+			$('#hdnDetalle_Contactos_EmpresaBusinessRuleFieldName').val(fieldName);
+			$('#hdnDetalle_Contactos_EmpresaBusinessRuleAttribute').val(attribute);
+		});
+		//Initialize HTML Editors
+		
+    </script>

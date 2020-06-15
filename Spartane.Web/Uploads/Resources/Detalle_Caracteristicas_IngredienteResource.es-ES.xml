@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Detalle_Caracteristicas_Ingrediente" value="Detalle Características Ingrediente"></resource>
+  <resource culture="es-es" name="Folio" value="Folio"></resource>
+  <resource culture="es-es" name="Caracteristica_combo" value="Característica (combo)"></resource>
+  <resource culture="es-es" name="Descripcion_texto" value="Descripción (texto)"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

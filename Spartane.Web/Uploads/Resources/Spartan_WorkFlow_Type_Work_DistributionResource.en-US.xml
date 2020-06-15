@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_WorkFlow_Type_Work_Distribution" value="Spartan WorkFlow Type of Work Distribution"></resource>
+  <resource culture="en-US" name="Type_of_Work_DistributionId" value="Type of Work DistributionId"></resource>
+  <resource culture="en-US" name="Description" value="Description"></resource>
+</resources>

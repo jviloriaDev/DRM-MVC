@@ -1,0 +1,338 @@
+﻿@model IList<Spartane.Web.Areas.Frontal.Models.ConsultasGridModel>
+
+@{
+    var rowCounter = 0;
+}
+
+<style>
+    .table {
+        width: 100%;
+        border: 1px solid #cccccc;
+        font-family: "open sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+        /*border-collapse: separate !important;*/
+        font-size: 13px;
+    }
+
+        .table td {
+            padding: 2px;
+            border:1px solid #cccccc;
+        }
+
+    .table tr:nth-of-type(2n+1) {
+        background-color: #f9f9f9;
+    }
+
+        .table tr:nth-of-type(2n) {
+            background-color: #8da0c2;
+        }
+
+    .table-row-1 td, .table-row-1 th {
+    }
+
+    .table-row-2 td, .table-row-2 th, thead {
+    }
+
+    .tableHeaderRow {
+        font-weight: bold;
+        border: 1px solid #ff6a00;
+    }
+
+    .column1 {
+        width: 15%;
+    }
+
+    .column2 {
+        width: 15%;
+    }
+</style>
+<br />
+<body onbeforeprint="ocultarcolumnas();">
+ <span id="columnsVisible"></span>
+<table class="table" cellspacing="0" cellpadding="0" border="0">
+    <thead>
+        <tr>
+            <td class="column1">
+                @Resources.ConsultasResources.Folio
+            </td>
+                        <td class="column1">
+                @Resources.ConsultasResources.Folio
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Fecha_de_Registo
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Hora_de_Registro
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Usuario_que_Registra
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Fecha_Programada
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Paciente
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Edad
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Nombre_del_padre
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Sexo
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Email
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Objetivo
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Frecuencia_Cardiaca
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Presion_sistolica
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Presion_diastolica
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Peso_actual
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Estatura
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Circunferencia_de_cintura_cm
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Circunferencia_de_cadera_cm
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Edad_Metabolica
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Agua_corporal
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Grasa_Visceral
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Grasa_Corporal
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Grasa_Corporal_kg
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Masa_Muscular_kg
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Semana_de_gestacion
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.IMC
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.IMC_Pediatria
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Interpretacion_IMC
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Consumo_de_agua_resultado
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Interpretacion_agua
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Frecuencia_cardiaca_en_Esfuerzo
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Interpretacion_frecuencia
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Indice_cintura_cadera
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Interpretacion_indice
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Dificultad_de_Rutina_de_Ejercicios
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Interpretacion_dificultad
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Calorias
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Interpretacion_calorias
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Observaciones
+            </td>
+            <td class="column1">
+                @Resources.ConsultasResources.Fecha_siguiente_Consulta
+            </td>
+
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var item in Model)
+            {                
+                <tr>
+                    <td>
+                        @item.Folio
+                    </td>
+					                    <td>
+                        @item.Folio
+                    </td>
+                    <td>
+                        @item.Fecha_de_Registo
+                    </td>
+                    <td>
+                        @item.Hora_de_Registro
+                    </td>
+                    <td>
+                        @item.Usuario_que_RegistraName
+                    </td>
+                    <td>
+                        @item.Fecha_Programada
+                    </td>
+                    <td>
+                        @item.Paciente
+                    </td>
+                    <td>
+                        @item.Edad
+                    </td>
+                    <td>
+                        @item.Nombre_del_padre
+                    </td>
+                    <td>
+                        @item.SexoDescripcion
+                    </td>
+                    <td>
+                        @item.Email
+                    </td>
+                    <td>
+                        @item.ObjetivoDescripcion
+                    </td>
+                    <td>
+                        @item.Frecuencia_Cardiaca
+                    </td>
+                    <td>
+                        @item.Presion_sistolica
+                    </td>
+                    <td>
+                        @item.Presion_diastolica
+                    </td>
+                    <td>
+                        @item.Peso_actual
+                    </td>
+                    <td>
+                        @item.Estatura
+                    </td>
+                    <td>
+                        @item.Circunferencia_de_cintura_cm
+                    </td>
+                    <td>
+                        @item.Circunferencia_de_cadera_cm
+                    </td>
+                    <td>
+                        @item.Edad_Metabolica
+                    </td>
+                    <td>
+                        @item.Agua_corporal
+                    </td>
+                    <td>
+                        @item.Grasa_Visceral
+                    </td>
+                    <td>
+                        @item.Grasa_Corporal
+                    </td>
+                    <td>
+                        @item.Grasa_Corporal_kg
+                    </td>
+                    <td>
+                        @item.Masa_Muscular_kg
+                    </td>
+                    <td>
+                        @item.Semana_de_gestacion
+                    </td>
+                    <td>
+                        @item.IMC
+                    </td>
+                    <td>
+                        @item.IMC_PediatriaDescripcion
+                    </td>
+                    <td>
+                        @item.Interpretacion_IMCDescripcion
+                    </td>
+                    <td>
+                        @item.Consumo_de_agua_resultado
+                    </td>
+                    <td>
+                        @item.Interpretacion_aguaDescripcion
+                    </td>
+                    <td>
+                        @item.Frecuencia_cardiaca_en_Esfuerzo
+                    </td>
+                    <td>
+                        @item.Interpretacion_frecuenciaDescripcion
+                    </td>
+                    <td>
+                        @item.Indice_cintura_cadera
+                    </td>
+                    <td>
+                        @item.Interpretacion_indiceDescripcion
+                    </td>
+                    <td>
+                        @item.Dificultad_de_Rutina_de_Ejercicios
+                    </td>
+                    <td>
+                        @item.Interpretacion_dificultadDescripcion
+                    </td>
+                    <td>
+                        @item.Calorias
+                    </td>
+                    <td>
+                        @item.Interpretacion_caloriasDescripcion
+                    </td>
+                    <td>
+                        @item.Observaciones
+                    </td>
+                    <td>
+                        @item.Fecha_siguiente_Consulta
+                    </td>
+
+                </tr>
+                rowCounter++;
+            }
+        }
+    </tbody>
+</table>
+</body>
+
+<script>
+    function ocultarcolumnas() {        
+        var arr = document.getElementById('columnsVisible').text.split(',');
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i] == "false") {
+                show_hide_column(i-1, false);
+            }
+        }    
+    };
+
+    function show_hide_column(col_no, do_show) {
+        var rows = document.getElementsByClassName('table')[0].rows;
+        for (var row = 0; row < rows.length; row++) {
+            var cols = rows[row].cells;
+            if (col_no >= 0 && col_no < cols.length) {
+                console.log(col_no);
+                cols[col_no].style.display = do_show ? '' : 'none';
+            }
+        }
+    }
+</script>
+

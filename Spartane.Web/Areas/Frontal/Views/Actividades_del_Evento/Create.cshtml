@@ -1,0 +1,1703 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Globalization
+@using Spartane.Core.Domain.Permission
+@using Spartane.Core.Domain.Spartane_File
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Actividades_del_EventoModel
+@{
+
+/*
+    string Fecha_de_Registro = "";
+    if (Model.Fecha_de_Registro == "")
+    { Model.Fecha_de_Registro = DateTime.Now.ToString(ConfigurationProperty.DateFormat); }
+    string Dia = "";
+    if (Model.Dia == "")
+    { Model.Dia = DateTime.Now.ToString(ConfigurationProperty.DateFormat); }
+
+*/
+    List<SelectListItem> varSpartan_User_Usuario_que_Registra = null;
+    if (ViewBag.Spartan_Users_Usuario_que_Registra != null)
+    { varSpartan_User_Usuario_que_Registra = (List<SelectListItem>)ViewBag.Spartan_Users_Usuario_que_Registra; }
+    List<SelectListItem> varEventos_Evento = null;
+    if (ViewBag.Eventoss_Evento != null)
+    { varEventos_Evento = (List<SelectListItem>)ViewBag.Eventoss_Evento; }
+    List<SelectListItem> varDetalle_Actividades_Evento_Actividad = null;
+    if (ViewBag.Detalle_Actividades_Eventos_Actividad != null)
+    { varDetalle_Actividades_Evento_Actividad = (List<SelectListItem>)ViewBag.Detalle_Actividades_Eventos_Actividad; }
+    List<SelectListItem> varUbicaciones_Eventos_Empresa_Ubicacion = null;
+    if (ViewBag.Ubicaciones_Eventos_Empresas_Ubicacion != null)
+    { varUbicaciones_Eventos_Empresa_Ubicacion = (List<SelectListItem>)ViewBag.Ubicaciones_Eventos_Empresas_Ubicacion; }
+    List<SelectListItem> varTipos_de_Actividades_Tipo_de_Actividad = null;
+    if (ViewBag.Tipos_de_Actividadess_Tipo_de_Actividad != null)
+    { varTipos_de_Actividades_Tipo_de_Actividad = (List<SelectListItem>)ViewBag.Tipos_de_Actividadess_Tipo_de_Actividad; }
+    List<SelectListItem> varSpartan_User_Quien_imparte = null;
+    if (ViewBag.Spartan_Users_Quien_imparte != null)
+    { varSpartan_User_Quien_imparte = (List<SelectListItem>)ViewBag.Spartan_Users_Quien_imparte; }
+    List<SelectListItem> varEspecialidades_Especialidad = null;
+    if (ViewBag.Especialidadess_Especialidad != null)
+    { varEspecialidades_Especialidad = (List<SelectListItem>)ViewBag.Especialidadess_Especialidad; }
+    List<SelectListItem> varEstatus_Actividades_Evento_Estatus = null;
+    if (ViewBag.Estatus_Actividades_Eventos_Estatus != null)
+    { varEstatus_Actividades_Evento_Estatus = (List<SelectListItem>)ViewBag.Estatus_Actividades_Eventos_Estatus; }
+
+    Permission permissionDetalle_Horarios_Actividad = ViewBag.PermissionDetalle_Horarios_Actividad;
+
+    Permission permission = ViewBag.Permission;
+	
+	if (ViewBag.IsPartial)
+   { 
+       Layout = "~/Areas/Frontal/Views/Shared/_LayoutPopup.cshtml";
+   }
+}
+<div class="loading style-2"><div class="loading-wheel"></div></div>
+<div class="modal fade in" id="dvAttributeValue" style="background-color:rgba(0, 0, 0, 0.7);">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" id="lblAttributeType">@Resources.Resources.Value</label>
+                    <div class="col-sm-7">
+                        <input type="text" title="Value" class="form-control" id="txtAttributeValue" />
+                    </div>
+                    <div class="col-sm-2">
+                        <a class="btn btn-primary" onclick="SaveValue()">@Resources.Resources.Submit</a>
+                    </div>
+                    <input type="hidden" id="hdnAttributType" />
+                    <input type="hidden" id="hdnAttributElement" />
+                    <input type="hidden" id="hdnAttributNumber" />
+                    <input type="hidden" id="hdnElementType" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row wrapper border-bottom white-bg page-heading">
+
+    <div class="row">
+        <div class="col-lg-10">
+            <h2>
+                @Resources.Actividades_del_EventoResources.Actividades_del_Evento
+                <button onclick="Actividades_del_EventoGetBusinessRule('', 'Al Abrir Pantalla', '0')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Actividades_del_EventoBusinessRule-form">
+                    <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+                        <i class="fa fa-cogs fa-spin"></i>
+                    </a>
+                </button>
+            </h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">@Resources.Resources.Home</a>
+                </li>
+                <li class="active">
+                @if (Session["PhaseName"] != null)
+                {
+                    <strong>@Session["PhaseName"].ToString()</strong>
+                }
+                else
+                {
+                    <strong>@Resources.Actividades_del_EventoResources.Actividades_del_Evento</strong>
+                }
+                
+            </li>
+                <li class="active">
+                    <strong>@Resources.Resources.Create</strong>
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-2">
+
+            @{
+                if (Convert.ToInt32(Spartane.Web.SessionHelper.Role) == (int)Spartane.Core.Enums.SpartanRoleEnum.Admin)
+                {
+                    <h2>&nbsp;</h2>
+                    <button onclick="Actividades_del_EventoDisplayBusinessRule()" type="button" class="btn btn-info btn-lg displayBusinessProperyButton">
+                        <i class="fa fa-cogs fa-spin"></i>
+                    </button>
+
+                    <div aria-hidden="true" class="modal fade in Actividades_del_EventoPropertyBusinessModal" id="Actividades_del_EventoPropertyBusinessModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">
+                                          @Resources.Resources.titleBussinesRules
+                                        <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">@Resources.Resources.Close</span></button>
+                                    </h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <a class="btn btn-primary full-width" data-dismiss="modal" data-toggle="modal" data-target="#PropertyModal-form" onclick="GetPropertyBag()">@Resources.Resources.Property</a>
+                                        </div>
+                                        <div class="clearfix col-sm-12">&nbsp;</div>
+                                        <div class="col-sm-12">
+                                            <a class="btn btn-primary full-width" data-dismiss="modal" data-toggle="modal" data-target="#Actividades_del_EventoBusinessRule-form" onclick="Actividades_del_EventoGetBusinessRule()">Business Rule</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     <div aria-hidden="true" data-backdrop="static" class="modal fade in PropertyModal" id="PropertyModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+					</div>
+					<div aria-hidden="true" data-backdrop="static" class="modal fade in Actividades_del_EventoBusinessRuleModal" id="Actividades_del_EventoBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+					</div>
+
+
+                }
+            }
+                    <div aria-hidden="true" class="modal fade in AddDetalle_Horarios_ActividadModal" id="AddDetalle_Horarios_Actividad-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                    </div>
+
+
+        </div>
+    </div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            @using (Html.BeginForm("Post", "Actividades_del_Evento", FormMethod.Post, new { id = "CreateActividades_del_Evento", @readonly = "true", @class = "form-horizontal", enctype = "multipart/form-data" }))
+            {
+                                <input type="hidden" id="hdnIsNew" name="hdnIsNew" value="@ViewBag.IsNew.ToString()" />
+                <span id="popupNotification"></span>
+                <div class="container-fluid Actividades_del_EventoCreateForm" id="viewmodeledit">
+				 <div class="alert alert-warning" id="controlsRequerid" style="display:none">
+                        <a href="#" class="close" onclick="$('#controlsRequerid').hide();">&times;</a>
+                        <span id="textRequired"></span>
+                 </div>
+			<div class="tabs-container">
+                        	<ul class="nav nav-tabs">
+<li class="active"><a data-toggle="tab" href="#tabDatos_Generales"> @Resources.Actividades_del_EventoResources.TabDatos_Generales</a></li>
+<li class=""><a data-toggle="tab" href="#tabAgenda"> @Resources.Actividades_del_EventoResources.TabAgenda</a></li>
+
+                        	</ul>
+	                	<div class="tab-content">
+                            <div id="tabDatos_Generales" class="tab-pane active">
+                                <div class="panel-body">
+                            <div class="form-group" id="divFolio">
+                                <label class="col-sm-2 control-label">@Resources.Actividades_del_EventoResources.Folio</label>
+                                <div class="col-sm-8" data-field-id="Folio" data-attribute="258740" data-field-name="@Resources.Actividades_del_EventoResources.Folio">
+                                    <label class="form-control" for="Folio" id="lblFolio">
+                                    @if (Model.Folio== 0)
+                                        {
+                                            <text>@Resources.Resources.ClaveDefault</text>
+                                        }
+                                        else
+                                        { 
+                                            <text>@Model.Folio</text>
+                                        }
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divFecha_de_Registro">
+                                <label class="col-sm-2 control-label">@Resources.Actividades_del_EventoResources.Fecha_de_Registro</label>
+                                <div class="col-sm-8" data-field-id="Fecha_de_Registro" data-attribute="258741" data-field-name="@Resources.Actividades_del_EventoResources.Fecha_de_Registro">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input class="form-control col-md-12 Datos_Generales" id="Fecha_de_Registro"  name="Fecha_de_Registro" type="text" value="@Model.Fecha_de_Registro">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divHora_de_Registro">
+                                <label class="col-sm-2 control-label">@Resources.Actividades_del_EventoResources.Hora_de_Registro</label>
+                                <div class="col-sm-8" data-field-id="Hora_de_Registro" data-attribute="258742" data-field-name="@Resources.Actividades_del_EventoResources.Hora_de_Registro">
+                                    <div class='input-group date' id='timePicker'>
+                                        <input class="form-control col-md-12 Datos_Generales" id="Hora_de_Registro"  name="Hora_de_Registro" type="text" data-autoclose="true" value="@Model.Hora_de_Registro">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-time"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divUsuario_que_Registra">
+                                <label class="col-sm-2 control-label">@Resources.Actividades_del_EventoResources.Usuario_que_Registra</label>
+                                <div class="col-sm-8" data-field-id="Usuario_que_Registra" data-attribute="258743" data-field-name="@Resources.Actividades_del_EventoResources.Usuario_que_Registra">
+                                    <select class="form-control Datos_Generales" data-val="true" data-val-number="The field Usuario que Registra must be a number." data-val-required="The Usuario que Registra field is required." id="Usuario_que_Registra" name="Usuario_que_Registra">
+                                        <option value=""></option>
+                                        @if (varSpartan_User_Usuario_que_Registra != null){ 
+                                            foreach (var itemUsuario_que_Registra in varSpartan_User_Usuario_que_Registra)
+                                            {
+                                                if (itemUsuario_que_Registra.Value == Convert.ToString(Model.Usuario_que_Registra))
+                                                {
+                                                    <option value="@itemUsuario_que_Registra.Value" selected>@itemUsuario_que_Registra.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemUsuario_que_Registra.Value">@itemUsuario_que_Registra.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Usuario_que_Registra" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 258743).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Spartan_User', 'Usuario_que_Registra');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divEvento">
+                                <label class="col-sm-2 control-label">@Resources.Actividades_del_EventoResources.Evento</label>
+                                <div class="col-sm-8" data-field-id="Evento" data-attribute="258744" data-field-name="@Resources.Actividades_del_EventoResources.Evento">
+                                    <select class="form-control Datos_Generales" data-val="true" data-val-number="The field Evento must be a number." data-val-required="The Evento field is required." id="Evento" name="Evento">
+                                        <option value=""></option>
+                                        @if (varEventos_Evento != null){ 
+                                            foreach (var itemEvento in varEventos_Evento)
+                                            {
+                                                if (itemEvento.Value == Convert.ToString(Model.Evento))
+                                                {
+                                                    <option value="@itemEvento.Value" selected>@itemEvento.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemEvento.Value">@itemEvento.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Evento" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 258744).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Eventos', 'Evento');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divActividad">
+                                <label class="col-sm-2 control-label">@Resources.Actividades_del_EventoResources.Actividad</label>
+                                <div class="col-sm-8" data-field-id="Actividad" data-attribute="258745" data-field-name="@Resources.Actividades_del_EventoResources.Actividad">
+                                    <select class="form-control Datos_Generales" data-val="true" data-val-number="The field Actividad must be a number." data-val-required="The Actividad field is required." id="Actividad" name="Actividad">
+                                        <option value=""></option>
+                                        @if (varDetalle_Actividades_Evento_Actividad != null){ 
+                                            foreach (var itemActividad in varDetalle_Actividades_Evento_Actividad)
+                                            {
+                                                if (itemActividad.Value == Convert.ToString(Model.Actividad))
+                                                {
+                                                    <option value="@itemActividad.Value" selected>@itemActividad.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemActividad.Value">@itemActividad.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Actividad" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 258745).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Detalle_Actividades_Evento', 'Actividad');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divDescripcion">
+                                <label class="col-sm-2 control-label">@Resources.Actividades_del_EventoResources.Descripcion</label>
+                                <div class="col-sm-8" data-field-id="Descripcion" data-attribute="258746" data-field-name="@Resources.Actividades_del_EventoResources.Descripcion">
+                                    <textarea id="Descripcion" name="Descripcion" class="form-control Datos_Generales" rows="4" cols="50">@Model.Descripcion</textarea>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Descripcion" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divDia">
+                                <label class="col-sm-2 control-label">@Resources.Actividades_del_EventoResources.Dia</label>
+                                <div class="col-sm-8" data-field-id="Dia" data-attribute="258747" data-field-name="@Resources.Actividades_del_EventoResources.Dia">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input class="form-control col-md-12 Datos_Generales" id="Dia"  name="Dia" type="text" value="@Model.Dia">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divHora_inicio">
+                                <label class="col-sm-2 control-label">@Resources.Actividades_del_EventoResources.Hora_inicio</label>
+                                <div class="col-sm-8" data-field-id="Hora_inicio" data-attribute="258748" data-field-name="@Resources.Actividades_del_EventoResources.Hora_inicio">
+                                    <div class='input-group date' id='timePicker'>
+                                        <input class="form-control col-md-12 Datos_Generales" id="Hora_inicio"  name="Hora_inicio" type="text" data-autoclose="true" value="@Model.Hora_inicio">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-time"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divHora_fin">
+                                <label class="col-sm-2 control-label">@Resources.Actividades_del_EventoResources.Hora_fin</label>
+                                <div class="col-sm-8" data-field-id="Hora_fin" data-attribute="258749" data-field-name="@Resources.Actividades_del_EventoResources.Hora_fin">
+                                    <div class='input-group date' id='timePicker'>
+                                        <input class="form-control col-md-12 Datos_Generales" id="Hora_fin"  name="Hora_fin" type="text" data-autoclose="true" value="@Model.Hora_fin">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-time"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divTiene_receso">
+                                <label class="col-sm-2 control-label">@Resources.Actividades_del_EventoResources.Tiene_receso</label>
+                                <div class="col-sm-8" data-field-id="Tiene_receso" data-attribute="258750" data-field-name="@Resources.Actividades_del_EventoResources.Tiene_receso">
+                                    @Html.CheckBoxFor(m => m.Tiene_receso, new { @class = "i-checks Datos_Generales" })
+                                </div>
+                            </div>
+                            <div class="form-group" id="divHora_inicio_receso">
+                                <label class="col-sm-2 control-label">@Resources.Actividades_del_EventoResources.Hora_inicio_receso</label>
+                                <div class="col-sm-8" data-field-id="Hora_inicio_receso" data-attribute="258751" data-field-name="@Resources.Actividades_del_EventoResources.Hora_inicio_receso">
+                                    <div class='input-group date' id='timePicker'>
+                                        <input class="form-control col-md-12 Datos_Generales" id="Hora_inicio_receso"  name="Hora_inicio_receso" type="text" data-autoclose="true" value="@Model.Hora_inicio_receso">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-time"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divHora_fin_receso">
+                                <label class="col-sm-2 control-label">@Resources.Actividades_del_EventoResources.Hora_fin_receso</label>
+                                <div class="col-sm-8" data-field-id="Hora_fin_receso" data-attribute="258752" data-field-name="@Resources.Actividades_del_EventoResources.Hora_fin_receso">
+                                    <div class='input-group date' id='timePicker'>
+                                        <input class="form-control col-md-12 Datos_Generales" id="Hora_fin_receso"  name="Hora_fin_receso" type="text" data-autoclose="true" value="@Model.Hora_fin_receso">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-time"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divUbicacion">
+                                <label class="col-sm-2 control-label">@Resources.Actividades_del_EventoResources.Ubicacion</label>
+                                <div class="col-sm-8" data-field-id="Ubicacion" data-attribute="258753" data-field-name="@Resources.Actividades_del_EventoResources.Ubicacion">
+                                    <select class="form-control Datos_Generales" data-val="true" data-val-number="The field Ubicación must be a number." data-val-required="The Ubicación field is required." id="Ubicacion" name="Ubicacion">
+                                        <option value=""></option>
+                                        @if (varUbicaciones_Eventos_Empresa_Ubicacion != null){ 
+                                            foreach (var itemUbicacion in varUbicaciones_Eventos_Empresa_Ubicacion)
+                                            {
+                                                if (itemUbicacion.Value == Convert.ToString(Model.Ubicacion))
+                                                {
+                                                    <option value="@itemUbicacion.Value" selected>@itemUbicacion.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemUbicacion.Value">@itemUbicacion.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Ubicacion" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 258753).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Ubicaciones_Eventos_Empresa', 'Ubicacion');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divTipo_de_Actividad">
+                                <label class="col-sm-2 control-label">@Resources.Actividades_del_EventoResources.Tipo_de_Actividad</label>
+                                <div class="col-sm-8" data-field-id="Tipo_de_Actividad" data-attribute="258754" data-field-name="@Resources.Actividades_del_EventoResources.Tipo_de_Actividad">
+                                    <select class="form-control Datos_Generales" data-val="true" data-val-number="The field Tipo de Actividad must be a number." data-val-required="The Tipo de Actividad field is required." id="Tipo_de_Actividad" name="Tipo_de_Actividad">
+                                        <option value=""></option>
+                                        @if (varTipos_de_Actividades_Tipo_de_Actividad != null){ 
+                                            foreach (var itemTipo_de_Actividad in varTipos_de_Actividades_Tipo_de_Actividad)
+                                            {
+                                                if (itemTipo_de_Actividad.Value == Convert.ToString(Model.Tipo_de_Actividad))
+                                                {
+                                                    <option value="@itemTipo_de_Actividad.Value" selected>@itemTipo_de_Actividad.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemTipo_de_Actividad.Value">@itemTipo_de_Actividad.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Tipo_de_Actividad" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 258754).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Tipos_de_Actividades', 'Tipo_de_Actividad');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divQuien_imparte">
+                                <label class="col-sm-2 control-label">@Resources.Actividades_del_EventoResources.Quien_imparte</label>
+                                <div class="col-sm-8" data-field-id="Quien_imparte" data-attribute="258755" data-field-name="@Resources.Actividades_del_EventoResources.Quien_imparte">
+                                    <select class="form-control Datos_Generales" data-val="true" data-val-number="The field Quién imparte must be a number." data-val-required="The Quién imparte field is required." id="Quien_imparte" name="Quien_imparte">
+                                        <option value=""></option>
+                                        @if (varSpartan_User_Quien_imparte != null){ 
+                                            foreach (var itemQuien_imparte in varSpartan_User_Quien_imparte)
+                                            {
+                                                if (itemQuien_imparte.Value == Convert.ToString(Model.Quien_imparte))
+                                                {
+                                                    <option value="@itemQuien_imparte.Value" selected>@itemQuien_imparte.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemQuien_imparte.Value">@itemQuien_imparte.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Quien_imparte" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 258755).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Spartan_User', 'Quien_imparte');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divEspecialidad">
+                                <label class="col-sm-2 control-label">@Resources.Actividades_del_EventoResources.Especialidad</label>
+                                <div class="col-sm-8" data-field-id="Especialidad" data-attribute="258756" data-field-name="@Resources.Actividades_del_EventoResources.Especialidad">
+                                    <select class="form-control Datos_Generales" data-val="true" data-val-number="The field Especialidad must be a number." data-val-required="The Especialidad field is required." id="Especialidad" name="Especialidad">
+                                        <option value=""></option>
+                                        @if (varEspecialidades_Especialidad != null){ 
+                                            foreach (var itemEspecialidad in varEspecialidades_Especialidad)
+                                            {
+                                                if (itemEspecialidad.Value == Convert.ToString(Model.Especialidad))
+                                                {
+                                                    <option value="@itemEspecialidad.Value" selected>@itemEspecialidad.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemEspecialidad.Value">@itemEspecialidad.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Especialidad" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 258756).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Especialidades', 'Especialidad');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            <div class="form-group" id="divCupo_limitado">
+                                <label class="col-sm-2 control-label">@Resources.Actividades_del_EventoResources.Cupo_limitado</label>
+                                <div class="col-sm-8" data-field-id="Cupo_limitado" data-attribute="258757" data-field-name="@Resources.Actividades_del_EventoResources.Cupo_limitado">
+                                    @Html.CheckBoxFor(m => m.Cupo_limitado, new { @class = "i-checks Datos_Generales" })
+                                </div>
+                            </div>
+                            <div class="form-group" id="divCupo_maximo">
+                                <label class="col-sm-2 control-label">@Resources.Actividades_del_EventoResources.Cupo_maximo</label>
+                                <div class="col-sm-8" data-field-id="Cupo_maximo" data-attribute="258758" data-field-name="@Resources.Actividades_del_EventoResources.Cupo_maximo">
+                                    <input class="form-control inputNumber Datos_Generales" id="Cupo_maximo" name="Cupo_maximo" type="text" value="@Model.Cupo_maximo">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Cupo_maximo" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divDuracion_maxima_por_Paciente_mins">
+                                <label class="col-sm-2 control-label">@Resources.Actividades_del_EventoResources.Duracion_maxima_por_Paciente_mins</label>
+                                <div class="col-sm-8" data-field-id="Duracion_maxima_por_Paciente_mins" data-attribute="258759" data-field-name="@Resources.Actividades_del_EventoResources.Duracion_maxima_por_Paciente_mins">
+                                    <input class="form-control inputNumber Datos_Generales" id="Duracion_maxima_por_Paciente_mins" name="Duracion_maxima_por_Paciente_mins" type="text" value="@Model.Duracion_maxima_por_Paciente_mins">
+                                    @*<span class="field-validation-valid" data-valmsg-for="Duracion_maxima_por_Paciente_mins" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divEstatus">
+                                <label class="col-sm-2 control-label">@Resources.Actividades_del_EventoResources.Estatus</label>
+                                <div class="col-sm-8" data-field-id="Estatus" data-attribute="258761" data-field-name="@Resources.Actividades_del_EventoResources.Estatus">
+                                    <select class="form-control Datos_Generales" data-val="true" data-val-number="The field Estatus must be a number." data-val-required="The Estatus field is required." id="Estatus" name="Estatus">
+                                        <option value=""></option>
+                                        @if (varEstatus_Actividades_Evento_Estatus != null){ 
+                                            foreach (var itemEstatus in varEstatus_Actividades_Evento_Estatus)
+                                            {
+                                                if (itemEstatus.Value == Convert.ToString(Model.Estatus))
+                                                {
+                                                    <option value="@itemEstatus.Value" selected>@itemEstatus.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemEstatus.Value">@itemEstatus.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Estatus" data-valmsg-replace="true"></span>*@
+                                </div>
+								@if (PermissionHelper.GetRoleObjectPermission(Convert.ToInt32(Spartane.Web.SessionHelper.Role), 0, 0, 258761).New)
+                                {                        
+                                <div class="col-sm-1 abm-icons">
+                                    <a id="Estado_New" onclick="GetCatalogPopup('Estatus_Actividades_Evento', 'Estatus');" href="#"><i class="glyphicon glyphicon-plus"></i></a>
+                                </div>
+                                }
+                            </div>
+                            </div>
+                                </div>
+
+
+                            <div id="tabAgenda" class="tab-pane">
+                                <div class="panel-body">
+                            <div id="divHorarios">
+                            <div class="ibox-title">
+                                <h5>@Resources.Actividades_del_EventoResources.Horarios</h5>
+                                <div class="ibox-tools">
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="">
+									@if (permissionDetalle_Horarios_Actividad.New && !ViewBag.Consult)
+                                    {
+                                        <a onclick="Detalle_Horarios_ActividadfnClickAddRow();" href="javascript:void(0);" title="@Resources.Resources.AddNewRow" class="Detalle_Horarios_ActividadAddRow btn btn-primary">
+                                            <i class="glyphicon glyphicon-plus"></i>
+                                        </a>
+                                    }
+                                    <button onclick="Actividades_del_EventoGetBusinessRule('', 'Al Guardar o al Eliminar una Row', '258815')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Actividades_del_EventoBusinessRule-form">
+                                        <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToCreateGrid">
+                                            <i class="fa fa-cogs fa-spin"></i>
+                                        </a>
+                                    </button>
+									@if (permissionDetalle_Horarios_Actividad.New && !ViewBag.Consult)
+                                    {
+                                        <a onclick="Detalle_Horarios_ActividadfnOpenAddRowPopUp();" data-toggle="modal" title="@Resources.Resources.AddNewRow" data-target="#AddDetalle_Horarios_Actividad-form" data-backdrop="static" data-keyboard="false" class="btn_mrpopup btn btn-primary">
+                                            <i class="glyphicon glyphicon-new-window"></i>
+                                        </a>
+                                    }  
+                                </div>
+
+                                <br />
+
+                                <div style='overflow-x: auto;'>
+                                    <table class="table table-striped table-bordered table-hover childValidateTable" id="Detalle_Horarios_ActividadGrid">
+                                        <thead>
+                                            <tr>
+                                                <th class="ActionHeader"><span>@Resources.Resources.Actions</span></th>
+
+
+                                                <th class="ReservadaHeader"><span>
+<button type="button" data-attribute="258764" data-field-id="Detalle_Horarios_ActividadReservada" data-field-name="@Resources.Detalle_Horarios_ActividadResources.Reservada" data-toggle="modal" data-target="#Actividades_del_EventoBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Horarios_ActividadResources.Reservada">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Horarios_ActividadResources.Reservada</span></th>
+                                                <th class="Numero_de_CitaHeader"><span>
+<button type="button" data-attribute="258765" data-field-id="Detalle_Horarios_ActividadNumero_de_Cita" data-field-name="@Resources.Detalle_Horarios_ActividadResources.Numero_de_Cita" data-toggle="modal" data-target="#Actividades_del_EventoBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Horarios_ActividadResources.Numero_de_Cita">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>
+@Resources.Detalle_Horarios_ActividadResources.Numero_de_Cita</span></th>
+                                                <th class="Hora_inicioHeader"><span>
+<button type="button" data-attribute="258766" data-field-id="Detalle_Horarios_ActividadHora_inicio" data-field-name="@Resources.Detalle_Horarios_ActividadResources.Hora_inicio" data-toggle="modal" data-target="#Actividades_del_EventoBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Horarios_ActividadResources.Hora_inicio">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Horarios_ActividadResources.Hora_inicio</span></th>
+                                                <th class="Hora_finHeader"><span>
+<button type="button" data-attribute="258767" data-field-id="Detalle_Horarios_ActividadHora_fin" data-field-name="@Resources.Detalle_Horarios_ActividadResources.Hora_fin" data-toggle="modal" data-target="#Actividades_del_EventoBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Horarios_ActividadResources.Hora_fin">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Horarios_ActividadResources.Hora_fin</span></th>
+                                                <th class="HorarioHeader"><span>
+<button type="button" data-attribute="258768" data-field-id="Detalle_Horarios_ActividadHorario" data-field-name="@Resources.Detalle_Horarios_ActividadResources.Horario" data-toggle="modal" data-target="#Actividades_del_EventoBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Horarios_ActividadResources.Horario">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Horarios_ActividadResources.Horario</span></th>
+                                                <th class="Codigo_de_ReservacionHeader"><span>
+<button type="button" data-attribute="258769" data-field-id="Detalle_Horarios_ActividadCodigo_de_Reservacion" data-field-name="@Resources.Detalle_Horarios_ActividadResources.Codigo_de_Reservacion" data-toggle="modal" data-target="#Actividades_del_EventoBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Horarios_ActividadResources.Codigo_de_Reservacion">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Horarios_ActividadResources.Codigo_de_Reservacion</span></th>
+                                                <th class="Numero_de_EmpleadoHeader"><span>
+<button type="button" data-attribute="258770" data-field-id="Detalle_Horarios_ActividadNumero_de_Empleado" data-field-name="@Resources.Detalle_Horarios_ActividadResources.Numero_de_Empleado" data-toggle="modal" data-target="#Actividades_del_EventoBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Horarios_ActividadResources.Numero_de_Empleado">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Horarios_ActividadResources.Numero_de_Empleado</span></th>
+                                                <th class="Familiar_del_EmpleadoHeader"><span>
+<button type="button" data-attribute="258771" data-field-id="Detalle_Horarios_ActividadFamiliar_del_Empleado" data-field-name="@Resources.Detalle_Horarios_ActividadResources.Familiar_del_Empleado" data-toggle="modal" data-target="#Actividades_del_EventoBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Horarios_ActividadResources.Familiar_del_Empleado">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Horarios_ActividadResources.Familiar_del_Empleado</span></th>
+                                                <th class="Nombre_CompletoHeader"><span>
+<button type="button" data-attribute="258772" data-field-id="Detalle_Horarios_ActividadNombre_Completo" data-field-name="@Resources.Detalle_Horarios_ActividadResources.Nombre_Completo" data-toggle="modal" data-target="#Actividades_del_EventoBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Horarios_ActividadResources.Nombre_Completo">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Horarios_ActividadResources.Nombre_Completo</span></th>
+                                                <th class="Parentesco_con_el_EmpleadoHeader"><span>
+<button type="button" data-attribute="258773" data-field-id="Detalle_Horarios_ActividadParentesco_con_el_Empleado" data-field-name="@Resources.Detalle_Horarios_ActividadResources.Parentesco_con_el_Empleado" data-toggle="modal" data-target="#Actividades_del_EventoBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Horarios_ActividadResources.Parentesco_con_el_Empleado">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Horarios_ActividadResources.Parentesco_con_el_Empleado</span></th>
+                                                <th class="SexoHeader"><span>
+<button type="button" data-attribute="258774" data-field-id="Detalle_Horarios_ActividadSexo" data-field-name="@Resources.Detalle_Horarios_ActividadResources.Sexo" data-toggle="modal" data-target="#Actividades_del_EventoBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Horarios_ActividadResources.Sexo">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Horarios_ActividadResources.Sexo</span></th>
+                                                <th class="EdadHeader"><span>
+<button type="button" data-attribute="258775" data-field-id="Detalle_Horarios_ActividadEdad" data-field-name="@Resources.Detalle_Horarios_ActividadResources.Edad" data-toggle="modal" data-target="#Actividades_del_EventoBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Horarios_ActividadResources.Edad">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>
+@Resources.Detalle_Horarios_ActividadResources.Edad</span></th>
+                                                <th class="Estatus_de_la_ReservacionHeader"><span>
+<button type="button" data-attribute="258776" data-field-id="Detalle_Horarios_ActividadEstatus_de_la_Reservacion" data-field-name="@Resources.Detalle_Horarios_ActividadResources.Estatus_de_la_Reservacion" data-toggle="modal" data-target="#Actividades_del_EventoBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Horarios_ActividadResources.Estatus_de_la_Reservacion">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Horarios_ActividadResources.Estatus_de_la_Reservacion</span></th>
+                                                <th class="AsistioHeader"><span>
+<button type="button" data-attribute="258777" data-field-id="Detalle_Horarios_ActividadAsistio" data-field-name="@Resources.Detalle_Horarios_ActividadResources.Asistio" data-toggle="modal" data-target="#Actividades_del_EventoBusinessRule-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Detalle_Horarios_ActividadResources.Asistio">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Detalle_Horarios_ActividadResources.Asistio</span></th>
+
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                                </div>
+
+				</div>	
+                    <br />
+                            <div class="form-actions fluid">
+                                <input type="hidden" value="@Model.Folio" id="ReferenceFolio" />
+                                <input type="hidden" value="@Model.Folio" name="Folio" id="FolioId" />
+                                <input type="hidden" value="@ViewBag.Operation" name="Operation" id="Operation" />
+                                @if (!ViewBag.Consult)
+                                {
+                                    <input type="button" value="@Resources.Resources.Guardar" id="Actividades_del_EventoGuardar" class="btn btn-w-m btn-primary btn_save" onclick="return checkClientValidate('Actividades_del_EventoCreateForm');"  />
+									<button onclick="Actividades_del_EventoGetBusinessRule('', 'Al Guardar o al Cerrar la Pantalla', '2')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Actividades_del_EventoBusinessRule-form">
+                                        <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleBeforeSave">
+                                            <i class="fa fa-cogs fa-spin"></i>
+                                        </a>
+                                    </button>                                    
+
+                                    <input type="button" value="@Resources.Resources.GuardarNuevo" id="Actividades_del_EventoGuardarYNuevo" onclick="return checkClientValidate('Actividades_del_EventoCreateForm');" data-bind="    click: saveAndNew" class="btn btn-w-m btn-success btn_saveandnew"  />
+                                    <input type="button" value="@Resources.Resources.GuardarCopia" id="Actividades_del_EventoGuardarYCopia" onclick="return checkClientValidate('Actividades_del_EventoCreateForm');" data-bind="    click: saveAndNew" class="btn btn-w-m btn-success btn_saveandcopy"  />
+                                    if (permission.Configure)
+                                    {
+                                        <a title="@Resources.Resources.Configure" id="ConfigureSave" name="ConfigureSave" onclick="SaveElementAttributes()" class="btn btn-success btn-configure">@Resources.Resources.Configure</a>
+                                    }
+                                }
+
+                                <input type="hidden" id="hdnConfigureType" />
+								<input type="hidden" id="hdnActividades_del_EventoBusinessRuleFieldId" />
+                                <input type="hidden" id="hdnActividades_del_EventoBusinessRuleFieldName" />
+                                <input type="hidden" id="hdnActividades_del_EventoBusinessRuleAttribute" />
+
+                                <input type="button" value="@Resources.Resources.Cancelar" id="Actividades_del_EventoCancelar" name="Actividades_del_EventoCancelar" class="btn btn-danger noConsult btn_cancelar" data-bind="click: cancel" tabindex="16" />
+
+                                <button onclick="Actividades_del_EventoGetBusinessRule('', 'Al Cancelar', '4')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Actividades_del_EventoBusinessRule-form">
+                                    <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+                                        <i class="fa fa-cogs fa-spin"></i>
+                                    </a>
+                                </button>
+                            </div>
+						</div>
+					</div>
+                }
+        </div>
+    </div>
+</div>
+<input id="hdnApplicationDirectory" type="hidden" value="@Url.Content("~/")" />
+
+@section Styles {
+<link href="@Url.Content("~/Content/BootstrapDatePicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+    @Styles.Render("~/plugins/awesomeCheckboxStyles")
+    @Styles.Render("~/plugins/select2Styles")
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+    .select2-results{background-color:#fff;}
+    .select2-container .select2-dropdown{height:auto !important;}
+
+    div.dataTables_info {
+        display: inline-block;
+        float: right;
+    }
+        /*i {
+        font-size: 25px !important;
+        display: block;
+        color: #676a6c;
+        margin-left: 6px;
+        margin-right: 6px;
+    }*/
+
+    .fullWidth {
+        width: 100%;
+    }
+</style>
+}
+
+<script type="text/javascript" src="~/Uploads/Scripts/Actividades_del_Evento.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Scripts/Custom/Actividades_del_EventoGeneral.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/Actividades_del_EventoCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
+
+@section Scripts {
+
+
+    <script type="text/javascript">
+        
+
+
+	function GetTraduction(text) {
+         switch (text.toLowerCase()) {
+            case 'edit':
+                return "@Resources.Resources.Edit";          
+            case 'delete':
+                return "@Resources.Resources.Delete";               
+            case 'required':
+                return "@Resources.Resources.Required";              
+            case 'notrequired':
+                return "@Resources.Resources.NotRequired";           
+            case 'enabled':
+                return "@Resources.Resources.Enabled";         
+            case 'disabled':
+                return "@Resources.Resources.Disabled";           
+            case 'visible':
+                return "@Resources.Resources.Visible";            
+            case 'botvisible':
+                return "@Resources.Resources.InVisible";
+            case 'messagednoinvisible':
+                return "@Resources.Resources.messagedNoInVisible";
+            case 'messagednoreadonly':
+                return "@Resources.Resources.messagedNoReadOnly";
+            case 'defaultvalue':
+                return "@Resources.Resources.DefaultValue";
+            case 'helptext':
+                return "@Resources.Resources.HelpText";                     
+            default:
+                return "";
+        }
+    }
+	
+	    var isPartial = ('@ViewBag.IsPartial' == 'True');
+        var isMR = ('@ViewBag.isMR' == 'True');
+        var nameMR = '@ViewBag.nameMR';
+		var nameAttribute = '@ViewBag.nameAttribute';
+		var Tab_Datos_Generales = true;
+
+		var Tab_Agenda = true;
+
+
+        $(document).ready(function () {
+            $('#ObjectId').val('44436');
+		                 
+
+
+
+
+
+            GetDetalle_Horarios_Actividad_Detalle_Registro_en_Actividad_EventoItem();
+
+
+
+            GetDetalle_Horarios_Actividad_Parentescos_EmpleadosItem();
+            GetDetalle_Horarios_Actividad_SexoItem();
+
+            GetDetalle_Horarios_Actividad_Estatus_Reservaciones_ActividadItem();
+
+           
+              showDetalle_Horarios_ActividadGrid(null);
+
+		   
+			
+             @if(ViewBag.IsNew)
+            { 
+                <text>$('input:checkbox').prop('checked', false);</text>
+            }
+			else
+            {
+                <text>
+				if (Tab_Datos_Generales)
+					Fill_Datos_Generales();
+
+				if (Tab_Agenda)
+					Fill_Agenda();
+
+
+                </text>
+             }
+             EjecutarValidacionesAlComienzo();
+                         $('#Fecha_de_Registro').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            $('#Hora_de_Registro').clockpicker();
+            $('#Dia').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            $('#Hora_inicio').clockpicker();
+            $('#Hora_fin').clockpicker();
+            $('#Hora_inicio_receso').clockpicker();
+            $('#Hora_fin_receso').clockpicker();
+
+
+            initiateUIControls();
+			$('a').tooltip();
+			$('.loading').css('display', 'none');
+			
+
+        });
+
+        var Detalle_Horarios_ActividadinsertRowCurrentIndex = -1;
+        var Detalle_Horarios_ActividadDataDataTable;
+        function getDetalle_Horarios_ActividadData() {
+            $.ajax({
+                url: "@Url.Content("~/Frontal/Actividades_del_Evento/GetDetalle_Horarios_Actividad")" + "?draw=1&start=1&length=2147483647" + ($("#ReferenceFolio").val() != "" ? "&RelationId=" + $("#ReferenceFolio").val() : ""),
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                    Detalle_Horarios_ActividadDataDataTable = result.data;
+                    showDetalle_Horarios_ActividadGrid(result.data);
+                    $('#Detalle_Horarios_ActividadGrid .inputMoney').inputmask("currency", { prefix: "$", rightAlign: false });
+                    $('#Detalle_Horarios_ActividadGrid .gridDatePicker').attr("readonly", "");
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+        function Detalle_Horarios_ActividadGetUpdateRowControls(data, nameOfTable, rowIndex) {
+
+            var columnData = [];
+            var counter = 0;
+            var inputData = "<input type='text' class='fullWidth form-control' />";
+
+              columnData[counter++] = $($($.parseHTML(GetGridCheckBox())).prop('checked', (data.Reservada=="true" || data.Reservada==true)? 'checked': ''? 'checked': '')).addClass('Reservada').attr('id', nameOfTable + 'Reservada' + rowIndex).attr('data-field', 'Reservada');
+            columnData[counter++] = $($($.parseHTML(inputData)).val(data.Numero_de_Cita)).addClass('Numero_de_Cita inputNumber').attr('id', nameOfTable + 'Numero_de_Cita' + rowIndex).attr('data-field', 'Numero_de_Cita');
+            columnData[counter++] = $($($.parseHTML(GetGridTimePicker())).val(data.Hora_inicio)).addClass('Hora_inicio').attr('id', nameOfTable + 'Hora_inicio' + rowIndex).attr('data-field', 'Hora_inicio');
+            columnData[counter++] = $($($.parseHTML(GetGridTimePicker())).val(data.Hora_fin)).addClass('Hora_fin').attr('id', nameOfTable + 'Hora_fin' + rowIndex).attr('data-field', 'Hora_fin');
+            columnData[counter++] = $($($.parseHTML(inputData)).val(data.Horario)).addClass('Horario').attr('id', nameOfTable + 'Horario' + rowIndex).attr('data-field', 'Horario');
+           columnData[counter++] = $($(GetDetalle_Horarios_Actividad_Detalle_Registro_en_Actividad_EventoDropDown()).val(data.Codigo_de_Reservacion)).addClass('Codigo_de_Reservacion inputNumber').attr('id', nameOfTable + 'Codigo_de_Reservacion' + rowIndex).attr('data-field', 'Codigo_de_Reservacion').after($.parseHTML(addNew('Detalle_Horarios_Actividad', 'Detalle_Registro_en_Actividad_Evento','Codigo_de_Reservacion', 258769)));
+            columnData[counter++] = $($($.parseHTML(inputData)).val(data.Numero_de_Empleado)).addClass('Numero_de_Empleado').attr('id', nameOfTable + 'Numero_de_Empleado' + rowIndex).attr('data-field', 'Numero_de_Empleado');
+              columnData[counter++] = $($($.parseHTML(GetGridCheckBox())).prop('checked', (data.Familiar_del_Empleado=="true" || data.Familiar_del_Empleado==true)? 'checked': ''? 'checked': '')).addClass('Familiar_del_Empleado').attr('id', nameOfTable + 'Familiar_del_Empleado' + rowIndex).attr('data-field', 'Familiar_del_Empleado');
+            columnData[counter++] = $($($.parseHTML(inputData)).val(data.Nombre_Completo)).addClass('Nombre_Completo').attr('id', nameOfTable + 'Nombre_Completo' + rowIndex).attr('data-field', 'Nombre_Completo');
+           columnData[counter++] = $($(GetDetalle_Horarios_Actividad_Parentescos_EmpleadosDropDown()).val(data.Parentesco_con_el_Empleado)).addClass('Parentesco_con_el_Empleado inputNumber').attr('id', nameOfTable + 'Parentesco_con_el_Empleado' + rowIndex).attr('data-field', 'Parentesco_con_el_Empleado').after($.parseHTML(addNew('Detalle_Horarios_Actividad', 'Parentescos_Empleados','Parentesco_con_el_Empleado', 258773)));
+           columnData[counter++] = $($(GetDetalle_Horarios_Actividad_SexoDropDown()).val(data.Sexo)).addClass('Sexo inputNumber').attr('id', nameOfTable + 'Sexo' + rowIndex).attr('data-field', 'Sexo').after($.parseHTML(addNew('Detalle_Horarios_Actividad', 'Sexo','Sexo', 258774)));
+            columnData[counter++] = $($($.parseHTML(inputData)).val(data.Edad)).addClass('Edad inputNumber').attr('id', nameOfTable + 'Edad' + rowIndex).attr('data-field', 'Edad');
+           columnData[counter++] = $($(GetDetalle_Horarios_Actividad_Estatus_Reservaciones_ActividadDropDown()).val(data.Estatus_de_la_Reservacion)).addClass('Estatus_de_la_Reservacion inputNumber').attr('id', nameOfTable + 'Estatus_de_la_Reservacion' + rowIndex).attr('data-field', 'Estatus_de_la_Reservacion').after($.parseHTML(addNew('Detalle_Horarios_Actividad', 'Estatus_Reservaciones_Actividad','Estatus_de_la_Reservacion', 258776)));
+              columnData[counter++] = $($($.parseHTML(GetGridCheckBox())).prop('checked', (data.Asistio=="true" || data.Asistio==true)? 'checked': ''? 'checked': '')).addClass('Asistio').attr('id', nameOfTable + 'Asistio' + rowIndex).attr('data-field', 'Asistio');
+
+            return columnData;
+        }
+
+
+
+        function GetFileInfo(fileData, fileUploadData) {
+
+            var $div = $("<div>");
+            if (fileUploadData != null && fileUploadData.files.length > 0) {
+
+                $div.append("<label>" + fileUploadData.files[0].name + "</label>");
+                //<i class="fa fa-times-circle" id='removeFileAttachment'>
+                $div.append($("<i class='fa fa-times-circle' id='removeFileAttachment'>").click(function () {
+                    if (confirm(htmlDecode("@Resources.Resources.DeleteConfirm"))) {
+                        var parent = $(this).parent().parent();
+                        parent.empty();
+                        parent.append("<input type='file'>");
+                    }
+                }));
+                return $div;
+
+            } else if (fileUploadData != null) {
+                return $.parseHTML(GetFileUploader());
+            } else {
+                $div.append("<label>" + fileData.FileName + "</label>");
+                $div.append($("<i class='fa fa-times-circle' id='removeFileAttachment'>").click(function () {
+                    if (confirm(htmlDecode("@Resources.Resources.DeleteConfirm"))) {
+                        var parent = $(this).parent().parent();
+                        parent.empty();
+                        parent.append("<input type='file'>");
+                    }
+                }));
+                return $div;
+            }
+        }
+
+        var removedDetalle_Horarios_ActividadData = [];
+        function Detalle_Horarios_ActividadDeleteRow(rowIndex, row) {
+            var rowIndexTable = Detalle_Horarios_ActividadTable.fnGetPosition($(row).parent().parent()[0]);
+            var permission = {            
+                 Delete: '@permissionDetalle_Horarios_Actividad.Delete' == 'True'
+            };
+            if (!permission.Delete || isConsultMode)
+                return;            
+            if (confirm(htmlDecode("@Resources.Resources.DeleteConfirm"))) {
+              if (EjecutarValidacionesAlEliminarMRDetalle_Horarios_Actividad('Detalle_Horarios_Actividad_', '_' + rowIndex)) {
+                var prevData = Detalle_Horarios_ActividadTable.fnGetData(rowIndexTable );
+                removedDetalle_Horarios_ActividadData.push(prevData);
+                Detalle_Horarios_ActividadTable.fnDeleteRow(rowIndexTable );
+				showDetalle_Horarios_ActividadGrid(Detalle_Horarios_ActividadTable.fnGetData());
+              }
+            }
+			initiateUIControls();
+        }
+
+        function Detalle_Horarios_ActividadrowCreationGrid(row, data, index) {
+            var permission =  {            
+                 Edit: '@permissionDetalle_Horarios_Actividad.Edit' == 'True',
+                 Delete: '@permissionDetalle_Horarios_Actividad.Delete' == 'True'
+            };
+            setDetalle_Horarios_ActividadValidation();
+            var Detalle_Horarios_ActividadRowElement = "Detalle_Horarios_Actividad_" + index.toString();
+            $(row).addClass(Detalle_Horarios_ActividadRowElement);
+            var nameOfTable='Detalle_Horarios_Actividad_';
+            var rowIndex = '_' + index;
+            Detalle_Horarios_ActividadinsertRowCurrentIndex = index;
+
+            row.innerHTML = "";
+
+            if (data.IsInsertRow) {
+
+                if (row.childNodes.length != 0) {
+                    for (var i = 0; i < row.childNodes.length; i++) {
+                        row.childNodes[i].remove();
+                    }
+                }
+                var controls = GetInsertDetalle_Horarios_ActividadRowControls(index);
+                var actionColInsert = $('<td>');
+
+                var abc = "if(dynamicFieldValidation('" + Detalle_Horarios_ActividadRowElement + "')){ Detalle_Horarios_ActividadInsertRow(" + index + "); }";
+                var insertRowHTML = '<a  data-toggle="tooltip" title="Confirmar Registro" onclick="' + abc + '">';
+                $('<i class="fa fa-check">').appendTo($(insertRowHTML).appendTo(actionColInsert));
+				$('<i class="fa fa-times">').appendTo($("<a data-toggle='tooltip' title='Cancelar Registro' onclick='Detalle_Horarios_ActividadCancelRow(" + index + ")'>").appendTo(actionColInsert));
+                actionColInsert.appendTo(row);
+
+                for (i = 0; i < controls.length; i++) {
+					var idHeader = $(controls[i]).data('field') + 'Header';
+					if($(controls[i]).length > 1){
+						idHeader = $($(controls[i])[1]).data('field') + 'Header';
+					}					
+
+					var classe = ($('#Detalle_Horarios_ActividadGrid .' + idHeader).hasClass('dt-right') ? "dt-right" : "") + $('#Detalle_Horarios_ActividadGrid .' + idHeader ).css('display') == 'none' ? " hide" : "";
+				   
+					if ($(controls[i]).next().length > 0) {
+					    var div = $(controls[i]).next();
+					    $('<td class="' + classe + '">').append($(controls[i])).append(div).appendTo(row);
+					}else
+					    $(controls[i]).appendTo($('<td class="' + classe + '">').appendTo(row));
+					
+                }
+                $('#Detalle_Horarios_ActividadGrid .inputMoney').inputmask("currency", { prefix: "$", rightAlign: false });
+                $('#Detalle_Horarios_ActividadGrid .gridDatePicker').attr("readonly", "");
+                return;
+            }
+
+            var actionCol = $('<td>');
+			var edit = "<a title='@Resources.Resources.Edit' class='edit-MR' onclick='Detalle_Horarios_ActividadEditRow(" + index + ", this)'>";
+            if (!permission.Edit || isConsultMode)
+                edit = "";
+            var editPopUp = "<a title='@Resources.Resources.Edit' class='edit-popup-MR' data-toggle='modal' data-target='#AddDetalle_Horarios_Actividad-form' onclick='Detalle_Horarios_ActividadEditRowPopup(" + index + ", this)'>";
+            if (!permission.Edit || isConsultMode)
+                editPopUp = "";
+            var eliminar = "<a title='@Resources.Resources.Delete' class='eliminar-MR' onclick='Detalle_Horarios_ActividadDeleteRow(" + index + ", this)'>";
+            if (!permission.Delete || isConsultMode)
+                eliminar = "";
+            $('<i class="fa fa-pencil">').appendTo($(edit).appendTo(actionCol));
+            //$('<i class="fa fa-edit">').appendTo($(editPopUp).appendTo(actionCol));
+            $('<i class="fa fa-trash-o">').appendTo($(eliminar).appendTo(actionCol));
+			if ($('.Action' + 'Header').css('display') != 'none')
+				actionCol.appendTo(row);
+
+            if ($('.Reservada' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Reservada'+rowIndex+'">').text(data.Reservada).appendTo(row);
+            else
+                $('<td style="display:none;" id="'+nameOfTable+'Reservada'+rowIndex+'">').text(data.Reservada).appendTo(row);
+            if ($('.Numero_de_Cita' + 'Header').css('display') != 'none')
+                $('<td class="dt-right"  id="'+nameOfTable+'Numero_de_Cita'+rowIndex+'">').text(data.Numero_de_Cita).appendTo(row);
+            else 
+                 $('<td class="dt-right" style="display:none;"  id="'+nameOfTable+'Numero_de_Cita'+rowIndex+'">').text(data.Numero_de_Cita).appendTo(row);
+            if ($('.Hora_inicio' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Hora_inicio'+rowIndex+'">').text(data.Hora_inicio).appendTo(row);
+            else
+                $('<td style="display:none;" id="'+nameOfTable+'Hora_inicio'+rowIndex+'">').text(data.Hora_inicio).appendTo(row);
+            if ($('.Hora_fin' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Hora_fin'+rowIndex+'">').text(data.Hora_fin).appendTo(row);
+            else
+                $('<td style="display:none;" id="'+nameOfTable+'Hora_fin'+rowIndex+'">').text(data.Hora_fin).appendTo(row);
+            if ($('.Horario' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Horario'+rowIndex+'">').text(data.Horario).appendTo(row);
+            else 
+                $('<td style="display:none;" id="'+nameOfTable+'Horario'+rowIndex+'">').text(data.Horario).appendTo(row);
+            if ($('.Codigo_de_Reservacion' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Codigo_de_Reservacion'+rowIndex+'">').text(GetDetalle_Horarios_Actividad_Detalle_Registro_en_Actividad_EventoName(data.Codigo_de_Reservacion)).appendTo(row);
+	    else 
+		$('<td style="display:none;" id="'+nameOfTable+'Codigo_de_Reservacion'+rowIndex+'">').text(GetDetalle_Horarios_Actividad_Detalle_Registro_en_Actividad_EventoName(data.Codigo_de_Reservacion)).appendTo(row);
+            if ($('.Numero_de_Empleado' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Numero_de_Empleado'+rowIndex+'">').text(data.Numero_de_Empleado).appendTo(row);
+            else 
+                $('<td style="display:none;" id="'+nameOfTable+'Numero_de_Empleado'+rowIndex+'">').text(data.Numero_de_Empleado).appendTo(row);
+            if ($('.Familiar_del_Empleado' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Familiar_del_Empleado'+rowIndex+'">').text(data.Familiar_del_Empleado).appendTo(row);
+            else
+                $('<td style="display:none;" id="'+nameOfTable+'Familiar_del_Empleado'+rowIndex+'">').text(data.Familiar_del_Empleado).appendTo(row);
+            if ($('.Nombre_Completo' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Nombre_Completo'+rowIndex+'">').text(data.Nombre_Completo).appendTo(row);
+            else 
+                $('<td style="display:none;" id="'+nameOfTable+'Nombre_Completo'+rowIndex+'">').text(data.Nombre_Completo).appendTo(row);
+            if ($('.Parentesco_con_el_Empleado' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Parentesco_con_el_Empleado'+rowIndex+'">').text(GetDetalle_Horarios_Actividad_Parentescos_EmpleadosName(data.Parentesco_con_el_Empleado)).appendTo(row);
+	    else 
+		$('<td style="display:none;" id="'+nameOfTable+'Parentesco_con_el_Empleado'+rowIndex+'">').text(GetDetalle_Horarios_Actividad_Parentescos_EmpleadosName(data.Parentesco_con_el_Empleado)).appendTo(row);
+            if ($('.Sexo' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Sexo'+rowIndex+'">').text(GetDetalle_Horarios_Actividad_SexoName(data.Sexo)).appendTo(row);
+	    else 
+		$('<td style="display:none;" id="'+nameOfTable+'Sexo'+rowIndex+'">').text(GetDetalle_Horarios_Actividad_SexoName(data.Sexo)).appendTo(row);
+            if ($('.Edad' + 'Header').css('display') != 'none')
+                $('<td class="dt-right"  id="'+nameOfTable+'Edad'+rowIndex+'">').text(data.Edad).appendTo(row);
+            else 
+                 $('<td class="dt-right" style="display:none;"  id="'+nameOfTable+'Edad'+rowIndex+'">').text(data.Edad).appendTo(row);
+            if ($('.Estatus_de_la_Reservacion' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Estatus_de_la_Reservacion'+rowIndex+'">').text(GetDetalle_Horarios_Actividad_Estatus_Reservaciones_ActividadName(data.Estatus_de_la_Reservacion)).appendTo(row);
+	    else 
+		$('<td style="display:none;" id="'+nameOfTable+'Estatus_de_la_Reservacion'+rowIndex+'">').text(GetDetalle_Horarios_Actividad_Estatus_Reservaciones_ActividadName(data.Estatus_de_la_Reservacion)).appendTo(row);
+            if ($('.Asistio' + 'Header').css('display') != 'none')
+                $('<td id="'+nameOfTable+'Asistio'+rowIndex+'">').text(data.Asistio).appendTo(row);
+            else
+                $('<td style="display:none;" id="'+nameOfTable+'Asistio'+rowIndex+'">').text(data.Asistio).appendTo(row);
+
+        }
+
+        var Detalle_Horarios_ActividadTable;
+        function showDetalle_Horarios_ActividadGrid(dataSet) {
+            //removedDetalle_Horarios_ActividadData = [];
+            Detalle_Horarios_ActividadTable = $('#Detalle_Horarios_ActividadGrid').dataTable({
+                dom: '<"html5buttons"B>lTgitp',
+                buttons: [
+                ],
+                "createdRow": Detalle_Horarios_ActividadrowCreationGrid,
+                "lengthMenu": [[5, 10, 20, 50, -1], [5, 10, 20, 50, "All"]],
+                data: dataSet,
+                "columns": [
+                    { "data": null, 'visible': true, "orderable": false },
+
+                    { "data": "Reservada", "orderable": false },
+                    { "data": "Numero_de_Cita", "className": "dt-right", "orderable": false },
+                    { "data": "Hora_inicio", "orderable": false },
+                    { "data": "Hora_fin", "orderable": false },
+                    { "data": "Horario", "orderable": false },
+                    { "data": "Codigo_de_Reservacion", "orderable": false },
+                    { "data": "Numero_de_Empleado", "orderable": false },
+                    { "data": "Familiar_del_Empleado", "orderable": false },
+                    { "data": "Nombre_Completo", "orderable": false },
+                    { "data": "Parentesco_con_el_Empleado", "orderable": false },
+                    { "data": "Sexo", "orderable": false },
+                    { "data": "Edad", "className": "dt-right", "orderable": false },
+                    { "data": "Estatus_de_la_Reservacion", "orderable": false },
+                    { "data": "Asistio", "orderable": false },
+
+                ],
+                "order": [[0, "asc"]],
+                "language": {
+                    "lengthMenu": "@Resources.Resources.Display" + " _MENU_ " + "@Resources.Resources.RecordsPerPage",
+                    "zeroRecords": "@Resources.Resources.NothingFound",
+                    "info": "@Resources.Resources.ShowingPages" + " _PAGE_ " + "@Resources.Resources.of" + " _PAGES_",
+                    "infoEmpty": "@Resources.Resources.NoRecords",
+                    "infoFiltered": "(" + "@Resources.Resources.FilteredFrom" + " _MAX_ " + "@Resources.Resources.TotalRecords" + ")",
+                    "sSearch": "@Resources.Resources.Search",
+                    "paginate": {
+                        "previous": "@Resources.Resources.Previous",
+                        "next": "@Resources.Resources.Next"
+                    }
+                },
+				"bDestroy": true,
+                "fnDrawCallback": function (settings) {
+                    setDetalle_Horarios_ActividadValidation();
+                }
+            }).on('init.dt', function (e, data) {
+                $('a').tooltip();
+            }).on('draw.dt', function () {
+                $('#Detalle_Horarios_ActividadGrid .inputMoney').inputmask("currency", { prefix: "$", rightAlign: false });
+                $('.gridDatePicker').inputmask("99-99-9999", { "placeholder": "dd-mm-yyyy" });
+            });
+        }
+
+
+
+
+
+
+
+    var Detalle_Horarios_Actividad_Detalle_Registro_en_Actividad_EventoItems;
+        function GetDetalle_Horarios_Actividad_Detalle_Registro_en_Actividad_EventoItem() {
+            Detalle_Horarios_Actividad_Detalle_Registro_en_Actividad_EventoItems = null;
+            var ajaxUrl = "@Url.Content("~/Frontal/Actividades_del_Evento/GetDetalle_Horarios_Actividad_Detalle_Registro_en_Actividad_EventoAll")";
+            $.ajax({
+                url: ajaxUrl,
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                global: false,
+                success: function (result) {
+                    Detalle_Horarios_Actividad_Detalle_Registro_en_Actividad_EventoItems = result;
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+
+
+
+    var Detalle_Horarios_Actividad_Parentescos_EmpleadosItems;
+        function GetDetalle_Horarios_Actividad_Parentescos_EmpleadosItem() {
+            Detalle_Horarios_Actividad_Parentescos_EmpleadosItems = null;
+            var ajaxUrl = "@Url.Content("~/Frontal/Actividades_del_Evento/GetDetalle_Horarios_Actividad_Parentescos_EmpleadosAll")";
+            $.ajax({
+                url: ajaxUrl,
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                global: false,
+                success: function (result) {
+                    Detalle_Horarios_Actividad_Parentescos_EmpleadosItems = result;
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+    var Detalle_Horarios_Actividad_SexoItems;
+        function GetDetalle_Horarios_Actividad_SexoItem() {
+            Detalle_Horarios_Actividad_SexoItems = null;
+            var ajaxUrl = "@Url.Content("~/Frontal/Actividades_del_Evento/GetDetalle_Horarios_Actividad_SexoAll")";
+            $.ajax({
+                url: ajaxUrl,
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                global: false,
+                success: function (result) {
+                    Detalle_Horarios_Actividad_SexoItems = result;
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+
+    var Detalle_Horarios_Actividad_Estatus_Reservaciones_ActividadItems;
+        function GetDetalle_Horarios_Actividad_Estatus_Reservaciones_ActividadItem() {
+            Detalle_Horarios_Actividad_Estatus_Reservaciones_ActividadItems = null;
+            var ajaxUrl = "@Url.Content("~/Frontal/Actividades_del_Evento/GetDetalle_Horarios_Actividad_Estatus_Reservaciones_ActividadAll")";
+            $.ajax({
+                url: ajaxUrl,
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                global: false,
+                success: function (result) {
+                    Detalle_Horarios_Actividad_Estatus_Reservaciones_ActividadItems = result;
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+
+
+        var Detalle_Horarios_ActividadData = [];
+        var Detalle_Horarios_ActividaddeletedItem = [];
+        var Detalle_Horarios_ActividadDataMain = [];
+        var Detalle_Horarios_ActividadDataMainPages = [];
+        var Detalle_Horarios_ActividadnewItemCount = 0;
+        var Detalle_Horarios_ActividadmaxItemIndex = 0;
+        var Detalle_Horarios_ActividadDataMainInitialized = false;
+
+        function SendDetalle_Horarios_Actividad(callBack, FolioId) {
+            Detalle_Horarios_ActividadData = GetDetalle_Horarios_ActividadFromDataTable();
+
+            if (Detalle_Horarios_ActividadData.length > 0 || $("#ReferenceFolio").val() != FolioId) {
+                if ($("#ReferenceFolio").val() != "0" && FolioId ==null)
+                    FolioId = $("#ReferenceFolio").val();                
+                if ($("#ReferenceFolio").val() == '')
+                    $("#ReferenceFolio").val('0');
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Actividades_del_Evento/PostDetalle_Horarios_Actividad?MasterId=")' + FolioId + "&referenceId=" + $("#ReferenceFolio").val(),
+                    type: 'POST',
+                    data: GetDetalle_Horarios_Actividad(),
+                    async: true,
+                    success: function (result) {
+
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            } else {
+                //showNotification("@Resources.Resources.SaveSuccess", "success");
+                //callBack(FolioId);
+            }
+            return true;
+        }
+
+        function GetAddDetalle_Horarios_ActividadPopup(currentRowIndex, mode, id) {
+
+            $.ajax({
+                url: "@Url.Action("AddDetalle_Horarios_Actividad", "Detalle_Horarios_Actividad")",
+                type: "GET",
+                async: false,
+                data: { rowIndex: currentRowIndex, functionMode: mode, id: id },
+                success: function (data) {
+                    $(".AddDetalle_Horarios_ActividadModal").html(data);
+                },
+                error: function () {
+
+                }
+            });
+
+            @*$.get('@Url.Action("AddDetalle_Horarios_Actividad", "Detalle_Horarios_Actividad")', { rowIndex: currentRowIndex }, function (data) {
+                $(".AddDetalle_Horarios_ActividadModal").html(data);
+            });*@
+        }
+
+        function ShowMessagePendingRowDetalle_Horarios_Actividad()
+        {
+            //alert('@Html.Raw(string.Format(Resources.Resources.PendingRow, "Horarios"))')
+	    showNotification('@Html.Raw(string.Format(Resources.Resources.PendingRow, "Horarios"))', "warning");
+        }
+
+
+        function initiateUIControls() {
+             $('.gridDatePicker').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "@ConfigurationProperty.DateFormatDatePicker"
+            });
+            //Time Picker
+            $('.gridTimePicker').clockpicker();
+            $('.inputMoney').inputmask("currency", { greedy: false, prefix: "", rightAlign: false });
+			$('td.inputMoney').inputmask("currency", { greedy: false, prefix: "$ ", rightAlign: false });
+			$('td input.inputMoney').inputmask("currency", { greedy: false, prefix: "$ ", rightAlign: false });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+
+    </script>
+
+<script type="text/javascript">
+
+
+   function GetCatalogPopup(catalog, nameAttribute, isMR, nameMR) {
+        if (!isMR)
+            var url = "@Url.Action("Create", "Catalog", new { Module_Id = "1", isPartial = true, nameAttribute = "AttributoNombre" })";
+        else
+            var url = "@Url.Action("Create", "Catalog", new { Module_Id = "1", isPartial = true, isMR = true, nameMR = "Multirenglon",nameAttribute= "AttributoNombre" })";
+
+        url = url.replace("Catalog", catalog).replace("Multirenglon", nameMR).replace("AttributoNombre", nameAttribute);
+
+        window.open(htmlDecode(url), '_blank', 'left=200,top=100,width=850,height=550,toolbar=0,resizable=0');
+    }
+
+    function RefreshCatalog(catalog, control) {
+
+	 if ($('#' + control).hasClass('AutoComplete'))   {
+		   if ($('#' + control).attr("data-isfilter") == "true") {
+				eval(GetReglaFilter(control, $('#ObjectId').val()));
+				return;
+			}
+		}
+			
+			var url = '@Url.Content("~/Frontal/Actividades_del_Evento/GetCatalogAll")';
+			url = url.replace(/Catalog/g, catalog);
+
+			$.ajax({
+				url: url,
+				async: true,
+				success:function(result)
+				{
+					addItemsToSelect($('#' + control), result);
+				},
+				error: function (result)
+				{
+					showNotification("@Resources.Resources.ErrorContactingServer", "error");
+				}
+			});
+		
+    }
+
+
+        function SendActividades_del_EventoData(callBack) {
+			
+					
+		 var arr = []; 
+		 $("form#CreateActividades_del_Evento").find(':input').each(function( index ) {		 
+			if ($(this).prop('disabled')==true|| $(this).prop('disabled')=="disabled")
+			{		
+				arr.push($(this).attr('id')); 
+				$(this).prop('disabled', false);  	
+			}
+	    });
+		
+             var formData = new FormData($("form#CreateActividades_del_Evento")[0]);
+			$.each( arr, function( key, value ) {
+			  $('#' +value).prop('disabled', true);
+			});
+			var id = $("#ReferenceFolio").val();
+            var isNew = $('#hdnIsNew').val();
+           
+			if (Tab_Datos_Generales && !checkClientValidate('Actividades_del_EventoCreateForm', 'Datos_Generales')) {
+				return false;
+			}						
+
+			if (Tab_Agenda && !checkClientValidate('Actividades_del_EventoCreateForm', 'Agenda')) {
+				return false;
+			}						
+
+
+			
+			if (isNew == "True")
+            {
+                id = CreateID();
+            }
+			
+			
+			if (Tab_Datos_Generales)
+				Save_Datos_Generales(id);
+
+			if (Tab_Agenda)
+				Save_Agenda(id);
+
+
+			showNotification("@Resources.Resources.SaveSuccess", "success");
+			callBack(id);
+            return true;
+        };
+		function CreateID()
+		{
+			var newId = 0;
+			$.ajax({
+				url: '@Url.Content("~/Frontal/Actividades_del_Evento/CreateID")',
+				type: 'GET',
+				async: false,
+				success: function (result) {
+					if (result < 0) {
+						showNotification("@Resources.Resources.ErrorSave", "error");
+					} else {
+						newId = result;
+					}
+				},
+				error: function (result) {
+					showNotification("@Resources.Resources.ErrorContactingServer", "error");
+				},
+				cache: false,
+				contentType: false,
+				processData: false
+			});
+			return newId;
+		}
+		
+		function OpenRules()
+		{
+			$.get('@Url.Action("Index", "Business_Rule_Creation")', {}, function (data) {
+				$(".Actividades_del_EventoBusinessRuleModal").html(data);
+			});
+		}
+                function Actividades_del_EventoGetBusinessRule(FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null)
+			{
+			        $('#FieldId').val(FieldId);
+				$('#FieldName').val(FieldName);
+				$('#Attribute').val(Attribute);
+			}
+			$('#ObjectId').val('44436');
+			$('#Screen').val('Actividades_del_Evento');
+			OpenRules();
+               }
+
+    var permission = {
+        Consult: '@permission.Consult' == 'True',
+        New: '@permission.New' == 'True',
+        Edit: '@permission.Edit' == 'True',
+        Delete: '@permission.Delete' == 'True',
+        Export: '@permission.Export' == 'True',
+        Print: '@permission.Print' == 'True',
+        Configure: '@permission.Configure' == 'True',
+    };
+
+    
+    //MR-var statusItems;
+    //MR-var stateItems;
+    //MR-var cityItems = [];
+    var isConsultMode = "@ViewBag.Consult" == "True";
+    Consult(isConsultMode);
+        function Consult(val) {
+            if (val) {
+                $(':input').attr('readonly', 'readonly');
+                $(':input').attr('disabled', 'true');
+                $('.noConsult').removeAttr('readonly');
+                $('.noConsult').removeAttr('disabled');
+            }
+        }
+
+    function Actividades_del_EventoBackToGrid() {
+        		if (isPartial)
+			window.close('', '_parent', '');
+        else
+			location.href = "@Url.Content("~/Frontal/Actividades_del_Evento/")";
+    }
+	
+	function ReadScriptSettings(callback)
+    {
+        $.post("@Url.Content("~/Frontal/Actividades_del_Evento/ReadScriptSettings")", function (data) {
+            mainElementObject = JSON.parse(data.MainElement);
+			if (data.ChildElement != null) {
+                childElementObject = JSON.parse(data.ChildElement);
+            }
+            callback();
+        });
+    }
+
+    function SaveSettingsWithoutReload() {
+        $.post("@Url.Content("~/Frontal/Actividades_del_Evento/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+            //$('#hdnConfigureType').val("0");
+        }, "json");
+    }
+	
+        function SaveElementAttributes() {
+            if ($('#hdnConfigureType').val() == "1") {
+                $.post("@Url.Content("~/Frontal/Actividades_del_Evento/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+                    $('#hdnConfigureType').val("0");
+                    location.reload(true);
+                }, "json");
+            } else {
+                $.post("@Url.Content("~/Frontal/Actividades_del_Evento/ReadScriptSettings")", function (data) {
+                    mainElementObject = JSON.parse(data.MainElement);
+                    childElementObject = JSON.parse(data.ChildElement);
+
+                    for (var i = 0; i < mainElementObject.length; i++) {
+							var mainElementAttributes = '<div class="col-sm-2">';
+							mainElementAttributes += '<div class="displayAttributes requiredAttribute"><a class="requiredClick" title="' + (mainElementObject[i].IsRequired == true ? "@Resources.Resources.Required" : "@Resources.Resources.NotRequired") + '" onclick="setRequired(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsRequired == true ? "@Url.Content("~/Images/Required.png")" : "@Url.Content("~/Images/Not-Required.png")") + '" alt="" /></a></div>';
+							mainElementAttributes += '<div class="displayAttributes visibleAttribute"><a class="visibleClick" title="' + (mainElementObject[i].IsVisible == true ? "@Resources.Resources.Visible" : "@Resources.Resources.InVisible") + '" onclick="setVisible(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsVisible == true ? "@Url.Content("~/Images/Visible.png")" : "@Url.Content("~/Images/InVisible.png")") + '" alt="" /></a></div>';
+							mainElementAttributes += '<div class="displayAttributes readOnlyAttribute"><a class="readOnlyClick" title="' + (mainElementObject[i].IsReadOnly == true ? "@Resources.Resources.Disabled" : "@Resources.Resources.Enabled") + '" onclick="setReadOnly(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsReadOnly == true ? "@Url.Content("~/Images/Disabled.png")" : "@Url.Content("~/Images/Enabled.png")") + '" alt="" /></a></div>';
+							mainElementAttributes += '<div class="displayAttributes defaultValueAttribute"><a id="hlDefaultValue_' + i.toString() + '" class="defaultValueClick" title="' + (mainElementObject[i].DefaultValue) + '" onclick="setDefaultValue(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].DefaultValue != '' && mainElementObject[i].DefaultValue != null ? "@Url.Content("~/Images/default-value.png")" : "@Url.Content("~/Images/Not-Default-Value.png")") + '" alt="" /></a></div>';
+							mainElementAttributes += '<div class="displayAttributes helpTextAttribute"><a id="hlHelpText_' + i.toString() + '" class="helpTextClick" title="' + (mainElementObject[i].HelpText) + '" onclick="setHelpText(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].HelpText != '' && mainElementObject[i].HelpText != null ? "@Url.Content("~/Images/green-help.png")" : "@Url.Content("~/Images/red-help.jpg")") + '" alt="" /></a></div>';
+							mainElementAttributes += '</div>';
+							$('#' + mainElementObject[i].inputId).parent().closest('.form-group').show();
+
+							$('#' + mainElementObject[i].inputId).closest('.col-sm-8').after(mainElementAttributes);
+                  }
+					 if (childElementObject != null) {
+                        for (var j = 0; j < childElementObject.length; j++) {
+                            var table = childElementObject[j].table.trim();
+                            var grid = '#' + table + 'Grid';
+                            $(grid).find("thead").find("tr").find("th").each(function () {
+                                for (var i = 0; i < childElementObject[j].elements.length; i++) {
+                                    if ($(this).hasClass(childElementObject[j].elements[i].inputId + 'Header')) {
+                                        $(this).show();
+                                        $(this).parent().show();
+                                        $(this).append(returnAttributeHTML(childElementObject[j].elements[i], table, i));
+                                    }
+                                }
+                            });
+                        }
+
+                    }
+                     $('#ConfigureSave').text('@Html.Raw(Resources.Resources.Save  +" "+ Resources.Resources.Settings)');
+                    $('#hdnConfigureType').val("1");
+                });
+            }
+        }
+		$('#CreateActividades_del_Evento').on('click', '.btnPopupBusinessRules', function () {
+			var fieldId = $(this).data('field-id');
+			var fieldName = $(this).data('field-name');
+			var attribute = $(this).data('attribute');
+			$('#FieldId').val(fieldId);
+			$('#FieldName').val(fieldName);
+			$('#Attribute').val(attribute);
+                        Actividades_del_EventoGetBusinessRule();
+		});
+		//Initialize HTML Editors            
+  var filebrowserBrowseUrl = '../../ckfinder/ckfinder.html';
+  var filebrowserImageBrowseUrl = '../../ckfinder/ckfinder.html?type=Images';
+  var filebrowserUploadUrl = '../../ckfinder/connector?command=QuickUpload&type=Files';
+  var filebrowserImageUploadUrl = '../../ckfinder/connector?command=QuickUpload&type=Images';
+		
+		
+		function Fill_Datos_Generales()
+        {
+            $.ajax({
+                url: "@Url.Content("~/Frontal/Actividades_del_Evento/Get_Datos_Generales")?Id=" + $("#ReferenceFolio").val(),
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                                        $('#Folio').val(result.data.Folio);
+                    $('#Fecha_de_Registro').val(result.data.Fecha_de_Registro);
+                    $('#Hora_de_Registro').val(result.data.Hora_de_Registro);
+                    $('#Usuario_que_Registra').val(result.data.Usuario_que_Registra);
+                    $('#Evento').val(result.data.Evento);
+                    $('#Actividad').val(result.data.Actividad);
+                    $('#Descripcion').val(result.data.Descripcion);
+                    $('#Dia').val(result.data.Dia);
+                    $('#Hora_inicio').val(result.data.Hora_inicio);
+                    $('#Hora_fin').val(result.data.Hora_fin);
+                    $('#Tiene_receso').prop('checked', result.data.Tiene_receso);
+                    $('#Hora_inicio_receso').val(result.data.Hora_inicio_receso);
+                    $('#Hora_fin_receso').val(result.data.Hora_fin_receso);
+                    $('#Ubicacion').val(result.data.Ubicacion);
+                    $('#Tipo_de_Actividad').val(result.data.Tipo_de_Actividad);
+                    $('#Quien_imparte').val(result.data.Quien_imparte);
+                    $('#Especialidad').val(result.data.Especialidad);
+                    $('#Cupo_limitado').prop('checked', result.data.Cupo_limitado);
+                    $('#Cupo_maximo').val(result.data.Cupo_maximo);
+                    $('#Duracion_maxima_por_Paciente_mins').val(result.data.Duracion_maxima_por_Paciente_mins);
+                    $('#Estatus').val(result.data.Estatus);
+
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+		
+		function Save_Datos_Generales(newId) {
+			var data = new FormData();
+			data.append('Folio', newId);
+			                data.append('Fecha_de_Registro', $('#Fecha_de_Registro').val());
+                data.append('Hora_de_Registro', $('#Hora_de_Registro').val());
+                data.append('Usuario_que_Registra', $('#Usuario_que_Registra').val());
+                data.append('Evento', $('#Evento').val());
+                data.append('Actividad', $('#Actividad').val());
+                data.append('Descripcion', $('#Descripcion').val());
+                data.append('Dia', $('#Dia').val());
+                data.append('Hora_inicio', $('#Hora_inicio').val());
+                data.append('Hora_fin', $('#Hora_fin').val());
+                data.append('Tiene_receso', $('#Tiene_receso').prop('checked'));
+                data.append('Hora_inicio_receso', $('#Hora_inicio_receso').val());
+                data.append('Hora_fin_receso', $('#Hora_fin_receso').val());
+                data.append('Ubicacion', $('#Ubicacion').val());
+                data.append('Tipo_de_Actividad', $('#Tipo_de_Actividad').val());
+                data.append('Quien_imparte', $('#Quien_imparte').val());
+                data.append('Especialidad', $('#Especialidad').val());
+                data.append('Cupo_limitado', $('#Cupo_limitado').prop('checked'));
+                data.append('Cupo_maximo', $('#Cupo_maximo').val());
+                data.append('Duracion_maxima_por_Paciente_mins', $('#Duracion_maxima_por_Paciente_mins').val());
+                data.append('Estatus', $('#Estatus').val());
+
+			$.ajax({
+				url: '@Url.Content("~/Frontal/Actividades_del_Evento/Post_Datos_Generales")',
+				type: 'POST',
+				data: data,
+				async: false,
+				dataType: "json",
+				contentType: false,
+				processData: false,
+				success: function (result) {
+					if (result < 0) {
+						showNotification("@Resources.Resources.ErrorSave", "Error al guardar Datos_Generales");
+					} else {
+						newId = result;
+                    
+					}
+				},
+				error: function (result) {
+					showNotification("@Resources.Resources.ErrorContactingServer", "Error al guardar Datos_Generales");
+				},
+				cache: false
+			});
+		}
+
+		function Fill_Agenda()
+        {
+            $.ajax({
+                url: "@Url.Content("~/Frontal/Actividades_del_Evento/Get_Agenda")?Id=" + $("#ReferenceFolio").val(),
+                type: 'GET',
+                dataType: "json",
+                async: false,
+                success: function (result) {
+                                        $('#Folio').val(result.data.Folio);
+                    Detalle_Horarios_ActividadDataDataTable = result.Horarios;
+                    showDetalle_Horarios_ActividadGrid(result.Horarios);
+                    $('#Detalle_Horarios_ActividadGrid .inputMoney').inputmask("currency", { prefix: "$", rightAlign: false });
+                    $('#Detalle_Horarios_ActividadGrid .gridDatePicker').attr("readonly", "");
+
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                }
+            });
+        }
+		
+		function Save_Agenda(newId) {
+			var data = new FormData();
+			data.append('Folio', newId);
+			
+			$.ajax({
+				url: '@Url.Content("~/Frontal/Actividades_del_Evento/Post_Agenda")',
+				type: 'POST',
+				data: data,
+				async: false,
+				dataType: "json",
+				contentType: false,
+				processData: false,
+				success: function (result) {
+					if (result < 0) {
+						showNotification("@Resources.Resources.ErrorSave", "Error al guardar Agenda");
+					} else {
+						newId = result;
+                    					    SendDetalle_Horarios_Actividad(null, newId);
+
+					}
+				},
+				error: function (result) {
+					showNotification("@Resources.Resources.ErrorContactingServer", "Error al guardar Agenda");
+				},
+				cache: false
+			});
+		}
+
+
+    </script>
+}
+    <input type="hidden" id="FieldId" name="FieldId" value="" />
+    <input type="hidden" id="FieldName" name="FieldName" value="" />
+    <input type="hidden" id="ObjectId" name="ObjectId" value="" />
+    <input type="hidden" id="Attribute" name="Attribute" value="" />
+    <input type="hidden" id="Screen" name="Screen" value="" />
+     <input type="hidden" id="Actividades_del_Evento_cmbLabelSelect" name="Actividades_del_Evento_cmbLabelSelect" value="@Resources.Resources.CmbSelect" />
+

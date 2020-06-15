@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Indicadores_Laboratorio" value="Indicadores Laboratorio"></resource>
+  <resource culture="en-US" name="Folio" value="Folio"></resource>
+  <resource culture="en-US" name="Indicador" value="Indicador"></resource>
+  <resource culture="en-US" name="Unidad_de_Medida" value="Unidad de Medida"></resource>
+  <resource culture="en-US" name="Limite_inferior" value="Límite inferior"></resource>
+  <resource culture="en-US" name="Limite_superior" value="Límite superior"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

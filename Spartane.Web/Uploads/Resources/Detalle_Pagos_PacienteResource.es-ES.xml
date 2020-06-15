@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Detalle_Pagos_Paciente" value="Detalle Pagos Paciente"></resource>
+  <resource culture="es-es" name="Folio" value="Folio"></resource>
+  <resource culture="es-es" name="Suscripcion" value="Suscripción"></resource>
+  <resource culture="es-es" name="Concepto_de_Pago" value="Concepto de Pago"></resource>
+  <resource culture="es-es" name="Fecha_de_Suscripcion" value="Fecha de Suscripción"></resource>
+  <resource culture="es-es" name="Numero_de_Pago" value="Número de Pago"></resource>
+  <resource culture="es-es" name="De_Total_de_Pagos" value="De Total de Pagos"></resource>
+  <resource culture="es-es" name="Fecha_Limite_de_Pago" value="Fecha Límite de Pago"></resource>
+  <resource culture="es-es" name="Recordatorio_dias" value="Recordatorio (días)"></resource>
+  <resource culture="es-es" name="Forma_de_Pago" value="Forma de Pago"></resource>
+  <resource culture="es-es" name="Fecha_de_Pago" value="Fecha de Pago"></resource>
+  <resource culture="es-es" name="Estatus" value="Estatus"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

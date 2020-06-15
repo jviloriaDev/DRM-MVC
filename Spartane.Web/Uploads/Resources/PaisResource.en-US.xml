@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Pais" value="Pais"></resource>
+  <resource culture="en-US" name="Clave" value="Clave"></resource>
+  <resource culture="en-US" name="Nombre_del_Pais" value="Nombre del País"></resource>
+  <resource culture="en-US" name="Abreviatura" value="Abreviatura"></resource>
+  <resource culture="en-US" name="Codigo" value="Código"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Spartan_WorkFlow_Operator" value="Spartan WorkFlow Operator"></resource>
+  <resource culture="es-es" name="OperatorId" value="OperatorId"></resource>
+  <resource culture="es-es" name="Description" value="Description"></resource>
+</resources>

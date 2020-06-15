@@ -1,0 +1,157 @@
+﻿
+@{
+    Layout = null;
+}
+
+<div class="portlet light bg-inverse">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="icon-share font-red-sunglo"></i>
+            <span class="caption-subject font-red-sunglo ">Revenue</span>
+            <span class="caption-helper">monthly stats...</span>
+        </div>
+        <div class="actions">
+            <div class="btn-group pull-right">
+                <a href="" class="btn grey-salsa btn-circle btn-sm dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                    Filter Range<span class="fa fa-angle-down">
+                    </span>
+                </a>
+                <ul class="dropdown-menu pull-right">
+                    <li>
+                        <a href="javascript:;">
+                            Q1 2014 <span class="label label-sm label-default">
+                                past
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            Q2 2014 <span class="label label-sm label-default">
+                                past
+                            </span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="javascript:;">
+                            Q3 2014 <span class="label label-sm label-success">
+                                current
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            Q4 2014 <span class="label label-sm label-warning">
+                                upcoming
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div id="site_activities_loading">
+            @*<img src="../../assets/admin/layout/img/loading.gif" alt="loading" />*@
+            <img src="@Url.Content("~/assets/admin/layout/img/loading.gif")" alt="loading" />
+        </div>
+        <div id="site_activities_content" class="display-none">
+            <div id="site_activities" style="height: 228px;">
+            </div>
+        </div>
+        <div style="margin: 20px 0 10px 30px">
+            <div class="row">
+                <div class="col-md-3 col-sm-3 col-xs-6 text-stat">
+                    <span class="label label-sm label-success">
+                        Revenue:
+                    </span>
+                    <h3>$13,234</h3>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-6 text-stat">
+                    <span class="label label-sm label-info">
+                        Tax:
+                    </span>
+                    <h3>$134,900</h3>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-6 text-stat">
+                    <span class="label label-sm label-danger">
+                        Shipment:
+                    </span>
+                    <h3>$1,134</h3>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-6 text-stat">
+                    <span class="label label-sm label-warning">
+                        Orders:
+                    </span>
+                    <h3>235090</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<script src="/assets/global/plugins/jqvmap/jqvmap/jquery.vmap.js" type="text/javascript"></script>
+<script src="/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.russia.js" type="text/javascript"></script>
+<script src="/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.world.js" type="text/javascript"></script>
+<script src="/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.europe.js" type="text/javascript"></script>
+<script src="/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.germany.js" type="text/javascript"></script>
+<script src="/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.usa.js" type="text/javascript"></script>
+<script src="/assets/global/plugins/jqvmap/jqvmap/data/jquery.vmap.sampledata.js" type="text/javascript"></script>
+<script src="/assets/global/plugins/flot/jquery.flot.min.js" type="text/javascript"></script>
+<script src="/assets/global/plugins/flot/jquery.flot.resize.min.js" type="text/javascript"></script>
+<script src="/assets/global/plugins/flot/jquery.flot.categories.min.js" type="text/javascript"></script>
+<script src="/assets/global/plugins/jquery.pulsate.min.js" type="text/javascript"></script>
+<script src="/assets/global/plugins/bootstrap-daterangepicker/moment.min.js" type="text/javascript"></script>
+<script src="/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js" type="text/javascript"></script>
+
+<script src="/assets/global/plugins/fullcalendar/fullcalendar.min.js" type="text/javascript"></script>
+<script src="/assets/global/plugins/jquery-easypiechart/jquery.easypiechart.min.js" type="text/javascript"></script>
+<script src="/assets/global/plugins/jquery.sparkline.min.js" type="text/javascript"></script>
+
+<script src="/assets/global/plugins/jquery.sparkline.min.js" type="text/javascript"></script>
+<script src="/assets/global/plugins/jquery-easypiechart/jquery.easypiechart.min.js" type="text/javascript"></script>*@
+
+
+
+
+<script src="@Url.Content("~/assets/global/plugins/jqvmap/jqvmap/jquery.vmap.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.russia.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.world.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.europe.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.germany.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.usa.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/assets/global/plugins/jqvmap/jqvmap/data/jquery.vmap.sampledata.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/assets/global/plugins/flot/jquery.flot.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/assets/global/plugins/flot/jquery.flot.resize.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/assets/global/plugins/flot/jquery.flot.categories.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/assets/global/plugins/jquery.pulsate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/assets/global/plugins/bootstrap-daterangepicker/moment.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js")" type="text/javascript"></script>
+           
+<script src="@Url.Content("~/assets/global/plugins/fullcalendar/fullcalendar.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/assets/global/plugins/jquery-easypiechart/jquery.easypiechart.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/assets/global/plugins/jquery.sparkline.min.js")" type="text/javascript"></script>
+           
+<script src="@Url.Content("~/assets/global/plugins/jquery.sparkline.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/assets/global/plugins/jquery-easypiechart/jquery.easypiechart.min.js")" type="text/javascript"></script>
+
+@*<script src="/assets/admin/layout/scripts/demo.js" type="text/javascript"></script>*@
+@*<script src="/assets/admin/layout/scripts/index.js" type="text/javascript"></script>*@
+<script src="@Url.Content("~/assets/admin/layout/scripts/index.js")" type="text/javascript"></script>
+
+
+<script>
+    jQuery(document).ready(function () {
+        //Metronic.init(); // init metronic core componets
+        //Layout.init(); // init layout
+        //QuickSidebar.init(); // init quick sidebar
+        //Demo.init(); // init demo features
+        Index.init();
+        //Index.initDashboardDaterange();
+        //Index.initJQVMAP(); // init index page's custom scripts
+        //Index.initCalendar(); // init index page's custom scripts
+        Index.initCharts(); // init index page's custom scripts
+        //Index.initChat();
+        //Index.initMiniCharts();
+        //Tasks.initDashboardWidget();
+    });
+</script>

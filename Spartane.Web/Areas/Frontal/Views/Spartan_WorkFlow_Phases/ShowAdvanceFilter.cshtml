@@ -1,0 +1,431 @@
+﻿@using System.Collections.Generic
+@using Spartane.Web.Areas.Frontal.Models
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Spartan_WorkFlow_PhasesAdvanceSearchModel
+@{
+    List<SelectListItem> varSpartan_WorkFlow_Phase_Type_Phase_Type = null;
+    if (ViewBag.Spartan_WorkFlow_Phase_Types_Phase_Type != null)
+    { varSpartan_WorkFlow_Phase_Type_Phase_Type = (List<SelectListItem>)ViewBag.Spartan_WorkFlow_Phase_Types_Phase_Type; }
+    List<SelectListItem> varSpartan_WorkFlow_Type_Work_Distribution_Type_of_Work_Distribution = null;
+    if (ViewBag.Spartan_WorkFlow_Type_Work_Distributions_Type_of_Work_Distribution != null)
+    { varSpartan_WorkFlow_Type_Work_Distribution_Type_of_Work_Distribution = (List<SelectListItem>)ViewBag.Spartan_WorkFlow_Type_Work_Distributions_Type_of_Work_Distribution; }
+    List<SelectListItem> varSpartan_WorkFlow_Type_Flow_Control_Type_Flow_Control = null;
+    if (ViewBag.Spartan_WorkFlow_Type_Flow_Controls_Type_Flow_Control != null)
+    { varSpartan_WorkFlow_Type_Flow_Control_Type_Flow_Control = (List<SelectListItem>)ViewBag.Spartan_WorkFlow_Type_Flow_Controls_Type_Flow_Control; }
+    List<SelectListItem> varSpartan_WorkFlow_Phase_Status_Phase_Status = null;
+    if (ViewBag.Spartan_WorkFlow_Phase_Statuss_Phase_Status != null)
+    { varSpartan_WorkFlow_Phase_Status_Phase_Status = (List<SelectListItem>)ViewBag.Spartan_WorkFlow_Phase_Statuss_Phase_Status; }
+
+    var filters = (List<SelectListItem>)ViewBag.Filter;
+}
+<style>
+    .input-validation-error {
+        background: rgb(251, 227, 228);
+        border: 1px solid #fbc2c4;
+        color: #8a1f11;
+    }
+
+    .MarginBottom {
+        margin-bottom: 1%;
+    }
+
+    #divAdvanceSearch input {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch button {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch select {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch h3 {
+        margin-top: 2%;
+    }
+
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins" id="divAdvanceSearch">
+        <div class="ibox-content">
+            @using (Html.BeginForm("ShowAdvanceFilter", "Spartan_WorkFlow_Phases", FormMethod.Post, new { @id = "frmAdvanceSearch", @role = "form" }))
+            {
+				<input type="hidden" value="-1" name="idFilter" id="idFilter" />
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_WorkFlow_PhasesResources.PhasesId</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromPhasesId, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromPhasesId" })
+                    @Html.ValidationMessageFor(m => m.FromPhasesId)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToPhasesId, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToPhasesId", @data_min = "txtAdvanceFromPhasesId" })
+                    @Html.ValidationMessageFor(m => m.ToPhasesId)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_WorkFlow_PhasesResources.Phase_Number</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromPhase_Number, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromPhase_Number" })
+                    @Html.ValidationMessageFor(m => m.FromPhase_Number)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToPhase_Number, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToPhase_Number", @data_min = "txtAdvanceFromPhase_Number" })
+                    @Html.ValidationMessageFor(m => m.ToPhase_Number)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_WorkFlow_PhasesResources.Name</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.NameFilter, filters, new { @class = "form-control", @id = "ddlNameFilter" })
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @type = "text", @id = "txtName" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_WorkFlow_PhasesResources.Phase_Type</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Phase_TypeFilter, filters, new { @class = "form-control", @id = "ddlPhase_TypeFilter" })
+                    @Html.TextBoxFor(m => m.AdvancePhase_Type, new { @class = "form-control", @type = "text", @id = "txtAdvancePhase_Type" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSpartan_WorkFlow_Phase_Type_Phase_Type!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvancePhase_TypeMultiple, varSpartan_WorkFlow_Phase_Type_Phase_Type,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvancePhase_Type"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_WorkFlow_PhasesResources.Type_of_Work_Distribution</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Type_of_Work_DistributionFilter, filters, new { @class = "form-control", @id = "ddlType_of_Work_DistributionFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceType_of_Work_Distribution, new { @class = "form-control", @type = "text", @id = "txtAdvanceType_of_Work_Distribution" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSpartan_WorkFlow_Type_Work_Distribution_Type_of_Work_Distribution!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceType_of_Work_DistributionMultiple, varSpartan_WorkFlow_Type_Work_Distribution_Type_of_Work_Distribution,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceType_of_Work_Distribution"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_WorkFlow_PhasesResources.Type_Flow_Control</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Type_Flow_ControlFilter, filters, new { @class = "form-control", @id = "ddlType_Flow_ControlFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceType_Flow_Control, new { @class = "form-control", @type = "text", @id = "txtAdvanceType_Flow_Control" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSpartan_WorkFlow_Type_Flow_Control_Type_Flow_Control!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceType_Flow_ControlMultiple, varSpartan_WorkFlow_Type_Flow_Control_Type_Flow_Control,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceType_Flow_Control"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_WorkFlow_PhasesResources.Phase_Status</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Phase_StatusFilter, filters, new { @class = "form-control", @id = "ddlPhase_StatusFilter" })
+                    @Html.TextBoxFor(m => m.AdvancePhase_Status, new { @class = "form-control", @type = "text", @id = "txtAdvancePhase_Status" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSpartan_WorkFlow_Phase_Status_Phase_Status!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvancePhase_StatusMultiple, varSpartan_WorkFlow_Phase_Status_Phase_Status,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvancePhase_Status"
+                        });
+                    }
+                </div>
+
+                <div class="MarginBottom form-inline">
+                    <input type="submit" class="btn btn-primary" value="@Resources.Resources.Search"><a class="btn btn-primary" href="@Url.Content("~/Frontal/Spartan_WorkFlow_Phases/")" value=" ">@Resources.Resources.Cancelar</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function InitiateAdvanceSearch() {
+        var advanceSearch = {}, hasParameter = false;
+        if ($("#txtAdvanceFromPhasesId").val() != "" || $("#txtAdvanceToPhasesId").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_WorkFlow_PhasesPhasesIdFrom = $("#txtAdvanceFromPhasesId").val();
+            advanceSearch.Spartan_WorkFlow_PhasesPhasesIdTo = $("#txtAdvanceToPhasesId").val();
+        }
+        if ($("#txtAdvanceFromPhase_Number").val() != "" || $("#txtAdvanceToPhase_Number").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_WorkFlow_PhasesPhase_NumberFrom = $("#txtAdvanceFromPhase_Number").val();
+            advanceSearch.Spartan_WorkFlow_PhasesPhase_NumberTo = $("#txtAdvanceToPhase_Number").val();
+        }
+        if ($("#txtAdvanceName").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_WorkFlow_PhasesName = $("#txtAdvanceName").val();
+            advanceSearch.Spartan_WorkFlow_PhasesNameSearchType = $("#ddlAdvanceNameFilter").val();
+        }
+        advanceSearch.Phase_TypeSearchType = 0;
+        if ($('#ddlAdvancePhase_Type').val().length > 0 || $("#txtAdvancePhase_Type").val() == "") {
+
+
+            if (isSpartan_WorkFlow_PhasesTextSearch) {
+                advanceSearch.Phase_TypeName = $("#txtAdvancePhase_Type").val();
+                advanceSearch.Phase_TypeNameSearchType = $("#ddlAdvancePhase_Type").val();
+                advanceSearch.Phase_TypeSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Phase_TypeToSearch = $("#ddlAdvancePhase_Type").val();
+                advanceSearch.Phase_TypeSearchType = 2;
+            }
+        }
+        advanceSearch.Type_of_Work_DistributionSearchType = 0;
+        if ($('#ddlAdvanceType_of_Work_Distribution').val().length > 0 || $("#txtAdvanceType_of_Work_Distribution").val() == "") {
+
+
+            if (isSpartan_WorkFlow_PhasesTextSearch) {
+                advanceSearch.Type_of_Work_DistributionName = $("#txtAdvanceType_of_Work_Distribution").val();
+                advanceSearch.Type_of_Work_DistributionNameSearchType = $("#ddlAdvanceType_of_Work_Distribution").val();
+                advanceSearch.Type_of_Work_DistributionSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Type_of_Work_DistributionToSearch = $("#ddlAdvanceType_of_Work_Distribution").val();
+                advanceSearch.Type_of_Work_DistributionSearchType = 2;
+            }
+        }
+        advanceSearch.Type_Flow_ControlSearchType = 0;
+        if ($('#ddlAdvanceType_Flow_Control').val().length > 0 || $("#txtAdvanceType_Flow_Control").val() == "") {
+
+
+            if (isSpartan_WorkFlow_PhasesTextSearch) {
+                advanceSearch.Type_Flow_ControlName = $("#txtAdvanceType_Flow_Control").val();
+                advanceSearch.Type_Flow_ControlNameSearchType = $("#ddlAdvanceType_Flow_Control").val();
+                advanceSearch.Type_Flow_ControlSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Type_Flow_ControlToSearch = $("#ddlAdvanceType_Flow_Control").val();
+                advanceSearch.Type_Flow_ControlSearchType = 2;
+            }
+        }
+        advanceSearch.Phase_StatusSearchType = 0;
+        if ($('#ddlAdvancePhase_Status').val().length > 0 || $("#txtAdvancePhase_Status").val() == "") {
+
+
+            if (isSpartan_WorkFlow_PhasesTextSearch) {
+                advanceSearch.Phase_StatusName = $("#txtAdvancePhase_Status").val();
+                advanceSearch.Phase_StatusNameSearchType = $("#ddlAdvancePhase_Status").val();
+                advanceSearch.Phase_StatusSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Phase_StatusToSearch = $("#ddlAdvancePhase_Status").val();
+                advanceSearch.Phase_StatusSearchType = 2;
+            }
+        }
+
+        advanceSearchQuery = hasParameter ? JSON.stringify(advanceSearch) : "";
+        $('#tblSpartan_WorkFlow_Phases').DataTable().draw();
+        return false;
+    }
+
+    var advanceSearchQuery = "", isSpartan_WorkFlow_PhasesTextSearch = true;
+
+    $(document).ready(function () {
+        $('.clockpicker').clockpicker();
+        $("#txtAdvancePhase_Type").keypress(function () {
+            isSpartan_WorkFlow_PhasesTextSearch = true;
+            $("#ddlAdvancePhase_Type").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvancePhase_Type").change(function () {
+            isSpartan_WorkFlow_PhasesTextSearch = false;
+            $("#txtAdvancePhase_Type").val('');
+        });
+        $("#txtAdvanceType_of_Work_Distribution").keypress(function () {
+            isSpartan_WorkFlow_PhasesTextSearch = true;
+            $("#ddlAdvanceType_of_Work_Distribution").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceType_of_Work_Distribution").change(function () {
+            isSpartan_WorkFlow_PhasesTextSearch = false;
+            $("#txtAdvanceType_of_Work_Distribution").val('');
+        });
+        $("#txtAdvanceType_Flow_Control").keypress(function () {
+            isSpartan_WorkFlow_PhasesTextSearch = true;
+            $("#ddlAdvanceType_Flow_Control").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceType_Flow_Control").change(function () {
+            isSpartan_WorkFlow_PhasesTextSearch = false;
+            $("#txtAdvanceType_Flow_Control").val('');
+        });
+        $("#txtAdvancePhase_Status").keypress(function () {
+            isSpartan_WorkFlow_PhasesTextSearch = true;
+            $("#ddlAdvancePhase_Status").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvancePhase_Status").change(function () {
+            isSpartan_WorkFlow_PhasesTextSearch = false;
+            $("#txtAdvancePhase_Status").val('');
+        });
+
+    });
+</script>
+
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/chosen")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/clockpicker")
+
+
+    <script>
+        //Adding Rules
+        jQuery.validator.unobtrusive
+      .adapters.addSingleVal("isnumberafter", "propertyname");
+        jQuery.validator.unobtrusive
+    .adapters.addSingleVal("isdateafter", "propertyname");
+
+        //Number after method
+        jQuery.validator.addMethod("isnumberafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+                //if (Date.parse(val) <= Date.parse(otherVal)) {
+                if (Number(val) < Number(otherVal)) {
+                    return false;
+                }
+                        }
+            return true;
+        });
+
+        //Date after after method
+        jQuery.validator.addMethod("isdateafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+
+                if (GetDateObject(val) < GetDateObject(otherVal)) {
+
+                    return false;
+                    }
+                }
+            return true;
+            });
+
+
+        function GetDateObject(value) {
+            var delimiter = GetDelimiter(dateFormat);
+            var dateCollection = value.split(delimiter);
+            var formatCollection = dateFormat.split(delimiter);
+            var dateModel = GetDateModel(dateCollection, formatCollection);
+            return new Date(dateModel.Year, dateModel.Month - 1, dateModel.Day);
+        }
+        //Used to get the date model by parsing the date and the format
+        function GetDateModel(dateCollection,formatCollection) {
+            var day, month, year;
+            for (var i = 0; i < formatCollection.length; i++) {
+                switch (formatCollection[i][0].toUpperCase()) {
+                
+                    case "D":
+                        day = dateCollection[i];
+                        break;
+
+                    case "Y":
+                        year = dateCollection[i];
+                        break;
+
+                    case "M":
+                        month = dateCollection[i];
+                        break;
+                }
+            }
+
+            return {
+                Day:day,
+                Month:month,
+                Year:year
+            };
+        }
+
+        function GetDelimiter(format) {
+
+            for (var i = 0; i < format.length; i++) {
+                if (/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(format[i])) {
+                    return format[i];
+                }
+            }
+            return null;
+        }
+
+        var dateFormat = "@ConfigurationProperty.DateFormatDatePicker";
+
+        $(document).ready(function () {
+
+
+
+            $('.input-daterange').datepicker({
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                format: dateFormat,
+                message: 'The date is not a valid'
+            });
+
+            $(".chosen-select").chosen({ width: "22%", no_results_text: "Oops, nothing found!" });
+			if ($('#IsFilterModal').val() == 'true') {
+                $('.ShowAdvanceFilter #right-sidebar').css('display', 'none');
+                $('.ShowAdvanceFilter .navbar-default').css('display', 'none');
+                $('.ShowAdvanceFilter .border-bottom').css('display', 'none');
+                $('.ShowAdvanceFilter #page-wrapper').css('margin', '0 auto');
+                $('.ShowAdvanceFilter .btn-save').val('@Resources.Resources.Filter');
+                $('.ShowAdvanceFilter .btn-cancelar').attr('data-dismiss', 'modal');
+                $('.ShowAdvanceFilter .btn-cancelar').removeAttr('href');
+                $('#idFilter').val($('#IdReport').val());
+            }
+        });
+
+    </script>
+}
+

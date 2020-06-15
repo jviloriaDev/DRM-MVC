@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_WorkFlow_Roles_by_State" value="Spartan WorkFlow Roles by State"></resource>
+  <resource culture="en-US" name="Roles_by_StateId" value="Roles by StateId"></resource>
+  <resource culture="en-US" name="Phase" value="Phase"></resource>
+  <resource culture="en-US" name="State" value="State"></resource>
+  <resource culture="en-US" name="User_Role" value="Role"></resource>
+  <resource culture="en-US" name="Phase_Transition" value="Phase Transition"></resource>
+  <resource culture="en-US" name="Permission_To_Consult" value="Permission To Consult"></resource>
+  <resource culture="en-US" name="Permission_To_New" value="Permission To New"></resource>
+  <resource culture="en-US" name="Permission_To_Modify" value="Permission To Modify"></resource>
+  <resource culture="en-US" name="Permission_to_Delete" value="Permission to Delete"></resource>
+  <resource culture="en-US" name="Permission_To_Export" value="Permission To Export"></resource>
+  <resource culture="en-US" name="Permission_To_Print" value="Permission To Print"></resource>
+  <resource culture="en-US" name="Permission_Settings" value="Permission Settings"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

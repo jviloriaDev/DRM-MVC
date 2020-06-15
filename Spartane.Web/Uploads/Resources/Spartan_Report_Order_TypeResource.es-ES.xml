@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Spartan_Report_Order_Type" value="Report Order Type"></resource>
+  <resource culture="es-es" name="OrderTypeId" value="OrderTypeId"></resource>
+  <resource culture="es-es" name="Description" value="Description"></resource>
+  <resource culture="es-es" name="Order_By" value="Order By"></resource>
+
+</resources>

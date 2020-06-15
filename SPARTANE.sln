@@ -1,0 +1,72 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spartane.Web", "Spartane.Web\Spartane.Web.csproj", "{C181E28A-1011-4D9C-8EF3-6F2E6331678E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{5597EAE3-D578-4819-900F-0E55D194DF51}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{8B63884A-25F6-45DC-8D29-03F8922D90BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spartane.Core", "Spartane.Core\Spartane.Core.csproj", "{F56309FB-9E43-42E5-A65D-4AAA70F95C9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spartane.Data", "Spartane.Data\Spartane.Data.csproj", "{63F55CC4-7B31-4195-91EE-3A5C31B9C0FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spartane.Services", "Spartane.Services\Spartane.Services.csproj", "{7E1DD863-3658-407F-A096-DB0276B52201}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C181E28A-1011-4D9C-8EF3-6F2E6331678E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C181E28A-1011-4D9C-8EF3-6F2E6331678E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C181E28A-1011-4D9C-8EF3-6F2E6331678E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C181E28A-1011-4D9C-8EF3-6F2E6331678E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F56309FB-9E43-42E5-A65D-4AAA70F95C9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F56309FB-9E43-42E5-A65D-4AAA70F95C9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F56309FB-9E43-42E5-A65D-4AAA70F95C9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F56309FB-9E43-42E5-A65D-4AAA70F95C9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63F55CC4-7B31-4195-91EE-3A5C31B9C0FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63F55CC4-7B31-4195-91EE-3A5C31B9C0FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63F55CC4-7B31-4195-91EE-3A5C31B9C0FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63F55CC4-7B31-4195-91EE-3A5C31B9C0FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E1DD863-3658-407F-A096-DB0276B52201}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E1DD863-3658-407F-A096-DB0276B52201}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E1DD863-3658-407F-A096-DB0276B52201}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E1DD863-3658-407F-A096-DB0276B52201}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C181E28A-1011-4D9C-8EF3-6F2E6331678E} = {5597EAE3-D578-4819-900F-0E55D194DF51}
+		{F56309FB-9E43-42E5-A65D-4AAA70F95C9B} = {8B63884A-25F6-45DC-8D29-03F8922D90BA}
+		{63F55CC4-7B31-4195-91EE-3A5C31B9C0FC} = {8B63884A-25F6-45DC-8D29-03F8922D90BA}
+		{7E1DD863-3658-407F-A096-DB0276B52201} = {8B63884A-25F6-45DC-8D29-03F8922D90BA}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://totaltech.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Spartane.Core\\Spartane.Core.csproj
+		SccProjectTopLevelParentUniqueName1 = SPARTANE.sln
+		SccProjectName1 = Spartane.Core
+		SccLocalPath1 = Spartane.Core
+		SccProjectUniqueName2 = Spartane.Data\\Spartane.Data.csproj
+		SccProjectTopLevelParentUniqueName2 = SPARTANE.sln
+		SccProjectName2 = Spartane.Data
+		SccLocalPath2 = Spartane.Data
+		SccProjectUniqueName3 = Spartane.Services\\Spartane.Services.csproj
+		SccProjectTopLevelParentUniqueName3 = SPARTANE.sln
+		SccProjectName3 = Spartane.Services
+		SccLocalPath3 = Spartane.Services
+		SccProjectUniqueName4 = Spartane.Web\\Spartane.Web.csproj
+		SccProjectTopLevelParentUniqueName4 = SPARTANE.sln
+		SccProjectName4 = Spartane.Web
+		SccLocalPath4 = Spartane.Web
+	EndGlobalSection
+EndGlobal

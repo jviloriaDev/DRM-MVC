@@ -1,0 +1,556 @@
+﻿@using System.Collections.Generic
+@using Spartane.Web.Areas.Frontal.Models
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Spartan_MetadataAdvanceSearchModel
+@{
+
+    var filters = (List<SelectListItem>)ViewBag.Filter;
+}
+<style>
+    .input-validation-error {
+        background: rgb(251, 227, 228);
+        border: 1px solid #fbc2c4;
+        color: #8a1f11;
+    }
+
+    .MarginBottom {
+        margin-bottom: 1%;
+    }
+
+    #divAdvanceSearch input {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch button {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch select {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch h3 {
+        margin-top: 2%;
+    }
+
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins" id="divAdvanceSearch">
+        <div class="ibox-content">
+            @using (Html.BeginForm("ShowAdvanceFilter", "Spartan_Metadata", FormMethod.Post, new { @id = "frmAdvanceSearch", @role = "form" }))
+            {
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_MetadataResources.AttributeId</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromAttributeId, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromAttributeId" })
+                    @Html.ValidationMessageFor(m => m.FromAttributeId)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToAttributeId, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToAttributeId", @data_min = "txtAdvanceFromAttributeId" })
+                    @Html.ValidationMessageFor(m => m.ToAttributeId)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_MetadataResources.Class_Id</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromClass_Id, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromClass_Id" })
+                    @Html.ValidationMessageFor(m => m.FromClass_Id)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToClass_Id, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToClass_Id", @data_min = "txtAdvanceFromClass_Id" })
+                    @Html.ValidationMessageFor(m => m.ToClass_Id)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_MetadataResources.Class_Name</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Class_NameFilter, filters, new { @class = "form-control", @id = "ddlClass_NameFilter" })
+                    @Html.TextBoxFor(m => m.Class_Name, new { @class = "form-control", @type = "text", @id = "txtClass_Name" })
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_MetadataResources.Object_Id</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromObject_Id, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromObject_Id" })
+                    @Html.ValidationMessageFor(m => m.FromObject_Id)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToObject_Id, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToObject_Id", @data_min = "txtAdvanceFromObject_Id" })
+                    @Html.ValidationMessageFor(m => m.ToObject_Id)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_MetadataResources.Physical_Name</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Physical_NameFilter, filters, new { @class = "form-control", @id = "ddlPhysical_NameFilter" })
+                    @Html.TextBoxFor(m => m.Physical_Name, new { @class = "form-control", @type = "text", @id = "txtPhysical_Name" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_MetadataResources.Logical_Name</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Logical_NameFilter, filters, new { @class = "form-control", @id = "ddlLogical_NameFilter" })
+                    @Html.TextBoxFor(m => m.Logical_Name, new { @class = "form-control", @type = "text", @id = "txtLogical_Name" })
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_MetadataResources.Identifier_Type</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromIdentifier_Type, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromIdentifier_Type" })
+                    @Html.ValidationMessageFor(m => m.FromIdentifier_Type)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToIdentifier_Type, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToIdentifier_Type", @data_min = "txtAdvanceFromIdentifier_Type" })
+                    @Html.ValidationMessageFor(m => m.ToIdentifier_Type)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_MetadataResources.Attribute_Type</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromAttribute_Type, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromAttribute_Type" })
+                    @Html.ValidationMessageFor(m => m.FromAttribute_Type)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToAttribute_Type, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToAttribute_Type", @data_min = "txtAdvanceFromAttribute_Type" })
+                    @Html.ValidationMessageFor(m => m.ToAttribute_Type)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_MetadataResources.Length</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromLength, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromLength" })
+                    @Html.ValidationMessageFor(m => m.FromLength)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToLength, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToLength", @data_min = "txtAdvanceFromLength" })
+                    @Html.ValidationMessageFor(m => m.ToLength)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_MetadataResources.Decimals_Length</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromDecimals_Length, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromDecimals_Length" })
+                    @Html.ValidationMessageFor(m => m.FromDecimals_Length)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToDecimals_Length, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToDecimals_Length", @data_min = "txtAdvanceFromDecimals_Length" })
+                    @Html.ValidationMessageFor(m => m.ToDecimals_Length)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_MetadataResources.Relation_Type</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromRelation_Type, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromRelation_Type" })
+                    @Html.ValidationMessageFor(m => m.FromRelation_Type)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToRelation_Type, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToRelation_Type", @data_min = "txtAdvanceFromRelation_Type" })
+                    @Html.ValidationMessageFor(m => m.ToRelation_Type)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_MetadataResources.Related_Object_Id</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromRelated_Object_Id, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromRelated_Object_Id" })
+                    @Html.ValidationMessageFor(m => m.FromRelated_Object_Id)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToRelated_Object_Id, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToRelated_Object_Id", @data_min = "txtAdvanceFromRelated_Object_Id" })
+                    @Html.ValidationMessageFor(m => m.ToRelated_Object_Id)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_MetadataResources.Related_Class_Id</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromRelated_Class_Id, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromRelated_Class_Id" })
+                    @Html.ValidationMessageFor(m => m.FromRelated_Class_Id)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToRelated_Class_Id, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToRelated_Class_Id", @data_min = "txtAdvanceFromRelated_Class_Id" })
+                    @Html.ValidationMessageFor(m => m.ToRelated_Class_Id)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_MetadataResources.Related_Class_Name</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Related_Class_NameFilter, filters, new { @class = "form-control", @id = "ddlRelated_Class_NameFilter" })
+                    @Html.TextBoxFor(m => m.Related_Class_Name, new { @class = "form-control", @type = "text", @id = "txtRelated_Class_Name" })
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_MetadataResources.Related_Class_Identifier</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromRelated_Class_Identifier, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromRelated_Class_Identifier" })
+                    @Html.ValidationMessageFor(m => m.FromRelated_Class_Identifier)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToRelated_Class_Identifier, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToRelated_Class_Identifier", @data_min = "txtAdvanceFromRelated_Class_Identifier" })
+                    @Html.ValidationMessageFor(m => m.ToRelated_Class_Identifier)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_MetadataResources.Related_Class_Description</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Related_Class_DescriptionFilter, filters, new { @class = "form-control", @id = "ddlRelated_Class_DescriptionFilter" })
+                    @Html.TextBoxFor(m => m.Related_Class_Description, new { @class = "form-control", @type = "text", @id = "txtRelated_Class_Description" })
+                </div>
+		//Boolean Field
+                <div class="MarginBottom">
+                    <label class="">@Resources.Spartan_MetadataResources.Required:</label>
+                    <div class="radio radio-inline">
+                        @Html.RadioButtonFor(m => m.Required, RadioOptions.NoApply, new { @id = "rdoRequiredNoApply" })
+                        <label for="rdoRequiredNoApply"> @Resources.Resources.NoApply </label>
+                    </div>
+                    <div class="radio radio-inline">
+                        @Html.RadioButtonFor(m => m.Required, RadioOptions.Yes, new { @id = "rdoRequired1" })
+                        <label for="rdoRequired1"> @Resources.Resources.Yes </label>
+                    </div>
+                    <div class="radio radio-inline">
+                        @Html.RadioButtonFor(m => m.Required, RadioOptions.No, new { @id = "rdoRequired2" })
+                        <label for="rdoRequired2">@Resources.Resources.No </label>
+                    </div>
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_MetadataResources.DefaultValue</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.DefaultValueFilter, filters, new { @class = "form-control", @id = "ddlDefaultValueFilter" })
+                    @Html.TextBoxFor(m => m.DefaultValue, new { @class = "form-control", @type = "text", @id = "txtDefaultValue" })
+                </div>
+		//Boolean Field
+                <div class="MarginBottom">
+                    <label class="">@Resources.Spartan_MetadataResources.Visible:</label>
+                    <div class="radio radio-inline">
+                        @Html.RadioButtonFor(m => m.Visible, RadioOptions.NoApply, new { @id = "rdoVisibleNoApply" })
+                        <label for="rdoVisibleNoApply"> @Resources.Resources.NoApply </label>
+                    </div>
+                    <div class="radio radio-inline">
+                        @Html.RadioButtonFor(m => m.Visible, RadioOptions.Yes, new { @id = "rdoVisible1" })
+                        <label for="rdoVisible1"> @Resources.Resources.Yes </label>
+                    </div>
+                    <div class="radio radio-inline">
+                        @Html.RadioButtonFor(m => m.Visible, RadioOptions.No, new { @id = "rdoVisible2" })
+                        <label for="rdoVisible2">@Resources.Resources.No </label>
+                    </div>
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_MetadataResources.Help_Text</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Help_TextFilter, filters, new { @class = "form-control", @id = "ddlHelp_TextFilter" })
+                    @Html.TextBoxFor(m => m.Help_Text, new { @class = "form-control", @type = "text", @id = "txtHelp_Text" })
+                </div>
+		//Boolean Field
+                <div class="MarginBottom">
+                    <label class="">@Resources.Spartan_MetadataResources.Read_Only:</label>
+                    <div class="radio radio-inline">
+                        @Html.RadioButtonFor(m => m.Read_Only, RadioOptions.NoApply, new { @id = "rdoRead_OnlyNoApply" })
+                        <label for="rdoRead_OnlyNoApply"> @Resources.Resources.NoApply </label>
+                    </div>
+                    <div class="radio radio-inline">
+                        @Html.RadioButtonFor(m => m.Read_Only, RadioOptions.Yes, new { @id = "rdoRead_Only1" })
+                        <label for="rdoRead_Only1"> @Resources.Resources.Yes </label>
+                    </div>
+                    <div class="radio radio-inline">
+                        @Html.RadioButtonFor(m => m.Read_Only, RadioOptions.No, new { @id = "rdoRead_Only2" })
+                        <label for="rdoRead_Only2">@Resources.Resources.No </label>
+                    </div>
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_MetadataResources.ScreenOrder</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromScreenOrder, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromScreenOrder" })
+                    @Html.ValidationMessageFor(m => m.FromScreenOrder)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToScreenOrder, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToScreenOrder", @data_min = "txtAdvanceFromScreenOrder" })
+                    @Html.ValidationMessageFor(m => m.ToScreenOrder)
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Spartan_MetadataResources.Control_Type</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromControl_Type, new { @class = "form-control greaterThanZero", @type = "text", @id = "txtAdvanceFromControl_Type" })
+                    @Html.ValidationMessageFor(m => m.FromControl_Type)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToControl_Type, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @id = "txtAdvanceToControl_Type", @data_min = "txtAdvanceFromControl_Type" })
+                    @Html.ValidationMessageFor(m => m.ToControl_Type)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Spartan_MetadataResources.Group_Name</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Group_NameFilter, filters, new { @class = "form-control", @id = "ddlGroup_NameFilter" })
+                    @Html.TextBoxFor(m => m.Group_Name, new { @class = "form-control", @type = "text", @id = "txtGroup_Name" })
+                </div>
+
+                <div class="MarginBottom form-inline">
+                    <input type="submit" class="btn btn-primary" value="@Resources.Resources.Search"><a class="btn btn-primary" href="@Url.Content("~/Frontal/Spartan_Metadata/")" value=" ">@Resources.Resources.Cancelar</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function InitiateAdvanceSearch() {
+        var advanceSearch = {}, hasParameter = false;
+        if ($("#txtAdvanceFromAttributeId").val() != "" || $("#txtAdvanceToAttributeId").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_MetadataAttributeIdFrom = $("#txtAdvanceFromAttributeId").val();
+            advanceSearch.Spartan_MetadataAttributeIdTo = $("#txtAdvanceToAttributeId").val();
+        }
+        if ($("#txtAdvanceFromClass_Id").val() != "" || $("#txtAdvanceToClass_Id").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_MetadataClass_IdFrom = $("#txtAdvanceFromClass_Id").val();
+            advanceSearch.Spartan_MetadataClass_IdTo = $("#txtAdvanceToClass_Id").val();
+        }
+        if ($("#txtAdvanceClass_Name").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_MetadataClass_Name = $("#txtAdvanceClass_Name").val();
+            advanceSearch.Spartan_MetadataClass_NameSearchType = $("#ddlAdvanceClass_NameFilter").val();
+        }
+        if ($("#txtAdvanceFromObject_Id").val() != "" || $("#txtAdvanceToObject_Id").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_MetadataObject_IdFrom = $("#txtAdvanceFromObject_Id").val();
+            advanceSearch.Spartan_MetadataObject_IdTo = $("#txtAdvanceToObject_Id").val();
+        }
+        if ($("#txtAdvancePhysical_Name").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_MetadataPhysical_Name = $("#txtAdvancePhysical_Name").val();
+            advanceSearch.Spartan_MetadataPhysical_NameSearchType = $("#ddlAdvancePhysical_NameFilter").val();
+        }
+        if ($("#txtAdvanceLogical_Name").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_MetadataLogical_Name = $("#txtAdvanceLogical_Name").val();
+            advanceSearch.Spartan_MetadataLogical_NameSearchType = $("#ddlAdvanceLogical_NameFilter").val();
+        }
+        if ($("#txtAdvanceFromIdentifier_Type").val() != "" || $("#txtAdvanceToIdentifier_Type").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_MetadataIdentifier_TypeFrom = $("#txtAdvanceFromIdentifier_Type").val();
+            advanceSearch.Spartan_MetadataIdentifier_TypeTo = $("#txtAdvanceToIdentifier_Type").val();
+        }
+        if ($("#txtAdvanceFromAttribute_Type").val() != "" || $("#txtAdvanceToAttribute_Type").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_MetadataAttribute_TypeFrom = $("#txtAdvanceFromAttribute_Type").val();
+            advanceSearch.Spartan_MetadataAttribute_TypeTo = $("#txtAdvanceToAttribute_Type").val();
+        }
+        if ($("#txtAdvanceFromLength").val() != "" || $("#txtAdvanceToLength").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_MetadataLengthFrom = $("#txtAdvanceFromLength").val();
+            advanceSearch.Spartan_MetadataLengthTo = $("#txtAdvanceToLength").val();
+        }
+        if ($("#txtAdvanceFromDecimals_Length").val() != "" || $("#txtAdvanceToDecimals_Length").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_MetadataDecimals_LengthFrom = $("#txtAdvanceFromDecimals_Length").val();
+            advanceSearch.Spartan_MetadataDecimals_LengthTo = $("#txtAdvanceToDecimals_Length").val();
+        }
+        if ($("#txtAdvanceFromRelation_Type").val() != "" || $("#txtAdvanceToRelation_Type").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_MetadataRelation_TypeFrom = $("#txtAdvanceFromRelation_Type").val();
+            advanceSearch.Spartan_MetadataRelation_TypeTo = $("#txtAdvanceToRelation_Type").val();
+        }
+        if ($("#txtAdvanceFromRelated_Object_Id").val() != "" || $("#txtAdvanceToRelated_Object_Id").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_MetadataRelated_Object_IdFrom = $("#txtAdvanceFromRelated_Object_Id").val();
+            advanceSearch.Spartan_MetadataRelated_Object_IdTo = $("#txtAdvanceToRelated_Object_Id").val();
+        }
+        if ($("#txtAdvanceFromRelated_Class_Id").val() != "" || $("#txtAdvanceToRelated_Class_Id").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_MetadataRelated_Class_IdFrom = $("#txtAdvanceFromRelated_Class_Id").val();
+            advanceSearch.Spartan_MetadataRelated_Class_IdTo = $("#txtAdvanceToRelated_Class_Id").val();
+        }
+        if ($("#txtAdvanceRelated_Class_Name").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_MetadataRelated_Class_Name = $("#txtAdvanceRelated_Class_Name").val();
+            advanceSearch.Spartan_MetadataRelated_Class_NameSearchType = $("#ddlAdvanceRelated_Class_NameFilter").val();
+        }
+        if ($("#txtAdvanceFromRelated_Class_Identifier").val() != "" || $("#txtAdvanceToRelated_Class_Identifier").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_MetadataRelated_Class_IdentifierFrom = $("#txtAdvanceFromRelated_Class_Identifier").val();
+            advanceSearch.Spartan_MetadataRelated_Class_IdentifierTo = $("#txtAdvanceToRelated_Class_Identifier").val();
+        }
+        if ($("#txtAdvanceRelated_Class_Description").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_MetadataRelated_Class_Description = $("#txtAdvanceRelated_Class_Description").val();
+            advanceSearch.Spartan_MetadataRelated_Class_DescriptionSearchType = $("#ddlAdvanceRelated_Class_DescriptionFilter").val();
+        }
+        if ($("#ddlAdvanceRequired").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_MetadataRequired = $("#ddlAdvanceRequired").val();
+        }
+        if ($("#txtAdvanceDefaultValue").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_MetadataDefaultValue = $("#txtAdvanceDefaultValue").val();
+            advanceSearch.Spartan_MetadataDefaultValueSearchType = $("#ddlAdvanceDefaultValueFilter").val();
+        }
+        if ($("#ddlAdvanceVisible").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_MetadataVisible = $("#ddlAdvanceVisible").val();
+        }
+        if ($("#txtAdvanceHelp_Text").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_MetadataHelp_Text = $("#txtAdvanceHelp_Text").val();
+            advanceSearch.Spartan_MetadataHelp_TextSearchType = $("#ddlAdvanceHelp_TextFilter").val();
+        }
+        if ($("#ddlAdvanceRead_Only").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_MetadataRead_Only = $("#ddlAdvanceRead_Only").val();
+        }
+        if ($("#txtAdvanceFromScreenOrder").val() != "" || $("#txtAdvanceToScreenOrder").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_MetadataScreenOrderFrom = $("#txtAdvanceFromScreenOrder").val();
+            advanceSearch.Spartan_MetadataScreenOrderTo = $("#txtAdvanceToScreenOrder").val();
+        }
+        if ($("#txtAdvanceFromControl_Type").val() != "" || $("#txtAdvanceToControl_Type").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_MetadataControl_TypeFrom = $("#txtAdvanceFromControl_Type").val();
+            advanceSearch.Spartan_MetadataControl_TypeTo = $("#txtAdvanceToControl_Type").val();
+        }
+        if ($("#txtAdvanceGroup_Name").val() != "") {
+            hasParameter = true;
+            advanceSearch.Spartan_MetadataGroup_Name = $("#txtAdvanceGroup_Name").val();
+            advanceSearch.Spartan_MetadataGroup_NameSearchType = $("#ddlAdvanceGroup_NameFilter").val();
+        }
+
+        advanceSearchQuery = hasParameter ? JSON.stringify(advanceSearch) : "";
+        $('#tblSpartan_Metadata').DataTable().draw();
+        return false;
+    }
+
+    var advanceSearchQuery = "", isSpartan_MetadataTextSearch = true;
+
+    $(document).ready(function () {
+        $('.clockpicker').clockpicker();
+
+    });
+</script>
+
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/chosen")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/clockpicker")
+
+
+    <script>
+        //Adding Rules
+        jQuery.validator.unobtrusive
+      .adapters.addSingleVal("isnumberafter", "propertyname");
+        jQuery.validator.unobtrusive
+    .adapters.addSingleVal("isdateafter", "propertyname");
+
+        //Number after method
+        jQuery.validator.addMethod("isnumberafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+                //if (Date.parse(val) <= Date.parse(otherVal)) {
+                if (Number(val) < Number(otherVal)) {
+                    return false;
+                }
+                        }
+            return true;
+        });
+
+        //Date after after method
+        jQuery.validator.addMethod("isdateafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+
+                if (GetDateObject(val) < GetDateObject(otherVal)) {
+
+                    return false;
+                    }
+                }
+            return true;
+            });
+
+
+        function GetDateObject(value) {
+            var delimiter = GetDelimiter(dateFormat);
+            var dateCollection = value.split(delimiter);
+            var formatCollection = dateFormat.split(delimiter);
+            var dateModel = GetDateModel(dateCollection, formatCollection);
+            return new Date(dateModel.Year, dateModel.Month - 1, dateModel.Day);
+        }
+        //Used to get the date model by parsing the date and the format
+        function GetDateModel(dateCollection,formatCollection) {
+            var day, month, year;
+            for (var i = 0; i < formatCollection.length; i++) {
+                switch (formatCollection[i][0].toUpperCase()) {
+                
+                    case "D":
+                        day = dateCollection[i];
+                        break;
+
+                    case "Y":
+                        year = dateCollection[i];
+                        break;
+
+                    case "M":
+                        month = dateCollection[i];
+                        break;
+                }
+            }
+
+            return {
+                Day:day,
+                Month:month,
+                Year:year
+            };
+        }
+
+        function GetDelimiter(format) {
+
+            for (var i = 0; i < format.length; i++) {
+                if (/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(format[i])) {
+                    return format[i];
+                }
+            }
+            return null;
+        }
+
+        var dateFormat = "@ConfigurationProperty.DateFormatDatePicker";
+
+        $(document).ready(function () {
+
+
+
+            $('.input-daterange').datepicker({
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                format: dateFormat,
+                message: 'The date is not a valid'
+            });
+
+            $(".chosen-select").chosen({ width: "22%", no_results_text: "Oops, nothing found!" });
+
+        });
+
+    </script>
+}
+

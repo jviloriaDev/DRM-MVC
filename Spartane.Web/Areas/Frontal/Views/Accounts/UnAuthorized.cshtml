@@ -1,0 +1,26 @@
+﻿@{
+
+}
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>UnAuthorized</title>
+    <style>
+        .Label {
+            font-size: 31px;
+    text-align: center;
+    margin-top: 2%;
+    
+        }
+        .Bold {
+                font-weight: bold;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="Label"> You are trying to access @ViewBag.ControllerName <i class="fa fa-arrow-right"></i> @ViewBag.ActionName module but you do not have access to that module. </div>
+    <div class="Label Bold"> kindly contact administrator for access of modules.</div>
+    <div class="Label"> <a href="@Url.Content("~/Frontal/Home")">Click here</a> to go to home</div>
+</body>
+
+

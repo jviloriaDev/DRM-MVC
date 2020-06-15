@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Spartan_WorkFlow_State" value="Spartan WorkFlow State"></resource>
+  <resource culture="es-es" name="StateId" value="StateId"></resource>
+  <resource culture="es-es" name="Phase" value="Phase"></resource>
+  <resource culture="es-es" name="Attribute" value="Attribute"></resource>
+  <resource culture="es-es" name="State_Code" value="State Code"></resource>
+  <resource culture="es-es" name="Name" value="State (Name)"></resource>
+  <resource culture="es-es" name="Value" value="State (Value)"></resource>
+  <resource culture="es-es" name="Text" value="State (Text)"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Spartan_Attribute_Type" value="Attribute Type"></resource>
+  <resource culture="es-es" name="Attribute_Type_Id" value="Id"></resource>
+  <resource culture="es-es" name="Description" value="Description"></resource>
+
+</resources>

@@ -1,0 +1,653 @@
+﻿@using System.Collections.Generic
+@using Spartane.Web.Areas.Frontal.Models
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.PlatillosAdvanceSearchModel
+@{
+    List<SelectListItem> varSpartan_User_Usuario_que_Registra = null;
+    if (ViewBag.Spartan_Users_Usuario_que_Registra != null)
+    { varSpartan_User_Usuario_que_Registra = (List<SelectListItem>)ViewBag.Spartan_Users_Usuario_que_Registra; }
+    List<SelectListItem> varCalorias_Calorias = null;
+    if (ViewBag.Caloriass_Calorias != null)
+    { varCalorias_Calorias = (List<SelectListItem>)ViewBag.Caloriass_Calorias; }
+    List<SelectListItem> varDificultad_de_platillos_Dificultad = null;
+    if (ViewBag.Dificultad_de_platilloss_Dificultad != null)
+    { varDificultad_de_platillos_Dificultad = (List<SelectListItem>)ViewBag.Dificultad_de_platilloss_Dificultad; }
+    List<SelectListItem> varCategorias_de_platillos_Categoria_del_Platillo = null;
+    if (ViewBag.Categorias_de_platilloss_Categoria_del_Platillo != null)
+    { varCategorias_de_platillos_Categoria_del_Platillo = (List<SelectListItem>)ViewBag.Categorias_de_platilloss_Categoria_del_Platillo; }
+    List<SelectListItem> varTiempos_de_Comida_Tiempo_de_comida = null;
+    if (ViewBag.Tiempos_de_Comidas_Tiempo_de_comida != null)
+    { varTiempos_de_Comida_Tiempo_de_comida = (List<SelectListItem>)ViewBag.Tiempos_de_Comidas_Tiempo_de_comida; }
+    List<SelectListItem> varTipo_de_comida_platillos_Tipo_de_comida = null;
+    if (ViewBag.Tipo_de_comida_platilloss_Tipo_de_comida != null)
+    { varTipo_de_comida_platillos_Tipo_de_comida = (List<SelectListItem>)ViewBag.Tipo_de_comida_platilloss_Tipo_de_comida; }
+    List<SelectListItem> varCaracteristicas_platillo_Caracteristicas = null;
+    if (ViewBag.Caracteristicas_platillos_Caracteristicas != null)
+    { varCaracteristicas_platillo_Caracteristicas = (List<SelectListItem>)ViewBag.Caracteristicas_platillos_Caracteristicas; }
+
+    var filters = (List<SelectListItem>)ViewBag.Filter;
+}
+<style>
+    .input-validation-error {
+        background: rgb(251, 227, 228);
+        border: 1px solid #fbc2c4;
+        color: #8a1f11;
+    }
+
+    .MarginBottom {
+        margin-bottom: 1%;
+    }
+
+    #divAdvanceSearch input {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch button {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch select {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch h3 {
+        margin-top: 2%;
+    }
+
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins" id="divAdvanceSearch">
+        <div class="ibox-content">
+            @using (Html.BeginForm("ShowAdvanceFilter", "Platillos", FormMethod.Post, new { @id = "frmAdvanceSearch", @role = "form" }))
+            {
+				<input type="hidden" value="-1" name="idFilter" id="idFilter" />
+                <div class="MarginBottom ">
+                    <h3>@Resources.PlatillosResources.Folio</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromFolio, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromFolio" })
+                    @Html.ValidationMessageFor(m => m.FromFolio)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToFolio, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToFolio", @data_min = "txtAdvanceFromFolio" })
+                    @Html.ValidationMessageFor(m => m.ToFolio)
+                </div>
+        <div class="MarginBottom ">
+            <h3>@Resources.PlatillosResources.Fecha_de_Registro</h3>
+        </div>
+        <div class="MarginBottom form-inline">
+            <label class="">@Resources.Resources.From:</label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceFromFecha_de_Registro" name="FromFecha_de_Registro" type="text" value="@Model.FromFecha_de_Registro" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+            <label class="">@Resources.Resources.To: </label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceToFecha_de_Registro" name="ToFecha_de_Registro" type="text" value="@Model.ToFecha_de_Registro" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+        <div class="MarginBottom ">
+            <h3>@Resources.PlatillosResources.Hora_de_Registro</h3>
+        </div>
+        <div class="MarginBottom form-inline">
+            <label class="">@Resources.Resources.From:</label>
+            <div class="input-group clock" data-autoclose="true">
+                <input class="form-control" id="txtAdvanceFromHora_de_Registro" name="FromHora_de_Registro" type="text" value="@Model.FromHora_de_Registro" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-time"></span>
+                </span>
+            </div>
+            <label class="">@Resources.Resources.To: </label>
+            <div class="input-group clock" data-autoclose="true">
+                <input class="form-control" id="txtAdvanceToHora_de_Registro" name="ToHora_de_Registro" type="text" value="@Model.ToHora_de_Registro" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-time"></span>
+                </span>
+            </div>
+        </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PlatillosResources.Usuario_que_Registra</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Usuario_que_RegistraFilter, filters, new { @class = "form-control", @id = "ddlUsuario_que_RegistraFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceUsuario_que_Registra, new { @class = "form-control", @type = "text", @id = "txtAdvanceUsuario_que_Registra" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSpartan_User_Usuario_que_Registra!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceUsuario_que_RegistraMultiple, varSpartan_User_Usuario_que_Registra,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceUsuario_que_Registra"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PlatillosResources.Nombre_de_Platillo</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Nombre_de_PlatilloFilter, filters, new { @class = "form-control", @id = "ddlNombre_de_PlatilloFilter" })
+                    @Html.TextBoxFor(m => m.Nombre_de_Platillo, new { @class = "form-control", @type = "text", @id = "txtNombre_de_Platillo" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PlatillosResources.Calorias</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.CaloriasFilter, filters, new { @class = "form-control", @id = "ddlCaloriasFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceCalorias, new { @class = "form-control", @type = "text", @id = "txtAdvanceCalorias" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varCalorias_Calorias!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceCaloriasMultiple, varCalorias_Calorias,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceCalorias"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PlatillosResources.Dificultad</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.DificultadFilter, filters, new { @class = "form-control", @id = "ddlDificultadFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceDificultad, new { @class = "form-control", @type = "text", @id = "txtAdvanceDificultad" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varDificultad_de_platillos_Dificultad!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceDificultadMultiple, varDificultad_de_platillos_Dificultad,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceDificultad"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PlatillosResources.Categoria_del_Platillo</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Categoria_del_PlatilloFilter, filters, new { @class = "form-control", @id = "ddlCategoria_del_PlatilloFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceCategoria_del_Platillo, new { @class = "form-control", @type = "text", @id = "txtAdvanceCategoria_del_Platillo" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varCategorias_de_platillos_Categoria_del_Platillo!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceCategoria_del_PlatilloMultiple, varCategorias_de_platillos_Categoria_del_Platillo,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceCategoria_del_Platillo"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PlatillosResources.Tiempo_de_comida</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Tiempo_de_comidaFilter, filters, new { @class = "form-control", @id = "ddlTiempo_de_comidaFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceTiempo_de_comida, new { @class = "form-control", @type = "text", @id = "txtAdvanceTiempo_de_comida" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varTiempos_de_Comida_Tiempo_de_comida!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceTiempo_de_comidaMultiple, varTiempos_de_Comida_Tiempo_de_comida,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceTiempo_de_comida"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PlatillosResources.Tipo_de_comida</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Tipo_de_comidaFilter, filters, new { @class = "form-control", @id = "ddlTipo_de_comidaFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceTipo_de_comida, new { @class = "form-control", @type = "text", @id = "txtAdvanceTipo_de_comida" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varTipo_de_comida_platillos_Tipo_de_comida!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceTipo_de_comidaMultiple, varTipo_de_comida_platillos_Tipo_de_comida,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceTipo_de_comida"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PlatillosResources.Caracteristicas</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.CaracteristicasFilter, filters, new { @class = "form-control", @id = "ddlCaracteristicasFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceCaracteristicas, new { @class = "form-control", @type = "text", @id = "txtAdvanceCaracteristicas" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varCaracteristicas_platillo_Caracteristicas!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceCaracteristicasMultiple, varCaracteristicas_platillo_Caracteristicas,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceCaracteristicas"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PlatillosResources.Calificacion</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.CalificacionFilter, filters, new { @class = "form-control", @id = "ddlCalificacionFilter" })
+                    @Html.TextBoxFor(m => m.Calificacion, new { @class = "form-control", @type = "text", @id = "txtCalificacion" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.PlatillosResources.Modo_de_Preparacion</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Modo_de_PreparacionFilter, filters, new { @class = "form-control", @id = "ddlModo_de_PreparacionFilter" })
+                    @Html.TextBoxFor(m => m.Modo_de_Preparacion, new { @class = "form-control", @type = "text", @id = "txtModo_de_Preparacion" })
+                </div>
+
+                <div class="MarginBottom form-inline">
+                    <input type="submit" class="btn btn-primary" value="@Resources.Resources.Search"><a class="btn btn-primary" href="@Url.Content("~/Frontal/Platillos/")" value=" ">@Resources.Resources.Cancelar</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function InitiateAdvanceSearch() {
+        var advanceSearch = {}, hasParameter = false;
+        if ($("#txtAdvanceFromFolio").val() != "" || $("#txtAdvanceToFolio").val() != "") {
+            hasParameter = true;
+            advanceSearch.PlatillosFolioFrom = $("#txtAdvanceFromFolio").val();
+            advanceSearch.PlatillosFolioTo = $("#txtAdvanceToFolio").val();
+        }
+        if ($("#txtAdvanceFromFecha_de_Registro").val() != "" || $("#txtAdvanceToFecha_de_Registro").val() != "") {
+            hasParameter = true;
+            advanceSearch.PlatillosFecha_de_RegistroFrom = $("#txtAdvanceFromFecha_de_Registro").val();
+            advanceSearch.PlatillosFecha_de_RegistroTo = $("#txtAdvanceToFecha_de_Registro").val();
+        }
+        if ($("#txtAdvanceHora_de_Registro").val() != "") {
+            hasParameter = true;
+            advanceSearch.PlatillosHora_de_Registro = $("#txtAdvanceHora_de_Registro").val();
+            advanceSearch.PlatillosHora_de_RegistroSearchType = $("#ddlAdvanceHora_de_RegistroFilter").val();
+        }
+        advanceSearch.Usuario_que_RegistraSearchType = 0;
+        if ($('#ddlAdvanceUsuario_que_Registra').val().length > 0 || $("#txtAdvanceUsuario_que_Registra").val() == "") {
+
+
+            if (isPlatillosTextSearch) {
+                advanceSearch.Usuario_que_RegistraName = $("#txtAdvanceUsuario_que_Registra").val();
+                advanceSearch.Usuario_que_RegistraNameSearchType = $("#ddlAdvanceUsuario_que_Registra").val();
+                advanceSearch.Usuario_que_RegistraSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Usuario_que_RegistraToSearch = $("#ddlAdvanceUsuario_que_Registra").val();
+                advanceSearch.Usuario_que_RegistraSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceNombre_de_Platillo").val() != "") {
+            hasParameter = true;
+            advanceSearch.PlatillosNombre_de_Platillo = $("#txtAdvanceNombre_de_Platillo").val();
+            advanceSearch.PlatillosNombre_de_PlatilloSearchType = $("#ddlAdvanceNombre_de_PlatilloFilter").val();
+        }
+        advanceSearch.ImagenSearchType = 0;
+        if ($('#ddlAdvanceImagen').val().length > 0 || $("#txtAdvanceImagen").val() == "") {
+
+
+            if (isPlatillosTextSearch) {
+                advanceSearch.ImagenName = $("#txtAdvanceImagen").val();
+                advanceSearch.ImagenNameSearchType = $("#ddlAdvanceImagen").val();
+                advanceSearch.ImagenSearchType = 1;
+            }
+            else {
+
+                advanceSearch.ImagenToSearch = $("#ddlAdvanceImagen").val();
+                advanceSearch.ImagenSearchType = 2;
+            }
+        }
+        advanceSearch.CaloriasSearchType = 0;
+        if ($('#ddlAdvanceCalorias').val().length > 0 || $("#txtAdvanceCalorias").val() == "") {
+
+
+            if (isPlatillosTextSearch) {
+                advanceSearch.CaloriasName = $("#txtAdvanceCalorias").val();
+                advanceSearch.CaloriasNameSearchType = $("#ddlAdvanceCalorias").val();
+                advanceSearch.CaloriasSearchType = 1;
+            }
+            else {
+
+                advanceSearch.CaloriasToSearch = $("#ddlAdvanceCalorias").val();
+                advanceSearch.CaloriasSearchType = 2;
+            }
+        }
+        advanceSearch.DificultadSearchType = 0;
+        if ($('#ddlAdvanceDificultad').val().length > 0 || $("#txtAdvanceDificultad").val() == "") {
+
+
+            if (isPlatillosTextSearch) {
+                advanceSearch.DificultadName = $("#txtAdvanceDificultad").val();
+                advanceSearch.DificultadNameSearchType = $("#ddlAdvanceDificultad").val();
+                advanceSearch.DificultadSearchType = 1;
+            }
+            else {
+
+                advanceSearch.DificultadToSearch = $("#ddlAdvanceDificultad").val();
+                advanceSearch.DificultadSearchType = 2;
+            }
+        }
+        advanceSearch.Categoria_del_PlatilloSearchType = 0;
+        if ($('#ddlAdvanceCategoria_del_Platillo').val().length > 0 || $("#txtAdvanceCategoria_del_Platillo").val() == "") {
+
+
+            if (isPlatillosTextSearch) {
+                advanceSearch.Categoria_del_PlatilloName = $("#txtAdvanceCategoria_del_Platillo").val();
+                advanceSearch.Categoria_del_PlatilloNameSearchType = $("#ddlAdvanceCategoria_del_Platillo").val();
+                advanceSearch.Categoria_del_PlatilloSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Categoria_del_PlatilloToSearch = $("#ddlAdvanceCategoria_del_Platillo").val();
+                advanceSearch.Categoria_del_PlatilloSearchType = 2;
+            }
+        }
+        advanceSearch.Tiempo_de_comidaSearchType = 0;
+        if ($('#ddlAdvanceTiempo_de_comida').val().length > 0 || $("#txtAdvanceTiempo_de_comida").val() == "") {
+
+
+            if (isPlatillosTextSearch) {
+                advanceSearch.Tiempo_de_comidaName = $("#txtAdvanceTiempo_de_comida").val();
+                advanceSearch.Tiempo_de_comidaNameSearchType = $("#ddlAdvanceTiempo_de_comida").val();
+                advanceSearch.Tiempo_de_comidaSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Tiempo_de_comidaToSearch = $("#ddlAdvanceTiempo_de_comida").val();
+                advanceSearch.Tiempo_de_comidaSearchType = 2;
+            }
+        }
+        advanceSearch.Tipo_de_comidaSearchType = 0;
+        if ($('#ddlAdvanceTipo_de_comida').val().length > 0 || $("#txtAdvanceTipo_de_comida").val() == "") {
+
+
+            if (isPlatillosTextSearch) {
+                advanceSearch.Tipo_de_comidaName = $("#txtAdvanceTipo_de_comida").val();
+                advanceSearch.Tipo_de_comidaNameSearchType = $("#ddlAdvanceTipo_de_comida").val();
+                advanceSearch.Tipo_de_comidaSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Tipo_de_comidaToSearch = $("#ddlAdvanceTipo_de_comida").val();
+                advanceSearch.Tipo_de_comidaSearchType = 2;
+            }
+        }
+        advanceSearch.CaracteristicasSearchType = 0;
+        if ($('#ddlAdvanceCaracteristicas').val().length > 0 || $("#txtAdvanceCaracteristicas").val() == "") {
+
+
+            if (isPlatillosTextSearch) {
+                advanceSearch.CaracteristicasName = $("#txtAdvanceCaracteristicas").val();
+                advanceSearch.CaracteristicasNameSearchType = $("#ddlAdvanceCaracteristicas").val();
+                advanceSearch.CaracteristicasSearchType = 1;
+            }
+            else {
+
+                advanceSearch.CaracteristicasToSearch = $("#ddlAdvanceCaracteristicas").val();
+                advanceSearch.CaracteristicasSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceCalificacion").val() != "") {
+            hasParameter = true;
+            advanceSearch.PlatillosCalificacion = $("#txtAdvanceCalificacion").val();
+            advanceSearch.PlatillosCalificacionSearchType = $("#ddlAdvanceCalificacionFilter").val();
+        }
+        if ($("#txtAdvanceModo_de_Preparacion").val() != "") {
+            hasParameter = true;
+            advanceSearch.PlatillosModo_de_Preparacion = $("#txtAdvanceModo_de_Preparacion").val();
+            advanceSearch.PlatillosModo_de_PreparacionSearchType = $("#ddlAdvanceModo_de_PreparacionFilter").val();
+        }
+
+        advanceSearchQuery = hasParameter ? JSON.stringify(advanceSearch) : "";
+        $('#tblPlatillos').DataTable().draw();
+        return false;
+    }
+
+    var advanceSearchQuery = "", isPlatillosTextSearch = true;
+
+    $(document).ready(function () {
+        $('.clock').clockpicker();
+		$('.date').datepicker({
+			todayBtn: "linked",
+			keyboardNavigation: false,
+			forceParse: false,
+			calendarWeeks: true,
+			autoclose: true,
+			format: "@ConfigurationProperty.DateFormatDatePicker"
+		});
+        $("#txtAdvanceUsuario_que_Registra").keypress(function () {
+            isPlatillosTextSearch = true;
+            $("#ddlAdvanceUsuario_que_Registra").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceUsuario_que_Registra").change(function () {
+            isPlatillosTextSearch = false;
+            $("#txtAdvanceUsuario_que_Registra").val('');
+        });
+        $("#txtAdvanceCalorias").keypress(function () {
+            isPlatillosTextSearch = true;
+            $("#ddlAdvanceCalorias").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceCalorias").change(function () {
+            isPlatillosTextSearch = false;
+            $("#txtAdvanceCalorias").val('');
+        });
+        $("#txtAdvanceDificultad").keypress(function () {
+            isPlatillosTextSearch = true;
+            $("#ddlAdvanceDificultad").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceDificultad").change(function () {
+            isPlatillosTextSearch = false;
+            $("#txtAdvanceDificultad").val('');
+        });
+        $("#txtAdvanceCategoria_del_Platillo").keypress(function () {
+            isPlatillosTextSearch = true;
+            $("#ddlAdvanceCategoria_del_Platillo").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceCategoria_del_Platillo").change(function () {
+            isPlatillosTextSearch = false;
+            $("#txtAdvanceCategoria_del_Platillo").val('');
+        });
+        $("#txtAdvanceTiempo_de_comida").keypress(function () {
+            isPlatillosTextSearch = true;
+            $("#ddlAdvanceTiempo_de_comida").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceTiempo_de_comida").change(function () {
+            isPlatillosTextSearch = false;
+            $("#txtAdvanceTiempo_de_comida").val('');
+        });
+        $("#txtAdvanceTipo_de_comida").keypress(function () {
+            isPlatillosTextSearch = true;
+            $("#ddlAdvanceTipo_de_comida").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceTipo_de_comida").change(function () {
+            isPlatillosTextSearch = false;
+            $("#txtAdvanceTipo_de_comida").val('');
+        });
+        $("#txtAdvanceCaracteristicas").keypress(function () {
+            isPlatillosTextSearch = true;
+            $("#ddlAdvanceCaracteristicas").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceCaracteristicas").change(function () {
+            isPlatillosTextSearch = false;
+            $("#txtAdvanceCaracteristicas").val('');
+        });
+
+    });
+</script>
+
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/chosen")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/clockpicker")
+
+
+    <script>
+        //Adding Rules
+        jQuery.validator.unobtrusive
+      .adapters.addSingleVal("isnumberafter", "propertyname");
+        jQuery.validator.unobtrusive
+    .adapters.addSingleVal("isdateafter", "propertyname");
+
+        //Number after method
+        jQuery.validator.addMethod("isnumberafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+                //if (Date.parse(val) <= Date.parse(otherVal)) {
+                if (Number(val) < Number(otherVal)) {
+                    return false;
+                }
+                        }
+            return true;
+        });
+
+        //Date after after method
+        jQuery.validator.addMethod("isdateafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+
+                if (GetDateObject(val) < GetDateObject(otherVal)) {
+
+                    return false;
+                    }
+                }
+            return true;
+            });
+
+
+        function GetDateObject(value) {
+            var delimiter = GetDelimiter(dateFormat);
+            var dateCollection = value.split(delimiter);
+            var formatCollection = dateFormat.split(delimiter);
+            var dateModel = GetDateModel(dateCollection, formatCollection);
+            return new Date(dateModel.Year, dateModel.Month - 1, dateModel.Day);
+        }
+        //Used to get the date model by parsing the date and the format
+        function GetDateModel(dateCollection,formatCollection) {
+            var day, month, year;
+            for (var i = 0; i < formatCollection.length; i++) {
+                switch (formatCollection[i][0].toUpperCase()) {
+                
+                    case "D":
+                        day = dateCollection[i];
+                        break;
+
+                    case "Y":
+                        year = dateCollection[i];
+                        break;
+
+                    case "M":
+                        month = dateCollection[i];
+                        break;
+                }
+            }
+
+            return {
+                Day:day,
+                Month:month,
+                Year:year
+            };
+        }
+
+        function GetDelimiter(format) {
+
+            for (var i = 0; i < format.length; i++) {
+                if (/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(format[i])) {
+                    return format[i];
+                }
+            }
+            return null;
+        }
+
+        var dateFormat = "@ConfigurationProperty.DateFormatDatePicker";
+
+        $(document).ready(function () {
+            $('.input-daterange').datepicker({
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                format: dateFormat,
+                message: 'The date is not a valid'
+            });
+
+            $(".chosen-select").chosen({ width: "22%", no_results_text: "Oops, nothing found!" });
+			if ($('#IsFilterModal').val() == 'true') {
+                $('.ShowAdvanceFilter #right-sidebar').css('display', 'none');
+                $('.ShowAdvanceFilter .navbar-default').css('display', 'none');
+                $('.ShowAdvanceFilter .border-bottom').css('display', 'none');
+                $('.ShowAdvanceFilter #page-wrapper').css('margin', '0 auto');
+                $('.ShowAdvanceFilter .btn-save').val('@Resources.Resources.Filter');
+                $('.ShowAdvanceFilter .btn-cancelar').attr('data-dismiss', 'modal');
+                $('.ShowAdvanceFilter .btn-cancelar').removeAttr('href');
+                $('#idFilter').val($('#IdReport').val());
+            }
+        });
+
+    </script>
+}
+

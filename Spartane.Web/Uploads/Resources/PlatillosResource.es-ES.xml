@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Platillos" value="Platillos"></resource>
+  <resource culture="es-es" name="Folio" value="Folio"></resource>
+  <resource culture="es-es" name="Fecha_de_Registro" value="Fecha de Registro"></resource>
+  <resource culture="es-es" name="Hora_de_Registro" value="Hora de Registro"></resource>
+  <resource culture="es-es" name="Usuario_que_Registra" value="Usuario que Registra"></resource>
+  <resource culture="es-es" name="Nombre_de_Platillo" value="Nombre de Platillo"></resource>
+  <resource culture="es-es" name="Imagen" value="Imagen"></resource>
+  <resource culture="es-es" name="Calorias" value="Calorias"></resource>
+  <resource culture="es-es" name="Dificultad" value="Dificultad"></resource>
+  <resource culture="es-es" name="Categoria_del_Platillo" value="Padecimientos"></resource>
+  <resource culture="es-es" name="Tiempo_de_comida" value="Tiempo de comida"></resource>
+  <resource culture="es-es" name="Tipo_de_comida" value="Tipo de comida"></resource>
+  <resource culture="es-es" name="Caracteristicas" value="Características"></resource>
+  <resource culture="es-es" name="Calificacion" value="Calificación"></resource>
+  <resource culture="es-es" name="Detalle_Platillos" value="Detalle Platillos"></resource>
+  <resource culture="es-es" name="Detalle_Platillo_MR2" value="Detalle Platillo"></resource>
+  <resource culture="es-es" name="Modo_de_Preparacion" value="Modo de Preparacion"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

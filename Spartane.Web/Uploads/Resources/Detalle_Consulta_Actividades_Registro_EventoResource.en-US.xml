@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Detalle_Consulta_Actividades_Registro_Evento" value="Detalle Consulta Actividades Registro Evento"></resource>
+  <resource culture="en-US" name="Folio" value="Folio"></resource>
+  <resource culture="en-US" name="Actividad" value="Actividad"></resource>
+  <resource culture="en-US" name="Tipo_de_Actividad" value="Tipo de Actividad"></resource>
+  <resource culture="en-US" name="Especialidad" value="Especialidad"></resource>
+  <resource culture="en-US" name="Imparte" value="Imparte"></resource>
+  <resource culture="en-US" name="Fecha" value="Fecha"></resource>
+  <resource culture="en-US" name="Lugares_disponibles" value="Lugares disponibles"></resource>
+  <resource culture="en-US" name="Horarios_disponibles" value="Horarios disponibles"></resource>
+  <resource culture="en-US" name="Ubicacion" value="Ubicación"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

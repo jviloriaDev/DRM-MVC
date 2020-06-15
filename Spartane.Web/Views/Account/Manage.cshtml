@@ -1,0 +1,43 @@
+﻿@using Spartane.Web.Models;
+@using Microsoft.AspNet.Identity;
+@model Spartane.Web.Models.InformationUser
+@{
+    ViewBag.Title = "SPARTANE - TOTALTECH - Manage - information Account";
+}
+
+<h2>@ViewBag.Title.</h2>
+
+<p class="text-success">@ViewBag.StatusMessage</p>
+<div class="row">
+    <div class="col-md-12">
+        <section id="GlobalData">
+            <h3>Global Data</h3>
+            <p><b>UserID: </b>@(Model.GlobalData.UserID) - <b>serName</b>: @(Model.GlobalData.UserName) - <b>ComputerName: </b>@(Model.GlobalData.ComputerName) - <b>WindowsVersion: </b>@(Model.GlobalData.WindowsVersion)</p>
+            <p><b>ServidorName: </b>@(Model.GlobalData.ServidorName) - <b>ServidorNameComputer: </b>@(Model.GlobalData.ServidorNameComputer) - <b>DatabaseName: </b>@(Model.GlobalData.DatabaseName) - <b>AppToTempFiles: </b>@(Model.GlobalData.AppToTempFiles)</p>
+        </section>
+        <section id="Operations">
+            <h3>Operations Permited</h3>
+            @foreach (var operationPermited in Model.OperationsPermited)
+            {
+                <p> <b>Operation: </b>@(operationPermited.Operation) - @(operationPermited.Permited ? Html.Raw("Permited") : Html.Raw("No permited"))</p>
+            }
+        </section>
+        <section id="Modules">
+            <h3>Modules Permited</h3>
+            @foreach (var module in Model.ModulesPermited)
+            {
+                <p> @(module.Module) - @(module.Name) - @(module.Description) - @(module.ProcessId)</p>
+            }
+        </section>
+        <section id="DashBoards">
+            <h3>DashBoard Permited</h3>
+            @foreach (var dashBoard in Model.DashBoardsPermited)
+            {
+                <p> @(dashBoard.Key) - @(dashBoard.Description)</p>
+            }
+        </section>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

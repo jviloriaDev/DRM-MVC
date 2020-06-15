@@ -1,0 +1,327 @@
+﻿@using System.Collections.Generic
+@using Spartane.Web.Areas.Frontal.Models
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Detalle_Antecedentes_No_PatologicosAdvanceSearchModel
+@{
+    List<SelectListItem> varSustancias_Sustancia = null;
+    if (ViewBag.Sustanciass_Sustancia != null)
+    { varSustancias_Sustancia = (List<SelectListItem>)ViewBag.Sustanciass_Sustancia; }
+    List<SelectListItem> varFrecuencia_Sustancias_Frecuencia = null;
+    if (ViewBag.Frecuencia_Sustanciass_Frecuencia != null)
+    { varFrecuencia_Sustancias_Frecuencia = (List<SelectListItem>)ViewBag.Frecuencia_Sustanciass_Frecuencia; }
+
+    var filters = (List<SelectListItem>)ViewBag.Filter;
+}
+<style>
+    .input-validation-error {
+        background: rgb(251, 227, 228);
+        border: 1px solid #fbc2c4;
+        color: #8a1f11;
+    }
+
+    .MarginBottom {
+        margin-bottom: 1%;
+    }
+
+    #divAdvanceSearch input {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch button {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch select {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch h3 {
+        margin-top: 2%;
+    }
+
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins" id="divAdvanceSearch">
+        <div class="ibox-content">
+            @using (Html.BeginForm("ShowAdvanceFilter", "Detalle_Antecedentes_No_Patologicos", FormMethod.Post, new { @id = "frmAdvanceSearch", @role = "form" }))
+            {
+				<input type="hidden" value="-1" name="idFilter" id="idFilter" />
+                <div class="MarginBottom ">
+                    <h3>@Resources.Detalle_Antecedentes_No_PatologicosResources.Folio</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromFolio, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromFolio" })
+                    @Html.ValidationMessageFor(m => m.FromFolio)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToFolio, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToFolio", @data_min = "txtAdvanceFromFolio" })
+                    @Html.ValidationMessageFor(m => m.ToFolio)
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Detalle_Antecedentes_No_PatologicosResources.Sustancia</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.SustanciaFilter, filters, new { @class = "form-control", @id = "ddlSustanciaFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceSustancia, new { @class = "form-control", @type = "text", @id = "txtAdvanceSustancia" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSustancias_Sustancia!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceSustanciaMultiple, varSustancias_Sustancia,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceSustancia"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Detalle_Antecedentes_No_PatologicosResources.Frecuencia</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.FrecuenciaFilter, filters, new { @class = "form-control", @id = "ddlFrecuenciaFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceFrecuencia, new { @class = "form-control", @type = "text", @id = "txtAdvanceFrecuencia" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varFrecuencia_Sustancias_Frecuencia!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceFrecuenciaMultiple, varFrecuencia_Sustancias_Frecuencia,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceFrecuencia"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom ">
+                    <h3>@Resources.Detalle_Antecedentes_No_PatologicosResources.Cantidad</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromCantidad, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromCantidad" })
+                    @Html.ValidationMessageFor(m => m.FromCantidad)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToCantidad, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToCantidad", @data_min = "txtAdvanceFromCantidad" })
+                    @Html.ValidationMessageFor(m => m.ToCantidad)
+                </div>
+
+                <div class="MarginBottom form-inline">
+                    <input type="submit" class="btn btn-primary" value="@Resources.Resources.Search"><a class="btn btn-primary" href="@Url.Content("~/Frontal/Detalle_Antecedentes_No_Patologicos/")" value=" ">@Resources.Resources.Cancelar</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function InitiateAdvanceSearch() {
+        var advanceSearch = {}, hasParameter = false;
+        if ($("#txtAdvanceFromFolio").val() != "" || $("#txtAdvanceToFolio").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Antecedentes_No_PatologicosFolioFrom = $("#txtAdvanceFromFolio").val();
+            advanceSearch.Detalle_Antecedentes_No_PatologicosFolioTo = $("#txtAdvanceToFolio").val();
+        }
+        advanceSearch.SustanciaSearchType = 0;
+        if ($('#ddlAdvanceSustancia').val().length > 0 || $("#txtAdvanceSustancia").val() == "") {
+
+
+            if (isDetalle_Antecedentes_No_PatologicosTextSearch) {
+                advanceSearch.SustanciaName = $("#txtAdvanceSustancia").val();
+                advanceSearch.SustanciaNameSearchType = $("#ddlAdvanceSustancia").val();
+                advanceSearch.SustanciaSearchType = 1;
+            }
+            else {
+
+                advanceSearch.SustanciaToSearch = $("#ddlAdvanceSustancia").val();
+                advanceSearch.SustanciaSearchType = 2;
+            }
+        }
+        advanceSearch.FrecuenciaSearchType = 0;
+        if ($('#ddlAdvanceFrecuencia').val().length > 0 || $("#txtAdvanceFrecuencia").val() == "") {
+
+
+            if (isDetalle_Antecedentes_No_PatologicosTextSearch) {
+                advanceSearch.FrecuenciaName = $("#txtAdvanceFrecuencia").val();
+                advanceSearch.FrecuenciaNameSearchType = $("#ddlAdvanceFrecuencia").val();
+                advanceSearch.FrecuenciaSearchType = 1;
+            }
+            else {
+
+                advanceSearch.FrecuenciaToSearch = $("#ddlAdvanceFrecuencia").val();
+                advanceSearch.FrecuenciaSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceFromCantidad").val() != "" || $("#txtAdvanceToCantidad").val() != "") {
+            hasParameter = true;
+            advanceSearch.Detalle_Antecedentes_No_PatologicosCantidadFrom = $("#txtAdvanceFromCantidad").val();
+            advanceSearch.Detalle_Antecedentes_No_PatologicosCantidadTo = $("#txtAdvanceToCantidad").val();
+        }
+
+        advanceSearchQuery = hasParameter ? JSON.stringify(advanceSearch) : "";
+        $('#tblDetalle_Antecedentes_No_Patologicos').DataTable().draw();
+        return false;
+    }
+
+    var advanceSearchQuery = "", isDetalle_Antecedentes_No_PatologicosTextSearch = true;
+
+    $(document).ready(function () {
+        $('.clock').clockpicker();
+		$('.date').datepicker({
+			todayBtn: "linked",
+			keyboardNavigation: false,
+			forceParse: false,
+			calendarWeeks: true,
+			autoclose: true,
+			format: "@ConfigurationProperty.DateFormatDatePicker"
+		});
+        $("#txtAdvanceSustancia").keypress(function () {
+            isDetalle_Antecedentes_No_PatologicosTextSearch = true;
+            $("#ddlAdvanceSustancia").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceSustancia").change(function () {
+            isDetalle_Antecedentes_No_PatologicosTextSearch = false;
+            $("#txtAdvanceSustancia").val('');
+        });
+        $("#txtAdvanceFrecuencia").keypress(function () {
+            isDetalle_Antecedentes_No_PatologicosTextSearch = true;
+            $("#ddlAdvanceFrecuencia").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceFrecuencia").change(function () {
+            isDetalle_Antecedentes_No_PatologicosTextSearch = false;
+            $("#txtAdvanceFrecuencia").val('');
+        });
+
+    });
+</script>
+
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/chosen")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/clockpicker")
+
+
+    <script>
+        //Adding Rules
+        jQuery.validator.unobtrusive
+      .adapters.addSingleVal("isnumberafter", "propertyname");
+        jQuery.validator.unobtrusive
+    .adapters.addSingleVal("isdateafter", "propertyname");
+
+        //Number after method
+        jQuery.validator.addMethod("isnumberafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+                //if (Date.parse(val) <= Date.parse(otherVal)) {
+                if (Number(val) < Number(otherVal)) {
+                    return false;
+                }
+                        }
+            return true;
+        });
+
+        //Date after after method
+        jQuery.validator.addMethod("isdateafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+
+                if (GetDateObject(val) < GetDateObject(otherVal)) {
+
+                    return false;
+                    }
+                }
+            return true;
+            });
+
+
+        function GetDateObject(value) {
+            var delimiter = GetDelimiter(dateFormat);
+            var dateCollection = value.split(delimiter);
+            var formatCollection = dateFormat.split(delimiter);
+            var dateModel = GetDateModel(dateCollection, formatCollection);
+            return new Date(dateModel.Year, dateModel.Month - 1, dateModel.Day);
+        }
+        //Used to get the date model by parsing the date and the format
+        function GetDateModel(dateCollection,formatCollection) {
+            var day, month, year;
+            for (var i = 0; i < formatCollection.length; i++) {
+                switch (formatCollection[i][0].toUpperCase()) {
+                
+                    case "D":
+                        day = dateCollection[i];
+                        break;
+
+                    case "Y":
+                        year = dateCollection[i];
+                        break;
+
+                    case "M":
+                        month = dateCollection[i];
+                        break;
+                }
+            }
+
+            return {
+                Day:day,
+                Month:month,
+                Year:year
+            };
+        }
+
+        function GetDelimiter(format) {
+
+            for (var i = 0; i < format.length; i++) {
+                if (/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(format[i])) {
+                    return format[i];
+                }
+            }
+            return null;
+        }
+
+        var dateFormat = "@ConfigurationProperty.DateFormatDatePicker";
+
+        $(document).ready(function () {
+            $('.input-daterange').datepicker({
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                format: dateFormat,
+                message: 'The date is not a valid'
+            });
+
+            $(".chosen-select").chosen({ width: "22%", no_results_text: "Oops, nothing found!" });
+			if ($('#IsFilterModal').val() == 'true') {
+                $('.ShowAdvanceFilter #right-sidebar').css('display', 'none');
+                $('.ShowAdvanceFilter .navbar-default').css('display', 'none');
+                $('.ShowAdvanceFilter .border-bottom').css('display', 'none');
+                $('.ShowAdvanceFilter #page-wrapper').css('margin', '0 auto');
+                $('.ShowAdvanceFilter .btn-save').val('@Resources.Resources.Filter');
+                $('.ShowAdvanceFilter .btn-cancelar').attr('data-dismiss', 'modal');
+                $('.ShowAdvanceFilter .btn-cancelar').removeAttr('href');
+                $('#idFilter').val($('#IdReport').val());
+            }
+        });
+
+    </script>
+}
+

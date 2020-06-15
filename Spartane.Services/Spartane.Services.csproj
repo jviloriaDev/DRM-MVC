@@ -1,0 +1,1069 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+ <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+ <PropertyGroup>
+ <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+ <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+ <ProjectGuid>{7E1DD863-3658-407F-A096-DB0276B52201}</ProjectGuid>
+ <OutputType>Library</OutputType>
+ <AppDesignerFolder>Properties</AppDesignerFolder>
+ <RootNamespace>Spartane.Services</RootNamespace>
+ <AssemblyName>Spartane.Services</AssemblyName>
+ <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+ <FileAlignment>512</FileAlignment>
+ <SccProjectName>SAK</SccProjectName>
+ <SccLocalPath>SAK</SccLocalPath>
+ <SccAuxPath>SAK</SccAuxPath>
+ <SccProvider>SAK</SccProvider>
+ </PropertyGroup>
+ <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+ <DebugSymbols>true</DebugSymbols>
+ <DebugType>full</DebugType>
+ <Optimize>false</Optimize>
+ <OutputPath>bin\Debug\</OutputPath>
+ <DefineConstants>DEBUG;TRACE</DefineConstants>
+ <ErrorReport>prompt</ErrorReport>
+ <WarningLevel>4</WarningLevel>
+ </PropertyGroup>
+ <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+ <DebugType>pdbonly</DebugType>
+ <Optimize>true</Optimize>
+ <OutputPath>bin\Release\</OutputPath>
+ <DefineConstants>TRACE</DefineConstants>
+ <ErrorReport>prompt</ErrorReport>
+ <WarningLevel>4</WarningLevel>
+ </PropertyGroup>
+ <ItemGroup>
+ <Reference Include="System" />
+ <Reference Include="System.Core" />
+ <Reference Include="System.Linq.Dynamic">
+ <HintPath>..\packages\System.Linq.Dynamic.1.0.4\lib\net40\System.Linq.Dynamic.dll</HintPath>
+ </Reference>
+ <Reference Include="System.Web" />
+ <Reference Include="System.Windows.Forms" />
+ <Reference Include="System.Xml.Linq" />
+ <Reference Include="System.Data.DataSetExtensions" />
+ <Reference Include="Microsoft.CSharp" />
+ <Reference Include="System.Data" />
+ <Reference Include="System.Xml" />
+ </ItemGroup>
+ <ItemGroup>
+ <Compile Include="Authentication\FormsAuthenticationService.cs" />
+ <Compile Include="Authentication\IAuthenticationService.cs" />
+ <Compile Include="Binnacle\BinnacleService.cs" />
+ <Compile Include="Binnacle\IBinnacleService.cs" />
+ <Compile Include="BusinessRules\BusinessRulesService.cs" />
+ <Compile Include="BusinessRules\IBusinessRulesService.cs" />
+ <Compile Include="Business_Rule_Creation\Business_Rule_CreationService.cs" />
+ <Compile Include="Business_Rule_Creation\IBusiness_Rule_CreationService.cs" />
+ <Compile Include="Common\ISpartanControlTypeService.cs" />
+ <Compile Include="Common\ISpartanFileService.cs" />
+ <Compile Include="Common\ISpartanMethodTypeService.cs" />
+ <Compile Include="Common\ISpartanObjectService.cs" />
+ <Compile Include="Common\ISpartanObjectStatusService.cs" />
+ <Compile Include="Common\ISpartanSystemService.cs" />
+ <Compile Include="Common\Mock\MockSpartanControlTypeService.cs" />
+ <Compile Include="Common\Mock\MockSpartanFileService.cs" />
+ <Compile Include="Common\Mock\MockSpartanMethodTypeService.cs" />
+ <Compile Include="Common\Mock\MockSpartanObjectService.cs" />
+ <Compile Include="Common\Mock\MockSpartanObjectStatusService.cs" />
+ <Compile Include="Common\Mock\MockSpartanSystemService.cs" />
+ <Compile Include="Archivos\ArchivosService.cs" />
+ <Compile Include="Archivos\IArchivosService.cs" />
+ <Compile Include="CustomAuthentication\CustomAuthenticationService.cs" />
+ <Compile Include="CustomAuthentication\ICustomAuthenticationService.cs" />
+ <Compile Include="Dashboard_Config_Detail\Dashboard_Config_DetailService.cs" />
+ <Compile Include="Dashboard_Config_Detail\IDashboard_Config_DetailService.cs" />
+ <Compile Include="Dashboard_Editor\Dashboard_EditorService.cs" />
+ <Compile Include="Dashboard_Editor\IDashboard_EditorService.cs" />
+ <Compile Include="Dashboard_Status\Dashboard_StatusService.cs" />
+ <Compile Include="Dashboard_Status\IDashboard_StatusService.cs" />
+ <Compile Include="Events\EventPublisher.cs" />
+ <Compile Include="Events\IConsumer.cs" />
+ <Compile Include="Events\IEventPublisher.cs" />
+ <Compile Include="Events\ISubscriptionService.cs" />
+ <Compile Include="Events\SubscriptionService.cs" />
+ <Compile Include="Filters\ITTDependentFilterService.cs" />
+ <Compile Include="Filters\ITTDetailFilterService.cs" />
+ <Compile Include="Filters\ITTFilterService.cs" />
+ <Compile Include="Filters\TTDependentFilterService.cs" />
+ <Compile Include="Filters\TTDetailFilterService.cs" />
+ <Compile Include="Filters\TTFilterService.cs" />
+ <Compile Include="Language\ITTLanguageService.cs" />
+ <Compile Include="Language\ISpartanSystemLanguageService.cs" />
+ <Compile Include="Language\Mock\MockSpartanSystemLanguageService.cs" />
+ <Compile Include="Language\TTLanguageService.cs" />
+ <Compile Include="Notice\ISpartanNoticeService.cs" />
+ <Compile Include="Notice\ISpartanNoticeStatusService.cs" />
+ <Compile Include="Notice\ISpartanNoticeTypeService.cs" />
+ <Compile Include="Notice\Mock\MockSpartanNoticeService.cs" />
+ <Compile Include="Notice\Mock\MockSpartanNoticeStatusService.cs" />
+ <Compile Include="Notice\Mock\MockSpartanNoticeTypeService.cs" />
+ <Compile Include="obj\Release\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
+ <Compile Include="obj\Release\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
+ <Compile Include="obj\Release\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
+ <Compile Include="Properties\AssemblyInfo.cs" />
+ <Compile Include="Search\ITTSearchAdvancedDataService.cs" />
+ <Compile Include="Search\TTSearchAdvancedDataService.cs" />
+ <Compile Include="Security\IModuleDataService.cs" />
+ <Compile Include="Security\IPermissionService.cs" />
+ <Compile Include="Security\Mock\MockSpartanModuleService.cs" />
+ <Compile Include="Security\Mock\MockSpartanUserRoleService.cs" />
+ <Compile Include="Security\Mock\MockSpartanUserRoleStatusService.cs" />
+ <Compile Include="Security\SpartanModuleService.cs" />
+ <Compile Include="Security\PermissionService.cs" />
+ <Compile Include="Security\ISpartanUserRoleService.cs" />
+ <Compile Include="Security\ISpartanUserRoleStatusService.cs" />
+ <Compile Include="SpartanChangePasswordAutorizationEstatus\ISpartanChangePasswordAutorizationEstatusService.cs" />
+ <Compile Include="SpartanChangePasswordAutorizationEstatus\SpartanChangePasswordAutorizationEstatusService.cs" />
+ <Compile Include="SpartanObject\ISpartanObjectService.cs" />
+ <Compile Include="SpartanObject\SpartanObjectService.cs" />
+ <Compile Include="Spartan_Attribute_Control_Type\ISpartan_Attribute_Control_TypeService.cs" />
+ <Compile Include="Spartan_Attribute_Control_Type\Spartan_Attribute_Control_TypeService.cs" />
+ <Compile Include="Spartan_Attribute_Type\ISpartan_Attribute_TypeService.cs" />
+ <Compile Include="Spartan_Attribute_Type\Spartan_Attribute_TypeService.cs" />
+ <Compile Include="Spartan_Bitacora_SQL\ISpartan_Bitacora_SQLService.cs" />
+ <Compile Include="Spartan_Bitacora_SQL\Spartan_Bitacora_SQLService.cs" />
+ <Compile Include="Spartan_BR_Actions_False_Detail\ISpartan_BR_Actions_False_DetailService.cs" />
+ <Compile Include="Spartan_BR_Actions_False_Detail\Spartan_BR_Actions_False_DetailService.cs" />
+ <Compile Include="Spartan_BR_Actions_True_Detail\ISpartan_BR_Actions_True_DetailService.cs" />
+ <Compile Include="Spartan_BR_Actions_True_Detail\Spartan_BR_Actions_True_DetailService.cs" />
+ <Compile Include="Spartan_BR_Action\ISpartan_BR_ActionService.cs" />
+ <Compile Include="Spartan_BR_Action\Spartan_BR_ActionService.cs" />
+ <Compile Include="Spartan_BR_Action_Classification\ISpartan_BR_Action_ClassificationService.cs" />
+ <Compile Include="Spartan_BR_Action_Classification\Spartan_BR_Action_ClassificationService.cs" />
+ <Compile Include="Spartan_BR_Action_Configuration_Detail\ISpartan_BR_Action_Configuration_DetailService.cs" />
+ <Compile Include="Spartan_BR_Action_Configuration_Detail\Spartan_BR_Action_Configuration_DetailService.cs" />
+ <Compile Include="Spartan_BR_Action_Param_Type\ISpartan_BR_Action_Param_TypeService.cs" />
+ <Compile Include="Spartan_BR_Action_Param_Type\Spartan_BR_Action_Param_TypeService.cs" />
+ <Compile Include="Spartan_BR_Action_Result\ISpartan_BR_Action_ResultService.cs" />
+ <Compile Include="Spartan_BR_Action_Result\Spartan_BR_Action_ResultService.cs" />
+ <Compile Include="Spartan_BR_Attribute_Restrictions_Detail\ISpartan_BR_Attribute_Restrictions_DetailService.cs" />
+ <Compile Include="Spartan_BR_Attribute_Restrictions_Detail\Spartan_BR_Attribute_Restrictions_DetailService.cs" />
+ <Compile Include="Spartan_BR_Complexity\ISpartan_BR_ComplexityService.cs" />
+ <Compile Include="Spartan_BR_Complexity\Spartan_BR_ComplexityService.cs" />
+ <Compile Include="Spartan_BR_Conditions_Detail\ISpartan_BR_Conditions_DetailService.cs" />
+ <Compile Include="Spartan_BR_Conditions_Detail\Spartan_BR_Conditions_DetailService.cs" />
+ <Compile Include="Spartan_BR_Condition\ISpartan_BR_ConditionService.cs" />
+ <Compile Include="Spartan_BR_Condition\Spartan_BR_ConditionService.cs" />
+ <Compile Include="Spartan_BR_Condition_Operator\ISpartan_BR_Condition_OperatorService.cs" />
+ <Compile Include="Spartan_BR_Condition_Operator\Spartan_BR_Condition_OperatorService.cs" />
+ <Compile Include="Spartan_BR_Event_Restrictions_Detail\ISpartan_BR_Event_Restrictions_DetailService.cs" />
+ <Compile Include="Spartan_BR_Event_Restrictions_Detail\Spartan_BR_Event_Restrictions_DetailService.cs" />
+ <Compile Include="Spartan_BR_History\ISpartan_BR_HistoryService.cs" />
+ <Compile Include="Spartan_BR_History\Spartan_BR_HistoryService.cs" />
+ <Compile Include="Spartan_BR_Modifications_Log\ISpartan_BR_Modifications_LogService.cs" />
+ <Compile Include="Spartan_BR_Modifications_Log\Spartan_BR_Modifications_LogService.cs" />
+ <Compile Include="Spartan_BR_Operation\ISpartan_BR_OperationService.cs" />
+ <Compile Include="Spartan_BR_Operation\Spartan_BR_OperationService.cs" />
+ <Compile Include="Spartan_BR_Operation_Detail\ISpartan_BR_Operation_DetailService.cs" />
+ <Compile Include="Spartan_BR_Operation_Detail\Spartan_BR_Operation_DetailService.cs" />
+ <Compile Include="Spartan_BR_Operation_Restrictions_Detail\ISpartan_BR_Operation_Restrictions_DetailService.cs" />
+ <Compile Include="Spartan_BR_Operation_Restrictions_Detail\Spartan_BR_Operation_Restrictions_DetailService.cs" />
+ <Compile Include="Spartan_BR_Operator_Type\ISpartan_BR_Operator_TypeService.cs" />
+ <Compile Include="Spartan_BR_Operator_Type\Spartan_BR_Operator_TypeService.cs" />
+ <Compile Include="Spartan_BR_Peer_Review\ISpartan_BR_Peer_ReviewService.cs" />
+ <Compile Include="Spartan_BR_Peer_Review\Spartan_BR_Peer_ReviewService.cs" />
+ <Compile Include="Spartan_BR_Presentation_Control_Type\ISpartan_BR_Presentation_Control_TypeService.cs" />
+ <Compile Include="Spartan_BR_Presentation_Control_Type\Spartan_BR_Presentation_Control_TypeService.cs" />
+ <Compile Include="Spartan_BR_Process_Event\ISpartan_BR_Process_EventService.cs" />
+ <Compile Include="Spartan_BR_Process_Event\Spartan_BR_Process_EventService.cs" />
+ <Compile Include="Spartan_BR_Process_Event_Detail\ISpartan_BR_Process_Event_DetailService.cs" />
+ <Compile Include="Spartan_BR_Process_Event_Detail\Spartan_BR_Process_Event_DetailService.cs" />
+ <Compile Include="Spartan_BR_Rejection_Reason\ISpartan_BR_Rejection_ReasonService.cs" />
+ <Compile Include="Spartan_BR_Rejection_Reason\Spartan_BR_Rejection_ReasonService.cs" />
+ <Compile Include="Spartan_BR_Scope\ISpartan_BR_ScopeService.cs" />
+ <Compile Include="Spartan_BR_Scope\Spartan_BR_ScopeService.cs" />
+ <Compile Include="Spartan_BR_Scope_Detail\ISpartan_BR_Scope_DetailService.cs" />
+ <Compile Include="Spartan_BR_Scope_Detail\Spartan_BR_Scope_DetailService.cs" />
+ <Compile Include="Spartan_BR_Status\ISpartan_BR_StatusService.cs" />
+ <Compile Include="Spartan_BR_Status\Spartan_BR_StatusService.cs" />
+ <Compile Include="Spartan_BR_Testing\ISpartan_BR_TestingService.cs" />
+ <Compile Include="Spartan_BR_Testing\Spartan_BR_TestingService.cs" />
+ <Compile Include="Spartan_BR_Type_History\ISpartan_BR_Type_HistoryService.cs" />
+ <Compile Include="Spartan_BR_Type_History\Spartan_BR_Type_HistoryService.cs" />
+ <Compile Include="Spartan_Business_Rule\ISpartan_Business_RuleService.cs" />
+ <Compile Include="Spartan_Business_Rule\Spartan_Business_RuleService.cs" />
+ <Compile Include="Spartan_ChangePasswordAutorization\ISpartan_ChangePasswordAutorizationService.cs" />
+ <Compile Include="Spartan_ChangePasswordAutorization\Spartan_ChangePasswordAutorizationService.cs" />
+ <Compile Include="Spartan_Report_Advance_Filter\ISpartan_Report_Advance_FilterService.cs" />
+ <Compile Include="Spartan_Report_Advance_Filter\Spartan_Report_Advance_FilterService.cs" />
+ <Compile Include="Spartan_Settings\ISpartan_SettingsService.cs" />
+ <Compile Include="Spartan_Settings\Spartan_SettingsService.cs" />
+ <Compile Include="Spartan_Traduction_Concept_Type\ISpartan_Traduction_Concept_TypeService.cs" />
+ <Compile Include="Spartan_Traduction_Concept_Type\Spartan_Traduction_Concept_TypeService.cs" />
+ <Compile Include="Spartan_Traduction_Detail\ISpartan_Traduction_DetailService.cs" />
+ <Compile Include="Spartan_Traduction_Detail\Spartan_Traduction_DetailService.cs" />
+ <Compile Include="Spartan_Traduction_Language\ISpartan_Traduction_LanguageService.cs" />
+ <Compile Include="Spartan_Traduction_Language\Spartan_Traduction_LanguageService.cs" />
+ <Compile Include="Spartan_Traduction_Object\ISpartan_Traduction_ObjectService.cs" />
+ <Compile Include="Spartan_Traduction_Object\Spartan_Traduction_ObjectService.cs" />
+ <Compile Include="Spartan_Traduction_Object_Type\ISpartan_Traduction_Object_TypeService.cs" />
+ <Compile Include="Spartan_Traduction_Object_Type\Spartan_Traduction_Object_TypeService.cs" />
+ <Compile Include="Spartan_Traduction_Process\ISpartan_Traduction_ProcessService.cs" />
+ <Compile Include="Spartan_Traduction_Process\Spartan_Traduction_ProcessService.cs" />
+ <Compile Include="Spartan_Traduction_Process_Data\ISpartan_Traduction_Process_DataService.cs" />
+ <Compile Include="Spartan_Traduction_Process_Data\Spartan_Traduction_Process_DataService.cs" />
+ <Compile Include="Spartan_Traduction_Process_Workflow\ISpartan_Traduction_Process_WorkflowService.cs" />
+ <Compile Include="Spartan_Traduction_Process_Workflow\Spartan_Traduction_Process_WorkflowService.cs" />
+ <Compile Include="Spartan_User\ISpartan_UserService.cs" />
+ <Compile Include="Spartan_User\Spartan_UserService.cs" />
+ <Compile Include="Spartan_User_Historical_Password\ISpartan_User_Historical_PasswordService.cs" />
+ <Compile Include="Spartan_User_Historical_Password\Spartan_User_Historical_PasswordService.cs" />
+ <Compile Include="Spartan_User_Role\ISpartan_User_RoleService.cs" />
+ <Compile Include="Spartan_User_Role\Spartan_User_RoleService.cs" />
+ <Compile Include="Spartan_User_Role_Status\ISpartan_User_Role_StatusService.cs" />
+ <Compile Include="Spartan_User_Role_Status\Spartan_User_Role_StatusService.cs" />
+ <Compile Include="Spartan_User_Status\ISpartan_User_StatusService.cs" />
+ <Compile Include="Spartan_User_Status\Spartan_User_StatusService.cs" />
+ <Compile Include="Spartan_WorkFlow\ISpartan_WorkFlowService.cs" />
+ <Compile Include="Spartan_WorkFlow\Spartan_WorkFlowService.cs" />
+ <Compile Include="Spartan_WorkFlow_Conditions_by_State\ISpartan_WorkFlow_Conditions_by_StateService.cs" />
+ <Compile Include="Spartan_WorkFlow_Conditions_by_State\Spartan_WorkFlow_Conditions_by_StateService.cs" />
+ <Compile Include="Spartan_WorkFlow_Condition\ISpartan_WorkFlow_ConditionService.cs" />
+ <Compile Include="Spartan_WorkFlow_Condition\Spartan_WorkFlow_ConditionService.cs" />
+ <Compile Include="Spartan_WorkFlow_Condition_Operator\ISpartan_WorkFlow_Condition_OperatorService.cs" />
+ <Compile Include="Spartan_WorkFlow_Condition_Operator\Spartan_WorkFlow_Condition_OperatorService.cs" />
+ <Compile Include="Spartan_WorkFlow_Information_by_State\ISpartan_WorkFlow_Information_by_StateService.cs" />
+ <Compile Include="Spartan_WorkFlow_Information_by_State\Spartan_WorkFlow_Information_by_StateService.cs" />
+ <Compile Include="Spartan_WorkFlow_Matrix_of_States\ISpartan_WorkFlow_Matrix_of_StatesService.cs" />
+ <Compile Include="Spartan_WorkFlow_Matrix_of_States\Spartan_WorkFlow_Matrix_of_StatesService.cs" />
+ <Compile Include="Spartan_WorkFlow_Operator\ISpartan_WorkFlow_OperatorService.cs" />
+ <Compile Include="Spartan_WorkFlow_Operator\Spartan_WorkFlow_OperatorService.cs" />
+ <Compile Include="Spartan_WorkFlow_Phases\ISpartan_WorkFlow_PhasesService.cs" />
+ <Compile Include="Spartan_WorkFlow_Phases\Spartan_WorkFlow_PhasesService.cs" />
+ <Compile Include="Spartan_WorkFlow_Phase_Status\ISpartan_WorkFlow_Phase_StatusService.cs" />
+ <Compile Include="Spartan_WorkFlow_Phase_Status\Spartan_WorkFlow_Phase_StatusService.cs" />
+ <Compile Include="Spartan_WorkFlow_Phase_Type\ISpartan_WorkFlow_Phase_TypeService.cs" />
+ <Compile Include="Spartan_WorkFlow_Phase_Type\Spartan_WorkFlow_Phase_TypeService.cs" />
+ <Compile Include="Spartan_WorkFlow_Roles_by_State\ISpartan_WorkFlow_Roles_by_StateService.cs" />
+ <Compile Include="Spartan_WorkFlow_Roles_by_State\Spartan_WorkFlow_Roles_by_StateService.cs" />
+ <Compile Include="Spartan_WorkFlow_State\ISpartan_WorkFlow_StateService.cs" />
+ <Compile Include="Spartan_WorkFlow_State\Spartan_WorkFlow_StateService.cs" />
+ <Compile Include="Spartan_WorkFlow_Status\ISpartan_WorkFlow_StatusService.cs" />
+ <Compile Include="Spartan_WorkFlow_Status\Spartan_WorkFlow_StatusService.cs" />
+ <Compile Include="Spartan_WorkFlow_Type_Flow_Control\ISpartan_WorkFlow_Type_Flow_ControlService.cs" />
+ <Compile Include="Spartan_WorkFlow_Type_Flow_Control\Spartan_WorkFlow_Type_Flow_ControlService.cs" />
+ <Compile Include="Spartan_WorkFlow_Type_Work_Distribution\ISpartan_WorkFlow_Type_Work_DistributionService.cs" />
+ <Compile Include="Spartan_WorkFlow_Type_Work_Distribution\Spartan_WorkFlow_Type_Work_DistributionService.cs" />
+ <Compile Include="Templates\ITTTemplatePrintExcelFieldService.cs" />
+ <Compile Include="Templates\ITTTemplatePrintExcelService.cs" />
+ <Compile Include="Templates\TTTemplatePrintExcelFieldService.cs" />
+ <Compile Include="Templates\TTTemplatePrintExcelService.cs" />
+ <Compile Include="Template_Dashboard_Detail\ITemplate_Dashboard_DetailService.cs" />
+ <Compile Include="Template_Dashboard_Detail\Template_Dashboard_DetailService.cs" />
+ <Compile Include="Template_Dashboard_Editor\ITemplate_Dashboard_EditorService.cs" />
+ <Compile Include="Template_Dashboard_Editor\Template_Dashboard_EditorService.cs" />
+ <Compile Include="TTArchivos\ITTArchivosService.cs" />
+ <Compile Include="TTArchivos\TTArchivosService.cs" />
+ <Compile Include="User\ISpartanUserService.cs" />
+ <Compile Include="User\ISpartanUserAlertService.cs" />
+ <Compile Include="User\ISpartanUserAlertStatusService.cs" />
+ <Compile Include="User\ISpartanUserAlertTypeService.cs" />
+ <Compile Include="User\ISpartanUserFavoriteListService.cs" />
+ <Compile Include="User\ISpartanUserFavoriteObjectService.cs" />
+ <Compile Include="User\ISpartanUserMostUsedObjectService.cs" />
+ <Compile Include="User\ISpartanUserQuickLinkService.cs" />
+ <Compile Include="User\ISpartanUserStatusService.cs" />
+ <Compile Include="User\Mock\MockSpartanUserService.cs" />
+ <Compile Include="User\Mock\MockSpartanUserAlertService.cs" />
+ <Compile Include="User\Mock\MockSpartanUserAlertStatusService.cs" />
+ <Compile Include="User\Mock\MockSpartanUserAlertTypeService.cs" />
+ <Compile Include="User\Mock\MockSpartanUserFavoriteListService.cs" />
+ <Compile Include="User\Mock\MockSpartanUserFavoriteObjectService.cs" />
+ <Compile Include="User\Mock\MockSpartanUserMostUsedObjectService.cs" />
+ <Compile Include="User\Mock\MockSpartanUserQuickLinkService.cs" />
+ <Compile Include="User\Mock\MockSpartanUserStatusService.cs" />
+ <Compile Include="User\SpartaneUserService.cs" />
+ <Compile Include="User\UserService.cs" />
+ <Compile Include="User\IUserService.cs" />
+ <Compile Include="Spartan_Format\ISpartan_FormatService.cs" />
+ <Compile Include="Spartan_Format\Spartan_FormatService.cs" />
+ <Compile Include="Spartan_Format_Type\ISpartan_Format_TypeService.cs" />
+ <Compile Include="Spartan_Format_Type\Spartan_Format_TypeService.cs" />
+ <Compile Include="Spartan_Metadata\ISpartan_MetadataService.cs" />
+ <Compile Include="Spartan_Metadata\Spartan_MetadataService.cs" />
+ <Compile Include="Spartan_Format_Configuration\ISpartan_Format_ConfigurationService.cs" />
+ <Compile Include="Spartan_Format_Configuration\Spartan_Format_ConfigurationService.cs" />
+ <Compile Include="Spartan_Format_Field\ISpartan_Format_FieldService.cs" />
+ <Compile Include="Spartan_Format_Field\Spartan_Format_FieldService.cs" />
+ <Compile Include="Spartan_Format_Permission_Type\ISpartan_Format_Permission_TypeService.cs" />
+ <Compile Include="Spartan_Format_Permission_Type\Spartan_Format_Permission_TypeService.cs" />
+ <Compile Include="Spartan_Format_Permissions\ISpartan_Format_PermissionsService.cs" />
+ <Compile Include="Spartan_Format_Permissions\Spartan_Format_PermissionsService.cs" />
+ <Compile Include="Spartan_Report\ISpartan_ReportService.cs" />
+ <Compile Include="Spartan_Report\Spartan_ReportService.cs" />
+ <Compile Include="Spartan_Report_Field_Type\ISpartan_Report_Field_TypeService.cs" />
+ <Compile Include="Spartan_Report_Field_Type\Spartan_Report_Field_TypeService.cs" />
+ <Compile Include="Spartan_Report_Fields_Detail\ISpartan_Report_Fields_DetailService.cs" />
+ <Compile Include="Spartan_Report_Fields_Detail\Spartan_Report_Fields_DetailService.cs" />
+ <Compile Include="Spartan_Report_Format\ISpartan_Report_FormatService.cs" />
+ <Compile Include="Spartan_Report_Format\Spartan_Report_FormatService.cs" />
+ <Compile Include="Spartan_Report_Function\ISpartan_Report_FunctionService.cs" />
+ <Compile Include="Spartan_Report_Function\Spartan_Report_FunctionService.cs" />
+ <Compile Include="Spartan_Report_Order_Type\ISpartan_Report_Order_TypeService.cs" />
+ <Compile Include="Spartan_Report_Order_Type\Spartan_Report_Order_TypeService.cs" />
+ <Compile Include="Spartan_Report_Permission_Type\ISpartan_Report_Permission_TypeService.cs" />
+ <Compile Include="Spartan_Report_Permission_Type\Spartan_Report_Permission_TypeService.cs" />
+ <Compile Include="Spartan_Report_Permissions\ISpartan_Report_PermissionsService.cs" />
+ <Compile Include="Spartan_Report_Permissions\Spartan_Report_PermissionsService.cs" />
+ <Compile Include="Spartan_Report_Presentation_Type\ISpartan_Report_Presentation_TypeService.cs" />
+ <Compile Include="Spartan_Report_Presentation_Type\Spartan_Report_Presentation_TypeService.cs" />
+ <Compile Include="Spartan_Report_Presentation_View\ISpartan_Report_Presentation_ViewService.cs" />
+ <Compile Include="Spartan_Report_Presentation_View\Spartan_Report_Presentation_ViewService.cs" />
+ <Compile Include="Spartan_Report_Status\ISpartan_Report_StatusService.cs" />
+ <Compile Include="Spartan_Report_Status\Spartan_Report_StatusService.cs" />
+ <Compile Include="Antiguedad_Ejercicios\IAntiguedad_EjerciciosService.cs" />
+<Compile Include="Antiguedad_Ejercicios\Antiguedad_EjerciciosService.cs" />
+<Compile Include="Bebidas\IBebidasService.cs" />
+<Compile Include="Bebidas\BebidasService.cs" />
+<Compile Include="Calorias\ICaloriasService.cs" />
+<Compile Include="Calorias\CaloriasService.cs" />
+<Compile Include="Cantidad_Comidas\ICantidad_ComidasService.cs" />
+<Compile Include="Cantidad_Comidas\Cantidad_ComidasService.cs" />
+<Compile Include="Categorias_de_platillos\ICategorias_de_platillosService.cs" />
+<Compile Include="Categorias_de_platillos\Categorias_de_platillosService.cs" />
+<Compile Include="Clasificacion_Ingredientes\IClasificacion_IngredientesService.cs" />
+<Compile Include="Clasificacion_Ingredientes\Clasificacion_IngredientesService.cs" />
+<Compile Include="Detalle_Antecedentes_Familiares\IDetalle_Antecedentes_FamiliaresService.cs" />
+<Compile Include="Detalle_Antecedentes_Familiares\Detalle_Antecedentes_FamiliaresService.cs" />
+<Compile Include="Detalle_Antecedentes_No_Patologicos\IDetalle_Antecedentes_No_PatologicosService.cs" />
+<Compile Include="Detalle_Antecedentes_No_Patologicos\Detalle_Antecedentes_No_PatologicosService.cs" />
+<Compile Include="Detalle_de_Ingredientes\IDetalle_de_IngredientesService.cs" />
+<Compile Include="Detalle_de_Ingredientes\Detalle_de_IngredientesService.cs" />
+<Compile Include="Detalle_de_Padecimientos\IDetalle_de_PadecimientosService.cs" />
+<Compile Include="Detalle_de_Padecimientos\Detalle_de_PadecimientosService.cs" />
+<Compile Include="Detalle_Examenes_Laboratorio\IDetalle_Examenes_LaboratorioService.cs" />
+<Compile Include="Detalle_Examenes_Laboratorio\Detalle_Examenes_LaboratorioService.cs" />
+<Compile Include="Detalle_Preferencia_Bebidas\IDetalle_Preferencia_BebidasService.cs" />
+<Compile Include="Detalle_Preferencia_Bebidas\Detalle_Preferencia_BebidasService.cs" />
+<Compile Include="Detalle_Terapia_Hormonal\IDetalle_Terapia_HormonalService.cs" />
+<Compile Include="Detalle_Terapia_Hormonal\Detalle_Terapia_HormonalService.cs" />
+<Compile Include="Dias_de_la_semana\IDias_de_la_semanaService.cs" />
+<Compile Include="Dias_de_la_semana\Dias_de_la_semanaService.cs" />
+<Compile Include="Dificultad_de_platillos\IDificultad_de_platillosService.cs" />
+<Compile Include="Dificultad_de_platillos\Dificultad_de_platillosService.cs" />
+<Compile Include="Duracion_Ejercicio\IDuracion_EjercicioService.cs" />
+<Compile Include="Duracion_Ejercicio\Duracion_EjercicioService.cs" />
+<Compile Include="Ejercicios\IEjerciciosService.cs" />
+<Compile Include="Ejercicios\EjerciciosService.cs" />
+<Compile Include="Empresas\IEmpresasService.cs" />
+<Compile Include="Empresas\EmpresasService.cs" />
+<Compile Include="Enfermedades\IEnfermedadesService.cs" />
+<Compile Include="Enfermedades\EnfermedadesService.cs" />
+<Compile Include="Estado\IEstadoService.cs" />
+<Compile Include="Estado\EstadoService.cs" />
+<Compile Include="Estado_Civil\IEstado_CivilService.cs" />
+<Compile Include="Estado_Civil\Estado_CivilService.cs" />
+<Compile Include="Estado_de_Animo\IEstado_de_AnimoService.cs" />
+<Compile Include="Estado_de_Animo\Estado_de_AnimoService.cs" />
+<Compile Include="Estatus_Paciente\IEstatus_PacienteService.cs" />
+<Compile Include="Estatus_Paciente\Estatus_PacienteService.cs" />
+<Compile Include="Estatus_Padecimiento\IEstatus_PadecimientoService.cs" />
+<Compile Include="Estatus_Padecimiento\Estatus_PadecimientoService.cs" />
+<Compile Include="Frecuencia_Ejercicio\IFrecuencia_EjercicioService.cs" />
+<Compile Include="Frecuencia_Ejercicio\Frecuencia_EjercicioService.cs" />
+<Compile Include="Frecuencia_Sustancias\IFrecuencia_SustanciasService.cs" />
+<Compile Include="Frecuencia_Sustancias\Frecuencia_SustanciasService.cs" />
+<Compile Include="Indicadores_Laboratorio\IIndicadores_LaboratorioService.cs" />
+<Compile Include="Indicadores_Laboratorio\Indicadores_LaboratorioService.cs" />
+<Compile Include="Ingredientes\IIngredientesService.cs" />
+<Compile Include="Ingredientes\IngredientesService.cs" />
+<Compile Include="Marca\IMarcaService.cs" />
+<Compile Include="Marca\MarcaService.cs" />
+<Compile Include="Medicos\IMedicosService.cs" />
+<Compile Include="Medicos\MedicosService.cs" />
+<Compile Include="Nivel_de_Satisfaccion\INivel_de_SatisfaccionService.cs" />
+<Compile Include="Nivel_de_Satisfaccion\Nivel_de_SatisfaccionService.cs" />
+<Compile Include="Objetivos\IObjetivosService.cs" />
+<Compile Include="Objetivos\ObjetivosService.cs" />
+<Compile Include="Pacientes\IPacientesService.cs" />
+<Compile Include="Pacientes\PacientesService.cs" />
+<Compile Include="Padecimientos\IPadecimientosService.cs" />
+<Compile Include="Padecimientos\PadecimientosService.cs" />
+<Compile Include="Pais\IPaisService.cs" />
+<Compile Include="Pais\PaisService.cs" />
+<Compile Include="Parentesco\IParentescoService.cs" />
+<Compile Include="Parentesco\ParentescoService.cs" />
+<Compile Include="Periodo_del_dia\IPeriodo_del_diaService.cs" />
+<Compile Include="Periodo_del_dia\Periodo_del_diaService.cs" />
+<Compile Include="Platillos\IPlatillosService.cs" />
+<Compile Include="Platillos\PlatillosService.cs" />
+<Compile Include="Preferencias_Entrecomidas\IPreferencias_EntrecomidasService.cs" />
+<Compile Include="Preferencias_Entrecomidas\Preferencias_EntrecomidasService.cs" />
+<Compile Include="Preferencias_Grasas\IPreferencias_GrasasService.cs" />
+<Compile Include="Preferencias_Grasas\Preferencias_GrasasService.cs" />
+<Compile Include="Preferencias_Preparacion\IPreferencias_PreparacionService.cs" />
+<Compile Include="Preferencias_Preparacion\Preferencias_PreparacionService.cs" />
+<Compile Include="Preferencias_Sal\IPreferencias_SalService.cs" />
+<Compile Include="Preferencias_Sal\Preferencias_SalService.cs" />
+<Compile Include="Presentacion\IPresentacionService.cs" />
+<Compile Include="Presentacion\PresentacionService.cs" />
+<Compile Include="Rango_Consumo_Bebidas\IRango_Consumo_BebidasService.cs" />
+<Compile Include="Rango_Consumo_Bebidas\Rango_Consumo_BebidasService.cs" />
+<Compile Include="Rango_de_Horas\IRango_de_HorasService.cs" />
+<Compile Include="Rango_de_Horas\Rango_de_HorasService.cs" />
+<Compile Include="Registro\IRegistroService.cs" />
+<Compile Include="Registro\RegistroService.cs" />
+<Compile Include="Respuesta_Logica\IRespuesta_LogicaService.cs" />
+<Compile Include="Respuesta_Logica\Respuesta_LogicaService.cs" />
+<Compile Include="Resultados_IMC\IResultados_IMCService.cs" />
+<Compile Include="Resultados_IMC\Resultados_IMCService.cs" />
+<Compile Include="Seleccion_de_Rangos\ISeleccion_de_RangosService.cs" />
+<Compile Include="Seleccion_de_Rangos\Seleccion_de_RangosService.cs" />
+<Compile Include="Sexo\ISexoService.cs" />
+<Compile Include="Sexo\SexoService.cs" />
+<Compile Include="Suplementos\ISuplementosService.cs" />
+<Compile Include="Suplementos\SuplementosService.cs" />
+<Compile Include="Sustancias\ISustanciasService.cs" />
+<Compile Include="Sustancias\SustanciasService.cs" />
+<Compile Include="Tiempo_Padecimiento\ITiempo_PadecimientoService.cs" />
+<Compile Include="Tiempo_Padecimiento\Tiempo_PadecimientoService.cs" />
+<Compile Include="Tiempos_de_Comida\ITiempos_de_ComidaService.cs" />
+<Compile Include="Tiempos_de_Comida\Tiempos_de_ComidaService.cs" />
+<Compile Include="Tipo_de_Dieta\ITipo_de_DietaService.cs" />
+<Compile Include="Tipo_de_Dieta\Tipo_de_DietaService.cs" />
+<Compile Include="Tipo_de_Registro\ITipo_de_RegistroService.cs" />
+<Compile Include="Tipo_de_Registro\Tipo_de_RegistroService.cs" />
+<Compile Include="Tipo_Ejercicio\ITipo_EjercicioService.cs" />
+<Compile Include="Tipo_Ejercicio\Tipo_EjercicioService.cs" />
+<Compile Include="Tipo_Modificacion_Alimentos\ITipo_Modificacion_AlimentosService.cs" />
+<Compile Include="Tipo_Modificacion_Alimentos\Tipo_Modificacion_AlimentosService.cs" />
+<Compile Include="Tipo_Paciente\ITipo_PacienteService.cs" />
+<Compile Include="Tipo_Paciente\Tipo_PacienteService.cs" />
+<Compile Include="Unidades_de_Medida\IUnidades_de_MedidaService.cs" />
+<Compile Include="Unidades_de_Medida\Unidades_de_MedidaService.cs" />
+<Compile Include="Consultas\IConsultasService.cs" />
+<Compile Include="Consultas\ConsultasService.cs" />
+<Compile Include="Estatus\IEstatusService.cs" />
+<Compile Include="Estatus\EstatusService.cs" />
+<Compile Include="Profesiones\IProfesionesService.cs" />
+<Compile Include="Profesiones\ProfesionesService.cs" />
+<Compile Include="Especialidades\IEspecialidadesService.cs" />
+<Compile Include="Especialidades\EspecialidadesService.cs" />
+<Compile Include="Detalle_Identificacion_Oficial_Medicos\IDetalle_Identificacion_Oficial_MedicosService.cs" />
+<Compile Include="Detalle_Identificacion_Oficial_Medicos\Detalle_Identificacion_Oficial_MedicosService.cs" />
+<Compile Include="Identificaciones_Oficiales\IIdentificaciones_OficialesService.cs" />
+<Compile Include="Identificaciones_Oficiales\Identificaciones_OficialesService.cs" />
+<Compile Include="Regimenes_Fiscales\IRegimenes_FiscalesService.cs" />
+<Compile Include="Regimenes_Fiscales\Regimenes_FiscalesService.cs" />
+<Compile Include="Interpretacion_de_porcentaje_de_grasa_corporal\IInterpretacion_de_porcentaje_de_grasa_corporalService.cs" />
+<Compile Include="Interpretacion_de_porcentaje_de_grasa_corporal\Interpretacion_de_porcentaje_de_grasa_corporalService.cs" />
+<Compile Include="Interpretacion_IMC\IInterpretacion_IMCService.cs" />
+<Compile Include="Interpretacion_IMC\Interpretacion_IMCService.cs" />
+<Compile Include="Interpretacion_corporal\IInterpretacion_corporalService.cs" />
+<Compile Include="Interpretacion_corporal\Interpretacion_corporalService.cs" />
+<Compile Include="Interpretacion_distribucion_grasa_corporal\IInterpretacion_distribucion_grasa_corporalService.cs" />
+<Compile Include="Interpretacion_distribucion_grasa_corporal\Interpretacion_distribucion_grasa_corporalService.cs" />
+<Compile Include="Interpretacion_indice_cintura__cadera\IInterpretacion_indice_cintura__caderaService.cs" />
+<Compile Include="Interpretacion_indice_cintura__cadera\Interpretacion_indice_cintura__caderaService.cs" />
+<Compile Include="Interpretacion_consumo_de_agua\IInterpretacion_consumo_de_aguaService.cs" />
+<Compile Include="Interpretacion_consumo_de_agua\Interpretacion_consumo_de_aguaService.cs" />
+<Compile Include="Interpretacion_Frecuencia_cardiaca_en_Esfuerzo\IInterpretacion_Frecuencia_cardiaca_en_EsfuerzoService.cs" />
+<Compile Include="Interpretacion_Frecuencia_cardiaca_en_Esfuerzo\Interpretacion_Frecuencia_cardiaca_en_EsfuerzoService.cs" />
+<Compile Include="Interpretacion_Dificultad_de_Rutina_de_Ejercicios\IInterpretacion_Dificultad_de_Rutina_de_EjerciciosService.cs" />
+<Compile Include="Interpretacion_Dificultad_de_Rutina_de_Ejercicios\Interpretacion_Dificultad_de_Rutina_de_EjerciciosService.cs" />
+<Compile Include="Interpretacion_Calorias\IInterpretacion_CaloriasService.cs" />
+<Compile Include="Interpretacion_Calorias\Interpretacion_CaloriasService.cs" />
+<Compile Include="Tipo_de_Plan_de_Suscripcion\ITipo_de_Plan_de_SuscripcionService.cs" />
+<Compile Include="Tipo_de_Plan_de_Suscripcion\Tipo_de_Plan_de_SuscripcionService.cs" />
+<Compile Include="Duracion_de_Planes_de_Suscripcion\IDuracion_de_Planes_de_SuscripcionService.cs" />
+<Compile Include="Duracion_de_Planes_de_Suscripcion\Duracion_de_Planes_de_SuscripcionService.cs" />
+<Compile Include="Planes_de_Suscripcion\IPlanes_de_SuscripcionService.cs" />
+<Compile Include="Planes_de_Suscripcion\Planes_de_SuscripcionService.cs" />
+<Compile Include="Estatus_por_Suscripcion\IEstatus_por_SuscripcionService.cs" />
+<Compile Include="Estatus_por_Suscripcion\Estatus_por_SuscripcionService.cs" />
+<Compile Include="Detalle_Suscripciones_Paciente\IDetalle_Suscripciones_PacienteService.cs" />
+<Compile Include="Detalle_Suscripciones_Paciente\Detalle_Suscripciones_PacienteService.cs" />
+<Compile Include="Detalle_Pagos_Paciente\IDetalle_Pagos_PacienteService.cs" />
+<Compile Include="Detalle_Pagos_Paciente\Detalle_Pagos_PacienteService.cs" />
+<Compile Include="Estatus_de_Suscripcion\IEstatus_de_SuscripcionService.cs" />
+<Compile Include="Estatus_de_Suscripcion\Estatus_de_SuscripcionService.cs" />
+<Compile Include="Estatus_de_Pago\IEstatus_de_PagoService.cs" />
+<Compile Include="Estatus_de_Pago\Estatus_de_PagoService.cs" />
+<Compile Include="Formas_de_Pago\IFormas_de_PagoService.cs" />
+<Compile Include="Formas_de_Pago\Formas_de_PagoService.cs" />
+<Compile Include="Frecuencia_de_pago_Pacientes\IFrecuencia_de_pago_PacientesService.cs" />
+<Compile Include="Frecuencia_de_pago_Pacientes\Frecuencia_de_pago_PacientesService.cs" />
+<Compile Include="Frecuencia_de_pago_Empresas\IFrecuencia_de_pago_EmpresasService.cs" />
+<Compile Include="Frecuencia_de_pago_Empresas\Frecuencia_de_pago_EmpresasService.cs" />
+<Compile Include="Detalle_Resultados_Consultas\IDetalle_Resultados_ConsultasService.cs" />
+<Compile Include="Detalle_Resultados_Consultas\Detalle_Resultados_ConsultasService.cs" />
+<Compile Include="Indicadores_Consultas\IIndicadores_ConsultasService.cs" />
+<Compile Include="Indicadores_Consultas\Indicadores_ConsultasService.cs" />
+<Compile Include="Tipos_de_Especialistas\ITipos_de_EspecialistasService.cs" />
+<Compile Include="Tipos_de_Especialistas\Tipos_de_EspecialistasService.cs" />
+<Compile Include="Detalle_Titulos_Medicos\IDetalle_Titulos_MedicosService.cs" />
+<Compile Include="Detalle_Titulos_Medicos\Detalle_Titulos_MedicosService.cs" />
+<Compile Include="areas_Empresas\Iareas_EmpresasService.cs" />
+<Compile Include="areas_Empresas\areas_EmpresasService.cs" />
+<Compile Include="Detalle_Suscripciones_Empresa\IDetalle_Suscripciones_EmpresaService.cs" />
+<Compile Include="Detalle_Suscripciones_Empresa\Detalle_Suscripciones_EmpresaService.cs" />
+<Compile Include="Detalle_Pagos_Empresa\IDetalle_Pagos_EmpresaService.cs" />
+<Compile Include="Detalle_Pagos_Empresa\Detalle_Pagos_EmpresaService.cs" />
+<Compile Include="Detalle_Contactos_Empresa\IDetalle_Contactos_EmpresaService.cs" />
+<Compile Include="Detalle_Contactos_Empresa\Detalle_Contactos_EmpresaService.cs" />
+<Compile Include="Detalle_Contratos_Empresa\IDetalle_Contratos_EmpresaService.cs" />
+<Compile Include="Detalle_Contratos_Empresa\Detalle_Contratos_EmpresaService.cs" />
+<Compile Include="Tipos_de_Contrato\ITipos_de_ContratoService.cs" />
+<Compile Include="Tipos_de_Contrato\Tipos_de_ContratoService.cs" />
+<Compile Include="Detalle_Codigos_Referidos\IDetalle_Codigos_ReferidosService.cs" />
+<Compile Include="Detalle_Codigos_Referidos\Detalle_Codigos_ReferidosService.cs" />
+<Compile Include="Detalle_Convenio_Medicos_Aseguradoras\IDetalle_Convenio_Medicos_AseguradorasService.cs" />
+<Compile Include="Detalle_Convenio_Medicos_Aseguradoras\Detalle_Convenio_Medicos_AseguradorasService.cs" />
+<Compile Include="Aseguradoras\IAseguradorasService.cs" />
+<Compile Include="Aseguradoras\AseguradorasService.cs" />
+<Compile Include="Detalle_Planes_de_Suscripcion_Especialistas\IDetalle_Planes_de_Suscripcion_EspecialistasService.cs" />
+<Compile Include="Detalle_Planes_de_Suscripcion_Especialistas\Detalle_Planes_de_Suscripcion_EspecialistasService.cs" />
+<Compile Include="Datos_Bancarios_Especialistas\IDatos_Bancarios_EspecialistasService.cs" />
+<Compile Include="Datos_Bancarios_Especialistas\Datos_Bancarios_EspecialistasService.cs" />
+<Compile Include="Detalle_Pagos_Especialistas\IDetalle_Pagos_EspecialistasService.cs" />
+<Compile Include="Detalle_Pagos_Especialistas\Detalle_Pagos_EspecialistasService.cs" />
+<Compile Include="Planes_de_Suscripcion_Especialistas\IPlanes_de_Suscripcion_EspecialistasService.cs" />
+<Compile Include="Planes_de_Suscripcion_Especialistas\Planes_de_Suscripcion_EspecialistasService.cs" />
+<Compile Include="Frecuencia_de_pago_Especialistas\IFrecuencia_de_pago_EspecialistasService.cs" />
+<Compile Include="Frecuencia_de_pago_Especialistas\Frecuencia_de_pago_EspecialistasService.cs" />
+<Compile Include="Bancos\IBancosService.cs" />
+<Compile Include="Bancos\BancosService.cs" />
+<Compile Include="Eventos\IEventosService.cs" />
+<Compile Include="Eventos\EventosService.cs" />
+<Compile Include="Detalle_Actividades_Evento\IDetalle_Actividades_EventoService.cs" />
+<Compile Include="Detalle_Actividades_Evento\Detalle_Actividades_EventoService.cs" />
+<Compile Include="Estatus_Actividades_Evento\IEstatus_Actividades_EventoService.cs" />
+<Compile Include="Estatus_Actividades_Evento\Estatus_Actividades_EventoService.cs" />
+<Compile Include="Estatus_Reservaciones_Actividad\IEstatus_Reservaciones_ActividadService.cs" />
+<Compile Include="Estatus_Reservaciones_Actividad\Estatus_Reservaciones_ActividadService.cs" />
+<Compile Include="Tipos_de_Actividades\ITipos_de_ActividadesService.cs" />
+<Compile Include="Tipos_de_Actividades\Tipos_de_ActividadesService.cs" />
+<Compile Include="Ubicaciones_Eventos_Empresa\IUbicaciones_Eventos_EmpresaService.cs" />
+<Compile Include="Ubicaciones_Eventos_Empresa\Ubicaciones_Eventos_EmpresaService.cs" />
+<Compile Include="Actividades_del_Evento\IActividades_del_EventoService.cs" />
+<Compile Include="Actividades_del_Evento\Actividades_del_EventoService.cs" />
+<Compile Include="Detalle_Horarios_Actividad\IDetalle_Horarios_ActividadService.cs" />
+<Compile Include="Detalle_Horarios_Actividad\Detalle_Horarios_ActividadService.cs" />
+<Compile Include="Parentescos_Empleados\IParentescos_EmpleadosService.cs" />
+<Compile Include="Parentescos_Empleados\Parentescos_EmpleadosService.cs" />
+<Compile Include="Registro_en_Evento\IRegistro_en_EventoService.cs" />
+<Compile Include="Registro_en_Evento\Registro_en_EventoService.cs" />
+<Compile Include="Detalle_Consulta_Actividades_Registro_Evento\IDetalle_Consulta_Actividades_Registro_EventoService.cs" />
+<Compile Include="Detalle_Consulta_Actividades_Registro_Evento\Detalle_Consulta_Actividades_Registro_EventoService.cs" />
+<Compile Include="Detalle_Registro_en_Actividad_Evento\IDetalle_Registro_en_Actividad_EventoService.cs" />
+<Compile Include="Detalle_Registro_en_Actividad_Evento\Detalle_Registro_en_Actividad_EventoService.cs" />
+<Compile Include="Estatus_Eventos\IEstatus_EventosService.cs" />
+<Compile Include="Estatus_Eventos\Estatus_EventosService.cs" />
+<Compile Include="MS_Exclusion_Ingredientes_Paciente\IMS_Exclusion_Ingredientes_PacienteService.cs" />
+<Compile Include="MS_Exclusion_Ingredientes_Paciente\MS_Exclusion_Ingredientes_PacienteService.cs" />
+<Compile Include="Detalle_Especialistas_Pacientes\IDetalle_Especialistas_PacientesService.cs" />
+<Compile Include="Detalle_Especialistas_Pacientes\Detalle_Especialistas_PacientesService.cs" />
+<Compile Include="Detalle_Facturacion_Especialistas\IDetalle_Facturacion_EspecialistasService.cs" />
+<Compile Include="Detalle_Facturacion_Especialistas\Detalle_Facturacion_EspecialistasService.cs" />
+<Compile Include="Estatus_Facturas\IEstatus_FacturasService.cs" />
+<Compile Include="Estatus_Facturas\Estatus_FacturasService.cs" />
+<Compile Include="Titulos_Personales\ITitulos_PersonalesService.cs" />
+<Compile Include="Titulos_Personales\Titulos_PersonalesService.cs" />
+<Compile Include="Detalle_Redes_Sociales_Especialista\IDetalle_Redes_Sociales_EspecialistaService.cs" />
+<Compile Include="Detalle_Redes_Sociales_Especialista\Detalle_Redes_Sociales_EspecialistaService.cs" />
+<Compile Include="Redes_sociales\IRedes_socialesService.cs" />
+<Compile Include="Redes_sociales\Redes_socialesService.cs" />
+<Compile Include="MS_Suscripciones_Codigos_Referidos_Especialista\IMS_Suscripciones_Codigos_Referidos_EspecialistaService.cs" />
+<Compile Include="MS_Suscripciones_Codigos_Referidos_Especialista\MS_Suscripciones_Codigos_Referidos_EspecialistaService.cs" />
+<Compile Include="Motivos\IMotivosService.cs" />
+<Compile Include="Motivos\MotivosService.cs" />
+<Compile Include="Solicitud_de_Cita_con_Especialista\ISolicitud_de_Cita_con_EspecialistaService.cs" />
+<Compile Include="Solicitud_de_Cita_con_Especialista\Solicitud_de_Cita_con_EspecialistaService.cs" />
+<Compile Include="Calificacion\ICalificacionService.cs" />
+<Compile Include="Calificacion\CalificacionService.cs" />
+<Compile Include="Asuntos_Asistencia_Telefonica\IAsuntos_Asistencia_TelefonicaService.cs" />
+<Compile Include="Asuntos_Asistencia_Telefonica\Asuntos_Asistencia_TelefonicaService.cs" />
+<Compile Include="Estatus_Llamadas\IEstatus_LlamadasService.cs" />
+<Compile Include="Estatus_Llamadas\Estatus_LlamadasService.cs" />
+<Compile Include="Registro_de_Asistencia_Telefonica\IRegistro_de_Asistencia_TelefonicaService.cs" />
+<Compile Include="Registro_de_Asistencia_Telefonica\Registro_de_Asistencia_TelefonicaService.cs" />
+<Compile Include="Detalle_Registro_Beneficiarios_Empresa\IDetalle_Registro_Beneficiarios_EmpresaService.cs" />
+<Compile Include="Detalle_Registro_Beneficiarios_Empresa\Detalle_Registro_Beneficiarios_EmpresaService.cs" />
+<Compile Include="Tipos_de_Empresa\ITipos_de_EmpresaService.cs" />
+<Compile Include="Tipos_de_Empresa\Tipos_de_EmpresaService.cs" />
+<Compile Include="Detalle_Caracteristicas_Ingrediente\IDetalle_Caracteristicas_IngredienteService.cs" />
+<Compile Include="Detalle_Caracteristicas_Ingrediente\Detalle_Caracteristicas_IngredienteService.cs" />
+<Compile Include="Tipo_de_comida_platillos\ITipo_de_comida_platillosService.cs" />
+<Compile Include="Tipo_de_comida_platillos\Tipo_de_comida_platillosService.cs" />
+<Compile Include="Caracteristicas_platillo\ICaracteristicas_platilloService.cs" />
+<Compile Include="Caracteristicas_platillo\Caracteristicas_platilloService.cs" />
+<Compile Include="Detalle_Platillos\IDetalle_PlatillosService.cs" />
+<Compile Include="Detalle_Platillos\Detalle_PlatillosService.cs" />
+<Compile Include="Cantidad_fraccion_platillos\ICantidad_fraccion_platillosService.cs" />
+<Compile Include="Cantidad_fraccion_platillos\Cantidad_fraccion_platillosService.cs" />
+<Compile Include="Pantalla_Francisco\IPantalla_FranciscoService.cs" />
+<Compile Include="Pantalla_Francisco\Pantalla_FranciscoService.cs" />
+<Compile Include="Detalle_pantalla_Francisco\IDetalle_pantalla_FranciscoService.cs" />
+<Compile Include="Detalle_pantalla_Francisco\Detalle_pantalla_FranciscoService.cs" />
+<Compile Include="Tips_y_Promociones\ITips_y_PromocionesService.cs" />
+<Compile Include="Tips_y_Promociones\Tips_y_PromocionesService.cs" />
+<Compile Include="Planes_Alimenticios\IPlanes_AlimenticiosService.cs" />
+<Compile Include="Planes_Alimenticios\Planes_AlimenticiosService.cs" />
+<Compile Include="Detalle_Planes_Alimenticios\IDetalle_Planes_AlimenticiosService.cs" />
+<Compile Include="Detalle_Planes_Alimenticios\Detalle_Planes_AlimenticiosService.cs" />
+<Compile Include="Planes_de_Rutinas\IPlanes_de_RutinasService.cs" />
+<Compile Include="Planes_de_Rutinas\Planes_de_RutinasService.cs" />
+<Compile Include="Detalle_Planes_de_Rutinas\IDetalle_Planes_de_RutinasService.cs" />
+<Compile Include="Detalle_Planes_de_Rutinas\Detalle_Planes_de_RutinasService.cs" />
+<Compile Include="Rutinas\IRutinasService.cs" />
+<Compile Include="Rutinas\RutinasService.cs" />
+<Compile Include="Nivel_de_dificultad\INivel_de_dificultadService.cs" />
+<Compile Include="Nivel_de_dificultad\Nivel_de_dificultadService.cs" />
+<Compile Include="Nivel_de_Intensidad\INivel_de_IntensidadService.cs" />
+<Compile Include="Nivel_de_Intensidad\Nivel_de_IntensidadService.cs" />
+<Compile Include="Detalle_Ejercicios_Rutinas\IDetalle_Ejercicios_RutinasService.cs" />
+<Compile Include="Detalle_Ejercicios_Rutinas\Detalle_Ejercicios_RutinasService.cs" />
+<Compile Include="Musculos\IMusculosService.cs" />
+<Compile Include="Musculos\MusculosService.cs" />
+<Compile Include="Equipamiento_para_Ejercicios\IEquipamiento_para_EjerciciosService.cs" />
+<Compile Include="Equipamiento_para_Ejercicios\Equipamiento_para_EjerciciosService.cs" />
+<Compile Include="MS_Musculos\IMS_MusculosService.cs" />
+<Compile Include="MS_Musculos\MS_MusculosService.cs" />
+<Compile Include="MS_Equipamiento_para_Ejercicios\IMS_Equipamiento_para_EjerciciosService.cs" />
+<Compile Include="MS_Equipamiento_para_Ejercicios\MS_Equipamiento_para_EjerciciosService.cs" />
+<Compile Include="Vendedores\IVendedoresService.cs" />
+<Compile Include="Vendedores\VendedoresService.cs" />
+<Compile Include="Detalle_Codigos_de_Referencia_Vendedores\IDetalle_Codigos_de_Referencia_VendedoresService.cs" />
+<Compile Include="Detalle_Codigos_de_Referencia_Vendedores\Detalle_Codigos_de_Referencia_VendedoresService.cs" />
+<Compile Include="Detalle_Facturacion_Vendedores\IDetalle_Facturacion_VendedoresService.cs" />
+<Compile Include="Detalle_Facturacion_Vendedores\Detalle_Facturacion_VendedoresService.cs" />
+<Compile Include="Proveedores\IProveedoresService.cs" />
+<Compile Include="Proveedores\ProveedoresService.cs" />
+<Compile Include="Tipo_de_proveedor\ITipo_de_proveedorService.cs" />
+<Compile Include="Tipo_de_proveedor\Tipo_de_proveedorService.cs" />
+<Compile Include="Detalle_Sucursales_Proveedores\IDetalle_Sucursales_ProveedoresService.cs" />
+<Compile Include="Detalle_Sucursales_Proveedores\Detalle_Sucursales_ProveedoresService.cs" />
+<Compile Include="Tipo_de_Sucursal\ITipo_de_SucursalService.cs" />
+<Compile Include="Tipo_de_Sucursal\Tipo_de_SucursalService.cs" />
+<Compile Include="Detalle_Suscripcion_Red_de_Especialistas_Proveedores\IDetalle_Suscripcion_Red_de_Especialistas_ProveedoresService.cs" />
+<Compile Include="Detalle_Suscripcion_Red_de_Especialistas_Proveedores\Detalle_Suscripcion_Red_de_Especialistas_ProveedoresService.cs" />
+<Compile Include="Planes_de_Suscripcion_Proveedores\IPlanes_de_Suscripcion_ProveedoresService.cs" />
+<Compile Include="Planes_de_Suscripcion_Proveedores\Planes_de_Suscripcion_ProveedoresService.cs" />
+<!--@@INCLUDE@@-->
+ </ItemGroup>
+ <ItemGroup>
+ <ProjectReference Include="..\Spartane.Core\Spartane.Core.csproj">
+ <Project>{f56309fb-9e43-42e5-a65d-4aaa70f95c9b}</Project>
+ <Name>Spartane.Core</Name>
+ </ProjectReference>
+ <ProjectReference Include="..\Spartane.Data\Spartane.Data.csproj">
+ <Project>{63f55cc4-7b31-4195-91ee-3a5c31b9c0fc}</Project>
+ <Name>Spartane.Data</Name>
+ </ProjectReference>
+ </ItemGroup>
+ <ItemGroup>
+ <None Include="app.config" />
+ <None Include="bin\Debug\Spartane.Services.dll.config" />
+ <None Include="bin\Release\Spartane.Services.dll.config" />
+ <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+ <None Include="obj\Debug\Spartane.Services.csprojResolveAssemblyReference.cache" />
+ <None Include="obj\Release\DesignTimeResolveAssemblyReferencesInput.cache" />
+ <None Include="obj\Release\Spartane.Services.csprojResolveAssemblyReference.cache" />
+ <None Include="packages.config" />
+ </ItemGroup>
+ <ItemGroup>
+ <Content Include="bin\Debug\Autofac.dll" />
+ <Content Include="bin\Debug\Autofac.Integration.Mvc.dll" />
+ <Content Include="bin\Debug\Autofac.Integration.Mvc.xml" />
+ <Content Include="bin\Debug\Autofac.xml" />
+ <Content Include="bin\Debug\EntityFramework.dll" />
+ <Content Include="bin\Debug\EntityFramework.xml" />
+ <Content Include="bin\Debug\GoldParser.dll" />
+ <Content Include="bin\Debug\Kackman.RuntimeTypeLoader.dll" />
+ <Content Include="bin\Debug\log4net.dll" />
+ <Content Include="bin\Debug\log4net.xml" />
+ <Content Include="bin\Debug\Spartane.Core.dll" />
+ <Content Include="bin\Debug\Spartane.Core.pdb" />
+ <Content Include="bin\Debug\Spartane.Data.dll" />
+ <Content Include="bin\Debug\Spartane.Data.pdb" />
+ <Content Include="bin\Debug\Spartane.Services.dll" />
+ <Content Include="bin\Debug\Spartane.Services.pdb" />
+ <Content Include="bin\Debug\SqlLinq.dll" />
+ <Content Include="bin\Debug\System.Linq.Dynamic.dll" />
+ <Content Include="bin\Debug\System.Web.Mvc.dll" />
+ <Content Include="bin\Debug\System.Web.Mvc.xml" />
+ <Content Include="bin\Debug\System.Web.Razor.dll" />
+ <Content Include="bin\Debug\System.Web.Razor.xml" />
+ <Content Include="bin\Debug\System.Web.WebPages.Deployment.dll" />
+ <Content Include="bin\Debug\System.Web.WebPages.Deployment.xml" />
+ <Content Include="bin\Debug\System.Web.WebPages.dll" />
+ <Content Include="bin\Debug\System.Web.WebPages.Razor.dll" />
+ <Content Include="bin\Debug\System.Web.WebPages.Razor.xml" />
+ <Content Include="bin\Debug\System.Web.WebPages.xml" />
+ <Content Include="bin\Release\Autofac.dll" />
+ <Content Include="bin\Release\Autofac.Integration.Mvc.dll" />
+ <Content Include="bin\Release\Autofac.Integration.Mvc.xml" />
+ <Content Include="bin\Release\Autofac.xml" />
+ <Content Include="bin\Release\EntityFramework.dll" />
+ <Content Include="bin\Release\EntityFramework.xml" />
+ <Content Include="bin\Release\GoldParser.dll" />
+ <Content Include="bin\Release\Kackman.RuntimeTypeLoader.dll" />
+ <Content Include="bin\Release\log4net.dll" />
+ <Content Include="bin\Release\log4net.xml" />
+ <Content Include="bin\Release\Spartane.Core.dll" />
+ <Content Include="bin\Release\Spartane.Core.pdb" />
+ <Content Include="bin\Release\Spartane.Data.dll" />
+ <Content Include="bin\Release\Spartane.Data.pdb" />
+ <Content Include="bin\Release\Spartane.Services.dll" />
+ <Content Include="bin\Release\Spartane.Services.pdb" />
+ <Content Include="bin\Release\SqlLinq.dll" />
+ <Content Include="bin\Release\System.Linq.Dynamic.dll" />
+ <Content Include="bin\Release\System.Web.Mvc.dll" />
+ <Content Include="bin\Release\System.Web.Mvc.xml" />
+ <Content Include="bin\Release\System.Web.Razor.dll" />
+ <Content Include="bin\Release\System.Web.Razor.xml" />
+ <Content Include="bin\Release\System.Web.WebPages.Deployment.dll" />
+ <Content Include="bin\Release\System.Web.WebPages.Deployment.xml" />
+ <Content Include="bin\Release\System.Web.WebPages.dll" />
+ <Content Include="bin\Release\System.Web.WebPages.Razor.dll" />
+ <Content Include="bin\Release\System.Web.WebPages.Razor.xml" />
+ <Content Include="bin\Release\System.Web.WebPages.xml" />
+ <Content Include="obj\Debug\Spartane.Services.csproj.FileListAbsolute.txt" />
+ <Content Include="obj\Debug\Spartane.Services.dll" />
+ <Content Include="obj\Debug\Spartane.Services.pdb" />
+ <Content Include="obj\Release\Spartane.Services.csproj.FileListAbsolute.txt" />
+ <Content Include="obj\Release\Spartane.Services.dll" />
+ <Content Include="obj\Release\Spartane.Services.pdb" />
+ </ItemGroup>
+ <ItemGroup>
+ <Folder Include="obj\Debug\TempPE\" />
+ <Folder Include="obj\Release\TempPE\" />
+ </ItemGroup>
+ <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+ <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+ Other similar extension points exist, see Microsoft.Common.targets.
+ <Target Name="BeforeBuild">
+ </Target>
+ <Target Name="AfterBuild">
+ </Target>
+ -->
+</Project>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

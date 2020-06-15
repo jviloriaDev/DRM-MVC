@@ -1,0 +1,607 @@
+﻿@using System.Collections.Generic
+@using Spartane.Web.Areas.Frontal.Models
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Solicitud_de_Cita_con_EspecialistaAdvanceSearchModel
+@{
+    List<SelectListItem> varSpartan_User_Usuario_que_solicita = null;
+    if (ViewBag.Spartan_Users_Usuario_que_solicita != null)
+    { varSpartan_User_Usuario_que_solicita = (List<SelectListItem>)ViewBag.Spartan_Users_Usuario_que_solicita; }
+    List<SelectListItem> varMedicos_Especialista = null;
+    if (ViewBag.Medicoss_Especialista != null)
+    { varMedicos_Especialista = (List<SelectListItem>)ViewBag.Medicoss_Especialista; }
+    List<SelectListItem> varRespuesta_Logica_Asististe_a_tu_cita = null;
+    if (ViewBag.Respuesta_Logicas_Asististe_a_tu_cita != null)
+    { varRespuesta_Logica_Asististe_a_tu_cita = (List<SelectListItem>)ViewBag.Respuesta_Logicas_Asististe_a_tu_cita; }
+    List<SelectListItem> varCalificacion_Calificacion_Especialista = null;
+    if (ViewBag.Calificacions_Calificacion_Especialista != null)
+    { varCalificacion_Calificacion_Especialista = (List<SelectListItem>)ViewBag.Calificacions_Calificacion_Especialista; }
+    List<SelectListItem> varMotivos_Motivo_no_concreto_cita = null;
+    if (ViewBag.Motivoss_Motivo_no_concreto_cita != null)
+    { varMotivos_Motivo_no_concreto_cita = (List<SelectListItem>)ViewBag.Motivoss_Motivo_no_concreto_cita; }
+
+    var filters = (List<SelectListItem>)ViewBag.Filter;
+}
+<style>
+    .input-validation-error {
+        background: rgb(251, 227, 228);
+        border: 1px solid #fbc2c4;
+        color: #8a1f11;
+    }
+
+    .MarginBottom {
+        margin-bottom: 1%;
+    }
+
+    #divAdvanceSearch input {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch button {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch select {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch h3 {
+        margin-top: 2%;
+    }
+
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins" id="divAdvanceSearch">
+        <div class="ibox-content">
+            @using (Html.BeginForm("ShowAdvanceFilter", "Solicitud_de_Cita_con_Especialista", FormMethod.Post, new { @id = "frmAdvanceSearch", @role = "form" }))
+            {
+				<input type="hidden" value="-1" name="idFilter" id="idFilter" />
+                <div class="MarginBottom ">
+                    <h3>@Resources.Solicitud_de_Cita_con_EspecialistaResources.Folio</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.From:</label>
+                    @Html.TextBoxFor(m => m.FromFolio, new { @class = "form-control greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceFromFolio" })
+                    @Html.ValidationMessageFor(m => m.FromFolio)
+                    <label class="">@Resources.Resources.To: </label>
+                    @Html.TextBoxFor(m => m.ToFolio, new { @class = "form-control greaterThan greaterThanZero", @type = "text", @onkeypress = "return isNumberKey(this, event);", @id = "txtAdvanceToFolio", @data_min = "txtAdvanceFromFolio" })
+                    @Html.ValidationMessageFor(m => m.ToFolio)
+                </div>
+        <div class="MarginBottom ">
+            <h3>@Resources.Solicitud_de_Cita_con_EspecialistaResources.Fecha_de_solicitud</h3>
+        </div>
+        <div class="MarginBottom form-inline">
+            <label class="">@Resources.Resources.From:</label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceFromFecha_de_solicitud" name="FromFecha_de_solicitud" type="text" value="@Model.FromFecha_de_solicitud" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+            <label class="">@Resources.Resources.To: </label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceToFecha_de_solicitud" name="ToFecha_de_solicitud" type="text" value="@Model.ToFecha_de_solicitud" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+        <div class="MarginBottom ">
+            <h3>@Resources.Solicitud_de_Cita_con_EspecialistaResources.Hora_de_solicitud</h3>
+        </div>
+        <div class="MarginBottom form-inline">
+            <label class="">@Resources.Resources.From:</label>
+            <div class="input-group clock" data-autoclose="true">
+                <input class="form-control" id="txtAdvanceFromHora_de_solicitud" name="FromHora_de_solicitud" type="text" value="@Model.FromHora_de_solicitud" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-time"></span>
+                </span>
+            </div>
+            <label class="">@Resources.Resources.To: </label>
+            <div class="input-group clock" data-autoclose="true">
+                <input class="form-control" id="txtAdvanceToHora_de_solicitud" name="ToHora_de_solicitud" type="text" value="@Model.ToHora_de_solicitud" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-time"></span>
+                </span>
+            </div>
+        </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Solicitud_de_Cita_con_EspecialistaResources.Usuario_que_solicita</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Usuario_que_solicitaFilter, filters, new { @class = "form-control", @id = "ddlUsuario_que_solicitaFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceUsuario_que_solicita, new { @class = "form-control", @type = "text", @id = "txtAdvanceUsuario_que_solicita" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varSpartan_User_Usuario_que_solicita!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceUsuario_que_solicitaMultiple, varSpartan_User_Usuario_que_solicita,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceUsuario_que_solicita"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Solicitud_de_Cita_con_EspecialistaResources.Nombre_Completo</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Nombre_CompletoFilter, filters, new { @class = "form-control", @id = "ddlNombre_CompletoFilter" })
+                    @Html.TextBoxFor(m => m.Nombre_Completo, new { @class = "form-control", @type = "text", @id = "txtNombre_Completo" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Solicitud_de_Cita_con_EspecialistaResources.Correo_del_Paciente</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Correo_del_PacienteFilter, filters, new { @class = "form-control", @id = "ddlCorreo_del_PacienteFilter" })
+                    @Html.TextBoxFor(m => m.Correo_del_Paciente, new { @class = "form-control", @type = "text", @id = "txtCorreo_del_Paciente" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Solicitud_de_Cita_con_EspecialistaResources.Celular_del_Paciente</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Celular_del_PacienteFilter, filters, new { @class = "form-control", @id = "ddlCelular_del_PacienteFilter" })
+                    @Html.TextBoxFor(m => m.Celular_del_Paciente, new { @class = "form-control", @type = "text", @id = "txtCelular_del_Paciente" })
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Solicitud_de_Cita_con_EspecialistaResources.Especialista</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.EspecialistaFilter, filters, new { @class = "form-control", @id = "ddlEspecialistaFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceEspecialista, new { @class = "form-control", @type = "text", @id = "txtAdvanceEspecialista" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varMedicos_Especialista!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceEspecialistaMultiple, varMedicos_Especialista,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceEspecialista"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Solicitud_de_Cita_con_EspecialistaResources.Correo_del_Especialista</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Correo_del_EspecialistaFilter, filters, new { @class = "form-control", @id = "ddlCorreo_del_EspecialistaFilter" })
+                    @Html.TextBoxFor(m => m.Correo_del_Especialista, new { @class = "form-control", @type = "text", @id = "txtCorreo_del_Especialista" })
+                </div>
+        <div class="MarginBottom ">
+            <h3>@Resources.Solicitud_de_Cita_con_EspecialistaResources.Fecha_de_Retroalimentacion</h3>
+        </div>
+        <div class="MarginBottom form-inline">
+            <label class="">@Resources.Resources.From:</label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceFromFecha_de_Retroalimentacion" name="FromFecha_de_Retroalimentacion" type="text" value="@Model.FromFecha_de_Retroalimentacion" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+            <label class="">@Resources.Resources.To: </label>
+            <div class="input-group date">
+                <input class="form-control" id="txtAdvanceToFecha_de_Retroalimentacion" name="ToFecha_de_Retroalimentacion" type="text" value="@Model.ToFecha_de_Retroalimentacion" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+        <div class="MarginBottom ">
+            <h3>@Resources.Solicitud_de_Cita_con_EspecialistaResources.Hora_de_Retroalimentacion</h3>
+        </div>
+        <div class="MarginBottom form-inline">
+            <label class="">@Resources.Resources.From:</label>
+            <div class="input-group clock" data-autoclose="true">
+                <input class="form-control" id="txtAdvanceFromHora_de_Retroalimentacion" name="FromHora_de_Retroalimentacion" type="text" value="@Model.FromHora_de_Retroalimentacion" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-time"></span>
+                </span>
+            </div>
+            <label class="">@Resources.Resources.To: </label>
+            <div class="input-group clock" data-autoclose="true">
+                <input class="form-control" id="txtAdvanceToHora_de_Retroalimentacion" name="ToHora_de_Retroalimentacion" type="text" value="@Model.ToHora_de_Retroalimentacion" />
+                <span class="form-inline input-group-addon">
+                    <span class="glyphicon glyphicon-time"></span>
+                </span>
+            </div>
+        </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Solicitud_de_Cita_con_EspecialistaResources.Asististe_a_tu_cita</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Asististe_a_tu_citaFilter, filters, new { @class = "form-control", @id = "ddlAsististe_a_tu_citaFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceAsististe_a_tu_cita, new { @class = "form-control", @type = "text", @id = "txtAdvanceAsististe_a_tu_cita" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varRespuesta_Logica_Asististe_a_tu_cita!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceAsististe_a_tu_citaMultiple, varRespuesta_Logica_Asististe_a_tu_cita,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceAsististe_a_tu_cita"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Solicitud_de_Cita_con_EspecialistaResources.Calificacion_Especialista</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Calificacion_EspecialistaFilter, filters, new { @class = "form-control", @id = "ddlCalificacion_EspecialistaFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceCalificacion_Especialista, new { @class = "form-control", @type = "text", @id = "txtAdvanceCalificacion_Especialista" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varCalificacion_Calificacion_Especialista!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceCalificacion_EspecialistaMultiple, varCalificacion_Calificacion_Especialista,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceCalificacion_Especialista"
+                        });
+                    }
+                </div>
+                <div class="MarginBottom">
+                    <h3>@Resources.Solicitud_de_Cita_con_EspecialistaResources.Motivo_no_concreto_cita</h3>
+                </div>
+                <div class="MarginBottom form-inline">
+                    <label class="">@Resources.Resources.Filter:</label>
+                    @Html.DropDownListFor(m => m.Motivo_no_concreto_citaFilter, filters, new { @class = "form-control", @id = "ddlMotivo_no_concreto_citaFilter" })
+                    @Html.TextBoxFor(m => m.AdvanceMotivo_no_concreto_cita, new { @class = "form-control", @type = "text", @id = "txtAdvanceMotivo_no_concreto_cita" })
+                    <label class="">@Resources.Resources.OrSelect </label>
+                    @if (varMotivos_Motivo_no_concreto_cita!=null)
+                    {
+                        @Html.ListBoxFor(m => m.AdvanceMotivo_no_concreto_citaMultiple, varMotivos_Motivo_no_concreto_cita,
+                        new
+                        {
+                            @class = "form-control chosen-select",
+                            @multiple = "multiple",
+                            @data_placeholder = "",
+                            @style = "width: 350px;",
+                            @id = "ddlAdvanceMotivo_no_concreto_cita"
+                        });
+                    }
+                </div>
+
+                <div class="MarginBottom form-inline">
+                    <input type="submit" class="btn btn-primary" value="@Resources.Resources.Search"><a class="btn btn-primary" href="@Url.Content("~/Frontal/Solicitud_de_Cita_con_Especialista/")" value=" ">@Resources.Resources.Cancelar</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function InitiateAdvanceSearch() {
+        var advanceSearch = {}, hasParameter = false;
+        if ($("#txtAdvanceFromFolio").val() != "" || $("#txtAdvanceToFolio").val() != "") {
+            hasParameter = true;
+            advanceSearch.Solicitud_de_Cita_con_EspecialistaFolioFrom = $("#txtAdvanceFromFolio").val();
+            advanceSearch.Solicitud_de_Cita_con_EspecialistaFolioTo = $("#txtAdvanceToFolio").val();
+        }
+        if ($("#txtAdvanceFromFecha_de_solicitud").val() != "" || $("#txtAdvanceToFecha_de_solicitud").val() != "") {
+            hasParameter = true;
+            advanceSearch.Solicitud_de_Cita_con_EspecialistaFecha_de_solicitudFrom = $("#txtAdvanceFromFecha_de_solicitud").val();
+            advanceSearch.Solicitud_de_Cita_con_EspecialistaFecha_de_solicitudTo = $("#txtAdvanceToFecha_de_solicitud").val();
+        }
+        if ($("#txtAdvanceHora_de_solicitud").val() != "") {
+            hasParameter = true;
+            advanceSearch.Solicitud_de_Cita_con_EspecialistaHora_de_solicitud = $("#txtAdvanceHora_de_solicitud").val();
+            advanceSearch.Solicitud_de_Cita_con_EspecialistaHora_de_solicitudSearchType = $("#ddlAdvanceHora_de_solicitudFilter").val();
+        }
+        advanceSearch.Usuario_que_solicitaSearchType = 0;
+        if ($('#ddlAdvanceUsuario_que_solicita').val().length > 0 || $("#txtAdvanceUsuario_que_solicita").val() == "") {
+
+
+            if (isSolicitud_de_Cita_con_EspecialistaTextSearch) {
+                advanceSearch.Usuario_que_solicitaName = $("#txtAdvanceUsuario_que_solicita").val();
+                advanceSearch.Usuario_que_solicitaNameSearchType = $("#ddlAdvanceUsuario_que_solicita").val();
+                advanceSearch.Usuario_que_solicitaSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Usuario_que_solicitaToSearch = $("#ddlAdvanceUsuario_que_solicita").val();
+                advanceSearch.Usuario_que_solicitaSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceNombre_Completo").val() != "") {
+            hasParameter = true;
+            advanceSearch.Solicitud_de_Cita_con_EspecialistaNombre_Completo = $("#txtAdvanceNombre_Completo").val();
+            advanceSearch.Solicitud_de_Cita_con_EspecialistaNombre_CompletoSearchType = $("#ddlAdvanceNombre_CompletoFilter").val();
+        }
+        if ($("#txtAdvanceCorreo_del_Paciente").val() != "") {
+            hasParameter = true;
+            advanceSearch.Solicitud_de_Cita_con_EspecialistaCorreo_del_Paciente = $("#txtAdvanceCorreo_del_Paciente").val();
+            advanceSearch.Solicitud_de_Cita_con_EspecialistaCorreo_del_PacienteSearchType = $("#ddlAdvanceCorreo_del_PacienteFilter").val();
+        }
+        if ($("#txtAdvanceCelular_del_Paciente").val() != "") {
+            hasParameter = true;
+            advanceSearch.Solicitud_de_Cita_con_EspecialistaCelular_del_Paciente = $("#txtAdvanceCelular_del_Paciente").val();
+            advanceSearch.Solicitud_de_Cita_con_EspecialistaCelular_del_PacienteSearchType = $("#ddlAdvanceCelular_del_PacienteFilter").val();
+        }
+        advanceSearch.EspecialistaSearchType = 0;
+        if ($('#ddlAdvanceEspecialista').val().length > 0 || $("#txtAdvanceEspecialista").val() == "") {
+
+
+            if (isSolicitud_de_Cita_con_EspecialistaTextSearch) {
+                advanceSearch.EspecialistaName = $("#txtAdvanceEspecialista").val();
+                advanceSearch.EspecialistaNameSearchType = $("#ddlAdvanceEspecialista").val();
+                advanceSearch.EspecialistaSearchType = 1;
+            }
+            else {
+
+                advanceSearch.EspecialistaToSearch = $("#ddlAdvanceEspecialista").val();
+                advanceSearch.EspecialistaSearchType = 2;
+            }
+        }
+        if ($("#txtAdvanceCorreo_del_Especialista").val() != "") {
+            hasParameter = true;
+            advanceSearch.Solicitud_de_Cita_con_EspecialistaCorreo_del_Especialista = $("#txtAdvanceCorreo_del_Especialista").val();
+            advanceSearch.Solicitud_de_Cita_con_EspecialistaCorreo_del_EspecialistaSearchType = $("#ddlAdvanceCorreo_del_EspecialistaFilter").val();
+        }
+        if ($("#ddlAdvanceCorreo_enviado").val() != "") {
+            hasParameter = true;
+            advanceSearch.Solicitud_de_Cita_con_EspecialistaCorreo_enviado = $("#ddlAdvanceCorreo_enviado").val();
+        }
+        if ($("#txtAdvanceFromFecha_de_Retroalimentacion").val() != "" || $("#txtAdvanceToFecha_de_Retroalimentacion").val() != "") {
+            hasParameter = true;
+            advanceSearch.Solicitud_de_Cita_con_EspecialistaFecha_de_RetroalimentacionFrom = $("#txtAdvanceFromFecha_de_Retroalimentacion").val();
+            advanceSearch.Solicitud_de_Cita_con_EspecialistaFecha_de_RetroalimentacionTo = $("#txtAdvanceToFecha_de_Retroalimentacion").val();
+        }
+        if ($("#txtAdvanceHora_de_Retroalimentacion").val() != "") {
+            hasParameter = true;
+            advanceSearch.Solicitud_de_Cita_con_EspecialistaHora_de_Retroalimentacion = $("#txtAdvanceHora_de_Retroalimentacion").val();
+            advanceSearch.Solicitud_de_Cita_con_EspecialistaHora_de_RetroalimentacionSearchType = $("#ddlAdvanceHora_de_RetroalimentacionFilter").val();
+        }
+        advanceSearch.Asististe_a_tu_citaSearchType = 0;
+        if ($('#ddlAdvanceAsististe_a_tu_cita').val().length > 0 || $("#txtAdvanceAsististe_a_tu_cita").val() == "") {
+
+
+            if (isSolicitud_de_Cita_con_EspecialistaTextSearch) {
+                advanceSearch.Asististe_a_tu_citaName = $("#txtAdvanceAsististe_a_tu_cita").val();
+                advanceSearch.Asististe_a_tu_citaNameSearchType = $("#ddlAdvanceAsististe_a_tu_cita").val();
+                advanceSearch.Asististe_a_tu_citaSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Asististe_a_tu_citaToSearch = $("#ddlAdvanceAsististe_a_tu_cita").val();
+                advanceSearch.Asististe_a_tu_citaSearchType = 2;
+            }
+        }
+        advanceSearch.Calificacion_EspecialistaSearchType = 0;
+        if ($('#ddlAdvanceCalificacion_Especialista').val().length > 0 || $("#txtAdvanceCalificacion_Especialista").val() == "") {
+
+
+            if (isSolicitud_de_Cita_con_EspecialistaTextSearch) {
+                advanceSearch.Calificacion_EspecialistaName = $("#txtAdvanceCalificacion_Especialista").val();
+                advanceSearch.Calificacion_EspecialistaNameSearchType = $("#ddlAdvanceCalificacion_Especialista").val();
+                advanceSearch.Calificacion_EspecialistaSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Calificacion_EspecialistaToSearch = $("#ddlAdvanceCalificacion_Especialista").val();
+                advanceSearch.Calificacion_EspecialistaSearchType = 2;
+            }
+        }
+        advanceSearch.Motivo_no_concreto_citaSearchType = 0;
+        if ($('#ddlAdvanceMotivo_no_concreto_cita').val().length > 0 || $("#txtAdvanceMotivo_no_concreto_cita").val() == "") {
+
+
+            if (isSolicitud_de_Cita_con_EspecialistaTextSearch) {
+                advanceSearch.Motivo_no_concreto_citaName = $("#txtAdvanceMotivo_no_concreto_cita").val();
+                advanceSearch.Motivo_no_concreto_citaNameSearchType = $("#ddlAdvanceMotivo_no_concreto_cita").val();
+                advanceSearch.Motivo_no_concreto_citaSearchType = 1;
+            }
+            else {
+
+                advanceSearch.Motivo_no_concreto_citaToSearch = $("#ddlAdvanceMotivo_no_concreto_cita").val();
+                advanceSearch.Motivo_no_concreto_citaSearchType = 2;
+            }
+        }
+
+        advanceSearchQuery = hasParameter ? JSON.stringify(advanceSearch) : "";
+        $('#tblSolicitud_de_Cita_con_Especialista').DataTable().draw();
+        return false;
+    }
+
+    var advanceSearchQuery = "", isSolicitud_de_Cita_con_EspecialistaTextSearch = true;
+
+    $(document).ready(function () {
+        $('.clock').clockpicker();
+		$('.date').datepicker({
+			todayBtn: "linked",
+			keyboardNavigation: false,
+			forceParse: false,
+			calendarWeeks: true,
+			autoclose: true,
+			format: "@ConfigurationProperty.DateFormatDatePicker"
+		});
+        $("#txtAdvanceUsuario_que_solicita").keypress(function () {
+            isSolicitud_de_Cita_con_EspecialistaTextSearch = true;
+            $("#ddlAdvanceUsuario_que_solicita").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceUsuario_que_solicita").change(function () {
+            isSolicitud_de_Cita_con_EspecialistaTextSearch = false;
+            $("#txtAdvanceUsuario_que_solicita").val('');
+        });
+        $("#txtAdvanceEspecialista").keypress(function () {
+            isSolicitud_de_Cita_con_EspecialistaTextSearch = true;
+            $("#ddlAdvanceEspecialista").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceEspecialista").change(function () {
+            isSolicitud_de_Cita_con_EspecialistaTextSearch = false;
+            $("#txtAdvanceEspecialista").val('');
+        });
+        $("#txtAdvanceAsististe_a_tu_cita").keypress(function () {
+            isSolicitud_de_Cita_con_EspecialistaTextSearch = true;
+            $("#ddlAdvanceAsististe_a_tu_cita").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceAsististe_a_tu_cita").change(function () {
+            isSolicitud_de_Cita_con_EspecialistaTextSearch = false;
+            $("#txtAdvanceAsististe_a_tu_cita").val('');
+        });
+        $("#txtAdvanceCalificacion_Especialista").keypress(function () {
+            isSolicitud_de_Cita_con_EspecialistaTextSearch = true;
+            $("#ddlAdvanceCalificacion_Especialista").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceCalificacion_Especialista").change(function () {
+            isSolicitud_de_Cita_con_EspecialistaTextSearch = false;
+            $("#txtAdvanceCalificacion_Especialista").val('');
+        });
+        $("#txtAdvanceMotivo_no_concreto_cita").keypress(function () {
+            isSolicitud_de_Cita_con_EspecialistaTextSearch = true;
+            $("#ddlAdvanceMotivo_no_concreto_cita").val('').trigger("chosen:updated");
+        });
+
+        $("#ddlAdvanceMotivo_no_concreto_cita").change(function () {
+            isSolicitud_de_Cita_con_EspecialistaTextSearch = false;
+            $("#txtAdvanceMotivo_no_concreto_cita").val('');
+        });
+
+    });
+</script>
+
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/chosen")
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/clockpicker")
+
+
+    <script>
+        //Adding Rules
+        jQuery.validator.unobtrusive
+      .adapters.addSingleVal("isnumberafter", "propertyname");
+        jQuery.validator.unobtrusive
+    .adapters.addSingleVal("isdateafter", "propertyname");
+
+        //Number after method
+        jQuery.validator.addMethod("isnumberafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+                //if (Date.parse(val) <= Date.parse(otherVal)) {
+                if (Number(val) < Number(otherVal)) {
+                    return false;
+                }
+                        }
+            return true;
+        });
+
+        //Date after after method
+        jQuery.validator.addMethod("isdateafter", function (val, element, other) {
+            var modelPrefix = element.name.substr(
+                0, element.name.lastIndexOf(".") + 1);
+            var otherVal = $("[name=" + modelPrefix + other + "]").val();
+            if (val && otherVal) {
+
+                if (GetDateObject(val) < GetDateObject(otherVal)) {
+
+                    return false;
+                    }
+                }
+            return true;
+            });
+
+
+        function GetDateObject(value) {
+            var delimiter = GetDelimiter(dateFormat);
+            var dateCollection = value.split(delimiter);
+            var formatCollection = dateFormat.split(delimiter);
+            var dateModel = GetDateModel(dateCollection, formatCollection);
+            return new Date(dateModel.Year, dateModel.Month - 1, dateModel.Day);
+        }
+        //Used to get the date model by parsing the date and the format
+        function GetDateModel(dateCollection,formatCollection) {
+            var day, month, year;
+            for (var i = 0; i < formatCollection.length; i++) {
+                switch (formatCollection[i][0].toUpperCase()) {
+                
+                    case "D":
+                        day = dateCollection[i];
+                        break;
+
+                    case "Y":
+                        year = dateCollection[i];
+                        break;
+
+                    case "M":
+                        month = dateCollection[i];
+                        break;
+                }
+            }
+
+            return {
+                Day:day,
+                Month:month,
+                Year:year
+            };
+        }
+
+        function GetDelimiter(format) {
+
+            for (var i = 0; i < format.length; i++) {
+                if (/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(format[i])) {
+                    return format[i];
+                }
+            }
+            return null;
+        }
+
+        var dateFormat = "@ConfigurationProperty.DateFormatDatePicker";
+
+        $(document).ready(function () {
+            $('.input-daterange').datepicker({
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                format: dateFormat,
+                message: 'The date is not a valid'
+            });
+
+            $(".chosen-select").chosen({ width: "22%", no_results_text: "Oops, nothing found!" });
+			if ($('#IsFilterModal').val() == 'true') {
+                $('.ShowAdvanceFilter #right-sidebar').css('display', 'none');
+                $('.ShowAdvanceFilter .navbar-default').css('display', 'none');
+                $('.ShowAdvanceFilter .border-bottom').css('display', 'none');
+                $('.ShowAdvanceFilter #page-wrapper').css('margin', '0 auto');
+                $('.ShowAdvanceFilter .btn-save').val('@Resources.Resources.Filter');
+                $('.ShowAdvanceFilter .btn-cancelar').attr('data-dismiss', 'modal');
+                $('.ShowAdvanceFilter .btn-cancelar').removeAttr('href');
+                $('#idFilter').val($('#IdReport').val());
+            }
+        });
+
+    </script>
+}
+

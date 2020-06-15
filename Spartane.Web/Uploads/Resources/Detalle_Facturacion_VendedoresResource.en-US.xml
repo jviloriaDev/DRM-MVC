@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Detalle_Facturacion_Vendedores" value="Detalle Facturación Vendedores"></resource>
+  <resource culture="en-US" name="Folio" value="Folio"></resource>
+  <resource culture="en-US" name="Fecha_de_Registro" value="Fecha de Registro"></resource>
+  <resource culture="en-US" name="Folio_Factura" value="Folio Factura"></resource>
+  <resource culture="en-US" name="Periodo_Facturado" value="Periodo Facturado"></resource>
+  <resource culture="en-US" name="Cantidad" value="Cantidad"></resource>
+  <resource culture="en-US" name="Archivo_XML" value="Archivo XML"></resource>
+  <resource culture="en-US" name="Archivo_PDF" value="Archivo PDF"></resource>
+  <resource culture="en-US" name="Estatus" value="Estatus"></resource>
+  <resource culture="en-US" name="Fecha_programada_de_Pago" value="Fecha programada de Pago"></resource>
+  <resource culture="en-US" name="Pagada" value="Pagada"></resource>
+  <resource culture="en-US" name="Fecha_de_Pago" value="Fecha de Pago"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

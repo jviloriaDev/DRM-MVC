@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Detalle_de_Ingredientes" value="Detalle de Ingredientes"></resource>
+  <resource culture="en-US" name="Clave" value="Clave"></resource>
+  <resource culture="en-US" name="Cantidad" value="Cantidad"></resource>
+  <resource culture="en-US" name="Unidad" value="Unidad"></resource>
+  <resource culture="en-US" name="Nombre_del_Ingrediente" value="Nombre del Ingrediente"></resource>
+  <resource culture="en-US" name="Nombre_de_presentacion" value="Nombre de presentacion"></resource>
+  <resource culture="en-US" name="Nombre_de_Marca" value="Nombre de Marca"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

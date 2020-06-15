@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Detalle_Registro_en_Actividad_Evento" value="Detalle Registro en Actividad Evento"></resource>
+  <resource culture="en-US" name="Folio" value="Folio"></resource>
+  <resource culture="en-US" name="Actividad" value="Actividad"></resource>
+  <resource culture="en-US" name="Fecha" value="Fecha"></resource>
+  <resource culture="en-US" name="Horario" value="Horario"></resource>
+  <resource culture="en-US" name="Es_para_un_familiar" value="¿Es para un familiar?"></resource>
+  <resource culture="en-US" name="Numero_de_Empleado" value="Número de Empleado"></resource>
+  <resource culture="en-US" name="Nombres" value="Nombre(s)"></resource>
+  <resource culture="en-US" name="Apellido_Paterno" value="Apellido Paterno"></resource>
+  <resource culture="en-US" name="Apellido_Materno" value="Apellido Materno"></resource>
+  <resource culture="en-US" name="Nombre_Completo" value="Nombre Completo"></resource>
+  <resource culture="en-US" name="Parentesco" value="Parentesco"></resource>
+  <resource culture="en-US" name="Sexo" value="Sexo"></resource>
+  <resource culture="en-US" name="Fecha_de_nacimiento" value="Fecha de nacimiento"></resource>
+  <resource culture="en-US" name="Estatus_de_la_Reservacion" value="Estatus de la Reservación"></resource>
+  <resource culture="en-US" name="Codigo_Reservacion" value="Código Reservación"></resource>
+
+<resource culture="en-US" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

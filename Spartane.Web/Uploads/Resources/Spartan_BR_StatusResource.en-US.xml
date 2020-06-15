@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_BR_Status" value="Business Rule Status"></resource>
+  <resource culture="en-US" name="StatusId" value="Id"></resource>
+  <resource culture="en-US" name="Description" value="Description"></resource>
+  <resource name="1" value="In Progress" culture="en-US" />
+  <resource name="2" value="In Testing" culture="en-US" />
+  <resource name="3" value="Published" culture="en-US" />
+  <resource name="4" value="Inactive" culture="en-US" />
+
+</resources>

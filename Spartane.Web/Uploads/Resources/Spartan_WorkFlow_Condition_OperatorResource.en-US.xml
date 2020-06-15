@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_WorkFlow_Condition_Operator" value="Spartan WorkFlow Condition Operator"></resource>
+  <resource culture="en-US" name="Condition_OperatorId" value="Condition OperatorId"></resource>
+  <resource culture="en-US" name="Description" value="Description"></resource>
+</resources>

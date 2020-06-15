@@ -1,0 +1,1623 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Globalization
+@using Spartane.Core.Domain.Permission
+@using Spartane.Core.Domain.Spartane_File
+@using Spartane.Web.Helpers
+@model Spartane.Web.Areas.Frontal.Models.Spartan_Traduction_ProcessModel
+@{
+
+/*
+
+*/
+    List<SelectListItem> varSpartan_Traduction_Language_LanguageT = null;
+    if (ViewBag.Spartan_Traduction_Languages_LanguageT != null)
+    { varSpartan_Traduction_Language_LanguageT = (List<SelectListItem>)ViewBag.Spartan_Traduction_Languages_LanguageT; }
+    List<SelectListItem> varSpartan_Traduction_Object_Type_Object_Type = null;
+    if (ViewBag.Spartan_Traduction_Object_Types_Object_Type != null)
+    { varSpartan_Traduction_Object_Type_Object_Type = (List<SelectListItem>)ViewBag.Spartan_Traduction_Object_Types_Object_Type; }
+    List<SelectListItem> varSpartanObject_ObjectT = null;
+    if (ViewBag.SpartanObjects_ObjectT != null)
+    { varSpartanObject_ObjectT = (List<SelectListItem>)ViewBag.SpartanObjects_ObjectT; }
+
+    Permission permissionSpartan_Traduction_Process_Data = ViewBag.PermissionSpartan_Traduction_Process_Data;
+    Permission permissionSpartan_Traduction_Detail = ViewBag.PermissionSpartan_Traduction_Detail;
+    Permission permissionSpartan_Traduction_Process_Workflow = ViewBag.PermissionSpartan_Traduction_Process_Workflow;
+
+    Permission permission = ViewBag.Permission;
+}
+<div class="loading style-2"><div class="loading-wheel"></div></div>
+<div class="modal fade in" id="dvAttributeValue" style="background-color:rgba(0, 0, 0, 0.7);">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" id="lblAttributeType">Value</label>
+                    <div class="col-sm-7">
+                        <input type="text" title="Value" class="form-control" id="txtAttributeValue" />
+                    </div>
+                    <div class="col-sm-2">
+                        <a class="btn btn-primary" onclick="SaveValue()">Submit</a>
+                    </div>
+                    <input type="hidden" id="hdnAttributType" />
+                    <input type="hidden" id="hdnAttributElement" />
+                    <input type="hidden" id="hdnAttributNumber" />
+                    <input type="hidden" id="hdnElementType" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row wrapper border-bottom white-bg page-heading">
+
+    <div class="row">
+        <div class="col-lg-10">
+            <h2>
+                @Resources.Spartan_Traduction_ProcessResources.Spartan_Traduction_Process
+                <button onclick="Spartan_Traduction_ProcessGetBusinessRule('', 'Al Abrir Pantalla', '0')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Spartan_Traduction_ProcessBusinessRule-form">
+                    <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+                        <i class="fa fa-cogs fa-spin"></i>
+                    </a>
+                </button>
+            </h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">@Resources.Resources.Home</a>
+                </li>
+                <li class="">
+                    <label>@Resources.Spartan_Traduction_ProcessResources.Spartan_Traduction_Process</label>
+                </li>
+                <li class="active">
+                    <strong>@Resources.Resources.Create</strong>
+                </li>
+            </ol>
+        </div>
+        <div class="col-lg-2">
+
+            @{
+                if (Convert.ToInt32(Spartane.Web.SessionHelper.Role) == (int)Spartane.Core.Enums.SpartanRoleEnum.Admin)
+                {
+                    <h2>&nbsp;</h2>
+                    <button onclick="Spartan_Traduction_ProcessDisplayBusinessRule()" type="button" class="btn btn-info btn-lg displayBusinessProperyButton">
+                        <i class="fa fa-cogs fa-spin"></i>
+                    </button>
+
+                    <div aria-hidden="true" class="modal fade in Spartan_Traduction_ProcessPropertyBusinessModal" id="Spartan_Traduction_ProcessPropertyBusinessModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">
+                                        Property & Business Rules
+                                        <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                                    </h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <a class="btn btn-primary full-width" data-dismiss="modal" data-toggle="modal" data-target="#PropertyModal-form" onclick="GetPropertyBag()">Properties</a>
+                                        </div>
+                                        <div class="clearfix col-sm-12">&nbsp;</div>
+                                        <div class="col-sm-12">
+                                            <a class="btn btn-primary full-width" data-dismiss="modal" data-toggle="modal" data-target="#Spartan_Traduction_ProcessBusinessRule-form" onclick="Spartan_Traduction_ProcessGetBusinessRule()">Business Rule</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     <div aria-hidden="true" data-backdrop="static" class="modal fade in PropertyModal" id="PropertyModal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+					</div>
+					<div aria-hidden="true" data-backdrop="static" class="modal fade in Spartan_Traduction_ProcessBusinessRuleModal" id="Spartan_Traduction_ProcessBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+					</div>
+					<div aria-hidden="true" data-backdrop="static" class="modal fade in Spartan_Traduction_ProcessAddBusinessRuleModal" id="Spartan_Traduction_ProcessAddBusinessRule-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+					</div>
+
+
+                }
+            }
+                    <div aria-hidden="true" class="modal fade in AddSpartan_Traduction_Process_DataModal" id="AddSpartan_Traduction_Process_Data-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                    </div>
+
+                    <div aria-hidden="true" class="modal fade in AddSpartan_Traduction_DetailModal" id="AddSpartan_Traduction_Detail-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                    </div>
+
+                    <div aria-hidden="true" class="modal fade in AddSpartan_Traduction_Process_WorkflowModal" id="AddSpartan_Traduction_Process_Workflow-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+                    </div>
+
+
+        </div>
+    </div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            @using (Html.BeginForm("Post", "Spartan_Traduction_Process", FormMethod.Post, new { id = "CreateSpartan_Traduction_Process", @readonly = "true", @class = "form-horizontal", enctype = "multipart/form-data" }))
+            {
+                                <input type="hidden" id="hdnIsNew" name="hdnIsNew" value="@ViewBag.IsNew.ToString()" />
+                <span id="popupNotification"></span>
+                <div class="container-fluid Spartan_Traduction_ProcessCreateForm" id="viewmodeledit">
+				 <div class="alert alert-warning" id="controlsRequerid" style="display:none">
+                        <a href="#" class="close" onclick="$('#controlsRequerid').hide();">&times;</a>
+                        <span id="textRequired"></span>
+                 </div>
+			<div class="tabs-container">
+                        	<ul class="nav nav-tabs">
+<li class="active"><a data-toggle="tab" href="#tabDatos_Generales"> @Resources.Spartan_Traduction_ProcessResources.TabDatos_Generales</a></li>
+
+                        	</ul>
+	                	<div class="tab-content">
+                            <div id="tabDatos_Generales" class="tab-pane active">
+                                <div class="panel-body">
+                            <div class="form-group" id="divIdTraduction">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Traduction_ProcessResources.IdTraduction</label>
+                                <div class="col-sm-8" data-field-id="IdTraduction" data-attribute="186905" data-field-name="@Resources.Spartan_Traduction_ProcessResources.IdTraduction">
+                                    <label class="form-control" for="IdTraduction" id="lblIdTraduction">
+                                    @if (Model.IdTraduction== 0)
+                                        {
+                                            <text>@Resources.Resources.ClaveDefault</text>
+                                        }
+                                        else
+                                        { 
+                                            <text>@Model.IdTraduction</text>
+                                        }
+                                    </label>
+                                </div>
+                            </div>
+                            <div id="divSpartan_Traduction_Process_Data">
+                            <div class="ibox-title">
+                                <h5>@Resources.Spartan_Traduction_ProcessResources.Spartan_Traduction_Process_Data</h5>
+                                <div class="ibox-tools">
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="">
+									<a onclick="@( !permissionSpartan_Traduction_Process_Data.New || ViewBag.Consult ? "" : "Spartan_Traduction_Process_DatafnClickAddRow();")" href="javascript:void(0);" title="@( !permissionSpartan_Traduction_Process_Data.New || ViewBag.Consult ? "Usted no tiene permisos para realizar ésta acción" : Resources.Resources.AddNewRow)" class="Spartan_Traduction_Process_DataAddRow btn @( !permissionSpartan_Traduction_Process_Data.New || ViewBag.Consult ? "btn-danger not-permission-btn" : "btn-primary")">
+                                        <i class="glyphicon glyphicon-plus"></i>
+                                    </a>
+									<button onclick="Spartan_Traduction_ProcessGetBusinessRule('', 'Al Guardar o al Eliminar una Row', '186913')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Spartan_Traduction_ProcessBusinessRule-form">
+                                        <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToCreateGrid">
+                                            <i class="fa fa-cogs fa-spin"></i>
+                                        </a>
+                                    </button>
+									<a onclick="@( !permissionSpartan_Traduction_Process_Data.New || ViewBag.Consult ? "" : "Spartan_Traduction_Process_DatafnOpenAddRowPopUp();")" data-toggle="modal" title="@( !permissionSpartan_Traduction_Process_Data.New || ViewBag.Consult ? "Usted no tiene permisos para realizar ésta acción" : Resources.Resources.AddNewRow)" data-target="#AddSpartan_Traduction_Process_Data-form" data-backdrop="static" data-keyboard="false" class="btn_mrpopup btn @( !permissionSpartan_Traduction_Process_Data.New || ViewBag.Consult ? "btn-danger not-permission-btn" : "btn-primary")">
+                                        <i class="glyphicon glyphicon-new-window"></i>
+                                    </a>
+                                </div>
+
+                                <br />
+
+                                <div style='overflow-x: auto;'>
+                                    <table class="table table-striped table-bordered table-hover childValidateTable" id="Spartan_Traduction_Process_DataGrid">
+                                        <thead>
+                                            <tr>
+                                                <th class="ActionHeader"><span>@Resources.Resources.Actions</span></th>
+                                                <th class="ConceptHeader"><span>
+<button type="button" data-attribute="186911" data-field-id="Spartan_Traduction_Process_DataConcept" data-field-name="@Resources.Spartan_Traduction_Process_DataResources.Concept" data-toggle="modal" data-target="#Spartan_Traduction_ProcessPropertyBusinessModal-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Spartan_Traduction_Process_DataResources.Concept">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Spartan_Traduction_Process_DataResources.Concept</span></th>
+                                                <th class="Name_of_ControlHeader"><span>
+<button type="button" data-attribute="186908" data-field-id="Spartan_Traduction_Process_DataName_of_Control" data-field-name="@Resources.Spartan_Traduction_Process_DataResources.Name_of_Control" data-toggle="modal" data-target="#Spartan_Traduction_ProcessPropertyBusinessModal-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Spartan_Traduction_Process_DataResources.Name_of_Control">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Spartan_Traduction_Process_DataResources.Name_of_Control</span></th>
+                                                <th class="Original_TextHeader"><span>
+<button type="button" data-attribute="186909" data-field-id="Spartan_Traduction_Process_DataOriginal_Text" data-field-name="@Resources.Spartan_Traduction_Process_DataResources.Original_Text" data-toggle="modal" data-target="#Spartan_Traduction_ProcessPropertyBusinessModal-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Spartan_Traduction_Process_DataResources.Original_Text">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Spartan_Traduction_Process_DataResources.Original_Text</span></th>
+                                                <th class="Translated_TextHeader"><span>
+<button type="button" data-attribute="186910" data-field-id="Spartan_Traduction_Process_DataTranslated_Text" data-field-name="@Resources.Spartan_Traduction_Process_DataResources.Translated_Text" data-toggle="modal" data-target="#Spartan_Traduction_ProcessPropertyBusinessModal-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Spartan_Traduction_Process_DataResources.Translated_Text">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Spartan_Traduction_Process_DataResources.Translated_Text</span></th>
+
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="form-group" id="divLanguageT">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Traduction_ProcessResources.LanguageT</label>
+                                <div class="col-sm-8" data-field-id="LanguageT" data-attribute="186916" data-field-name="@Resources.Spartan_Traduction_ProcessResources.LanguageT">
+                                    <select class="form-control" data-val="true" data-val-number="The field LanguageT must be a number." data-val-required="The LanguageT field is required." id="LanguageT" name="LanguageT">
+                                        <option value=""></option>
+                                        @if (varSpartan_Traduction_Language_LanguageT != null){ 
+                                            foreach (var itemLanguageT in varSpartan_Traduction_Language_LanguageT)
+                                            {
+                                                if (itemLanguageT.Value == Convert.ToString(Model.LanguageT))
+                                                {
+                                                    <option value="@itemLanguageT.Value" selected>@itemLanguageT.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemLanguageT.Value">@itemLanguageT.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="LanguageT" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divObject_Type">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Traduction_ProcessResources.Object_Type</label>
+                                <div class="col-sm-8" data-field-id="Object_Type" data-attribute="186917" data-field-name="@Resources.Spartan_Traduction_ProcessResources.Object_Type">
+                                    <select class="form-control" data-val="true" data-val-number="The field Object_Type must be a number." data-val-required="The Object_Type field is required." id="Object_Type" name="Object_Type">
+                                        <option value=""></option>
+                                        @if (varSpartan_Traduction_Object_Type_Object_Type != null){ 
+                                            foreach (var itemObject_Type in varSpartan_Traduction_Object_Type_Object_Type)
+                                            {
+                                                if (itemObject_Type.Value == Convert.ToString(Model.Object_Type))
+                                                {
+                                                    <option value="@itemObject_Type.Value" selected>@itemObject_Type.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemObject_Type.Value">@itemObject_Type.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="Object_Type" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div class="form-group" id="divObjectT">
+                                <label class="col-sm-2 control-label">@Resources.Spartan_Traduction_ProcessResources.ObjectT</label>
+                                <div class="col-sm-8" data-field-id="ObjectT" data-attribute="186918" data-field-name="@Resources.Spartan_Traduction_ProcessResources.ObjectT">
+                                    <select class="form-control" data-val="true" data-val-number="The field ObjectT must be a number." data-val-required="The ObjectT field is required." id="ObjectT" name="ObjectT">
+                                        <option value=""></option>
+                                        @if (varSpartanObject_ObjectT != null){ 
+                                            foreach (var itemObjectT in varSpartanObject_ObjectT)
+                                            {
+                                                if (itemObjectT.Value == Convert.ToString(Model.ObjectT))
+                                                {
+                                                    <option value="@itemObjectT.Value" selected>@itemObjectT.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@itemObjectT.Value">@itemObjectT.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    @*<span class="field-validation-valid" data-valmsg-for="ObjectT" data-valmsg-replace="true"></span>*@
+                                </div>
+                            </div>
+                            <div id="divSpartan_Traduction_Detail">
+                            <div class="ibox-title">
+                                <h5>@Resources.Spartan_Traduction_ProcessResources.Spartan_Traduction_Detail</h5>
+                                <div class="ibox-tools">
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="">
+									<a onclick="@( !permissionSpartan_Traduction_Detail.New || ViewBag.Consult ? "" : "Spartan_Traduction_DetailfnClickAddRow();")" href="javascript:void(0);" title="@( !permissionSpartan_Traduction_Detail.New || ViewBag.Consult ? "Usted no tiene permisos para realizar ésta acción" : Resources.Resources.AddNewRow)" class="Spartan_Traduction_DetailAddRow btn @( !permissionSpartan_Traduction_Detail.New || ViewBag.Consult ? "btn-danger not-permission-btn" : "btn-primary")">
+                                        <i class="glyphicon glyphicon-plus"></i>
+                                    </a>
+									<button onclick="Spartan_Traduction_ProcessGetBusinessRule('', 'Al Guardar o al Eliminar una Row', '186932')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Spartan_Traduction_ProcessBusinessRule-form">
+                                        <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToCreateGrid">
+                                            <i class="fa fa-cogs fa-spin"></i>
+                                        </a>
+                                    </button>
+									<a onclick="@( !permissionSpartan_Traduction_Detail.New || ViewBag.Consult ? "" : "Spartan_Traduction_DetailfnOpenAddRowPopUp();")" data-toggle="modal" title="@( !permissionSpartan_Traduction_Detail.New || ViewBag.Consult ? "Usted no tiene permisos para realizar ésta acción" : Resources.Resources.AddNewRow)" data-target="#AddSpartan_Traduction_Detail-form" data-backdrop="static" data-keyboard="false" class="btn_mrpopup btn @( !permissionSpartan_Traduction_Detail.New || ViewBag.Consult ? "btn-danger not-permission-btn" : "btn-primary")">
+                                        <i class="glyphicon glyphicon-new-window"></i>
+                                    </a>
+                                </div>
+
+                                <br />
+
+                                <div style='overflow-x: auto;'>
+                                    <table class="table table-striped table-bordered table-hover childValidateTable" id="Spartan_Traduction_DetailGrid">
+                                        <thead>
+                                            <tr>
+                                                <th class="ActionHeader"><span>@Resources.Resources.Actions</span></th>
+                                                <th class="ConceptHeader"><span>
+<button type="button" data-attribute="186928" data-field-id="Spartan_Traduction_DetailConcept" data-field-name="@Resources.Spartan_Traduction_DetailResources.Concept" data-toggle="modal" data-target="#Spartan_Traduction_ProcessPropertyBusinessModal-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Spartan_Traduction_DetailResources.Concept">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Spartan_Traduction_DetailResources.Concept</span></th>
+                                                <th class="IdConceptHeader"><span>
+<button type="button" data-attribute="186929" data-field-id="Spartan_Traduction_DetailIdConcept" data-field-name="@Resources.Spartan_Traduction_DetailResources.IdConcept" data-toggle="modal" data-target="#Spartan_Traduction_ProcessPropertyBusinessModal-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Spartan_Traduction_DetailResources.IdConcept">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>
+@Resources.Spartan_Traduction_DetailResources.IdConcept</span></th>
+                                                <th class="Original_TextHeader"><span>
+<button type="button" data-attribute="186930" data-field-id="Spartan_Traduction_DetailOriginal_Text" data-field-name="@Resources.Spartan_Traduction_DetailResources.Original_Text" data-toggle="modal" data-target="#Spartan_Traduction_ProcessPropertyBusinessModal-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Spartan_Traduction_DetailResources.Original_Text">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Spartan_Traduction_DetailResources.Original_Text</span></th>
+                                                <th class="Translated_TextHeader"><span>
+<button type="button" data-attribute="186931" data-field-id="Spartan_Traduction_DetailTranslated_Text" data-field-name="@Resources.Spartan_Traduction_DetailResources.Translated_Text" data-toggle="modal" data-target="#Spartan_Traduction_ProcessPropertyBusinessModal-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Spartan_Traduction_DetailResources.Translated_Text">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Spartan_Traduction_DetailResources.Translated_Text</span></th>
+
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                            </div>
+                            <div id="divSpartan_Traduction_Workflow">
+                            <div class="ibox-title">
+                                <h5>@Resources.Spartan_Traduction_ProcessResources.Spartan_Traduction_Workflow</h5>
+                                <div class="ibox-tools">
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="">
+									<a onclick="@( !permissionSpartan_Traduction_Process_Workflow.New || ViewBag.Consult ? "" : "Spartan_Traduction_Process_WorkflowfnClickAddRow();")" href="javascript:void(0);" title="@( !permissionSpartan_Traduction_Process_Workflow.New || ViewBag.Consult ? "Usted no tiene permisos para realizar ésta acción" : Resources.Resources.AddNewRow)" class="Spartan_Traduction_Process_WorkflowAddRow btn @( !permissionSpartan_Traduction_Process_Workflow.New || ViewBag.Consult ? "btn-danger not-permission-btn" : "btn-primary")">
+                                        <i class="glyphicon glyphicon-plus"></i>
+                                    </a>
+									<button onclick="Spartan_Traduction_ProcessGetBusinessRule('', 'Al Guardar o al Eliminar una Row', '187229')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Spartan_Traduction_ProcessBusinessRule-form">
+                                        <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToCreateGrid">
+                                            <i class="fa fa-cogs fa-spin"></i>
+                                        </a>
+                                    </button>
+									<a onclick="@( !permissionSpartan_Traduction_Process_Workflow.New || ViewBag.Consult ? "" : "Spartan_Traduction_Process_WorkflowfnOpenAddRowPopUp();")" data-toggle="modal" title="@( !permissionSpartan_Traduction_Process_Workflow.New || ViewBag.Consult ? "Usted no tiene permisos para realizar ésta acción" : Resources.Resources.AddNewRow)" data-target="#AddSpartan_Traduction_Process_Workflow-form" data-backdrop="static" data-keyboard="false" class="btn_mrpopup btn @( !permissionSpartan_Traduction_Process_Workflow.New || ViewBag.Consult ? "btn-danger not-permission-btn" : "btn-primary")">
+                                        <i class="glyphicon glyphicon-new-window"></i>
+                                    </a>
+                                </div>
+
+                                <br />
+
+                                <div style='overflow-x: auto;'>
+                                    <table class="table table-striped table-bordered table-hover childValidateTable" id="Spartan_Traduction_Process_WorkflowGrid">
+                                        <thead>
+                                            <tr>
+                                                <th class="ActionHeader"><span>@Resources.Resources.Actions</span></th>
+                                                <th class="ConceptHeader"><span>
+<button type="button" data-attribute="187224" data-field-id="Spartan_Traduction_Process_WorkflowConcept" data-field-name="@Resources.Spartan_Traduction_Process_WorkflowResources.Concept" data-toggle="modal" data-target="#Spartan_Traduction_ProcessPropertyBusinessModal-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Spartan_Traduction_Process_WorkflowResources.Concept">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Spartan_Traduction_Process_WorkflowResources.Concept</span></th>
+                                                <th class="ID_of_StepHeader"><span>
+<button type="button" data-attribute="187225" data-field-id="Spartan_Traduction_Process_WorkflowID_of_Step" data-field-name="@Resources.Spartan_Traduction_Process_WorkflowResources.ID_of_Step" data-toggle="modal" data-target="#Spartan_Traduction_ProcessPropertyBusinessModal-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Spartan_Traduction_Process_WorkflowResources.ID_of_Step">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>
+@Resources.Spartan_Traduction_Process_WorkflowResources.ID_of_Step</span></th>
+                                                <th class="Original_TextHeader"><span>
+<button type="button" data-attribute="187226" data-field-id="Spartan_Traduction_Process_WorkflowOriginal_Text" data-field-name="@Resources.Spartan_Traduction_Process_WorkflowResources.Original_Text" data-toggle="modal" data-target="#Spartan_Traduction_ProcessPropertyBusinessModal-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Spartan_Traduction_Process_WorkflowResources.Original_Text">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Spartan_Traduction_Process_WorkflowResources.Original_Text</span></th>
+                                                <th class="Translated_TextHeader"><span>
+<button type="button" data-attribute="187227" data-field-id="Spartan_Traduction_Process_WorkflowTranslated_Text" data-field-name="@Resources.Spartan_Traduction_Process_WorkflowResources.Translated_Text" data-toggle="modal" data-target="#Spartan_Traduction_ProcessPropertyBusinessModal-form" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton btnPopupBusinessRules">
+                                                            <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleFor@Resources.Spartan_Traduction_Process_WorkflowResources.Translated_Text">
+                                                                <i class="fa fa-cogs fa-spin"></i>
+                                                            </a>
+                                                        </button>@Resources.Spartan_Traduction_Process_WorkflowResources.Translated_Text</span></th>
+
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                                </div>
+
+				</div>	
+                    <br />
+                            <div class="form-actions fluid">
+                                <input type="hidden" value="@Model.IdTraduction" id="ReferenceIdTraduction" />
+                                <input type="hidden" value="@Model.IdTraduction" name="IdTraduction" id="IdTraductionId" />
+                                <input type="hidden" value="@ViewBag.Operation" name="Operation" id="Operation" />
+                                @if (!ViewBag.Consult)
+                                {
+                                    <input type="button" value="@Resources.Resources.Guardar" id="Spartan_Traduction_ProcessGuardar" class="btn btn-w-m btn-primary btn_save" onclick="return checkClientValidate('Spartan_Traduction_ProcessCreateForm');"  />
+									<button onclick="Spartan_Traduction_ProcessGetBusinessRule('', 'Al Guardar o al Cerrar la Pantalla', '2')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Spartan_Traduction_ProcessBusinessRule-form">
+                                        <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleBeforeSave">
+                                            <i class="fa fa-cogs fa-spin"></i>
+                                        </a>
+                                    </button>
+                                    <button type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton">
+                                        <i class="fa fa-cogs fa-spin"></i>
+                                    </button>
+
+                                    <input type="button" value="@Resources.Resources.GuardarNuevo" id="Spartan_Traduction_ProcessGuardarYNuevo" onclick="return checkClientValidate('Spartan_Traduction_ProcessCreateForm');" data-bind="    click: saveAndNew" class="btn btn-w-m btn-success btn_saveandnew"  />
+                                    <input type="button" value="@Resources.Resources.GuardarCopia" id="Spartan_Traduction_ProcessGuardarYCopia" onclick="return checkClientValidate('Spartan_Traduction_ProcessCreateForm');" data-bind="    click: saveAndNew" class="btn btn-w-m btn-success btn_saveandcopy"  />
+                                    if (permission.Configure)
+                                    {
+                                        <a title="@Resources.Resources.Configure" id="ConfigureSave" name="ConfigureSave" onclick="SaveElementAttributes()" class="btn btn-success btn-configure">@Resources.Resources.Configure</a>
+                                    }
+                                    else
+                                    {
+                                        <a title="@Resources.Resources.NoPermission" class="btn btn-danger btn-configure">@Resources.Resources.Configure</a>
+                                    }
+                                }
+
+                                <input type="hidden" id="hdnConfigureType" />
+								<input type="hidden" id="hdnSpartan_Traduction_ProcessBusinessRuleFieldId" />
+                                <input type="hidden" id="hdnSpartan_Traduction_ProcessBusinessRuleFieldName" />
+                                <input type="hidden" id="hdnSpartan_Traduction_ProcessBusinessRuleAttribute" />
+
+                                <input type="button" value="@Resources.Resources.Cancelar" id="Spartan_Traduction_ProcessCancelar" name="Spartan_Traduction_ProcessCancelar" class="btn btn-danger noConsult btn_cancelar" data-bind="click: cancel" tabindex="16" />
+
+                                <button onclick="Spartan_Traduction_ProcessGetBusinessRule('', 'Al Cancelar', '3')" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#Spartan_Traduction_ProcessBusinessRule-form">
+                                    <a class="top" title="" data-placement="right" data-toggle="tooltip" href="#" data-original-title="@Resources.Resources.BusinessRuleToBegin">
+                                        <i class="fa fa-cogs fa-spin"></i>
+                                    </a>
+                                </button>
+                            </div>
+						</div>
+					</div>
+                }
+        </div>
+    </div>
+</div>
+<input id="hdnApplicationDirectory" type="hidden" value="@Url.Content("~/")" />
+
+@section Styles {
+<link href="@Url.Content("~/Content/BootstrapDatePicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+    @Styles.Render("~/plugins/awesomeCheckboxStyles")
+    @Styles.Render("~/plugins/select2Styles")
+    @Styles.Render("~/Content/plugins/chosen/chosenStyles")
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+    .select2-results{background-color:#fff;}
+    .select2-container .select2-dropdown{height:auto !important;}
+
+    div.dataTables_info {
+        display: inline-block;
+        float: right;
+    }
+        i {
+        font-size: 25px !important;
+        display: block;
+        color: #676a6c;
+        margin-left: 6px;
+        margin-right: 6px;
+    }
+
+    .fullWidth {
+        width: 100%;
+    }
+</style>
+}
+
+<script type="text/javascript" src="~/Uploads/Scripts/Spartan_Traduction_Process.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Scripts/Custom/Spartan_Traduction_ProcessGeneral.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script type="text/javascript" src="~/Uploads/Scripts/Rules/Spartan_Traduction_ProcessCreateRules.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+<script src="~/Scripts/plugins/chosen/chosen.jquery.js"></script>
+
+@section Scripts {
+
+
+    <script type="text/javascript">
+
+
+
+
+    $(document).ready(function () {
+
+
+        @if(ViewBag.IsNew)
+            {
+                <text>$('input:checkbox').prop('checked', false);</text>
+            }
+
+        GetSpartan_Traduction_Process_Data_Spartan_Traduction_Concept_TypeItem();
+
+        if(Spartan_Traduction_Process_DataTable == null)
+        {
+            getSpartan_Traduction_Process_DataData();
+        }
+        else{
+            showSpartan_Traduction_Process_DataGrid(Spartan_Traduction_Process_DataTable.fnGetData());
+        }
+        GetSpartan_Traduction_Detail_Spartan_Traduction_Concept_TypeItem();
+
+        if(Spartan_Traduction_DetailTable == null)
+        {
+            getSpartan_Traduction_DetailData();
+        }
+        else{
+            showSpartan_Traduction_DetailGrid(Spartan_Traduction_DetailTable.fnGetData());
+        }
+        GetSpartan_Traduction_Process_Workflow_Spartan_Traduction_Concept_TypeItem();
+
+        if(Spartan_Traduction_Process_WorkflowTable == null)
+        {
+            getSpartan_Traduction_Process_WorkflowData();
+        }
+        else{
+            showSpartan_Traduction_Process_WorkflowGrid(Spartan_Traduction_Process_WorkflowTable.fnGetData());
+        }
+
+        initiateUIControls();
+        $('a').tooltip();
+        EjecutarValidacionesAlComienzo();
+        $('.loading').css('display', 'none');
+
+    });
+
+    var Spartan_Traduction_Process_DatainsertRowCurrentIndex = -1;
+    var Spartan_Traduction_Process_DataDataDataTable;
+    function getSpartan_Traduction_Process_DataData() {
+        $.ajax({
+            url: "@Url.Content("~/Frontal/Spartan_Traduction_Process/GetSpartan_Traduction_Process_Data")" + "?draw=1&start=1&length=2147483647" + ($("#ReferenceIdTraduction").val() != "" ? "&RelationId=" + $("#ReferenceIdTraduction").val() : "") + "&object_id=@Model.ObjectT" + "&process=@Model.IdTraduction",
+            type: 'GET',
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                Spartan_Traduction_Process_DataDataDataTable = result.data;
+                showSpartan_Traduction_Process_DataGrid(result.data);
+                $('#Spartan_Traduction_Process_DataGrid .inputMoney').inputmask("currency", { prefix: "$", rightAlign: false });
+            },
+            error: function (result) {
+                showNotification("@Resources.Resources.ErrorContactingServer", "error");
+            }
+        });
+    }
+    function Spartan_Traduction_Process_DataGetUpdateRowControls(data, nameOfTable, rowIndex) {
+
+        var columnData = [];
+        var counter = 0;
+        var inputData = "<input type='text' class='fullWidth form-control' />";
+        if ($('.Concept' + 'Header').css('display') != 'none') columnData[counter++] = $($(GetSpartan_Traduction_Process_Data_Spartan_Traduction_Concept_TypeDropDown()).val(data.Concept)).addClass('Concept inputNumber').attr('id', nameOfTable + 'Concept' + rowIndex).attr('data-field', 'Concept');
+        if ($('.Name_of_Control' + 'Header').css('display') != 'none') columnData[counter++] = $($($.parseHTML(inputData)).val(data.Name_of_Control)).addClass('Name_of_Control').attr('id', nameOfTable + 'Name_of_Control' + rowIndex).attr('data-field', 'Name_of_Control');
+        if ($('.Original_Text' + 'Header').css('display') != 'none') columnData[counter++] = $($($.parseHTML(inputData)).val(data.Original_Text)).addClass('Original_Text').attr('id', nameOfTable + 'Original_Text' + rowIndex).attr('data-field', 'Original_Text');
+        if ($('.Translated_Text' + 'Header').css('display') != 'none') columnData[counter++] = $($($.parseHTML(inputData)).val(data.Translated_Text)).addClass('Translated_Text').attr('id', nameOfTable + 'Translated_Text' + rowIndex).attr('data-field', 'Translated_Text');
+
+        return columnData;
+    }
+
+
+
+    function GetFileInfo(fileData, fileUploadData) {
+
+        var $div = $("<div>");
+        if (fileUploadData != null && fileUploadData.files.length > 0) {
+
+            $div.append("<label>" + fileUploadData.files[0].name + "</label>");
+            //<i class="fa fa-times-circle" id='removeFileAttachment'>
+            $div.append($("<i class='fa fa-times-circle' id='removeFileAttachment'>").click(function () {
+                if (confirm("@Resources.Resources.DeleteConfirm")) {
+                    var parent = $(this).parent().parent();
+                    parent.empty();
+                    parent.append("<input type='file'>");
+                }
+            }));
+            return $div;
+
+        } else if (fileUploadData != null) {
+            return $.parseHTML(GetFileUploader());
+        } else {
+            $div.append("<label>" + fileData.FileName + "</label>");
+            $div.append($("<i class='fa fa-times-circle' id='removeFileAttachment'>").click(function () {
+                if (confirm("@Resources.Resources.DeleteConfirm")) {
+                    var parent = $(this).parent().parent();
+                    parent.empty();
+                    parent.append("<input type='file'>");
+                }
+            }));
+            return $div;
+        }
+    }
+
+    var removedSpartan_Traduction_Process_DataData = [];
+    function Spartan_Traduction_Process_DataDeleteRow(rowIndex, row) {
+        var rowIndexTable = Spartan_Traduction_Process_DataTable.fnGetPosition($(row).parent().parent()[0]);
+        var permission = {
+            Delete: '@permissionSpartan_Traduction_Process_Data.Delete' == 'True'
+        };
+        if (!permission.Delete || isConsultMode)
+            return;
+        if (confirm("@Resources.Resources.DeleteConfirm")) {
+            if (EjecutarValidacionesAlEliminarMRSpartan_Traduction_Process_Data('Spartan_Traduction_Process_Data_', '_' + rowIndex)) {
+                var prevData = Spartan_Traduction_Process_DataTable.fnGetData(rowIndexTable );
+                removedSpartan_Traduction_Process_DataData.push(prevData);
+                Spartan_Traduction_Process_DataTable.fnDeleteRow(rowIndexTable );
+                showSpartan_Traduction_Process_DataGrid(Spartan_Traduction_Process_DataTable.fnGetData());
+            }
+        }
+    }
+
+    function Spartan_Traduction_Process_DatarowCreationGrid(row, data, index) {
+        var permission =  {
+            Edit: '@permissionSpartan_Traduction_Process_Data.Edit' == 'True',
+            Delete: '@permissionSpartan_Traduction_Process_Data.Delete' == 'True'
+        };
+        setSpartan_Traduction_Process_DataValidation();
+        var Spartan_Traduction_Process_DataRowElement = "Spartan_Traduction_Process_Data_" + index.toString();
+        $(row).addClass(Spartan_Traduction_Process_DataRowElement);
+        var nameOfTable='Spartan_Traduction_Process_Data_';
+        var rowIndex = '_' + index;
+        Spartan_Traduction_Process_DatainsertRowCurrentIndex = index;
+
+        row.innerHTML = "";
+
+        if (data.IsInsertRow) {
+
+            if (row.childNodes.length != 0) {
+                for (var i = 0; i < row.childNodes.length; i++) {
+                    row.childNodes[i].remove();
+                }
+            }
+            var controls = GetInsertSpartan_Traduction_Process_DataRowControls(index);
+            var actionColInsert = $('<td>');
+
+            var abc = "if(dynamicFieldValidation('" + Spartan_Traduction_Process_DataRowElement + "')){ Spartan_Traduction_Process_DataInsertRow(" + index + "); }";
+            var insertRowHTML = '<a  onclick="' + abc + '">';
+            $('<i class="fa fa-check">').appendTo($(insertRowHTML).appendTo(actionColInsert));
+            $('<i class="fa fa-times">').appendTo($("<a  onclick='Spartan_Traduction_Process_DataCancelRow(" + index + ")'>").appendTo(actionColInsert));
+            actionColInsert.appendTo(row);
+
+            for (i = 0; i < controls.length; i++) {
+                var idHeader = $(controls[i]).data('field') + 'Header';
+                if($(controls[i]).length > 1)
+                {
+                    idHeader = $($(controls[i])[1]).data('field') + 'Header';
+                }
+                if($('#Spartan_Traduction_Process_DataGrid .' + idHeader ).css('display') != 'none')
+                {
+                    $(controls[i]).appendTo($('<td>').appendTo(row));
+                }
+            }
+            $('#Spartan_Traduction_Process_DataGrid .inputMoney').inputmask("currency", { prefix: "", rightAlign: false });
+            return;
+        }
+
+        var actionCol = $('<td>');
+        var edit = "<a title='Edit' class='edit-MR' onclick='Spartan_Traduction_Process_DataEditRow(" + index + ", this)'>";
+        if (!permission.Edit || isConsultMode)
+            edit = "<a title='Edit' class='not-permission edit-MR' data-placement='top' data-toggle='tooltip' href='#' data-original-title='Usted no tiene permisos para realizar esta acción'>";
+        var editPopUp = "<a title='Edit' class='edit-popup-MR' data-toggle='modal' data-target='#AddSpartan_Traduction_Process_Data-form' onclick='Spartan_Traduction_Process_DataEditRowPopup(" + index + ", this)'>";
+        if (!permission.Edit || isConsultMode)
+            editPopUp = "<a title='Edit' class='not-permission edit-popup-MR' data-placement='top' data-toggle='tooltip' href='#' data-original-title='Usted no tiene permisos para realizar esta acción'>";
+        var eliminar = "<a title='Delete' class='eliminar-MR' onclick='Spartan_Traduction_Process_DataDeleteRow(" + index + ", this)'>";
+        if (!permission.Delete || isConsultMode)
+            eliminar = "<a title='Delete' class='not-permission eliminar-MR' data-placement='top' data-toggle='tooltip' href='#' data-original-title='Usted no tiene permisos para realizar esta acción'>";
+        $('<i class="fa fa-pencil">').appendTo($(edit).appendTo(actionCol));
+        $('<i class="fa fa-edit">').appendTo($(editPopUp).appendTo(actionCol));
+        $('<i class="fa fa-trash-o">').appendTo($(eliminar).appendTo(actionCol));
+        if ($('.Action' + 'Header').css('display') != 'none')
+            actionCol.appendTo(row);
+        if ($('.Concept' + 'Header').css('display') != 'none')
+            $('<td id="'+nameOfTable+'Concept'+rowIndex+'">').text(GetSpartan_Traduction_Process_Data_Spartan_Traduction_Concept_TypeName(data.Concept)).appendTo(row);
+        if ($('.Name_of_Control' + 'Header').css('display') != 'none')
+            $('<td id="'+nameOfTable+'Name_of_Control'+rowIndex+'">').text(data.Name_of_Control).appendTo(row);
+        if ($('.Original_Text' + 'Header').css('display') != 'none')
+            $('<td id="'+nameOfTable+'Original_Text'+rowIndex+'">').text(data.Original_Text).appendTo(row);
+        if ($('.Translated_Text' + 'Header').css('display') != 'none')
+            $('<td id="'+nameOfTable+'Translated_Text'+rowIndex+'">').text(data.Translated_Text).appendTo(row);
+
+    }
+
+    var Spartan_Traduction_Process_DataTable;
+    function showSpartan_Traduction_Process_DataGrid(dataSet) {
+        //removedSpartan_Traduction_Process_DataData = [];
+        Spartan_Traduction_Process_DataTable = $('#Spartan_Traduction_Process_DataGrid').dataTable({
+            dom: '<"html5buttons"B>lTgitp',
+            buttons: [
+            ],
+            "createdRow": Spartan_Traduction_Process_DatarowCreationGrid,
+            "lengthMenu": [[-1], ["All"]],
+            data: dataSet,
+            "columns": [
+                { "data": null, 'visible': true, "orderable": false },
+                { "data": "Concept", "orderable": false },
+                { "data": "Name_of_Control", "orderable": false },
+                { "data": "Original_Text", "orderable": false },
+                { "data": "Translated_Text", "orderable": false },
+
+            ],
+            "order": [[0, "asc"]],
+            "language": {
+                "lengthMenu": "@Resources.Resources.Display" + " _MENU_ " + "@Resources.Resources.RecordsPerPage",
+                "zeroRecords": "@Resources.Resources.NothingFound",
+                "info": "@Resources.Resources.ShowingPages" + " _PAGE_ " + "@Resources.Resources.of" + " _PAGES_",
+                "infoEmpty": "@Resources.Resources.NoRecords",
+                "infoFiltered": "(" + "@Resources.Resources.FilteredFrom" + " _MAX_ " + "@Resources.Resources.TotalRecords" + ")",
+                "sSearch": "@Resources.Resources.Search",
+                "paginate": {
+                    "previous": "@Resources.Resources.Previous",
+                    "next": "@Resources.Resources.Next"
+                }
+            },
+            "bDestroy": true,
+            "fnDrawCallback": function (settings) {
+                setSpartan_Traduction_Process_DataValidation();
+            }
+        }).on('init.dt', function (e, data) {
+            $('a').tooltip();
+        }).on('draw.dt', function () {
+            $('#Spartan_Traduction_Process_DataGrid .inputMoney').inputmask("currency", { prefix: "$", rightAlign: false });
+        });
+    }
+
+    var Spartan_Traduction_Process_Data_Spartan_Traduction_Concept_TypeItems;
+    function GetSpartan_Traduction_Process_Data_Spartan_Traduction_Concept_TypeItem() {
+        Spartan_Traduction_Process_Data_Spartan_Traduction_Concept_TypeItems = null;
+        var ajaxUrl = "@Url.Content("~/Frontal/Spartan_Traduction_Process/GetSpartan_Traduction_Process_Data_Spartan_Traduction_Concept_TypeAll")";
+        $.ajax({
+            url: ajaxUrl,
+            type: 'GET',
+            dataType: "json",
+            async: false,
+            global: false,
+            success: function (result) {
+                Spartan_Traduction_Process_Data_Spartan_Traduction_Concept_TypeItems = result;
+            },
+            error: function (result) {
+                showNotification("@Resources.Resources.ErrorContactingServer", "error");
+            }
+        });
+    }
+
+    var Spartan_Traduction_Process_DataData = [];
+    var Spartan_Traduction_Process_DatadeletedItem = [];
+    var Spartan_Traduction_Process_DataDataMain = [];
+    var Spartan_Traduction_Process_DataDataMainPages = [];
+    var Spartan_Traduction_Process_DatanewItemCount = 0;
+    var Spartan_Traduction_Process_DatamaxItemIndex = 0;
+    var Spartan_Traduction_Process_DataDataMainInitialized = false;
+
+    function SendSpartan_Traduction_Process_Data(callBack, IdTraductionId) {
+        Spartan_Traduction_Process_DataData = GetSpartan_Traduction_Process_DataFromDataTable();
+
+        if (Spartan_Traduction_Process_DataData.length > 0 || $("#ReferenceIdTraduction").val() != IdTraductionId) {
+            if ($("#ReferenceIdTraduction").val() != "0" && IdTraductionId ==null)
+                IdTraductionId = $("#ReferenceIdTraduction").val();
+            if ($("#ReferenceIdTraduction").val() == '')
+                $("#ReferenceIdTraduction").val('0');
+            $.ajax({
+                url: '@Url.Content("~/Frontal/Spartan_Traduction_Process/PostSpartan_Traduction_Process_Data?MasterId=")' + IdTraductionId + "&referenceId=" + $("#ReferenceIdTraduction").val(),
+                type: 'POST',
+                data: GetSpartan_Traduction_Process_Data(),
+                async: true,
+                success: function (result) {
+
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+        } else {
+            //showNotification("@Resources.Resources.SaveSuccess", "success");
+            //callBack(IdTraductionId);
+        }
+        return true;
+    }
+
+    function GetAddSpartan_Traduction_Process_DataPopup(currentRowIndex, mode, id) {
+
+        $.ajax({
+            url: "@Url.Action("AddSpartan_Traduction_Process_Data", "Spartan_Traduction_Process_Data")",
+            type: "GET",
+            async: false,
+            data: { rowIndex: currentRowIndex, functionMode: mode, id: id },
+            success: function (data) {
+                $(".AddSpartan_Traduction_Process_DataModal").html(data);
+            },
+            error: function () {
+
+            }
+        });
+
+        @*$.get('@Url.Action("AddSpartan_Traduction_Process_Data", "Spartan_Traduction_Process_Data")', { rowIndex: currentRowIndex }, function (data) {
+                $(".AddSpartan_Traduction_Process_DataModal").html(data);
+            });*@
+    }
+
+    function ShowMessagePendingRowSpartan_Traduction_Process_Data()
+    {
+		//Traducción Pendiente
+		showNotification('@Html.Raw(string.Format(Resources.Resources.PendingRow, "Spartan Traduction Process Data"))', "warning");
+    }
+    var Spartan_Traduction_DetailinsertRowCurrentIndex = -1;
+    var Spartan_Traduction_DetailDataDataTable;
+    function getSpartan_Traduction_DetailData() {
+        $.ajax({
+            url: "@Url.Content("~/Frontal/Spartan_Traduction_Process/GetSpartan_Traduction_Detail")" + "?draw=1&start=1&length=2147483647" + ($("#ReferenceIdTraduction").val() != "" ? "&RelationId=" + $("#ReferenceIdTraduction").val() : ""),
+            type: 'GET',
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                Spartan_Traduction_DetailDataDataTable = result.data;
+                showSpartan_Traduction_DetailGrid(result.data);
+                $('#Spartan_Traduction_DetailGrid .inputMoney').inputmask("currency", { prefix: "$", rightAlign: false });
+            },
+            error: function (result) {
+                showNotification("@Resources.Resources.ErrorContactingServer", "error");
+            }
+        });
+    }
+    function Spartan_Traduction_DetailGetUpdateRowControls(data, nameOfTable, rowIndex) {
+
+        var columnData = [];
+        var counter = 0;
+        var inputData = "<input type='text' class='fullWidth form-control' />";
+        if ($('.Concept' + 'Header').css('display') != 'none') columnData[counter++] = $($(GetSpartan_Traduction_Detail_Spartan_Traduction_Concept_TypeDropDown()).val(data.Concept)).addClass('Concept inputNumber').attr('id', nameOfTable + 'Concept' + rowIndex).attr('data-field', 'Concept');
+        if ($('.IdConcept' + 'Header').css('display') != 'none') columnData[counter++] = $($($.parseHTML(inputData)).val(data.IdConcept)).addClass('IdConcept inputNumber').attr('id', nameOfTable + 'IdConcept' + rowIndex).attr('data-field', 'IdConcept');
+        if ($('.Original_Text' + 'Header').css('display') != 'none') columnData[counter++] = $($($.parseHTML(inputData)).val(data.Original_Text)).addClass('Original_Text').attr('id', nameOfTable + 'Original_Text' + rowIndex).attr('data-field', 'Original_Text');
+        if ($('.Translated_Text' + 'Header').css('display') != 'none') columnData[counter++] = $($($.parseHTML(inputData)).val(data.Translated_Text)).addClass('Translated_Text').attr('id', nameOfTable + 'Translated_Text' + rowIndex).attr('data-field', 'Translated_Text');
+
+        return columnData;
+    }
+
+
+
+    function GetFileInfo(fileData, fileUploadData) {
+
+        var $div = $("<div>");
+        if (fileUploadData != null && fileUploadData.files.length > 0) {
+
+            $div.append("<label>" + fileUploadData.files[0].name + "</label>");
+            //<i class="fa fa-times-circle" id='removeFileAttachment'>
+            $div.append($("<i class='fa fa-times-circle' id='removeFileAttachment'>").click(function () {
+                if (confirm("@Resources.Resources.DeleteConfirm")) {
+                    var parent = $(this).parent().parent();
+                    parent.empty();
+                    parent.append("<input type='file'>");
+                }
+            }));
+            return $div;
+
+        } else if (fileUploadData != null) {
+            return $.parseHTML(GetFileUploader());
+        } else {
+            $div.append("<label>" + fileData.FileName + "</label>");
+            $div.append($("<i class='fa fa-times-circle' id='removeFileAttachment'>").click(function () {
+                if (confirm("@Resources.Resources.DeleteConfirm")) {
+                    var parent = $(this).parent().parent();
+                    parent.empty();
+                    parent.append("<input type='file'>");
+                }
+            }));
+            return $div;
+        }
+    }
+
+    var removedSpartan_Traduction_DetailData = [];
+    function Spartan_Traduction_DetailDeleteRow(rowIndex, row) {
+        var rowIndexTable = Spartan_Traduction_DetailTable.fnGetPosition($(row).parent().parent()[0]);
+        var permission = {
+            Delete: '@permissionSpartan_Traduction_Detail.Delete' == 'True'
+        };
+        if (!permission.Delete || isConsultMode)
+            return;
+        if (confirm("@Resources.Resources.DeleteConfirm")) {
+            if (EjecutarValidacionesAlEliminarMRSpartan_Traduction_Detail('Spartan_Traduction_Detail_', '_' + rowIndex)) {
+                var prevData = Spartan_Traduction_DetailTable.fnGetData(rowIndexTable );
+                removedSpartan_Traduction_DetailData.push(prevData);
+                Spartan_Traduction_DetailTable.fnDeleteRow(rowIndexTable );
+                showSpartan_Traduction_DetailGrid(Spartan_Traduction_DetailTable.fnGetData());
+            }
+        }
+    }
+
+    function Spartan_Traduction_DetailrowCreationGrid(row, data, index) {
+        var permission =  {
+            Edit: '@permissionSpartan_Traduction_Detail.Edit' == 'True',
+            Delete: '@permissionSpartan_Traduction_Detail.Delete' == 'True'
+        };
+        setSpartan_Traduction_DetailValidation();
+        var Spartan_Traduction_DetailRowElement = "Spartan_Traduction_Detail_" + index.toString();
+        $(row).addClass(Spartan_Traduction_DetailRowElement);
+        var nameOfTable='Spartan_Traduction_Detail_';
+        var rowIndex = '_' + index;
+        Spartan_Traduction_DetailinsertRowCurrentIndex = index;
+
+        row.innerHTML = "";
+
+        if (data.IsInsertRow) {
+
+            if (row.childNodes.length != 0) {
+                for (var i = 0; i < row.childNodes.length; i++) {
+                    row.childNodes[i].remove();
+                }
+            }
+            var controls = GetInsertSpartan_Traduction_DetailRowControls(index);
+            var actionColInsert = $('<td>');
+
+            var abc = "if(dynamicFieldValidation('" + Spartan_Traduction_DetailRowElement + "')){ Spartan_Traduction_DetailInsertRow(" + index + "); }";
+            var insertRowHTML = '<a  onclick="' + abc + '">';
+            $('<i class="fa fa-check">').appendTo($(insertRowHTML).appendTo(actionColInsert));
+            $('<i class="fa fa-times">').appendTo($("<a  onclick='Spartan_Traduction_DetailCancelRow(" + index + ")'>").appendTo(actionColInsert));
+            actionColInsert.appendTo(row);
+
+            for (i = 0; i < controls.length; i++) {
+                var idHeader = $(controls[i]).data('field') + 'Header';
+                if($(controls[i]).length > 1)
+                {
+                    idHeader = $($(controls[i])[1]).data('field') + 'Header';
+                }
+                if($('#Spartan_Traduction_DetailGrid .' + idHeader ).css('display') != 'none')
+                {
+                    $(controls[i]).appendTo($('<td>').appendTo(row));
+                }
+            }
+            $('#Spartan_Traduction_DetailGrid .inputMoney').inputmask("currency", { prefix: "", rightAlign: false });
+            return;
+        }
+
+        var actionCol = $('<td>');
+        var edit = "<a title='Edit' class='edit-MR' onclick='Spartan_Traduction_DetailEditRow(" + index + ", this)'>";
+        if (!permission.Edit || isConsultMode)
+            edit = "<a title='Edit' class='not-permission edit-MR' data-placement='top' data-toggle='tooltip' href='#' data-original-title='Usted no tiene permisos para realizar esta acción'>";
+        var editPopUp = "<a title='Edit' class='edit-popup-MR' data-toggle='modal' data-target='#AddSpartan_Traduction_Detail-form' onclick='Spartan_Traduction_DetailEditRowPopup(" + index + ", this)'>";
+        if (!permission.Edit || isConsultMode)
+            editPopUp = "<a title='Edit' class='not-permission edit-popup-MR' data-placement='top' data-toggle='tooltip' href='#' data-original-title='Usted no tiene permisos para realizar esta acción'>";
+        var eliminar = "<a title='Delete' class='eliminar-MR' onclick='Spartan_Traduction_DetailDeleteRow(" + index + ", this)'>";
+        if (!permission.Delete || isConsultMode)
+            eliminar = "<a title='Delete' class='not-permission eliminar-MR' data-placement='top' data-toggle='tooltip' href='#' data-original-title='Usted no tiene permisos para realizar esta acción'>";
+        $('<i class="fa fa-pencil">').appendTo($(edit).appendTo(actionCol));
+        $('<i class="fa fa-edit">').appendTo($(editPopUp).appendTo(actionCol));
+        $('<i class="fa fa-trash-o">').appendTo($(eliminar).appendTo(actionCol));
+        if ($('.Action' + 'Header').css('display') != 'none')
+            actionCol.appendTo(row);
+        if ($('.Concept' + 'Header').css('display') != 'none')
+            $('<td id="'+nameOfTable+'Concept'+rowIndex+'">').text(GetSpartan_Traduction_Detail_Spartan_Traduction_Concept_TypeName(data.Concept)).appendTo(row);
+        if ($('.IdConcept' + 'Header').css('display') != 'none')
+            $('<td id="'+nameOfTable+'IdConcept'+rowIndex+'">').text(data.IdConcept).appendTo(row);
+        if ($('.Original_Text' + 'Header').css('display') != 'none')
+            $('<td id="'+nameOfTable+'Original_Text'+rowIndex+'">').text(data.Original_Text).appendTo(row);
+        if ($('.Translated_Text' + 'Header').css('display') != 'none')
+            $('<td id="'+nameOfTable+'Translated_Text'+rowIndex+'">').text(data.Translated_Text).appendTo(row);
+
+    }
+
+    var Spartan_Traduction_DetailTable;
+    function showSpartan_Traduction_DetailGrid(dataSet) {
+        //removedSpartan_Traduction_DetailData = [];
+        Spartan_Traduction_DetailTable = $('#Spartan_Traduction_DetailGrid').dataTable({
+            dom: '<"html5buttons"B>lTgitp',
+            buttons: [
+            ],
+            "createdRow": Spartan_Traduction_DetailrowCreationGrid,
+            "lengthMenu": [[-1], ["All"]],
+            data: dataSet,
+            "columns": [
+                { "data": null, 'visible': true, "orderable": false },
+                { "data": "Concept", "orderable": false },
+                { "data": "IdConcept", "orderable": false },
+                { "data": "Original_Text", "orderable": false },
+                { "data": "Translated_Text", "orderable": false },
+
+            ],
+            "order": [[0, "asc"]],
+            "language": {
+                "lengthMenu": "@Resources.Resources.Display" + " _MENU_ " + "@Resources.Resources.RecordsPerPage",
+                "zeroRecords": "@Resources.Resources.NothingFound",
+                "info": "@Resources.Resources.ShowingPages" + " _PAGE_ " + "@Resources.Resources.of" + " _PAGES_",
+                "infoEmpty": "@Resources.Resources.NoRecords",
+                "infoFiltered": "(" + "@Resources.Resources.FilteredFrom" + " _MAX_ " + "@Resources.Resources.TotalRecords" + ")",
+                "sSearch": "@Resources.Resources.Search",
+                "paginate": {
+                    "previous": "@Resources.Resources.Previous",
+                    "next": "@Resources.Resources.Next"
+                }
+            },
+            "bDestroy": true,
+            "fnDrawCallback": function (settings) {
+                setSpartan_Traduction_DetailValidation();
+            }
+        }).on('init.dt', function (e, data) {
+            $('a').tooltip();
+        }).on('draw.dt', function () {
+            $('#Spartan_Traduction_DetailGrid .inputMoney').inputmask("currency", { prefix: "$", rightAlign: false });
+        });
+    }
+
+    var Spartan_Traduction_Detail_Spartan_Traduction_Concept_TypeItems;
+    function GetSpartan_Traduction_Detail_Spartan_Traduction_Concept_TypeItem() {
+        Spartan_Traduction_Detail_Spartan_Traduction_Concept_TypeItems = null;
+        var ajaxUrl = "@Url.Content("~/Frontal/Spartan_Traduction_Process/GetSpartan_Traduction_Detail_Spartan_Traduction_Concept_TypeAll")";
+        $.ajax({
+            url: ajaxUrl,
+            type: 'GET',
+            dataType: "json",
+            async: false,
+            global: false,
+            success: function (result) {
+                Spartan_Traduction_Detail_Spartan_Traduction_Concept_TypeItems = result;
+            },
+            error: function (result) {
+                showNotification("@Resources.Resources.ErrorContactingServer", "error");
+            }
+        });
+    }
+
+    var Spartan_Traduction_DetailData = [];
+    var Spartan_Traduction_DetaildeletedItem = [];
+    var Spartan_Traduction_DetailDataMain = [];
+    var Spartan_Traduction_DetailDataMainPages = [];
+    var Spartan_Traduction_DetailnewItemCount = 0;
+    var Spartan_Traduction_DetailmaxItemIndex = 0;
+    var Spartan_Traduction_DetailDataMainInitialized = false;
+
+    function SendSpartan_Traduction_Detail(callBack, IdTraductionId) {
+        Spartan_Traduction_DetailData = GetSpartan_Traduction_DetailFromDataTable();
+
+        if (Spartan_Traduction_DetailData.length > 0 || $("#ReferenceIdTraduction").val() != IdTraductionId) {
+            if ($("#ReferenceIdTraduction").val() != "0" && IdTraductionId ==null)
+                IdTraductionId = $("#ReferenceIdTraduction").val();
+            if ($("#ReferenceIdTraduction").val() == '')
+                $("#ReferenceIdTraduction").val('0');
+            $.ajax({
+                url: '@Url.Content("~/Frontal/Spartan_Traduction_Process/PostSpartan_Traduction_Detail?MasterId=")' + IdTraductionId + "&referenceId=" + $("#ReferenceIdTraduction").val(),
+                type: 'POST',
+                data: GetSpartan_Traduction_Detail(),
+                async: true,
+                success: function (result) {
+
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+        } else {
+            //showNotification("@Resources.Resources.SaveSuccess", "success");
+            //callBack(IdTraductionId);
+        }
+        return true;
+    }
+
+    function GetAddSpartan_Traduction_DetailPopup(currentRowIndex, mode, id) {
+
+        $.ajax({
+            url: "@Url.Action("AddSpartan_Traduction_Detail", "Spartan_Traduction_Detail")",
+            type: "GET",
+            async: false,
+            data: { rowIndex: currentRowIndex, functionMode: mode, id: id },
+            success: function (data) {
+                $(".AddSpartan_Traduction_DetailModal").html(data);
+            },
+            error: function () {
+
+            }
+        });
+
+        @*$.get('@Url.Action("AddSpartan_Traduction_Detail", "Spartan_Traduction_Detail")', { rowIndex: currentRowIndex }, function (data) {
+                $(".AddSpartan_Traduction_DetailModal").html(data);
+            });*@
+    }
+
+    function ShowMessagePendingRowSpartan_Traduction_Detail()
+    {
+		//Traducción Pendiente
+		showNotification('@Html.Raw(string.Format(Resources.Resources.PendingRow, "Spartan_Traduction_Detail"))', "warning");
+    }
+    var Spartan_Traduction_Process_WorkflowinsertRowCurrentIndex = -1;
+    var Spartan_Traduction_Process_WorkflowDataDataTable;
+    function getSpartan_Traduction_Process_WorkflowData() {
+        $.ajax({
+            url: "@Url.Content("~/Frontal/Spartan_Traduction_Process/GetSpartan_Traduction_Process_Workflow")" + "?draw=1&start=1&length=2147483647" + ($("#ReferenceIdTraduction").val() != "" ? "&RelationId=" + $("#ReferenceIdTraduction").val() : "") + "&object_id=@Model.ObjectT" + "&process=@Model.IdTraduction",
+        type: 'GET',
+        dataType: "json",
+        async: false,
+        success: function (result) {
+            Spartan_Traduction_Process_WorkflowDataDataTable = result.data;
+            showSpartan_Traduction_Process_WorkflowGrid(result.data);
+            $('#Spartan_Traduction_Process_WorkflowGrid .inputMoney').inputmask("currency", { prefix: "$", rightAlign: false });
+        },
+        error: function (result) {
+            showNotification("@Resources.Resources.ErrorContactingServer", "error");
+        }
+    });
+    }
+    function Spartan_Traduction_Process_WorkflowGetUpdateRowControls(data, nameOfTable, rowIndex) {
+
+        var columnData = [];
+        var counter = 0;
+        var inputData = "<input type='text' class='fullWidth form-control' />";
+        if ($('.Concept' + 'Header').css('display') != 'none') columnData[counter++] = $($(GetSpartan_Traduction_Process_Workflow_Spartan_Traduction_Concept_TypeDropDown()).val(data.Concept)).addClass('Concept inputNumber').attr('id', nameOfTable + 'Concept' + rowIndex).attr('data-field', 'Concept');
+        if ($('.ID_of_Step' + 'Header').css('display') != 'none') columnData[counter++] = $($($.parseHTML(inputData)).val(data.ID_of_Step)).addClass('ID_of_Step inputNumber').attr('id', nameOfTable + 'ID_of_Step' + rowIndex).attr('data-field', 'ID_of_Step');
+        if ($('.Original_Text' + 'Header').css('display') != 'none') columnData[counter++] = $($($.parseHTML(inputData)).val(data.Original_Text)).addClass('Original_Text').attr('id', nameOfTable + 'Original_Text' + rowIndex).attr('data-field', 'Original_Text');
+        if ($('.Translated_Text' + 'Header').css('display') != 'none') columnData[counter++] = $($($.parseHTML(inputData)).val(data.Translated_Text)).addClass('Translated_Text').attr('id', nameOfTable + 'Translated_Text' + rowIndex).attr('data-field', 'Translated_Text');
+
+        return columnData;
+    }
+
+
+
+    function GetFileInfo(fileData, fileUploadData) {
+
+        var $div = $("<div>");
+        if (fileUploadData != null && fileUploadData.files.length > 0) {
+
+            $div.append("<label>" + fileUploadData.files[0].name + "</label>");
+            //<i class="fa fa-times-circle" id='removeFileAttachment'>
+            $div.append($("<i class='fa fa-times-circle' id='removeFileAttachment'>").click(function () {
+                if (confirm("@Resources.Resources.DeleteConfirm")) {
+                    var parent = $(this).parent().parent();
+                    parent.empty();
+                    parent.append("<input type='file'>");
+                }
+            }));
+            return $div;
+
+        } else if (fileUploadData != null) {
+            return $.parseHTML(GetFileUploader());
+        } else {
+            $div.append("<label>" + fileData.FileName + "</label>");
+            $div.append($("<i class='fa fa-times-circle' id='removeFileAttachment'>").click(function () {
+                if (confirm("@Resources.Resources.DeleteConfirm")) {
+                    var parent = $(this).parent().parent();
+                    parent.empty();
+                    parent.append("<input type='file'>");
+                }
+            }));
+            return $div;
+        }
+    }
+
+    var removedSpartan_Traduction_Process_WorkflowData = [];
+    function Spartan_Traduction_Process_WorkflowDeleteRow(rowIndex, row) {
+        var rowIndexTable = Spartan_Traduction_Process_WorkflowTable.fnGetPosition($(row).parent().parent()[0]);
+        var permission = {
+            Delete: '@permissionSpartan_Traduction_Process_Workflow.Delete' == 'True'
+        };
+        if (!permission.Delete || isConsultMode)
+            return;
+        if (confirm("@Resources.Resources.DeleteConfirm")) {
+            if (EjecutarValidacionesAlEliminarMRSpartan_Traduction_Process_Workflow('Spartan_Traduction_Process_Workflow_', '_' + rowIndex)) {
+                var prevData = Spartan_Traduction_Process_WorkflowTable.fnGetData(rowIndexTable );
+                removedSpartan_Traduction_Process_WorkflowData.push(prevData);
+                Spartan_Traduction_Process_WorkflowTable.fnDeleteRow(rowIndexTable );
+                showSpartan_Traduction_Process_WorkflowGrid(Spartan_Traduction_Process_WorkflowTable.fnGetData());
+            }
+        }
+    }
+
+    function Spartan_Traduction_Process_WorkflowrowCreationGrid(row, data, index) {
+        var permission =  {
+            Edit: '@permissionSpartan_Traduction_Process_Workflow.Edit' == 'True',
+            Delete: '@permissionSpartan_Traduction_Process_Workflow.Delete' == 'True'
+        };
+        setSpartan_Traduction_Process_WorkflowValidation();
+        var Spartan_Traduction_Process_WorkflowRowElement = "Spartan_Traduction_Process_Workflow_" + index.toString();
+        $(row).addClass(Spartan_Traduction_Process_WorkflowRowElement);
+        var nameOfTable='Spartan_Traduction_Process_Workflow_';
+        var rowIndex = '_' + index;
+        Spartan_Traduction_Process_WorkflowinsertRowCurrentIndex = index;
+
+        row.innerHTML = "";
+
+        if (data.IsInsertRow) {
+
+            if (row.childNodes.length != 0) {
+                for (var i = 0; i < row.childNodes.length; i++) {
+                    row.childNodes[i].remove();
+                }
+            }
+            var controls = GetInsertSpartan_Traduction_Process_WorkflowRowControls(index);
+            var actionColInsert = $('<td>');
+
+            var abc = "if(dynamicFieldValidation('" + Spartan_Traduction_Process_WorkflowRowElement + "')){ Spartan_Traduction_Process_WorkflowInsertRow(" + index + "); }";
+            var insertRowHTML = '<a  onclick="' + abc + '">';
+            $('<i class="fa fa-check">').appendTo($(insertRowHTML).appendTo(actionColInsert));
+            $('<i class="fa fa-times">').appendTo($("<a  onclick='Spartan_Traduction_Process_WorkflowCancelRow(" + index + ")'>").appendTo(actionColInsert));
+            actionColInsert.appendTo(row);
+
+            for (i = 0; i < controls.length; i++) {
+                var idHeader = $(controls[i]).data('field') + 'Header';
+                if($(controls[i]).length > 1)
+                {
+                    idHeader = $($(controls[i])[1]).data('field') + 'Header';
+                }
+                if($('#Spartan_Traduction_Process_WorkflowGrid .' + idHeader ).css('display') != 'none')
+                {
+                    $(controls[i]).appendTo($('<td>').appendTo(row));
+                }
+            }
+            $('#Spartan_Traduction_Process_WorkflowGrid .inputMoney').inputmask("currency", { prefix: "", rightAlign: false });
+            return;
+        }
+
+        var actionCol = $('<td>');
+        var edit = "<a title='Edit' class='edit-MR' onclick='Spartan_Traduction_Process_WorkflowEditRow(" + index + ", this)'>";
+        if (!permission.Edit || isConsultMode)
+            edit = "<a title='Edit' class='not-permission edit-MR' data-placement='top' data-toggle='tooltip' href='#' data-original-title='Usted no tiene permisos para realizar esta acción'>";
+        var editPopUp = "<a title='Edit' class='edit-popup-MR' data-toggle='modal' data-target='#AddSpartan_Traduction_Process_Workflow-form' onclick='Spartan_Traduction_Process_WorkflowEditRowPopup(" + index + ", this)'>";
+        if (!permission.Edit || isConsultMode)
+            editPopUp = "<a title='Edit' class='not-permission edit-popup-MR' data-placement='top' data-toggle='tooltip' href='#' data-original-title='Usted no tiene permisos para realizar esta acción'>";
+        var eliminar = "<a title='Delete' class='eliminar-MR' onclick='Spartan_Traduction_Process_WorkflowDeleteRow(" + index + ", this)'>";
+        if (!permission.Delete || isConsultMode)
+            eliminar = "<a title='Delete' class='not-permission eliminar-MR' data-placement='top' data-toggle='tooltip' href='#' data-original-title='Usted no tiene permisos para realizar esta acción'>";
+        $('<i class="fa fa-pencil">').appendTo($(edit).appendTo(actionCol));
+        $('<i class="fa fa-edit">').appendTo($(editPopUp).appendTo(actionCol));
+        $('<i class="fa fa-trash-o">').appendTo($(eliminar).appendTo(actionCol));
+        if ($('.Action' + 'Header').css('display') != 'none')
+            actionCol.appendTo(row);
+        if ($('.Concept' + 'Header').css('display') != 'none')
+            $('<td id="'+nameOfTable+'Concept'+rowIndex+'">').text(GetSpartan_Traduction_Process_Workflow_Spartan_Traduction_Concept_TypeName(data.Concept)).appendTo(row);
+        if ($('.ID_of_Step' + 'Header').css('display') != 'none')
+            $('<td id="'+nameOfTable+'ID_of_Step'+rowIndex+'">').text(data.ID_of_Step).appendTo(row);
+        if ($('.Original_Text' + 'Header').css('display') != 'none')
+            $('<td id="'+nameOfTable+'Original_Text'+rowIndex+'">').text(data.Original_Text).appendTo(row);
+        if ($('.Translated_Text' + 'Header').css('display') != 'none')
+            $('<td id="'+nameOfTable+'Translated_Text'+rowIndex+'">').text(data.Translated_Text).appendTo(row);
+
+    }
+
+    var Spartan_Traduction_Process_WorkflowTable;
+    function showSpartan_Traduction_Process_WorkflowGrid(dataSet) {
+        //removedSpartan_Traduction_Process_WorkflowData = [];
+        Spartan_Traduction_Process_WorkflowTable = $('#Spartan_Traduction_Process_WorkflowGrid').dataTable({
+            dom: '<"html5buttons"B>lTgitp',
+            buttons: [
+            ],
+            "createdRow": Spartan_Traduction_Process_WorkflowrowCreationGrid,
+            "lengthMenu": [[-1], ["All"]],
+            data: dataSet,
+            "columns": [
+                { "data": null, 'visible': true, "orderable": false },
+                { "data": "Concept", "orderable": false },
+                { "data": "ID_of_Step", "orderable": false },
+                { "data": "Original_Text", "orderable": false },
+                { "data": "Translated_Text", "orderable": false },
+
+            ],
+            "order": [[0, "asc"]],
+            "language": {
+                "lengthMenu": "@Resources.Resources.Display" + " _MENU_ " + "@Resources.Resources.RecordsPerPage",
+                "zeroRecords": "@Resources.Resources.NothingFound",
+                "info": "@Resources.Resources.ShowingPages" + " _PAGE_ " + "@Resources.Resources.of" + " _PAGES_",
+                "infoEmpty": "@Resources.Resources.NoRecords",
+                "infoFiltered": "(" + "@Resources.Resources.FilteredFrom" + " _MAX_ " + "@Resources.Resources.TotalRecords" + ")",
+                "sSearch": "@Resources.Resources.Search",
+                "paginate": {
+                    "previous": "@Resources.Resources.Previous",
+                    "next": "@Resources.Resources.Next"
+                }
+            },
+            "bDestroy": true,
+            "fnDrawCallback": function (settings) {
+                setSpartan_Traduction_Process_WorkflowValidation();
+            }
+        }).on('init.dt', function (e, data) {
+            $('a').tooltip();
+        }).on('draw.dt', function () {
+            $('#Spartan_Traduction_Process_WorkflowGrid .inputMoney').inputmask("currency", { prefix: "$", rightAlign: false });
+        });
+    }
+
+    var Spartan_Traduction_Process_Workflow_Spartan_Traduction_Concept_TypeItems;
+    function GetSpartan_Traduction_Process_Workflow_Spartan_Traduction_Concept_TypeItem() {
+        Spartan_Traduction_Process_Workflow_Spartan_Traduction_Concept_TypeItems = null;
+        var ajaxUrl = "@Url.Content("~/Frontal/Spartan_Traduction_Process/GetSpartan_Traduction_Process_Workflow_Spartan_Traduction_Concept_TypeAll")";
+        $.ajax({
+            url: ajaxUrl,
+            type: 'GET',
+            dataType: "json",
+            async: false,
+            global: false,
+            success: function (result) {
+                Spartan_Traduction_Process_Workflow_Spartan_Traduction_Concept_TypeItems = result;
+            },
+            error: function (result) {
+                showNotification("@Resources.Resources.ErrorContactingServer", "error");
+            }
+        });
+    }
+
+    var Spartan_Traduction_Process_WorkflowData = [];
+    var Spartan_Traduction_Process_WorkflowdeletedItem = [];
+    var Spartan_Traduction_Process_WorkflowDataMain = [];
+    var Spartan_Traduction_Process_WorkflowDataMainPages = [];
+    var Spartan_Traduction_Process_WorkflownewItemCount = 0;
+    var Spartan_Traduction_Process_WorkflowmaxItemIndex = 0;
+    var Spartan_Traduction_Process_WorkflowDataMainInitialized = false;
+
+    function SendSpartan_Traduction_Process_Workflow(callBack, IdTraductionId) {
+        Spartan_Traduction_Process_WorkflowData = GetSpartan_Traduction_Process_WorkflowFromDataTable();
+
+        if (Spartan_Traduction_Process_WorkflowData.length > 0 || $("#ReferenceIdTraduction").val() != IdTraductionId) {
+            if ($("#ReferenceIdTraduction").val() != "0" && IdTraductionId ==null)
+                IdTraductionId = $("#ReferenceIdTraduction").val();
+            if ($("#ReferenceIdTraduction").val() == '')
+                $("#ReferenceIdTraduction").val('0');
+            $.ajax({
+                url: '@Url.Content("~/Frontal/Spartan_Traduction_Process/PostSpartan_Traduction_Process_Workflow?MasterId=")' + IdTraductionId + "&referenceId=" + $("#ReferenceIdTraduction").val(),
+                type: 'POST',
+                data: GetSpartan_Traduction_Process_Workflow(),
+                async: true,
+                success: function (result) {
+
+                },
+                error: function (result) {
+                    showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+        } else {
+            //showNotification("@Resources.Resources.SaveSuccess", "success");
+            //callBack(IdTraductionId);
+        }
+        return true;
+    }
+
+    function GetAddSpartan_Traduction_Process_WorkflowPopup(currentRowIndex, mode, id) {
+
+        $.ajax({
+            url: "@Url.Action("AddSpartan_Traduction_Process_Workflow", "Spartan_Traduction_Process_Workflow")",
+            type: "GET",
+            async: false,
+            data: { rowIndex: currentRowIndex, functionMode: mode, id: id },
+            success: function (data) {
+                $(".AddSpartan_Traduction_Process_WorkflowModal").html(data);
+            },
+            error: function () {
+
+            }
+        });
+
+        @*$.get('@Url.Action("AddSpartan_Traduction_Process_Workflow", "Spartan_Traduction_Process_Workflow")', { rowIndex: currentRowIndex }, function (data) {
+                $(".AddSpartan_Traduction_Process_WorkflowModal").html(data);
+            });*@
+    }
+
+    function ShowMessagePendingRowSpartan_Traduction_Process_Workflow()
+    {
+		//Traducción Pendiente
+		showNotification('@Html.Raw(string.Format(Resources.Resources.PendingRow, "Spartan Traduction Workflow"))', "warning");
+    }
+
+
+    function initiateUIControls() {
+        $('.gridDatePicker').datepicker({
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            calendarWeeks: true,
+            autoclose: true,
+            format: "@ConfigurationProperty.DateFormatDatePicker"
+        });
+        //Time Picker
+        $('.gridTimePicker').clockpicker();
+        $('.inputMoney').inputmask("currency", { greedy: false, prefix: "", rightAlign: false });
+
+
+
+
+    }
+
+    </script>
+
+<script type="text/javascript">
+
+        function SendSpartan_Traduction_ProcessData(callBack) {
+			
+					
+		 var arr = []; 
+		 $("form#CreateSpartan_Traduction_Process").find(':input').each(function( index ) {		 
+			if ($(this).prop('disabled')==true|| $(this).prop('disabled')=="disabled")
+			{		
+				arr.push($(this).attr('id')); 
+				$(this).prop('disabled', false);  	
+			}
+	    });
+		
+             var formData = new FormData($("form#CreateSpartan_Traduction_Process")[0]);
+			$.each( arr, function( key, value ) {
+			  $('#' +value).prop('disabled', true);
+			});
+
+            var isNew = $('#hdnIsNew').val();
+           
+            if (checkClientValidate('Spartan_Traduction_ProcessCreateForm')) {
+                $.ajax({
+                    url: '@Url.Content("~/Frontal/Spartan_Traduction_Process/Post?IsNew=")' + isNew,
+                    type: 'POST',
+                    data: formData,
+                    async: true,
+                    success: function (result) {
+                        if (result < 0) {
+                            showNotification("@Resources.Resources.ErrorSave", "error");
+                        } else {
+                            SendSpartan_Traduction_Process_Data(callBack, result);
+                            SendSpartan_Traduction_Detail(callBack, result);
+                            SendSpartan_Traduction_Process_Workflow(callBack, result);
+
+                            var generation = GenerateObject();
+                            if (generation == true) {
+                                showNotification("@Resources.Resources.SaveSuccess", "success");
+                            }
+                            else {
+                                showNotification("Error al generar", "error");
+                            }
+                            callBack(result);
+                        }
+                    },
+                    error: function (result) {
+                        showNotification("@Resources.Resources.ErrorContactingServer", "error");
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            }
+            return false;
+        };
+        function GetPropertyBag() {
+            $.get('@Url.Action("Spartan_Traduction_ProcessPropertyBag", "Spartan_Traduction_Process")', function (data) {
+                $(".PropertyModal").html(data);
+            });
+        }
+        function Spartan_Traduction_ProcessGetBusinessRule(FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null)
+			{
+				$('#hdnSpartan_Traduction_ProcessBusinessRuleFieldId').val(FieldId);
+				$('#hdnSpartan_Traduction_ProcessBusinessRuleFieldName').val(FieldName);
+				$('#hdnSpartan_Traduction_ProcessBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("BusinessRule", "BussinessRule")', { FieldId: $('#hdnSpartan_Traduction_ProcessBusinessRuleFieldId').val(), FieldName: $('#hdnSpartan_Traduction_ProcessBusinessRuleFieldName').val(), ObjectId: '35161', Attribute: $('#hdnSpartan_Traduction_ProcessBusinessRuleAttribute').val(), Screen: 'Spartan_Traduction_Process' }, function (data) {
+                $(".Spartan_Traduction_ProcessBusinessRuleModal").html(data);
+            });
+        }
+        function Spartan_Traduction_ProcessGetAddBusinessRule(RuleId, FieldId, FieldName, Attribute) {
+			if (FieldId != null && FieldName != null) {
+				$('#hdnSpartan_Traduction_ProcessBusinessRuleFieldId').val(FieldId);
+				$('#hdnSpartan_Traduction_ProcessBusinessRuleFieldName').val(FieldName);
+				$('#hdnSpartan_Traduction_ProcessBusinessRuleAttribute').val(Attribute);
+			}
+            $.get('@Url.Action("AddBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnSpartan_Traduction_ProcessBusinessRuleFieldId').val(), FieldName: $('#hdnSpartan_Traduction_ProcessBusinessRuleFieldName').val(), ObjectId: '35161', Attribute: $('#hdnSpartan_Traduction_ProcessBusinessRuleAttribute').val(), Screen: 'Spartan_Traduction_Process' }, function (data) {
+                $(".Spartan_Traduction_ProcessAddBusinessRuleModal").html(data);
+                $(".datatable").DataTable();
+            });
+        }
+		function RemoveBusinessRule(RuleId) {
+			$.get('@Url.Action("RemoveBusinessRule", "BussinessRule")', { BusinessRuleId: RuleId, FieldId: $('#hdnSpartan_Traduction_ProcessBusinessRuleFieldId').val(), FieldName: $('#hdnSpartan_Traduction_ProcessBusinessRuleFieldName').val(), ObjectId: '35161', Attribute: $('#hdnSpartan_Traduction_ProcessBusinessRuleAttribute').val(), Screen: 'Spartan_Traduction_Process' }, function (data) {
+				$(".Spartan_Traduction_ProcessBusinessRuleModal").html(data);
+			});
+		}
+
+    var permission = {
+        Consult: '@permission.Consult' == 'True',
+        New: '@permission.New' == 'True',
+        Edit: '@permission.Edit' == 'True',
+        Delete: '@permission.Delete' == 'True',
+        Export: '@permission.Export' == 'True',
+        Print: '@permission.Print' == 'True',
+        Configure: '@permission.Configure' == 'True',
+    };
+
+    
+    //MR-var statusItems;
+    //MR-var stateItems;
+    //MR-var cityItems = [];
+    var isConsultMode = "@ViewBag.Consult" == "True";
+    Consult(isConsultMode);
+        function Consult(val) {
+            if (val) {
+                $(':input').attr('readonly', 'readonly');
+                $(':input').attr('disabled', 'true');
+                $('.noConsult').removeAttr('readonly');
+                $('.noConsult').removeAttr('disabled');
+            }
+        }
+
+    function Spartan_Traduction_ProcessBackToGrid() {
+        location.href = "@Url.Content("~/Frontal/Spartan_Traduction_Process/")";
+    }
+	
+	function ReadScriptSettings(callback)
+    {
+        $.post("@Url.Content("~/Frontal/Spartan_Traduction_Process/ReadScriptSettings")", function (data) {
+            mainElementObject = JSON.parse(data.MainElement);
+			if (data.ChildElement != null) {
+                childElementObject = JSON.parse(data.ChildElement);
+            }
+            callback();
+        });
+    }
+
+    function SaveSettingsWithoutReload() {
+        $.post("@Url.Content("~/Frontal/Spartan_Traduction_Process/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+            //$('#hdnConfigureType').val("0");
+        }, "json");
+    }
+	
+        function SaveElementAttributes() {
+            if ($('#hdnConfigureType').val() == "1") {
+                $.post("@Url.Content("~/Frontal/Spartan_Traduction_Process/WriteScriptSettings")", { CustomModuleAttributeList: mainElementObject, ChildModuleAttributeList: childElementObject }, function (data) {
+                    $('#hdnConfigureType').val("0");
+                    location.reload(true);
+                }, "json");
+            } else {
+                $.post("@Url.Content("~/Frontal/Spartan_Traduction_Process/ReadScriptSettings")", function (data) {
+                    mainElementObject = JSON.parse(data.MainElement);
+                    childElementObject = JSON.parse(data.ChildElement);
+
+                    for (var i = 0; i < mainElementObject.length; i++) {
+                        var mainElementAttributes = '<div class="col-sm-2">';
+                        mainElementAttributes += '<div class="displayAttributes requiredAttribute"><a class="requiredClick" title="' + (mainElementObject[i].IsRequired == true ? "Required" : "Not Required") + '" onclick="setRequired(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsRequired == true ? "@Url.Content("~/Images/Required.png")" : "@Url.Content("~/Images/Not-Required.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes visibleAttribute"><a class="visibleClick" title="' + (mainElementObject[i].IsVisible == true ? "Visible" : "In Visible") + '" onclick="setVisible(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsVisible == true ? "@Url.Content("~/Images/Visible.png")" : "@Url.Content("~/Images/InVisible.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes readOnlyAttribute"><a class="readOnlyClick" title="' + (mainElementObject[i].IsReadOnly == true ? "Disabled" : "Enabled") + '" onclick="setReadOnly(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].IsReadOnly == true ? "@Url.Content("~/Images/Disabled.png")" : "@Url.Content("~/Images/Enabled.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes defaultValueAttribute"><a id="hlDefaultValue_' + i.toString() + '" class="defaultValueClick" title="' + (mainElementObject[i].DefaultValue) + '" onclick="setDefaultValue(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].DefaultValue != '' && mainElementObject[i].DefaultValue != null ? "@Url.Content("~/Images/default-value.png")" : "@Url.Content("~/Images/Not-Default-Value.png")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '<div class="displayAttributes helpTextAttribute"><a id="hlHelpText_' + i.toString() + '" class="helpTextClick" title="' + (mainElementObject[i].HelpText) + '" onclick="setHelpText(' + i.toString() + ', this, 1)"><img src="' + (mainElementObject[i].HelpText != '' && mainElementObject[i].HelpText != null ? "@Url.Content("~/Images/green-help.png")" : "@Url.Content("~/Images/red-help.jpg")") + '" alt="" /></a></div>';
+                        mainElementAttributes += '</div>';
+                        $('#' + mainElementObject[i].inputId).parent().closest('.form-group').show();
+
+                        $('#' + mainElementObject[i].inputId).closest('.col-sm-8').after(mainElementAttributes);
+                    }
+					 if (childElementObject != null) {
+                        for (var j = 0; j < childElementObject.length; j++) {
+                            var table = childElementObject[j].table.trim();
+                            var grid = '#' + table + 'Grid';
+                            $(grid).find("thead").find("tr").find("th").each(function () {
+                                for (var i = 0; i < childElementObject[j].elements.length; i++) {
+                                    if ($(this).hasClass(childElementObject[j].elements[i].inputId + 'Header')) {
+                                        $(this).show();
+                                        $(this).parent().show();
+                                        $(this).append(returnAttributeHTML(childElementObject[j].elements[i], table, i));
+                                    }
+                                }
+                            });
+                        }
+
+                    }
+                    $('#ConfigureSave').text('Save Settings');
+                    $('#hdnConfigureType').val("1");
+                });
+            }
+        }
+		$('#CreateSpartan_Traduction_Process').on('click', '.btnPopupBusinessRules', function () {
+			var fieldId = $(this).data('field-id');
+			var fieldName = $(this).data('field-name');
+			var attribute = $(this).data('attribute');
+			$('#hdnSpartan_Traduction_ProcessBusinessRuleFieldId').val(fieldId);
+			$('#hdnSpartan_Traduction_ProcessBusinessRuleFieldName').val(fieldName);
+			$('#hdnSpartan_Traduction_ProcessBusinessRuleAttribute').val(attribute);
+		});
+		//Initialize HTML Editors            
+  var filebrowserBrowseUrl = '../../ckfinder/ckfinder.html';
+  var filebrowserImageBrowseUrl = '../../ckfinder/ckfinder.html?type=Images';
+  var filebrowserUploadUrl = '../../ckfinder/connector?command=QuickUpload&type=Files';
+  var filebrowserImageUploadUrl = '../../ckfinder/connector?command=QuickUpload&type=Images';
+  function GenerateObject() {
+      var ret = false;
+      var object_id = '@Model.ObjectT'
+      var langueajeId = '@Model.LanguageT'
+      if (object_id == '')
+          object_id = $('#Object_Type').val();
+      $.ajax({
+          url: '@Url.Content("~/Frontal/Spartan_Traduction_Process/Regenerate")?object_id=' + object_id + '&languageId=' + langueajeId,
+          type: 'GET',
+          dataType: "json",
+          async: false,
+          success: function (result) {
+              debugger;
+              ret = true;
+          },
+          error: function (result) {
+              debugger;
+          }
+      });
+      return ret;
+  }
+    </script>
+}

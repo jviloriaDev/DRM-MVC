@@ -1,0 +1,32 @@
+@using Spartane.Web.Areas.Frontal.Controllers;
+
+@{
+    Layout = null;
+}
+
+<!-- SCRIPTS & CSS (Doc: Acá van las referencias exclusivas de la vista)-->
+
+<style>
+    #tabs li .ui-icon-close {
+        float: left;
+        margin: 0.4em 0.2em;
+        cursor: pointer;
+    }
+</style>
+
+<div class="row">
+    <div class="container-fluid">
+        <div class="col-md-12">
+            <div id="tabs" class="tabbable tabbable-custom ui-tabs ui-widget ui-widget-content ui-corner-all">
+                <ul class="nav nav-tabs ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" id="ul"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(function () {
+        app.inicializarTab();
+    });
+</script>

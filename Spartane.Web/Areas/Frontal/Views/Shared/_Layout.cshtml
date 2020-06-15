@@ -1,0 +1,179 @@
+﻿@using Spartane.Web.Helpers
+@using System.Web.Mvc.Html;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>TotalTech</title>
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+    <!-- Add local styles, mostly for plugins css file -->
+    @Styles.Render("~/plugins/toastrStyles")
+    @if (IsSectionDefined("Styles"))
+    {@RenderSection("Styles", required: false)}
+
+    <!-- Add jQuery Style direct - used for jQGrid plugin -->
+    <link href="@Url.Content("~/Scripts/plugins/jquery-ui/jquery-ui.css")" rel="stylesheet" type="text/css" />
+
+    <!-- Primary Inspinia style -->
+
+    @Styles.Render("~/Content/css")
+    
+    @Styles.Render("~/plugins/awesomeCheckboxStyles")
+    @Styles.Render("~/Content/plugins/iCheck/iCheckStyles")
+    @*@Styles.Render("~/font-awesome/css")*@
+    <link href="~/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    
+
+
+    <!-- Section for main scripts render -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/plugins/slimScroll")
+    @Scripts.Render("~/bundles/inspinia")
+    @* Toast *@
+    @Scripts.Render("~/plugins/toastr")
+
+    <!-- Skin config script - only for demo purpose-->
+    @Scripts.Render("~/bundles/skinConfig")
+
+    @*iCheck JS*@
+    @Scripts.Render("~/plugins/iCheck")
+    @* Validation *@
+    @*@Scripts.Render("~/plugins/validate")*@
+    
+
+    @Scripts.Render("~/plugins/dataPicker")
+    @Scripts.Render("~/plugins/clockpicker")
+    @Scripts.Render("~/plugins/select2")
+
+    @Scripts.Render("~/Scripts/plugins/ckeditor/ckeditor.js")
+	
+	@Scripts.Render("~/Scripts/plugins/jsTree/jstree.min.js")
+@Styles.Render("~/Content/plugins/jsTree/style.min.css")
+@Scripts.Render("~/Scripts/plugins/livequery.js")
+        @Scripts.Render("~/Scripts/plugins/jquery.inputmask.bundle.js")
+
+@Scripts.Render("~/Scripts/plugins/livequery.js")
+   @Scripts.Render("~/Scripts/plugins/jquery.inputmask.bundle.js")
+		@Scripts.Render("~/Scripts/plugins/jquery.mask.min.js")
+    
+</head>
+<body>
+
+    <!-- Skin configuration box -->
+    <!-- @Html.Partial("_SkinConfig") -->
+    <!-- Wrapper-->
+    <!-- PageClass give you ability to specify custom style for specific view based on action -->
+    <div id="wrapper" class="@Html.PageClass()">
+
+        <!-- Navigation -->
+        @Html.Partial("_Navigation")
+
+        <!-- Page wraper -->
+        <div id="page-wrapper" class="gray-bg @ViewBag.SpecialClass">
+
+            <!-- Top Navbar -->
+            @Html.Partial("_TopNavbar")
+
+            <!-- Main view  -->
+            @RenderBody()
+
+            <!-- Footer -->
+            @*@Html.Partial("_Footer")*@
+
+        </div>
+        <!-- End page wrapper-->
+        <!-- Right Sidebar -->
+        @Html.Partial("_RightSidebar")
+
+    </div>
+    <div aria-hidden="true" class="modal fade in DisplayLogin" id="modal-form" style="display: none; background-color:rgba(0, 0, 0, 0.7);">
+        @Html.Partial("ReLogin", new Spartane.Web.Models.LoginViewModel())
+    </div>
+ 
+    @*<div class="loading-spinner"><div class="sk-spinner sk-spinner-chasing-dots"><div class="sk-dot1"></div><div class="sk-dot2"></div></div></div>*@
+    
+    <!-- End wrapper-->
+    <!-- Handler for local scripts -->
+    @RenderSection("scripts", required: false)
+
+    <script type="text/javascript">
+    var url_content = "@Url.Content("~/")";
+	var filterYes = "@Resources.Resources.Yes";
+    var filterNo = "@Resources.Resources.No";
+    var filterAll = "@Resources.Resources.All";
+
+        try{
+            var moduleId = "@Request.QueryString["ModuleId"]";
+            if(moduleId != null)
+            {
+                $('.module_'+moduleId).parent().addClass('in');
+                $('.module_'+moduleId).parent().parent().addClass('active');
+                var href = "@Request.RawUrl";
+                $('.module_'+moduleId+' > a[href="'+href+'"]').addClass('selected');
+            }
+        }
+        catch(err){}
+        //Notif Main function
+        function showNotification(message, type) {
+            switch (type) {
+                case "success":
+                    toastr.success(message, '');
+                    break;
+                case "warning":
+                    toastr.warning(message, '');
+                    break;
+                case "error":
+                    toastr.error(message, '');
+                    break;
+            }
+            //$.notify(message, type);
+        }
+        var countSeconds = 0;
+        var cookiesTimeout = @(Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["ReLoginTimeOut"]) * 60);
+    $('.DisplayLogin').hide();
+    var timerInterval = setInterval('updateTimer()', 1000);
+    $(document).ajaxStart(function() {
+        countSeconds = 0;
+    });
+    function updateTimer() {
+        countSeconds = countSeconds + 1;
+        if (countSeconds >=  cookiesTimeout) {
+            clearInterval(timerInterval);
+            $('.DisplayLogin').show();
+        }
+    }
+    function SessionAlive(data){
+        $('.loading').css('display', 'none');
+        if ( (data == '' || data == null ) || ('@Spartane.Web.SessionHelper.Relogin'=='False' && data != null && data.indexOf("html")>=0)) {
+            $('.DisplayLogin').hide();
+            $('.InvalidPassword').text('');
+            countSeconds = 0;
+            timerInterval = setInterval('updateTimer()', 1000);
+        }else {
+            $('.DisplayLogin').show();
+            if (data.indexOf("html")<0)
+            {
+                $('.InvalidPassword').text(htmlEncode(data));
+            }
+        }
+    }
+    function ShowMessageRequired(field)
+    {        
+        return String.format("@Resources.Resources.messageRequiredField", field);
+    }
+</script>
+    <script type="text/javascript" src="~/Scripts/Custom/general.js?v=@DateTime.Now.ToString("ddMMyyyyhhmmss")"></script>
+    @Scripts.Render("~/plugins/dataTables")
+    @Scripts.Render("~/Scripts/plugins/dataTables/dataTables.colReorder.min.js")
+    @Scripts.Render("~/Scripts/plugins/dataTables/dataTables.responsive.min.js")
+    @Styles.Render("~/Content/plugins/dataTables/dataTables.responsive.css")
+</body>
+</html>
+
+

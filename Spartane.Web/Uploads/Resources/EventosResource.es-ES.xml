@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Eventos" value="Eventos"></resource>
+  <resource culture="es-es" name="Folio" value="Folio"></resource>
+  <resource culture="es-es" name="Fecha_de_Registro" value="Fecha de Registro"></resource>
+  <resource culture="es-es" name="Hora_de_Registro" value="Hora de Registro"></resource>
+  <resource culture="es-es" name="Usuario_que_Registra" value="Usuario que Registra"></resource>
+  <resource culture="es-es" name="Empresa" value="Empresa"></resource>
+  <resource culture="es-es" name="Nombre_del_Evento" value="Nombre del Evento"></resource>
+  <resource culture="es-es" name="Descripcion" value="Descripción"></resource>
+  <resource culture="es-es" name="Fecha_inicio_del_Evento" value="Fecha inicio del Evento"></resource>
+  <resource culture="es-es" name="Fecha_fin_del_Evento" value="Fecha fin del Evento"></resource>
+  <resource culture="es-es" name="Cantidad_de_dias" value="Cantidad de días"></resource>
+  <resource culture="es-es" name="Evento_en_Empresa" value="¿El evento se realizará en las instalaciones de la Empresa?"></resource>
+  <resource culture="es-es" name="Nombre_del_Lugar" value="Nombre del Lugar"></resource>
+  <resource culture="es-es" name="Calle" value="Calle"></resource>
+  <resource culture="es-es" name="Numero_exterior" value="Número exterior"></resource>
+  <resource culture="es-es" name="Numero_interior" value="Número interior"></resource>
+  <resource culture="es-es" name="Colonia" value="Colonia"></resource>
+  <resource culture="es-es" name="CP" value="C.P."></resource>
+  <resource culture="es-es" name="Ciudad" value="Ciudad"></resource>
+  <resource culture="es-es" name="Estado" value="Estado"></resource>
+  <resource culture="es-es" name="Pais" value="País"></resource>
+  <resource culture="es-es" name="Permite_Familiares" value="¿Permite Familiares?"></resource>
+  <resource culture="es-es" name="Estatus" value="Estatus"></resource>
+  <resource culture="es-es" name="Actividades_del_Evento" value="Actividades del Evento"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+<resource culture="es-es" name="TabActividades" value="Actividades"></resource>
+
+</resources>

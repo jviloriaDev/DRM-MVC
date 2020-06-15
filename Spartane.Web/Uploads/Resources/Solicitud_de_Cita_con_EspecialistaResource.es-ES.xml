@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Solicitud_de_Cita_con_Especialista" value="Solicitud de Cita con Especialista"></resource>
+  <resource culture="es-es" name="Folio" value="Folio"></resource>
+  <resource culture="es-es" name="Fecha_de_solicitud" value="Fecha de solicitud"></resource>
+  <resource culture="es-es" name="Hora_de_solicitud" value="Hora de solicitud"></resource>
+  <resource culture="es-es" name="Usuario_que_solicita" value="Usuario que solicita"></resource>
+  <resource culture="es-es" name="Nombre_Completo" value="Nombre Completo"></resource>
+  <resource culture="es-es" name="Correo_del_Paciente" value="Correo del Paciente"></resource>
+  <resource culture="es-es" name="Celular_del_Paciente" value="Celular del Paciente"></resource>
+  <resource culture="es-es" name="Especialista" value="Especialista"></resource>
+  <resource culture="es-es" name="Correo_del_Especialista" value="Correo del Especialista"></resource>
+  <resource culture="es-es" name="Correo_enviado" value="Correo enviado"></resource>
+  <resource culture="es-es" name="Fecha_de_Retroalimentacion" value="Fecha de Retroalimentación"></resource>
+  <resource culture="es-es" name="Hora_de_Retroalimentacion" value="Hora de Retroalimentación"></resource>
+  <resource culture="es-es" name="Asististe_a_tu_cita" value="¿Asististe a tu cita?"></resource>
+  <resource culture="es-es" name="Calificacion_Especialista" value="¿Cómo calificas la atención que recibiste?"></resource>
+  <resource culture="es-es" name="Motivo_no_concreto_cita" value="Cuéntanos cuál fue la razón"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+<resource culture="es-es" name="TabSolicitud" value="Solicitud"></resource>
+
+</resources>

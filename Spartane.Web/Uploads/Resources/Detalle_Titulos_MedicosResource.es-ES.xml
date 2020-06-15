@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Detalle_Titulos_Medicos" value="Detalle Títulos Médicos"></resource>
+  <resource culture="es-es" name="Folio" value="Folio"></resource>
+  <resource culture="es-es" name="Nombre_del_Titulo" value="Nombre del Título"></resource>
+  <resource culture="es-es" name="Institucion_Facultad" value="Institución/Facultad"></resource>
+  <resource culture="es-es" name="Fecha_de_Titulacion" value="Fecha de Titulación"></resource>
+  <resource culture="es-es" name="Titulo" value="Título"></resource>
+  <resource culture="es-es" name="Numero_de_Cedula" value="Número de Cédula"></resource>
+  <resource culture="es-es" name="Fecha_de_Expedicion" value="Fecha de Expedición"></resource>
+  <resource culture="es-es" name="Cedula_Frente" value="Cédula (Frente)"></resource>
+  <resource culture="es-es" name="Cedula_Reverso" value="Cédula (Reverso)"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

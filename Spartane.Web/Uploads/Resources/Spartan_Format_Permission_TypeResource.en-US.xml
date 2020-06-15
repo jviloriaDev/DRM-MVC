@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="en-us" name="Spartan_Format_Permission_Type" value="Spartan Format Permission Type"></resource>
+  <resource culture="en-US" name="PermissionTypeId" value="PermissionTypeId"></resource>
+  <resource culture="en-US" name="Description" value="Description"></resource>
+
+</resources>

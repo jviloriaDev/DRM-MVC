@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Detalle_Examenes_Laboratorio" value="Detalle Exámenes Laboratorio"></resource>
+  <resource culture="es-es" name="Folio" value="Folio"></resource>
+  <resource culture="es-es" name="Indicador" value="Indicador"></resource>
+  <resource culture="es-es" name="Resultado" value="Resultado"></resource>
+  <resource culture="es-es" name="Unidad" value="Unidad"></resource>
+  <resource culture="es-es" name="Intervalo_de_Referencia" value="Intervalo de Referencia"></resource>
+  <resource culture="es-es" name="Fecha_de_Resultado" value="Fecha de Resultado"></resource>
+  <resource culture="es-es" name="Estatus_Indicador" value="Estatus Indicador"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+
+</resources>

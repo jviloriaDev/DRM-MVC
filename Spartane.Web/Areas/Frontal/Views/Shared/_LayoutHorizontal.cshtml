@@ -1,0 +1,510 @@
+﻿@using Microsoft.AspNet.Identity
+
+@if (Request.IsAuthenticated)
+{
+    <!DOCTYPE html>
+    <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+    <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+    <!--[if !IE]><!-->
+    <html lang="en">
+    <!--<![endif]-->
+    <!-- BEGIN HEAD -->
+    <head>
+        <meta charset="utf-8" />
+        <title>Spartane</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <meta content="" name="description" />
+        <meta content="" name="author" />
+        <!-- INICIO ESTILOS -->
+     
+           <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+        @*<link href="~/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <link href="~/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="~/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="~/assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css" />
+        <link href="~/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+        <link href="~/assets/global/css/components.css" id="style_components" rel="stylesheet" type="text/css" />
+        <link href="~/assets/global/css/plugins.css" rel="stylesheet" type="text/css" />
+        <link href="~/assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css" />
+        <link href="~/assets/admin/layout/css/themes/darkblue.css" rel="stylesheet" type="text/css" id="style_color" />
+        <link href="~/assets/global/plugins/bootstrap-toastr/toastr.min.css" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="~/assets/global/plugins/select2/select2.css" />
+        <link href="~/assets/global/plugins/jquery-ui-1.10.4.custom/css/smoothness/jquery-ui-1.10.4.custom.css" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="~/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" />
+        <link rel="stylesheet" type="text/css" href="~/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" />
+        <link rel="stylesheet" type="text/css" href="~/assets/global/plugins/jquery-tags-input/jquery.tagsinput.css" />
+        <link rel="stylesheet" type="text/css" href="~/assets/global/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css">
+        <link rel="stylesheet" type="text/css" href="~/assets/global/plugins/typeahead/typeahead.css">
+        <link href="~/assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />*@
+      
+        <link href="@Url.Content("~/assets/global/plugins/font-awesome/css/font-awesome.min.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/assets/global/plugins/simple-line-icons/simple-line-icons.min.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/assets/global/plugins/bootstrap/css/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/assets/global/plugins/uniform/css/uniform.default.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/assets/global/css/components.css")" id="style_components" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/assets/global/css/plugins.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/assets/admin/layout/css/layout.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/assets/admin/layout/css/themes/darkblue.css")" rel="stylesheet" type="text/css" id="style_color" />
+        <link href="@Url.Content("~/assets/global/plugins/bootstrap-toastr/toastr.min.css")" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="@Url.Content("~/assets/global/plugins/select2/select2.css")" />
+        <link href="@Url.Content("~/assets/global/plugins/jquery-ui-1.10.4.custom/css/smoothness/jquery-ui-1.10.4.custom.css")" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="@Url.Content("~/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css")" />
+        <link rel="stylesheet" type="text/css" href="@Url.Content("~/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css")" />
+        <link rel="stylesheet" type="text/css" href="@Url.Content("~/assets/global/plugins/jquery-tags-input/jquery.tagsinput.css")" />
+        <link rel="stylesheet" type="text/css" href="@Url.Content("~/assets/global/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css")">
+        <link rel="stylesheet" type="text/css" href="@Url.Content("~/assets/global/plugins/typeahead/typeahead.css")">
+        <link href="@Url.Content("~/assets/admin/layout/css/custom.css")" rel="stylesheet" type="text/css" />
+
+
+
+          <!-- FIN ESTILOS -->
+        @*<link rel="shortcut icon" href="~/favicon.ico" />*@
+        <link rel="shortcut icon" href="@Url.Content("~/favicon.ico")" />
+        @*<script src="~/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+        <script src="~/assets/global/plugins/jquery-migrate.min.js" type="text/javascript"></script>
+        <script src="~/Scripts/Kendo/kendo.all.min.js"></script>
+        <script src="~/Scripts/Kendo/kendo.aspnetmvc.min.js"></script>*@
+        <script src="@Url.Content("~/assets/global/plugins/jquery.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/assets/global/plugins/jquery-migrate.min.js")" type="text/javascript"></script>
+        <link rel="shortcut icon" href="favicon.ico" />
+    </head>
+    <body class="page-header-fixed page-quick-sidebar-over-content page-full-width">
+        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+        {
+            @Html.AntiForgeryToken()
+        }
+        <!-- INICIO HEADER -->
+        <div class="page-header navbar navbar-fixed-top">
+            <div class="page-header-inner">
+                <!-- LOGO -->
+                <div class="page-logo">
+                    <a href="index.html">
+                        @*<img src="../../assets/admin/layout/img/logo.png" alt="logo" class="logo-default" />*@
+                        <img src="@Url.Content("~/assets/admin/layout/img/logo.png")" alt="logo" class="logo-default" />
+                    </a>
+                </div>
+                <!-- ACCION CREAR MENU HORIZONTAL -->
+                <div class="hor-menu hidden-sm hidden-xs">
+                    @Html.Action("MenuHorizontal", "Manager", "Frontal")
+                </div>-->
+                <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+                </a>
+                <!-- INICIO TOP NAVIGATION -->
+                <div class="top-menu">
+                    <ul class="nav navbar-nav pull-right">
+                        <li class="dropdown dropdown-user">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                <span class="username username-hide-on-mobile">
+                                    @Spartane.Web.SessionHelper.System.Version
+                                </span>
+                            </a>
+                        </li>
+                        <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                <i class="icon-bell"></i>
+                                <span class="badge badge-default" id="alerts-badge">
+                                    7
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="external">
+                                    <h3><span class="bold">12 pending</span> notifications</h3>
+                                    <a href="extra_profile.html">ver todos</a>
+                                </li>
+                                <li>
+                                    <ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="#637283" id="alerts-list"></ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown dropdown-extended dropdown-inbox" id="header_inbox_bar">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                <i class="icon-book-open"></i>
+                                <span class="badge badge-default" id="Badge">
+                                    4
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="external">
+                                    <h3>Tiene <span class="bold">7 Nuevos</span> Mensajes</h3>
+                                    <a href="page_inbox.html">todos</a>
+                                </li>
+                                <li>
+                                    <ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283" id="notices-list">
+                                        <li>
+                                            <a href="inbox.html?a=view">
+                                                @*<span class="photo">
+                                        <img src="~/assets/admin/layout/img/avatar3.jpg" class="img-circle" alt="">
+                                    </span>*@
+                                                <span class="subject">
+                                                    <span class="from">
+                                                        Titulo de la noticia asda asda sd aasda
+                                                    </span>
+                                                    <span class="time">Hace un instante </span>
+                                                </span>
+                                                <span class="message">
+                                                    Lorem ipsum... lorem ipsum...
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="inbox.html?a=view">
+                                                <span class="photo">
+                                                    @*<img src="~/assets/admin/layout/img/avatar3.jpg" class="img-circle" alt="">*@
+                                                    <img src="@Url.Content("~/assets/admin/layout/img/avatar3.jpg")" class="img-circle" alt="">
+                                                </span>
+                                                <span class="subject">
+                                                    <span class="from">
+                                                        Javier Otero
+                                                    </span>
+                                                    <span class="time">Hace un instante </span>
+                                                </span>
+                                                <span class="message">
+                                                    Lorem ipsum... lorem ipsum...
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="inbox.html?a=view">
+                                                <span class="photo">
+                                                    @*<img src="~/assets/admin/layout/img/avatar3.jpg" class="img-circle" alt="">*@
+                                                    <img src="@Url.Content("~/assets/admin/layout/img/avatar3.jpg")" class="img-circle" alt="">
+                                                </span>
+                                                <span class="subject">
+                                                    <span class="from">
+                                                        Javier Otero
+                                                    </span>
+                                                    <span class="time">Hace un instante </span>
+                                                </span>
+                                                <span class="message">
+                                                    Lorem ipsum... lorem ipsum...
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="inbox.html?a=view">
+                                                <span class="photo">
+                                                    @*<img src="~/assets/admin/layout/img/avatar3.jpg" class="img-circle" alt="">*@
+                                                    <img src="@Url.Content("~/assets/admin/layout/img/avatar3.jpg")" class="img-circle" alt="">
+                                                </span>
+                                                <span class="subject">
+                                                    <span class="from">
+                                                        Javier Otero
+                                                    </span>
+                                                    <span class="time">Hace un instante </span>
+                                                </span>
+                                                <span class="message">
+                                                    Lorem ipsum... lorem ipsum...
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="inbox.html?a=view">
+                                                <span class="photo">
+                                                    @*<img src="~/assets/admin/layout/img/avatar3.jpg" class="img-circle" alt="">*@
+                                                    <img src="@Url.Content("~/assets/admin/layout/img/avatar3.jpg")" class="img-circle" alt="">
+                                                </span>
+                                                <span class="subject">
+                                                    <span class="from">
+                                                        Javier Otero
+                                                    </span>
+                                                    <span class="time">Hace un instante </span>
+                                                </span>
+                                                <span class="message">
+                                                    Lorem ipsum... lorem ipsum...
+                                                </span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown dropdown-language">
+                            <a class="dropdown-toggle" href="#" data-toggle="dropdown" data-close-others="true" data-hover="dropdown">
+                                @*<img alt="" src="../../assets/global/img/flags/us.png">*@
+                                <img alt="" src="@Url.Content("~/assets/global/img/flags/us.png")">
+                                <span class="langname">
+                                    US
+                                </span>
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-default">
+                                <li>
+                                    <a href="#">
+                                        @*<img alt="" src="../../assets/global/img/flags/es.png"> Spanish*@
+                                        <img alt="" src="@Url.Content("~/assets/global/img/flags/es.png")">Spanish
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        @*<img alt="" src="../../assets/global/img/flags/de.png"> German*@
+                                        <img alt="" src="@Url.Content("~/assets/global/img/flags/de.png")">German
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        @*<img alt="" src="../../assets/global/img/flags/ru.png"> Russian*@
+                                        <img alt="" src="@Url.Content("~/assets/global/img/flags/ru.png")">Russian
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        @*<img alt="" src="../../assets/global/img/flags/fr.png"> French*@
+                                        <img alt="" src="@Url.Content("~/assets/global/img/flags/fr.png")">French
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown dropdown-user">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                @*<img alt="" class="img-circle" src="../../assets/admin/layout/img/avatar3_small.jpg" />*@
+                                <img alt="" class="img-circle" src="@Url.Content("~/assets/admin/layout/img/avatar3_small.jpg")" />
+                                <span class="username username-hide-on-mobile" id="username">
+                                </span>
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-default">
+                                <li>
+                                    <a href="Manager/ChangeLayout">
+                                        <i class="icon-lock"></i> Cambiar Layout
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="document.getElementById('logoutForm').submit();">
+                                        <i class="icon-key"></i> Salir
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <!-- FIN TOP NAVIGATION MENU -->
+            </div>
+        </div>
+        <!-- FIN HEADER -->
+        <div class="clearfix">
+        </div>
+        <!-- INICIO CONTAINER -->
+        <div class="page-container">
+            <!-- ACCION MENU RESPONSIVE-->
+            @Html.Action("MenuHorizontalResponsive", "Manager", "Frontal")
+            <!-- INICIO CONTENT -->
+            <div class="page-content-wrapper">
+                <div class="page-content">
+                    <div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                    <h4 class="modal-title">Modal title</h4>
+                                </div>
+                                <div class="modal-body">
+                                    Widget settings form goes here
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn blue">Save changes</button>
+                                    <button type="button" class="btn default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- INICIO PAGE CONTENT-->
+                    <div class="row">
+                        @*<div class="col-md-2 sidebar-content ">
+                            <ul class="ver-inline-menu tabbable margin-bottom-25">
+                                <li class="active">
+                                    <a href="#tab_1" data-toggle="tab">
+                                        <i class="fa fa-briefcase"></i> Ejemplo Sidebar
+                                    </a>
+                                    <span class="after">
+                                    </span>
+                                </li>
+                                <li>
+                                    <a href="#tab_2" data-toggle="tab">
+                                        <i class="fa fa-group"></i> Opción #1
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#tab_3" data-toggle="tab">
+                                        <i class="fa fa-leaf"></i> Opción #1
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#tab_1" data-toggle="tab">
+                                        <i class="fa fa-info-circle"></i> Opción #1
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#tab_2" data-toggle="tab">
+                                        <i class="fa fa-tint"></i> Opción #1
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#tab_3" data-toggle="tab">
+                                        <i class="fa fa-plus"></i> Opción #1
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#tab_3" data-toggle="tab">
+                                        <i class="fa fa-tasks"></i> Opción #1
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#tab_3" data-toggle="tab">
+                                        <i class="fa fa-user"></i> Opción #1
+                                    </a>
+                                </li>
+                            </ul>
+
+                        </div>*@
+                        >>
+><div class="col-md-12">
+                            <h3 class="page-title">
+                                <span id="titulopagina">Ejemplo de Título</span>
+                                <small id="descripcionpagina">Ejemplo Descripción</small>
+                            </h3>
+                            <div class="page-bar">
+                                <ul class="page-breadcrumb">
+                                    <li>
+                                        <i class="fa fa-home"></i>
+                                        <a href="index.html">Inicio</a>
+                                        <i class="fa fa-angle-right"></i>
+                                    </li>
+                                    <li>
+                                        <a href="#">Opcion 1</a>
+                                        <i class="fa fa-angle-right"></i>
+                                    </li>
+                                    <li>
+                                        <a href="#">Usuarios</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Departamento</a>
+                                    </li>
+                                </ul>
+                                <div class="page-toolbar">
+                                    <div class="btn-group pull-right">
+                                        <button type="button" class="btn btn-fit-height grey-salt dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+                                            Actions <i class="fa fa-angle-down"></i>
+                                        </button>
+                                        <ul class="dropdown-menu pull-right" role="menu">
+                                            <li>
+                                                <a href="#">Action</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">Another action</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">Something else here</a>
+                                            </li>
+                                            <li class="divider">
+                                            </li>
+                                            <li>
+                                                <a href="#">Separated link</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- INICIO  PAGE CONTENT-->
+                            <div class="row margin-bottom-20">
+                                <div class="col-md-12" id="main_layout">
+                                    @RenderSection("featured", required: false)
+                                    @RenderBody()
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- FIN PAGE CONTENT-->
+                </div>
+            </div>
+            <!-- FIN CONTENT -->
+            <!-- ESPACIO PARA SIDEBAR -->
+            <!-- ESPACIO PARA SIDEBAR -->
+        </div>
+        <!-- FIN CONTAINER -->
+        <!-- BEGIN FOOTER -->
+        <div class="page-footer">
+            <div class="page-footer-inner">
+                2015 &copy; TotalTech.
+            </div>
+            <div class="scroll-to-top">
+                <i class="icon-arrow-up"></i>
+            </div>
+        </div>
+        <!-- INICIO JAVASCRIPT -->
+        @*<script src="~/assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+        <script src="~/assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="~/assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
+        <script src="~/assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+        <script src="~/assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+        <script src="~/assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+        <script src="~/assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+        <script src="~/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+        <script src="~/assets/global/plugins/flot/jquery.flot.min.js" type="text/javascript"></script>
+        <script src="~/assets/global/plugins/flot/jquery.flot.resize.min.js" type="text/javascript"></script>
+        <script src="~/assets/global/plugins/flot/jquery.flot.categories.min.js" type="text/javascript"></script>
+        <script src="~/assets/global/plugins/jquery-easypiechart/jquery.easypiechart.min.js" type="text/javascript"></script>
+        <script src="~/assets/global/plugins/jquery.sparkline.min.js" type="text/javascript"></script>
+        <script src="~/assets/global/scripts/metronic.js" type="text/javascript"></script>
+        <script src="~/assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
+        <script src="~/assets/admin/layout/scripts/quick-sidebar.js" type="text/javascript"></script>
+        <script src="~/assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+        <script type="text/javascript" src="~/assets/global/plugins/select2/select2.min.js"></script>
+        <script type="text/javascript" src="~/assets/global/plugins/datatables/media/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="~/assets/global/plugins/datatables/extensions/TableTools/js/dataTables.tableTools.min.js"></script>
+        <script type="text/javascript" src="~/assets/global/plugins/datatables/extensions/ColReorder/js/dataTables.colReorder.min.js"></script>
+        <script type="text/javascript" src="~/assets/global/plugins/datatables/extensions/Scroller/js/dataTables.scroller.min.js"></script>
+        <script type="text/javascript" src="~/assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js"></script>
+        <script src="~/assets/global/scripts/metronic.js" type="text/javascript"></script>
+        <script src="~/assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
+        <script src="~/assets/admin/layout/scripts/quick-sidebar.js" type="text/javascript"></script>
+        <script src="~/scripts/typescript/AppManager.js" type="text/javascript"></script>*@
+
+        <script src="@Url.Content("~/assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/assets/global/plugins/bootstrap/js/bootstrap.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/assets/global/plugins/jquery.blockui.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/assets/global/plugins/jquery.cokie.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/assets/global/plugins/uniform/jquery.uniform.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/assets/global/plugins/flot/jquery.flot.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/assets/global/plugins/flot/jquery.flot.resize.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/assets/global/plugins/flot/jquery.flot.categories.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/assets/global/plugins/jquery-easypiechart/jquery.easypiechart.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/assets/global/plugins/jquery.sparkline.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/assets/global/scripts/metronic.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/assets/admin/layout/scripts/layout.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/assets/admin/layout/scripts/quick-sidebar.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/assets/global/plugins/bootstrap-toastr/toastr.min.js")"></script>
+        <script type="text/javascript" src="@Url.Content("~/assets/global/plugins/select2/select2.min.js")"></script>
+        <script type="text/javascript" src="@Url.Content("~/assets/global/plugins/datatables/media/js/jquery.dataTables.min.js")"></script>
+        <script type="text/javascript" src="@Url.Content("~/assets/global/plugins/datatables/extensions/TableTools/js/dataTables.tableTools.min.js")"></script>
+        <script type="text/javascript" src="@Url.Content("~/assets/global/plugins/datatables/extensions/ColReorder/js/dataTables.colReorder.min.js")"></script>
+        <script type="text/javascript" src="@Url.Content("~/assets/global/plugins/datatables/extensions/Scroller/js/dataTables.scroller.min.js")"></script>
+        <script type="text/javascript" src="@Url.Content("~/assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js")"></script>
+        <script src="@Url.Content("~/assets/global/scripts/metronic.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/assets/admin/layout/scripts/layout.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/assets/admin/layout/scripts/quick-sidebar.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/scripts/typescript/AppManager.js")" type="text/javascript"></script>
+        @RenderSection("scripts", required: false)
+
+        <script>
+            $(document).ready(function () {
+                var loadok = false;
+                Layout.init();
+                QuickSidebar.init();
+                app.init();
+            });
+        </script>
+        <!-- FIN JAVASCRIPTS -->
+    </body>
+</html>
+}
+else
+{
+    Response.Redirect("~/Account/Login");
+}

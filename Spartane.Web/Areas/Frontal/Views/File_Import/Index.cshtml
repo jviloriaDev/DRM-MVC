@@ -1,0 +1,123 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Globalization
+@using Spartane.Core.Domain.Permission
+@using Spartane.Core.Domain.Spartane_File
+@using Spartane.Web.Helpers
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="row">
+        <div class="col-lg-10">
+            <h2>
+                Archivos
+                <button onclick="GetBusinessRule()" type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton" data-toggle="modal" data-target="#BusinessRule-form">
+                    <i class="fa fa-cogs fa-spin"></i>
+                </button>
+            </h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">Home</a>
+                </li>
+                <li class="">
+                    <label>Importar Archivo</label>
+                </li>
+                <li class="active">
+                    <strong>Importar</strong>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                @using (Html.BeginForm("Post", "File_Import", FormMethod.Post, new { @readonly = "true", @class = "form-horizontal", enctype = "multipart/form-data" }))
+                {
+                    <span id="popupNotification"></span>
+                    <div class="container-fluid Cat_CtesCreateForm" id="viewmodeledit">
+                        <div class="tabs-container">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a data-toggle="tab" href="#tabDatos_Generales"> Datos Generales</a></li>
+
+                            </ul>
+                            <div class="tab-content">
+                                <div id="tabDatos_Generales" class="tab-pane active">
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Cliente</label>
+                                            <div class="col-sm-10">
+                                                @Html.DropDownList("cliente")
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Proceso</label>
+                                            <div class="col-sm-10">
+                                                @Html.DropDownList("proceso")
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Archivo</label>
+                                            <div class="col-sm-10">
+                                                <input type="file" name="archivo"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <br />
+                        <div class="form-actions fluid">
+                            <input type="submit" value="Importar" id="Importar" name="Importar" class="btn btn-primary" tabindex="4" />
+                            <button type="button" class="btn btn-info btn-lg displayBusinessProperyButton displayRuleButton">
+                                <i class="fa fa-cogs fa-spin"></i>
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<input id="hdnApplicationDirectory" type="hidden" value="@Url.Content("~/")" />
+@section Styles {
+    <link href="@Url.Content("~/Content/BootstrapDatePicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+    @Styles.Render("~/Content/plugins/dataTables/dataTablesStyles")
+    @Styles.Render("~/plugins/dateRangeStyles")
+    @Styles.Render("~/plugins/dataPickerStyles")
+    @Styles.Render("~/plugins/clockpickerStyles")
+    @Styles.Render("~/plugins/awesomeCheckboxStyles")
+    @Styles.Render("~/plugins/select2Styles")
+    <style>
+        .dataTables_filter {
+            display: none;
+        }
+
+        .select2-results {
+            background-color: #fff;
+        }
+
+        .select2-container .select2-dropdown {
+            height: auto !important;
+        }
+
+        div.dataTables_info {
+            display: inline-block;
+            float: right;
+        }
+
+        i {
+            font-size: 25px !important;
+            display: block;
+            color: #676a6c;
+            margin-left: 6px;
+            margin-right: 6px;
+        }
+
+        .fullWidth {
+            width: 100%;
+        }
+    </style>
+}
+@section Scripts {
+
+}

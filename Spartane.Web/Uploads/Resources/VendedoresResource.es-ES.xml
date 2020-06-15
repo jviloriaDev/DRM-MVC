@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" standalone="yes"?>
+<resources>
+  <resource culture="es-es" name="Vendedores" value="Vendedores"></resource>
+  <resource culture="es-es" name="Folio" value="Folio"></resource>
+  <resource culture="es-es" name="Fecha_de_Registro" value="Fecha de Registro"></resource>
+  <resource culture="es-es" name="Hora_de_Registro" value="Hora de Registro"></resource>
+  <resource culture="es-es" name="Usuario_que_Registra" value="Usuario que Registra"></resource>
+  <resource culture="es-es" name="Nombres" value="Nombre(s)"></resource>
+  <resource culture="es-es" name="Apellido_Paterno" value="Apellido Paterno"></resource>
+  <resource culture="es-es" name="Apellido_Materno" value="Apellido Materno"></resource>
+  <resource culture="es-es" name="Nombre_Completo" value="Nombre Completo"></resource>
+  <resource culture="es-es" name="Nombre_de_Usuario" value="Nombre de Usuario"></resource>
+  <resource culture="es-es" name="Usuario_Registrado" value="Usuario Registrado"></resource>
+  <resource culture="es-es" name="Email" value="Email"></resource>
+  <resource culture="es-es" name="Celular" value="Celular"></resource>
+  <resource culture="es-es" name="Fecha_de_nacimiento" value="Fecha de nacimiento"></resource>
+  <resource culture="es-es" name="Pais_de_nacimiento" value="País de nacimiento"></resource>
+  <resource culture="es-es" name="Entidad_de_nacimiento" value="Entidad de nacimiento"></resource>
+  <resource culture="es-es" name="Sexo" value="Sexo"></resource>
+  <resource culture="es-es" name="Estatus" value="Estatus"></resource>
+  <resource culture="es-es" name="Codigos_para_Referenciar_Pacientes" value="Códigos para Referenciar Pacientes"></resource>
+  <resource culture="es-es" name="Banco" value="Banco"></resource>
+  <resource culture="es-es" name="CLABE_Interbancaria" value="CLABE Interbancaria"></resource>
+  <resource culture="es-es" name="Numero_de_Cuenta" value="Número de Cuenta"></resource>
+  <resource culture="es-es" name="Nombre_del_Titular" value="Nombre del Titular"></resource>
+  <resource culture="es-es" name="Facturas" value="Facturas"></resource>
+
+<resource culture="es-es" name="TabDatos_Generales" value="Datos Generales"></resource>
+<resource culture="es-es" name="TabCodigos_de_Referencia" value="Códigos de Referencia"></resource>
+<resource culture="es-es" name="TabDatos_Bancarios" value="Datos Bancarios"></resource>
+<resource culture="es-es" name="TabFacturacion" value="Facturación"></resource>
+
+</resources>

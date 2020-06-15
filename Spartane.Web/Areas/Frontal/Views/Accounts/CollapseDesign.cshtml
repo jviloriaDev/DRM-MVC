@@ -1,0 +1,114 @@
+﻿@{
+    //Layout = null;
+}
+<style>
+    .MarginBottom {
+        margin-bottom: 1%;
+    }
+
+    #divAdvanceSearch input {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch button {
+        margin-right: 2%;
+    }
+
+    #divAdvanceSearch select {
+        margin-right: 2%;
+    }
+
+     #divAdvanceSearch h3 {
+        margin-top: 2%;
+    }
+</style>
+
+
+
+
+
+
+<div class="ibox collapsed " id="divAdvanceSearch">
+     <div class="ibox-title">
+
+         <div class="ibox-title" style="    border-top: none !important">
+             <div class="col-sm-2">
+                 <button class="btn-primary btn">Create Empleados</button>
+             </div>
+
+             <div >
+                 <a class="collapse-link btn btn-primary">
+                     <i class="fa fa-chevron-up">Advance Search</i>
+                 </a>
+
+             </div>
+         </div>
+     </div> 
+    <div class="ibox-content" style="display: block;">
+        
+        
+        
+
+
+        <div class="MarginBottom ">
+            <h3>Employee Id</h3>
+        </div>
+        <div class="MarginBottom form-inline">
+            <label class="">From:</label>
+            <input type="text" class="form-control">
+            <label class="">To: </label>
+            <input type="text" class="form-control">
+        </div>
+
+        <div class="MarginBottom">
+            <h3>Name</h3>
+        </div>
+
+        <div class="MarginBottom form-inline">
+            <label class="">Filter:</label>
+            <select class="form-control " name="account">
+                <option>Begin with</option>
+                <option>End width</option>
+                <option>Exact</option>
+            </select>
+            <input type="text" class="form-control">
+        </div>
+        <div class="MarginBottom">
+            <h3>Date of Birth</h3>
+        </div>
+        <div class="MarginBottom form-inline">
+            <label class="">From:</label>
+            <input type="text" class="form-control">
+            <label class="">To: </label>
+            <input type="text" class="form-control">
+        </div>
+        <div class="MarginBottom form-inline">
+            <label class="">Active:</label>
+            <input type="checkbox" class="form-control" id="checkbox1">
+        </div>
+        <div class="MarginBottom">
+            <h3>Department</h3>
+        </div>
+        <div class="MarginBottom form-inline">
+            <label class="">Filter:</label>
+            <select class="form-control " name="account">
+                <option>option 1</option>
+                <option>option 2</option>
+                <option>option 3</option>
+                <option>option 4</option>
+            </select>
+            <input type="text" class="form-control">
+            <label class="">Or Select </label>
+            <select class="form-control " name="account">
+                <option>option 1</option>
+                <option>option 2</option>
+                <option>option 3</option>
+                <option>option 4</option>
+            </select>
+        </div>
+
+        <div class="MarginBottom form-inline">
+            <button value="" class="btn btn-primary">Search</button><button class="btn btn-primary" value="">Cancel</button>
+        </div>
+    </div>
+</div>
